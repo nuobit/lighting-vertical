@@ -4,7 +4,6 @@
 
 from odoo import models, fields, api
 
-from odoo.addons.component.core import Component
 from odoo.addons.queue_job.job import job
 
 
@@ -32,8 +31,11 @@ class LightingProductBinding(models.Model):
     def import_products_since(self, backend_record=None, since_date=None):
         """ Prepare the batch import of products modified on SAP B1 """
         filters = []
-        if since_date:
-            filters = [('UpdateDateTime', '>', since_date)]
+        existing_hashes = self.env['sapb1.lighting.product'].search([
+            ('external_content_hash', '!=', False),
+        ]).mapped('external_content_hash')
+        if existing_hashes:
+            filters = [('Hash', 'not in', existing_hashes)]
         now_fmt = fields.Datetime.now()
         self.env['sapb1.lighting.product'].import_batch(
             backend=backend_record, filters=filters)

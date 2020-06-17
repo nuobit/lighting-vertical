@@ -33,6 +33,10 @@ class LigthingProductImportMapper(Component):
         return {'backend_id': self.backend_record.id}
 
     @mapping
+    def content_hash(self, record):
+        return {'external_content_hash': record['Hash']}
+
+    @mapping
     def description_manual(self, record):
         return {'description_manual': record['ItemName'] and
                                       record['ItemName'].strip() or None}

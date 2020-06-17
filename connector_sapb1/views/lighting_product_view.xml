@@ -44,6 +44,7 @@
                     <field name="backend_id"/>
                     <field name="odoo_id" readonly="True"/>
                     <field name="external_id_display" readonly="True"/>
+                    <field name="external_content_hash" readonly="True"/>
                     <field name="sync_date" readonly="True"/>
                 </group>
             </form>

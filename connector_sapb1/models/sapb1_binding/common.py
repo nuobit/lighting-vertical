@@ -65,6 +65,8 @@ class SAPB1Binding(models.AbstractModel):
         for rec in self:
             rec.external_id_hash = rec.external_id and idhash(rec.external_id) or None
 
+    external_content_hash = fields.Char(string='SAP content hash')
+
     _sql_constraints = [
         ('sapb1_external_uniq', 'unique(backend_id, external_id_hash)',
          'An Odoo record with same ID already exists on SAP B1.'),

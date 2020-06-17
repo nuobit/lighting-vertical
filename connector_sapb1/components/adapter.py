@@ -172,8 +172,13 @@ class GenericAdapter(AbstractComponent):
                     else:
                         raise Exception("Operator '%s' is not implemented on NULL values" % operator)
 
-                where_l.append('"%s" %s ?' % (k, operator))
-                values_l.append(v)
+                value_placeholder = '?'
+                if operator in ('in', 'not in'):
+                    value_placeholder = "%s" % (tuple(v),)
+                else:
+                    values_l.append(v)
+
+                where_l.append('"%s" %s %s' % (k, operator, value_placeholder))
 
         where_str = where_l and "where %s" % (' and '.join(where_l),) or ''
 

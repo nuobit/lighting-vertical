@@ -15,55 +15,10 @@ class LightingProductAdapter(Component):
     _sql_search = r""""""
 
     _sql_read = r"""WITH
-                    -- main tables with datetime
-                    opor_updatetime AS (
-                        SELECT c."DocEntry",
-                               to_varchar(COALESCE(to_date(c."UpdateDate"), TO_DATE('1900-12-31',
-                                                   'YYYY-MM-DD'))) AS "UpdateDate_str",
-                               COALESCE(REPLACE_REGEXPR('([0-9]{2})([0-9]{2})([0-9]{2})' 
-                                                        IN lpad(to_varchar(c."UpdateTS"), 6, '0')
-                                                        WITH '\1:\2:\3'), '00:00:00') AS "UpdateTS_str"
-                        FROM %(schema)s.OPOR c
-                    ),
-                    opor_base AS (
-                        SELECT c.*,
-                               to_timestamp(concat(u."UpdateDate_str", concat(' ', u."UpdateTS_str")),
-                                           'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
-                        FROM opor_updatetime u, %(schema)s.OPOR c
-                        WHERE u."DocEntry" = c."DocEntry"
-                    ),
-                    oitt_updatetime AS (
-                        SELECT c."Code",
-                               to_varchar(COALESCE(to_date(c."UpdateDate"), TO_DATE('1900-12-31',
-                                                   'YYYY-MM-DD'))) AS "UpdateDate_str",
-                               COALESCE(REPLACE_REGEXPR('([0-9]{2})([0-9]{2})([0-9]{2})'
-                                                        IN lpad(to_varchar(c."UpdateTime"), 6, '0')
-                                                        WITH '\1:\2:\3'), '00:00:00') AS "UpdateTS_str"
-                        FROM %(schema)s.OITT c
-                    ),
-                    oitt_base AS (
-                        SELECT c.*,
-                               to_timestamp(concat(u."UpdateDate_str", concat(' ', u."UpdateTS_str")),
-                                           'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
-                        FROM oitt_updatetime u, %(schema)s.OITT c
-                        WHERE u."Code" = c."Code"
-                    ),
-                    oitm_updatetime AS (
-                        SELECT u."ItemCode",
-                               to_varchar(COALESCE(to_date(u."UpdateDate"), TO_DATE('1900-12-31',
-                                                   'YYYY-MM-DD'))) AS "UpdateDate_str",
-                               COALESCE(REPLACE_REGEXPR('([0-9]{2})([0-9]{2})([0-9]{2})'
-                                                        IN lpad(to_varchar(u."UpdateTS"), 6, '0')
-                                                        WITH '\1:\2:\3'), '00:00:00') AS "UpdateTS_str"
-                        FROM %(schema)s.OITM u
-                    ),
                     oitm_base AS (
-                        SELECT p.*,
-                               to_timestamp(concat(u."UpdateDate_str", concat(' ', u."UpdateTS_str")),
-                                           'YYYY-MM-DD HH24:MI:SS') AS "UpdateDateTime"
-                        FROM oitm_updatetime u, %(schema)s.OITM p
-                        WHERE u."ItemCode" = p."ItemCode" AND
-                              u."ItemCode" NOT LIKE_REGEXPR '^.+\..+$' AND
+                        SELECT p.*
+                        FROM %(schema)s.OITM p
+                        WHERE p."ItemCode" NOT LIKE_REGEXPR '^.+\..+$' AND
                               p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado',
                                                     'Fe Digital', 'Histórico') and
                               COALESCE(p."U_U_especiales", 'N') = 'N' AND
@@ -90,9 +45,8 @@ class LightingProductAdapter(Component):
                     pending_base AS (
                         SELECT lc."ItemCode",
                                sum(lc."OpenCreQty") AS "OnOrder",
-                               max(c."UpdateDateTime") AS "UpdateDateTime",
                                lc."ShipDate" AS "ShipDate"
-                        FROM %(schema)s.POR1 lc, opor_base c
+                        FROM %(schema)s.POR1 lc, %(schema)s.OPOR c
                         WHERE lc."DocEntry" = c."DocEntry" AND
                               lc."WhsCode" = '00' AND
                               lc."OpenCreQty" != 0 AND
@@ -101,7 +55,6 @@ class LightingProductAdapter(Component):
                         UNION ALL
                         SELECT o."ItemCode",
                                sum(o."PlannedQty" - (o."CmpltQty" + o."RjctQty")) AS "OnOrder",
-                               max(o."UpdateDate") AS "UpdateDateTime",
                                o."DueDate" AS "ShipDate"
                         FROM %(schema)s.OWOR o
                         WHERE o."Warehouse" = '00' AND
@@ -112,7 +65,6 @@ class LightingProductAdapter(Component):
                     pending_merged AS (
                         SELECT p."ItemCode",
                                sum(p."OnOrder") AS "OnOrder",
-                               max(p."UpdateDateTime") AS "UpdateDateTime",
                                p."ShipDate" AS "ShipDate"
                         FROM pending_base p
                         GROUP BY p."ItemCode", p."ShipDate"
@@ -120,8 +72,7 @@ class LightingProductAdapter(Component):
                     stock_future AS (
                         SELECT p."ItemCode",
                                sum(p."OnOrder") AS "OnOrder",
-                               max(p."ShipDate") AS "ShipDate",
-                               max(p."UpdateDateTime") AS "UpdateDateTime"
+                               max(p."ShipDate") AS "ShipDate"
                         FROM pending_merged p
                         GROUP BY p."ItemCode"
                     ),
@@ -130,8 +81,7 @@ class LightingProductAdapter(Component):
                         SELECT pw."ItemCode",
                                pw."OnHand",
                                pw."IsCommited",
-                               pw."WhsCode",
-                               pw."updateDate" AS "UpdateDateTime"
+                               pw."WhsCode"
                         FROM %(schema)s.OITW pw, %(schema)s.OITM p
                         WHERE pw."ItemCode" = p."ItemCode" AND
                               p."ItemType" = 'I' AND
@@ -142,11 +92,8 @@ class LightingProductAdapter(Component):
                     stock_capacity AS (
                         select lml."Father" AS "ItemCode",
                                min(round((ps."OnHand"- ps."IsCommited") / lml."Quantity",
-                                             0, ROUND_DOWN)) AS "Capacity",
-                               max(CASE WHEN SECONDS_BETWEEN(ps."UpdateDateTime", c."UpdateDateTime") > 0
-                                   THEN c."UpdateDateTime"
-                                   ELSE ps."UpdateDateTime" END) AS "UpdateDateTime"
-                        from %(schema)s.ITT1 lml, oitt_base c, stock_current ps
+                                             0, ROUND_DOWN)) AS "Capacity"
+                        FROM %(schema)s.ITT1 lml, %(schema)s.OITT c, stock_current ps
                         WHERE lml."Father" = c."Code" AND
                               lml."Code" = ps."ItemCode" AND
                               lml."Warehouse" = ps."WhsCode" AND
@@ -160,8 +107,7 @@ class LightingProductAdapter(Component):
                                0 AS "IsCommited",
                                s."OnOrder",
                                s."ShipDate",
-                               0 AS "Capacity",
-                               s."UpdateDateTime"
+                               0 AS "Capacity"
                         FROM stock_future s
                         UNION ALL
                         SELECT s."ItemCode",
@@ -169,8 +115,7 @@ class LightingProductAdapter(Component):
                                s."IsCommited",
                                0 AS "OnOrder",
                                NULL AS "ShipDate",
-                               0 AS "Capacity",
-                               s."UpdateDateTime"
+                               0 AS "Capacity"
                         FROM stock_current s
                         UNION ALL
                         SELECT s."ItemCode",
@@ -178,8 +123,7 @@ class LightingProductAdapter(Component):
                                0 AS "IsCommited",
                                0 AS "OnOrder",
                                NULL AS "ShipDate",
-                               s."Capacity",
-                               s."UpdateDateTime"
+                               s."Capacity"
                         FROM stock_capacity s
                     ),
                     product_virtual_stock_all AS (
@@ -188,12 +132,11 @@ class LightingProductAdapter(Component):
                                sum(s."IsCommited") AS "IsCommited",
                                sum(s."OnOrder") AS "OnOrder",
                                max(s."ShipDate") AS "ShipDate",
-                               sum(s."Capacity") AS "Capacity",
-                               max(s."UpdateDateTime") AS "UpdateDateTime"
+                               sum(s."Capacity") AS "Capacity"
                         FROM product_virtual_stock s
                         GROUP BY s."ItemCode"
                     ),
-                    product as (
+                    product_data as (
                         SELECT p."ItemCode", p."ItemName",
                                p."CodeBars",
                                g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
@@ -202,20 +145,48 @@ class LightingProductAdapter(Component):
                                s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
                                p."AvgPrice", p."LastPurDat",
                                COALESCE(pp."PurchasePrice", 0) AS "PurchasePrice", pp."PurchasePriceCurrency",
-                               COALESCE(t."Price", 0) as "Price", NULLIF(trim(t."Currency"),'') AS "Currency",
-                               (CASE WHEN SECONDS_BETWEEN(s."UpdateDateTime", p."UpdateDateTime") > 0 THEN p."UpdateDateTime"
-                                ELSE s."UpdateDateTime" END) AS "UpdateDateTime"
+                               COALESCE(t."Price", 0) as "Price", NULLIF(trim(t."Currency"),'') AS "Currency"
                         FROM product_virtual_stock_all s,
                              oitm_base p
                                 LEFT JOIN %(schema)s.ITM1 t ON t."PriceList" = 11 AND p."ItemCode" = t."ItemCode"
                                 LEFT JOIN purchase_price pp ON p."ItemCode" = pp."ItemCode",
-                             %(schema)s.OITB g
+                            %(schema)s.OITB g
                         WHERE s."ItemCode" = p."ItemCode" AND
                               p."ItmsGrpCod" = g."ItmsGrpCod"
+                    ), product AS (
+                        SELECT p.*,
+                            bintohex(
+                                hash_sha256(
+                                    COALESCE(to_binary(p."ItemCode"), '00'), '00',
+                                    COALESCE(to_binary(p."ItemName"), '00'), '00',
+                                    COALESCE(to_binary(p."CodeBars"), '00'), '00',
+                                    COALESCE(to_binary(p."ItmsGrpNam"), '00'), '00',
+                                    COALESCE(to_binary(p."U_U_familia"), '00'), '00',
+                                    COALESCE(to_binary(p."U_U_aplicacion"), '00'), '00',
+                                    COALESCE(to_binary(p."U_ACC_Obsmark"), '00'), '00',
+                                    COALESCE(to_binary(p."SWeight1"), '00'), '00',
+                                    COALESCE(to_binary(p."SVolume"), '00'), '00',
+                                    COALESCE(to_binary(p."SLength1"), '00'), '00',
+                                    COALESCE(to_binary(p."SWidth1"), '00'), '00',
+                                    COALESCE(to_binary(p."SHeight1"), '00'), '00',
+                                    COALESCE(to_binary(p."OnHand"), '00'), '00',
+                                    COALESCE(to_binary(p."IsCommited"), '00'), '00',
+                                    COALESCE(to_binary(p."OnOrder"), '00'), '00',
+                                    COALESCE(to_binary(p."ShipDate"), '00'), '00',
+                                    COALESCE(to_binary(p."Capacity"), '00'), '00',
+                                    COALESCE(to_binary(p."AvgPrice"), '00'), '00',
+                                    COALESCE(to_binary(p."LastPurDat"), '00'), '00',
+                                    COALESCE(to_binary(p."PurchasePrice"), '00'), '00',
+                                    COALESCE(to_binary(p."PurchasePriceCurrency"), '00'), '00',
+                                    COALESCE(to_binary(p."Price"), '00'), '00',
+                                    COALESCE(to_binary(p."Currency"), '00'), '00'
+                                )
+                            ) AS "Hash"
+                        FROM product_data p
                     )
-                    select %(fields)s
-                    from product
-                    %(where)s
-                 """
+                        select %(fields)s
+                        from product
+                        %(where)s
+                     """
 
     _id = ('ItemCode',)
