@@ -349,7 +349,7 @@ class LightingProductSourceLine(models.Model):
                            rec.color_temperature_flux_ids.sorted(lambda y: y.color_temperature_id.value)])
                 rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
                     .join(['%ilm' % x.flux_id.value for x in
-                           rec.color_temperature_flux_ids.sorted(lambda y: y.flux_id.value)])
+                           rec.color_temperature_flux_ids.sorted(lambda y: y.color_temperature_id.value)])
 
     ############## to remove
     color_temperature_ids = fields.Many2many(string='Color temperature (K)',
