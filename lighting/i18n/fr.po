@@ -26,9 +26,10 @@ msgstr ""
 #: selection:lighting.product,post_included:0
 #: selection:lighting.product,post_with_inspection_chamber:0
 #: selection:lighting.product,recessing_box_included:0
+#: selection:lighting.product,fan_reverse_direction:0
 #, python-format
 msgid "Yes"
-msgstr "Yes"
+msgstr "Oui"
 
 #. module: lighting
 #: code:addons/lighting/models/product.py:13
@@ -41,9 +42,10 @@ msgstr "Yes"
 #: selection:lighting.product,post_included:0
 #: selection:lighting.product,post_with_inspection_chamber:0
 #: selection:lighting.product,recessing_box_included:0
+#: selection:lighting.product,fan_reverse_direction:0
 #, python-format
 msgid "No"
-msgstr "No"
+msgstr "Non"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_discontinued_product_percent
@@ -1080,6 +1082,16 @@ msgstr "Famille"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_blades
 msgid "Fan blades"
 msgstr "Nombre d'aspas"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_noise_level
+msgid "Noise level (dB)"
+msgstr "Niveau sonore (dB)"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_reverse_direction
+msgid "Reverse direction"
+msgstr "Inversion de virage"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_control

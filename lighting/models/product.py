@@ -542,6 +542,10 @@ class LightingProduct(models.Model):
                                       inverse_name='product_id', string='Fan wattages (W)', copy=True,
                                       track_visibility='onchange')
 
+    fan_noise_level = fields.Float(string='Noise level (dB)', track_visibility='onchange')
+    fan_reverse_direction = fields.Selection(selection=YESNO, string='Reverse direction', track_visibility='onchange')
+
+
     # Sources tab
     source_ids = fields.One2many(comodel_name='lighting.product.source',
                                  inverse_name='product_id', string='Sources', copy=True, track_visibility='onchange')

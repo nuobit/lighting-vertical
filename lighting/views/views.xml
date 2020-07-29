@@ -233,6 +233,8 @@
                                 <field name="mechanical_screwdriver"/>
                                 <field name="fan_blades"/>
                                 <field name="fan_control"/>
+                                <field name="fan_noise_level"/>
+                                <field name="fan_reverse_direction"/>
                                 <field name="fan_wattage_ids">
                                     <tree editable="bottom">
                                         <field name="wattage"/>
