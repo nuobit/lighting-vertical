@@ -182,6 +182,16 @@ msgstr "Número de aspas"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Noise level"
+msgstr "Nivel sonoro"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Reverse direction"
+msgstr "Inversión de giro"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Fan wattages"
 msgstr "Potencias del ventilador"
 

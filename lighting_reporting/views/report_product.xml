@@ -785,6 +785,23 @@
                                     <span t-field="doc.fan_control"/>
                                 </td>
                             </tr>
+                            <tr t-if="doc.fan_noise_level">
+                                <td>
+                                    Noise level
+                                </td>
+                                <td>
+                                    <span t-field="doc.fan_noise_level"/>
+                                    <span>dB</span>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.fan_reverse_direction">
+                                <td>
+                                    Reverse direction
+                                </td>
+                                <td>
+                                    <span t-field="doc.fan_reverse_direction"/>
+                                </td>
+                            </tr>
                             <tr t-if="doc.fan_wattage_ids">
                                 <td>
                                     Fan wattages
