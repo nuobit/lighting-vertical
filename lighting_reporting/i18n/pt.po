@@ -182,6 +182,16 @@ msgstr "Pás de ventilador"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Noise level"
+msgstr "Nível de som"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Reverse direction"
+msgstr "Reversão de giro"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Fan wattages"
 msgstr "Wattages fan"
 
