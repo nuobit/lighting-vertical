@@ -20,7 +20,8 @@ class LightingProductMaterial(models.Model):
     def _compute_product_count(self):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count([
-                '|', '|', '|', '|', ('body_material_ids', '=', record.id),
+                '|', '|', '|', '|', '|', ('body_material_ids', '=', record.id),
+                ('lampshade_material_ids', '=', record.id),
                 ('diffusor_material_ids', '=', record.id), ('frame_material_ids', '=', record.id),
                 ('reflector_material_ids', '=', record.id), ('blade_material_ids', '=', record.id)])
 
@@ -30,8 +31,8 @@ class LightingProductMaterial(models.Model):
 
     @api.multi
     def unlink(self):
-        fields = ['body_material_ids', 'diffusor_material_ids', 'frame_material_ids',
-                  'reflector_material_ids', 'blade_material_ids']
+        fields = ['body_material_ids', 'lampshade_material_ids', 'diffusor_material_ids',
+                  'frame_material_ids', 'reflector_material_ids', 'blade_material_ids']
         for f in fields:
             records = self.env['lighting.product'].search([(f, 'in', self.ids)])
             if records:

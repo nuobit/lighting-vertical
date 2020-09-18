@@ -9,12 +9,14 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">['|', '|', '|', '|', ('body_material_ids','=',active_id),
+        <field name="domain">['|', '|', '|', '|', '|', ('body_material_ids','=',active_id),
+            ('lampshade_material_ids','=',active_id),
             ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id),
             ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]
         </field>
         <field name="context">{
             'default_body_material_ids': [(4, active_id, False)],
+            'default_lampshade_material_ids': [(4, active_id, False)],
             'default_diffusor_material_ids': [(4, active_id, False)],
             'default_frame_material_ids': [(4, active_id, False)],
             'default_reflector_material_ids': [(4, active_id, False)],
