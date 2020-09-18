@@ -213,6 +213,14 @@
                                         <span t-esc="', '.join([x.name for x in doc.body_material_ids])"/>
                                     </td>
                                 </tr>
+                                <tr t-if="doc.lampshade_material_ids">
+                                    <td>
+                                        Lampshade material
+                                    </td>
+                                    <td>
+                                        <span t-esc="', '.join([x.name for x in doc.lampshade_material_ids])"/>
+                                    </td>
+                                </tr>
                                 <tr t-if="doc.diffusor_material_ids">
                                     <td>
                                         Diffuser material
