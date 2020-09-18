@@ -368,6 +368,11 @@ msgid "Body material"
 msgstr "Matériau du corps"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_lampshade_material_ids
+msgid "Lampshade material"
+msgstr "Matériau de l'abat-jour"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_brand_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_brand_id
 msgid "Brand"

@@ -377,6 +377,9 @@ class LightingProduct(models.Model):
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                          relation='lighting_product_body_material_rel',
                                          string='Body material', track_visibility='onchange')
+    lampshade_material_ids = fields.Many2many(comodel_name='lighting.product.material',
+                                              relation='lighting_product_lampshade_material_rel',
+                                              string='Lampshade material', track_visibility='onchange')
     diffusor_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                              relation='lighting_product_diffusor_material_rel',
                                              string='Diffuser material', track_visibility='onchange')
@@ -544,7 +547,6 @@ class LightingProduct(models.Model):
 
     fan_noise_level = fields.Float(string='Noise level (dB)', track_visibility='onchange')
     fan_reverse_direction = fields.Selection(selection=YESNO, string='Reverse direction', track_visibility='onchange')
-
 
     # Sources tab
     source_ids = fields.One2many(comodel_name='lighting.product.source',

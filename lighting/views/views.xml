@@ -116,6 +116,7 @@
                                 <field name="finish_id"/>
                                 <field name="finish2_id"/>
                                 <field name="body_material_ids" widget="many2many_tags"/>
+                                <field name="lampshade_material_ids" widget="many2many_tags"/>
                                 <field name="diffusor_material_ids" widget="many2many_tags"/>
                                 <field name="frame_material_ids" widget="many2many_tags"/>
                                 <field name="reflector_material_ids" widget="many2many_tags"/>
@@ -903,7 +904,7 @@
                 <field name="application_ids"/>
                 <field name="dimmable_ids"/>
                 <field name="body_material_ids" string="=Material code"
-                       filter_domain="['|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self)]"/>
+                       filter_domain="['|', '|', '|', '|', '|', ('body_material_ids.code','=ilike',self), ('diffusor_material_ids.code','=ilike',self), ('frame_material_ids.code','=ilike',self), ('reflector_material_ids.code','=ilike',self), ('blade_material_ids.code','=ilike',self), ('lampshade_material_ids.code','=ilike',self)]"/>
                 <separator/>
                 <filter string="Online" name="online"
                         domain="[('state_marketing', '=', 'O')]"/>
