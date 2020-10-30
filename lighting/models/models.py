@@ -206,10 +206,16 @@ class LightingProductSource(models.Model):
 
                 if l.is_integrated or l.is_lamp_included:
                     if l.color_temperature_flux_ids:
-                        line.append(l.color_temperature_display)
-                        line.append(l.luminous_flux_display)
+                        if l.color_temperature_display:
+                            line.append(l.color_temperature_display)
+                        if l.luminous_flux_display:
+                            line.append(l.luminous_flux_display)
                     if l.is_led and l.cri_min:
                         line.append("%iCRI" % l.cri_min)
+                    if l.is_led and l.special_spectrum:
+                        special_spectrum_values = dict(
+                            l.fields_get('special_spectrum', 'selection')['special_spectrum']['selection'])
+                        line.append(special_spectrum_values[l.special_spectrum])
 
                 if l.wattage_display:
                     line.append("(%s)" % l.wattage_display)
@@ -262,8 +268,21 @@ class LightingProductSource(models.Model):
                 kn_l = []
                 if src.num > 1:
                     kn_l.append('%ix' % src.num)
-                kn_l.append('/'.join(src_k))
+                kn_l.append(','.join(src_k))
                 k_l = ' '.join(kn_l)
+            res.append(k_l)
+
+        if not any(res):
+            return None
+        return res
+
+    def get_special_spectrum(self):
+        res = []
+        for src in self.sorted(lambda x: x.sequence):
+            src_k = src.line_ids.get_special_spectrum()
+            k_l = None
+            if src_k:
+                k_l = ','.join(src_k)
             res.append(k_l)
 
         if not any(res):
@@ -344,12 +363,22 @@ class LightingProductSourceLine(models.Model):
     def _compute_color_temperature_flux_display(self):
         for rec in self:
             if rec.color_temperature_flux_ids:
-                rec.color_temperature_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
-                    .join(['%iK' % x.color_temperature_id.value for x in
-                           rec.color_temperature_flux_ids.sorted(lambda y: y.color_temperature_id.value)])
-                rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
-                    .join(['%ilm' % x.flux_id.value for x in
-                           rec.color_temperature_flux_ids.sorted(lambda y: y.color_temperature_id.value)])
+                if len(rec.color_temperature_flux_ids) != 1 or \
+                        rec.color_temperature_flux_ids.color_temperature_id.value:
+                    color_temperature_values = rec.color_temperature_flux_ids \
+                        .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.color_temperature_id.value) \
+                        .sorted(lambda x: x.color_temperature_id.value)
+                    rec.color_temperature_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
+                        .join([x.color_temperature_id.value and ('%iK' % x.color_temperature_id.value) or '-'
+                               for x in color_temperature_values])
+                if len(rec.color_temperature_flux_ids) != 1 or \
+                        rec.color_temperature_flux_ids.flux_id.value:
+                    flux_values = rec.color_temperature_flux_ids \
+                        .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.flux_id.value) \
+                        .sorted(lambda x: x.color_temperature_id.value)
+                    rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
+                        .join([x.flux_id.value and ('%ilm' % x.flux_id.value) or '-'
+                               for x in flux_values])
 
     ############## to remove
     color_temperature_ids = fields.Many2many(string='Color temperature (K)',
@@ -449,6 +478,7 @@ class LightingProductSourceLine(models.Model):
 
     def get_color_temperature(self):
         res = self.filtered(lambda x: x.color_temperature_flux_ids) \
+            .filtered(lambda x: x.color_temperature_display) \
             .sorted(lambda x: x.sequence) \
             .mapped('color_temperature_display')
         if not res:
@@ -457,8 +487,20 @@ class LightingProductSourceLine(models.Model):
 
     def get_luminous_flux(self):
         res = self.filtered(lambda x: x.color_temperature_flux_ids) \
+            .filtered(lambda x: x.luminous_flux_display) \
             .sorted(lambda x: x.sequence) \
             .mapped('luminous_flux_display')
+        if not res:
+            return None
+        return res
+
+    def get_special_spectrum(self):
+        special_spectrum_option = dict(
+            self.fields_get(['special_spectrum'], ['selection'])
+                .get('special_spectrum').get('selection'))
+        res = [special_spectrum_option[x] for x in self.filtered(lambda x: x.special_spectrum) \
+            .sorted(lambda x: x.sequence) \
+            .mapped('special_spectrum')]
         if not res:
             return None
         return res
