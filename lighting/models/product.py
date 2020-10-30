@@ -178,7 +178,9 @@ class LightingProduct(models.Model):
                             data_line.append(wattage_total_display)
 
                         if line.color_temperature_flux_ids:
-                            data_line.append(line.color_temperature_display)
+                            color_temperature_display = line.with_context(ignore_nulls=True).color_temperature_display
+                            if color_temperature_display:
+                                data_line.append(color_temperature_display)
                         else:
                             if line.is_led and line.special_spectrum:
                                 special_spectrum_option = dict(
