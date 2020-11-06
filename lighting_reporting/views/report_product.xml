@@ -448,6 +448,15 @@
                                     <span>mA</span>
                                 </td>
                             </tr>
+                            <tr t-if="doc.is_accessory and doc.total_wattage">
+                                <td>
+                                    Wattage
+                                </td>
+                                <td>
+                                    <span t-field="doc.total_wattage"/>
+                                    <span>W</span>
+                                </td>
+                            </tr>
                             <tr t-if="doc.power_factor_min">
                                 <td>
                                     Power factor
