@@ -150,6 +150,14 @@ class LightingProductCategory(models.Model):
                         ('code_uniq', 'unique (code)', 'The code must be unique!')
                         ]
 
+    def _get_is_accessory(self):
+        self.ensure_one()
+        if self.is_accessory:
+            return True
+        if not self.parent_id:
+            return self.is_accessory
+        return self.parent_id._get_is_accessory()
+
     def action_child(self):
         return {
             'name': _('Childs of %s') % self.complete_name,
