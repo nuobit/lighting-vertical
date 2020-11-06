@@ -27,6 +27,4 @@ class LightingProductSourceLineColorTemperatureFlux(models.Model):
 
     _sql_constraints = [('k_uniq', 'unique (source_line_id, color_temperature_id)',
                          'The color temperature must be unique per source line'),
-                        ('lm_uniq', 'unique (source_line_id, flux_id)',
-                         'The luminous flux must be unique per source line'),
                         ]
