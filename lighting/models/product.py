@@ -707,9 +707,11 @@ class LightingProduct(models.Model):
     last_purchase_date = fields.Date(string="Last purchase date", readonly=True,
                                      copy=False, track_visibility='onchange')
 
-    @api.onchange('state_marketing', 'available_qty')
-    def onchange_available_qty(self):
-        if self.state_marketing == 'ES' and self.available_qty == 0:
+    @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
+    def onchange_stock_qty(self):
+        if self.state_marketing == 'ES' and \
+                self.available_qty == 0 and \
+                self.stock_future_qty == 0:
             self.state_marketing = 'D'
 
     # marketing tab
@@ -788,10 +790,12 @@ class LightingProduct(models.Model):
                 raise ValidationError(
                     _("The current reference cannot be defined as a recomended accessory"))
 
-    @api.constrains('state_marketing', 'available_qty')
-    def check_available_qty(self):
+    @api.constrains('state_marketing', 'available_qty', 'stock_future_qty')
+    def onchange_stock_qty(self):
         for rec in self:
-            if rec.state_marketing == 'ES' and rec.available_qty == 0:
+            if rec.state_marketing == 'ES' and \
+                    rec.available_qty == 0 and \
+                    rec.stock_future_qty == 0:
                 rec.state_marketing = 'D'
 
     @api.constrains('description')
