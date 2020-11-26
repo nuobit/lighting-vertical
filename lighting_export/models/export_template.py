@@ -8,6 +8,7 @@ from odoo.exceptions import UserError
 
 class LightingExportTemplate(models.Model):
     _name = 'lighting.export.template'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name'
 
     name = fields.Char(required=True)
