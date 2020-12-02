@@ -2,12 +2,15 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import json
+import hashlib
+import logging
+
 from odoo import models, fields, api
 from odoo.addons.queue_job.job import job, related_action
 from odoo.addons.connector.exception import RetryableJobError
 
-import json
-import hashlib
+_logger = logging.getLogger(__name__)
 
 
 def idhash(external_id):
@@ -77,9 +80,11 @@ class SAPB1Binding(models.AbstractModel):
     @api.model
     def import_batch(self, backend, filters=[]):
         """ Prepare the batch import of records modified on SAP B1 """
+        _logger.info("Start batch import of %s", self._name)
         with backend.work_on(self._name) as work:
             importer = work.component(usage='delayed.batch.importer')
             return importer.run(filters=filters)
+        _logger.info("Finish batch import of %s", self._name)
 
     @api.model
     def export_batch(self, backend, domain=[]):
