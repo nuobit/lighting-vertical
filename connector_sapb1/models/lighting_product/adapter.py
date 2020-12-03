@@ -2,8 +2,11 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import logging
 
 from odoo.addons.component.core import Component
+
+_logger = logging.getLogger(__name__)
 
 
 class LightingProductAdapter(Component):
@@ -190,3 +193,41 @@ class LightingProductAdapter(Component):
                      """
 
     _id = ('ItemCode',)
+
+    def search(self, filters=[]):
+        """ Search records according to some criterias
+        and returns a list of ids
+
+        :rtype: list
+        """
+        _logger.debug(
+            '%: method search, sql %s, filters %s',
+            self._name, self._sql_read, filters)
+
+        # remove the 'not in' filters
+        filters1 = []
+        notinops = {}
+        for f in filters:
+            field, op, values = f
+            if op == 'not in':
+                notinops[field] = set(values)
+            else:
+                filters1.append(f)
+
+        res = self.search_read(filters=filters1)
+
+        # apply the 'not in' filter removed before
+        res1 = None
+        for f, v in notinops.items():
+            res_ids = {tuple([x[y] for y in self._id]) for x in res if x[f] not in v}
+            if res1 is None:
+                res1 = res_ids
+            else:
+                res1 &= res_ids
+
+        if res1 is not None:
+            res = list(res1)
+        else:
+            res = [tuple([x[f] for f in self._id]) for x in res]
+
+        return res

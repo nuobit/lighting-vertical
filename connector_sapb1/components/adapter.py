@@ -210,6 +210,20 @@ class GenericAdapter(AbstractComponent):
 
     ########## exposed methods
 
+    def search_read(self, filters=[]):
+        """ Search records according to some criterias
+        and returns a list of ids
+
+        :rtype: list
+        """
+        _logger.debug(
+            'method search_read, sql %s, filters %s',
+            self._sql_read, filters)
+
+        res = self._exec_query(filters=filters)
+
+        return res
+
     def search(self, filters=[]):
         """ Search records according to some criterias
         and returns a list of ids
@@ -220,7 +234,7 @@ class GenericAdapter(AbstractComponent):
             'method search, sql %s, filters %s',
             self._sql_read, filters)
 
-        res = self._exec_query(filters=filters)
+        res = self.search_read(filters=filters)
 
         res = [tuple([x[f] for f in self._id]) for x in res]
 
