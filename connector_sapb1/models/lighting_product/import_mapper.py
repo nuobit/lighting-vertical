@@ -94,11 +94,16 @@ class LigthingProductImportMapper(Component):
     @mapping
     def dimensions(self, record):
         values = {}
-        values['ibox_weight'] = record['SWeight1']
-        values['ibox_volume'] = record['SVolume'] * 1000
-        values['ibox_length'] = record['SLength1']
-        values['ibox_width'] = record['SWidth1']
-        values['ibox_height'] = record['SHeight1']
+        if not values['ibox_weight']:
+            values['ibox_weight'] = record['SWeight1']
+        if not values['ibox_volume']:
+            values['ibox_volume'] = record['SVolume'] * 1000
+        if not values['ibox_length']:
+            values['ibox_length'] = record['SLength1']
+        if not values['ibox_width']:
+            values['ibox_width'] = record['SWidth1']
+        if not values['ibox_height']:
+            values['ibox_height'] = record['SHeight1']
         return values
 
     @only_create
