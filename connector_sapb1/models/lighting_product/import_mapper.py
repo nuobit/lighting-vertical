@@ -93,16 +93,17 @@ class LigthingProductImportMapper(Component):
 
     @mapping
     def dimensions(self, record):
+        binding = self.options.get('binding')
         values = {}
-        if not values['ibox_weight']:
+        if not binding or not binding.ibox_weight:
             values['ibox_weight'] = record['SWeight1']
-        if not values['ibox_volume']:
+        if not binding or not binding.ibox_volume:
             values['ibox_volume'] = record['SVolume'] * 1000
-        if not values['ibox_length']:
+        if not binding or not binding.ibox_length:
             values['ibox_length'] = record['SLength1']
-        if not values['ibox_width']:
+        if not binding or not binding.ibox_width:
             values['ibox_width'] = record['SWidth1']
-        if not values['ibox_height']:
+        if not binding or not binding.ibox_height:
             values['ibox_height'] = record['SHeight1']
         return values
 

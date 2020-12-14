@@ -111,6 +111,9 @@ class SAPB1Importer(AbstractComponent):
 
         return None
 
+    def _mapper_options(self, binding):
+        return {}
+
     def run(self, external_id):
         ## get_data
         # this one knows how to speak to sage
@@ -141,17 +144,19 @@ class SAPB1Importer(AbstractComponent):
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
 
+        opts = self._mapper_options(binding)
+
         # persist data
         if binding:
             # if yes, we update it
-            binding.write(internal_data.values())
+            binding.write(internal_data.values(**opts))
             _logger.debug('%d updated from SAP B1 %s', binding, external_id)
         else:
             odoo_d = self._find_existing(external_id)
             if not odoo_d:
-                values = internal_data.values(for_create=True)
+                values = internal_data.values(for_create=True, **opts)
             else:
-                values = internal_data.values()
+                values = internal_data.values(**opts)
                 values.update(odoo_d)
 
             binding = self.model.create(values)

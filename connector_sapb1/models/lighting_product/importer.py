@@ -37,6 +37,9 @@ class LightingProductImporter(Component):
 
         return None
 
+    def _mapper_options(self, binding):
+        return {'binding': binding}
+
 
 class LightingProductDirectBatchImporter(Component):
     """ Import the SAP B1 Products.
