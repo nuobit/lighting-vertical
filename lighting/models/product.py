@@ -709,7 +709,7 @@ class LightingProduct(models.Model):
                                      copy=False, track_visibility='onchange')
 
     @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
-    def onchange_stock_qty(self):
+    def _onchange_stock_qty(self):
         if self.state_marketing == 'ES' and \
                 self.available_qty == 0 and \
                 self.stock_future_qty == 0:
@@ -792,15 +792,12 @@ class LightingProduct(models.Model):
                     _("The current reference cannot be defined as a recomended accessory"))
 
     @api.constrains('state_marketing', 'available_qty', 'stock_future_qty')
-    def onchange_stock_qty(self):
+    def _update_state_marketing_by_stock_qty(self):
         for rec in self:
-            if rec.state_marketing == 'ES' and \
-                    rec.available_qty == 0 and \
-                    rec.stock_future_qty == 0:
-                rec.state_marketing = 'D'
+            rec._onchange_stock_qty()
 
     @api.constrains('description')
-    def check_description_updated(self):
+    def _check_description_updated(self):
         self._update_computed_descriptions(exclude_lang=[self.env.lang])
 
     @api.multi
