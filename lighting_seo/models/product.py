@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models, api, _
+from odoo.exceptions import ValidationError
 
 
 def seo_preview(title, url, description):
@@ -42,7 +43,7 @@ class LightingProduct(models.Model):
         self.ensure_one()
         return self.write({'website_published': not self.website_published})
 
-    @api.onchange('state_marketing')
+    @api.onchange('state_marketing', 'website_published')
     def onchange_state_marketing(self):
         if self.state_marketing in ('D', 'H'):
             if self.website_published:
@@ -77,9 +78,7 @@ class LightingProduct(models.Model):
     @api.constrains('state_marketing', 'website_published')
     def check_state_published(self):
         for rec in self:
-            if rec.state_marketing in ('D', 'H'):
-                if rec.website_published:
-                    rec.website_published = False
+            rec.onchange_state_marketing()
 
 
 class LightingProductFamily(models.Model):
