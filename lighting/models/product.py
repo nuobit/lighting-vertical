@@ -792,6 +792,14 @@ class LightingProduct(models.Model):
                     _("The current reference cannot be defined as a recomended accessory"))
 
     @api.constrains('state_marketing', 'available_qty', 'stock_future_qty')
+    def _check_state_marketing_stock(self):
+        for rec in self:
+            if rec.state_marketing in ('D', 'H') and \
+                    (rec.available_qty != 0 or rec.stock_future_qty != 0):
+                raise ValidationError(_(
+                    "A reference with stock or future stock cannot be Discontinued or Historical"))
+
+    @api.constrains('state_marketing', 'available_qty', 'stock_future_qty')
     def _update_state_marketing_by_stock_qty(self):
         for rec in self:
             rec._onchange_stock_qty()
