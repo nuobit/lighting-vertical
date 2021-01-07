@@ -2286,6 +2286,12 @@ msgstr "Jusqu'à la fin du stock"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
+msgid "Until end of stock (historical)"
+msgstr "Jusqu'à la fin du stock (historique)"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
 msgid "Discontinued"
 msgstr "Abandonné"
 
