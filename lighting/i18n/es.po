@@ -1034,6 +1034,12 @@ msgstr "Hasta fin de existencias"
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
+msgid "Until end of stock (historical)"
+msgstr "Hasta fin de existencias (histórico)"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: selection:lighting.product,state_marketing:0
 msgid "Discontinued"
 msgstr "Descatalogado"
 
