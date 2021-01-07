@@ -914,6 +914,8 @@
                         domain="[('state_marketing', '=', 'C')]"/>
                 <filter string="Until end of stock" name="until_end_stock"
                         domain="[('state_marketing', '=', 'ES')]"/>
+                <filter string="Until end of stock (historical)" name="until_end_stock_historical"
+                        domain="[('state_marketing', '=', 'ESH')]"/>
                 <filter string="Discontinued" name="discontinued"
                         domain="[('state_marketing', '=', 'D')]"/>
                 <filter string="Historical" name="historical"

@@ -15,7 +15,7 @@ class TestProduct(common.SavepointCase):
     def setUpClass(cls):
         super(TestProduct, cls).setUpClass()
 
-    def test_state_marketing_es_with_stock(self):
+    def test_state_marketing_es_esh_with_stock(self):
         """
             Test state marketing and stock consistency
         """
@@ -85,6 +85,23 @@ class TestProduct(common.SavepointCase):
              'assert': lambda x: self.assertEqual(
                  x.state_marketing, 'D',
                  "The state marketing has not changed and it should have changed to discontinued (D)"),
+             },
+
+            {'arrange': {'state_marketing': 'ESH', 'available_qty': 1, 'stock_future_qty': 1},
+             'act': lambda x: x.write({'available_qty': 0}),
+             'assert': lambda x: self.assertEqual(
+                 x.state_marketing, 'ESH', "The state marketing has changed and it shouldn't"),
+             },
+            {'arrange': {'state_marketing': 'ESH', 'available_qty': 1, 'stock_future_qty': 1},
+             'act': lambda x: x.write({'stock_future_qty': 0}),
+             'assert': lambda x: self.assertEqual(
+                 x.state_marketing, 'ESH', "The state marketing has changed and it shouldn't"),
+             },
+            {'arrange': {'state_marketing': 'ESH', 'available_qty': 1, 'stock_future_qty': 1},
+             'act': lambda x: x.write({'available_qty': 0, 'stock_future_qty': 0}),
+             'assert': lambda x: self.assertEqual(
+                 x.state_marketing, 'H',
+                 "The state marketing has not changed and it should have changed to historical (H)"),
              },
 
             {'act': lambda x: x.write({'state_marketing': 'D', 'available_qty': 0, 'stock_future_qty': 0}),

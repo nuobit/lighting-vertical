@@ -710,10 +710,11 @@ class LightingProduct(models.Model):
 
     @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
     def _onchange_stock_qty(self):
-        if self.state_marketing == 'ES' and \
+        state_trans = {'ES': 'D', 'ESH': 'H'}
+        if self.state_marketing in state_trans and \
                 self.available_qty == 0 and \
                 self.stock_future_qty == 0:
-            self.state_marketing = 'D'
+            self.state_marketing = state_trans[self.state_marketing]
 
     # marketing tab
     state_marketing = fields.Selection([
@@ -721,6 +722,7 @@ class LightingProduct(models.Model):
         ('N', 'New'),
         ('C', 'Cataloged'),
         ('ES', 'Until end of stock'),
+        ('ESH', 'Until end of stock (historical)'),
         ('D', 'Discontinued'),
         ('H', 'Historical'),
     ], string='Marketing status', track_visibility='onchange')
