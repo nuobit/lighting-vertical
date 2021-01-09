@@ -5,7 +5,7 @@
 {
     'name': "Lighting Review",
     'description': "Tools for reviewing data",
-    'version': '11.0.0.3.2',
+    'version': '11.0.1.0.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -17,6 +17,7 @@
         'views/review_menuitems.xml',
         'views/review_package_views.xml',
         'views/product_views.xml',
+        'views/product_source_line_views.xml',
         'views/product_review_views.xml',
     ],
     'installable': True,
