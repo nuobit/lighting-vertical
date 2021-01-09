@@ -1,0 +1,441 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* lighting_review
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 11.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-09 11:55+0000\n"
+"PO-Revision-Date: 2021-01-09 11:55+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_completed_percent
+msgid "% Completed"
+msgstr "% Completado"
+
+#. module: lighting_review
+#: code:addons/lighting_review/models/review_package.py:163
+#, python-format
+msgid "%s (copy)"
+msgstr "%s (copia)"
+
+#. module: lighting_review
+#: code:addons/lighting_review/models/mixin.py:7
+#, python-format
+msgid "%s (to review)"
+msgstr "%s (para revisar)"
+
+#. module: lighting_review
+#: sql_constraint:lighting.product.review:0
+msgid "A package can only be used one time for each product!"
+msgstr "A package can only be used one time for each product!"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_end_date
+msgid "Actual completion date"
+msgstr "Actual completion date"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_source_line_toreview_cri_min
+msgid "CRI (to review)"
+msgstr "CRI (to review)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_source_line_toreview_color_consistency
+msgid "Color consistency (SDCM) (to review)"
+msgstr "Color consistency (SDCM) (to review)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_comment
+msgid "Comment"
+msgstr "Comentario"
+
+#. module: lighting_review
+#: model:ir.actions.act_window,help:lighting_review.review_package_action
+msgid "Create the first Review package"
+msgstr "Create the first Review package"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_create_uid
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_create_date
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_date
+msgid "Date"
+msgstr "Fecha"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_estimated_date
+msgid "Date (est.)"
+msgstr "Fecha (est.)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_days
+msgid "Days"
+msgstr "Días"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_days
+msgid "Days from the begining"
+msgstr "Days from the begining"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_estimated_days_late
+msgid "Days late (est.)"
+msgstr "Days late (est.)"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_estimated_days_late
+msgid "Days late at current velocity (excluding weekends)"
+msgstr "Days late at current velocity (excluding weekends)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.product_form_view
+msgid "Disable review mode"
+msgstr "Disable review mode"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_display_name
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_display_name
+msgid "Display Name"
+msgstr "Nombre mostrado"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_due_date
+msgid "Due date"
+msgstr "Fecha vencimiento"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_res_users_review_mode
+msgid "Enable or disable review mode"
+msgstr "Enable or disable review mode"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.product_form_view
+msgid "Enable review mode"
+msgstr "Enable review mode"
+
+#. module: lighting_review
+#: code:addons/lighting_review/models/mixin.py:8
+#: model:ir.model.fields,help:lighting_review.field_lighting_product_source_line_toreview_color_consistency
+#: model:ir.model.fields,help:lighting_review.field_lighting_product_source_line_toreview_cri_min
+#: model:ir.model.fields,help:lighting_review.field_lighting_product_toreview_led_lifetime_b
+#: model:ir.model.fields,help:lighting_review.field_lighting_product_toreview_led_lifetime_l
+#: model:ir.model.fields,help:lighting_review.field_lighting_product_toreview_lifetime
+#, python-format
+msgid "Enabled if the field value has not been validated yet"
+msgstr "Enabled if the field value has not been validated yet"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_end_date
+msgid "End date"
+msgstr "End date"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_estimated_date
+msgid "Estimated date of completion at current velocity (excluding weekends)"
+msgstr "Estimated date of completion at current velocity (excluding weekends)"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.product_review_search_view
+msgid "Group By"
+msgstr "Agrupar por"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_id
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_id
+msgid "ID"
+msgstr "ID (identificación)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_led_lifetime_b
+msgid "LED lifetime B (to review)"
+msgstr "LED lifetime B (to review)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_led_lifetime_l
+msgid "LED lifetime L (to review)"
+msgstr "LED lifetime L (to review)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review___last_update
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package___last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_write_uid
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_write_uid
+msgid "Last Updated by"
+msgstr "Última actualización de"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_write_date
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_lifetime
+msgid "Lifetime (h) (to review)"
+msgstr "Lifetime (h) (to review)"
+
+#. module: lighting_review
+#: model:ir.module.category,name:lighting_review.review_security
+msgid "Lighting Review"
+msgstr "Lighting Review"
+
+#. module: lighting_review
+#: model:res.groups,name:lighting_review.review_group_manager
+msgid "Manager"
+msgstr "Responsable"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_due_date
+msgid "Maximum completion date"
+msgstr "Maximum completion date"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: lighting_review
+#: code:addons/lighting_review/models/review_package.py:131
+#, python-format
+msgid "Pack products"
+msgstr "Pack products"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_package_id
+#: model:ir.ui.view,arch_db:lighting_review.product_review_search_view
+#: model:ir.ui.view,arch_db:lighting_review.review_package_search_view
+msgid "Package"
+msgstr "Paquete"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.review_package_form_view
+msgid "Package name"
+msgstr "Package name"
+
+#. module: lighting_review
+#: model:ir.ui.menu,name:lighting_review.review_packages_menu
+#: model:ir.ui.view,arch_db:lighting_review.product_form_view
+msgid "Packages"
+msgstr "Packages"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.product_review_search_view
+#: model:ir.ui.view,arch_db:lighting_review.review_package_form_view
+msgid "Pending"
+msgstr "Pendiente"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_pending_count
+msgid "Pending product(s)"
+msgstr "Pending product(s)"
+
+#. module: lighting_review
+#: code:addons/lighting_review/models/review_package.py:151
+#, python-format
+msgid "Pending products"
+msgstr "Pending products"
+
+#. module: lighting_review
+#: model:ir.model,name:lighting_review.model_lighting_product
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_product_id
+#: model:ir.ui.view,arch_db:lighting_review.product_review_search_view
+#: model:ir.ui.view,arch_db:lighting_review.review_package_search_view
+msgid "Product"
+msgstr "Producto"
+
+#. module: lighting_review
+#: model:ir.actions.act_window,name:lighting_review.product_review_action
+#: model:ir.ui.view,arch_db:lighting_review.product_review_form_view
+#: model:ir.ui.view,arch_db:lighting_review.product_review_search_view
+#: model:ir.ui.view,arch_db:lighting_review.product_review_tree_view
+msgid "Product review"
+msgstr "Product review"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_product_count
+msgid "Product(s)"
+msgstr "Producto(s)"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.review_package_form_view
+msgid "Products"
+msgstr "Productos"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_estimated_remaining_days
+msgid "Remaining days (est.)"
+msgstr "Remaining days (est.)"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_estimated_remaining_days
+msgid "Remaining days at current velocity (excluding weekends)"
+msgstr "Remaining days at current velocity (excluding weekends)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_responsible_ids
+msgid "Responsibles"
+msgstr "Responsibles"
+
+#. module: lighting_review
+#: model:ir.ui.menu,name:lighting_review.lighting_review_menu
+#: model:ir.ui.view,arch_db:lighting_review.product_form_view
+msgid "Review"
+msgstr "Revision"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_mode
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_source_line_review_mode
+#: model:ir.model.fields,field_description:lighting_review.field_res_users_review_mode
+msgid "Review mode"
+msgstr "Review mode"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.lighting_product_view
+#: model:ir.ui.view,arch_db:lighting_review.review_package_tree_view
+msgid "Review package"
+msgstr "Review package"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.review_package_form_view
+msgid "Review package template Form"
+msgstr "Review package template Form"
+
+#. module: lighting_review
+#: model:ir.actions.act_window,name:lighting_review.review_package_action
+msgid "Review packages"
+msgstr "Review packages"
+
+#. module: lighting_review
+#: model:ir.module.category,description:lighting_review.review_security
+msgid "Review security"
+msgstr "Review security"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_reviewed
+#: model:ir.ui.view,arch_db:lighting_review.product_review_search_view
+#: model:ir.ui.view,arch_db:lighting_review.review_package_form_view
+msgid "Reviewed"
+msgstr "Revisado"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_reviewed_count
+msgid "Reviewed product(s)"
+msgstr "Reviewed product(s)"
+
+#. module: lighting_review
+#: code:addons/lighting_review/models/review_package.py:141
+#, python-format
+msgid "Reviewed products"
+msgstr "Reviewed products"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_ids
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_review_ids
+#: model:ir.ui.menu,name:lighting_review.product_reviews_menu
+msgid "Reviews"
+msgstr "Revisiones"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_velocity
+msgid "Revision velocity (revisions/day)"
+msgstr "Revision velocity (revisions/day)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_start_date
+msgid "Start date"
+msgstr "Start date"
+
+#. module: lighting_review
+#: model:ir.ui.view,arch_db:lighting_review.review_package_form_view
+msgid "Stats"
+msgstr "Stats"
+
+#. module: lighting_review
+#: sql_constraint:lighting.review.package:0
+msgid "The review package name must be unique!"
+msgstr "The review package name must be unique!"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_fields_count
+#: model:ir.ui.view,arch_db:lighting_review.lighting_product_view
+#: model:ir.ui.view,arch_db:lighting_review.product_form_view
+msgid "To review"
+msgstr "Para revisar"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_source_line_toreview_count
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_count
+msgid "Toreview Count"
+msgstr "Toreview Count"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_estimated_total_days
+msgid "Total days (est.)"
+msgstr "Total days (est.)"
+
+#. module: lighting_review
+#: model:ir.model.fields,help:lighting_review.field_lighting_review_package_estimated_total_days
+msgid "Total estimated days of completion at current velocity"
+msgstr "Total estimated days of completion at current velocity"
+
+#. module: lighting_review
+#: model:res.groups,name:lighting_review.review_group_user
+msgid "User"
+msgstr "Usuario"
+
+#. module: lighting_review
+#: model:ir.model,name:lighting_review.model_res_users
+msgid "Users"
+msgstr "Usuarios"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_velocity
+msgid "Velocity (rev/day)"
+msgstr "Velocity (rev/day)"
+
+#. module: lighting_review
+#: model:ir.model,name:lighting_review.model_lighting_product_review
+msgid "lighting.product.review"
+msgstr "lighting.product.review"
+
+#. module: lighting_review
+#: model:ir.model,name:lighting_review.model_lighting_product_source_line
+msgid "lighting.product.source.line"
+msgstr "lighting.product.source.line"
+
+#. module: lighting_review
+#: model:ir.model,name:lighting_review.model_lighting_review_layout_mixin
+msgid "lighting.review.layout.mixin"
+msgstr "lighting.review.layout.mixin"
+
+#. module: lighting_review
+#: model:ir.model,name:lighting_review.model_lighting_review_package
+msgid "lighting.review.package"
+msgstr "lighting.review.package"
+
