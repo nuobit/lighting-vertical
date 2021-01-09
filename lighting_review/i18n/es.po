@@ -112,7 +112,7 @@ msgstr "Descripción"
 #. module: lighting_review
 #: model:ir.ui.view,arch_db:lighting_review.product_form_view
 msgid "Disable review mode"
-msgstr "Disable review mode"
+msgstr "Desactivar modo revisión"
 
 #. module: lighting_review
 #: model:ir.model.fields,field_description:lighting_review.field_lighting_product_review_display_name
@@ -128,12 +128,12 @@ msgstr "Fecha vencimiento"
 #. module: lighting_review
 #: model:ir.model.fields,help:lighting_review.field_res_users_review_mode
 msgid "Enable or disable review mode"
-msgstr "Enable or disable review mode"
+msgstr "Activa o desactiva el modo revisión"
 
 #. module: lighting_review
 #: model:ir.ui.view,arch_db:lighting_review.product_form_view
 msgid "Enable review mode"
-msgstr "Enable review mode"
+msgstr "Activar modo revisión"
 
 #. module: lighting_review
 #: code:addons/lighting_review/models/mixin.py:8
