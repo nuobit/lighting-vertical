@@ -7,6 +7,7 @@
         <field name="name">product.source.line.form</field>
         <field name="model">lighting.product.source.line</field>
         <field name="inherit_id" ref="lighting.product_source_line_form_view"/>
+        <field name="groups_id" eval="[(6, 0, [ref('lighting_review.review_group_user')])]"/>
         <field name="arch" type="xml">
             <!-- to review layout -->
             <xpath expr="//sheet" position="inside">
