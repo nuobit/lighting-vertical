@@ -32,6 +32,7 @@
                 <button name="toggle_review_mode" string="Enable review mode"
                         type="object" attrs="{'invisible': [('review_mode', '=', True)]}"/>
                 <button name="toggle_review_mode" string="Disable review mode"
+                        class="btn-danger"
                         type="object" attrs="{'invisible': [('review_mode', '=', False)]}"/>
             </xpath>
 
