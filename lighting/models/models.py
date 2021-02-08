@@ -211,7 +211,7 @@ class LightingProductSource(models.Model):
                         if l.luminous_flux_display:
                             line.append(l.luminous_flux_display)
                     if l.is_led and l.cri_min:
-                        line.append("%iCRI" % l.cri_min)
+                        line.append("CRI%i" % l.cri_min)
                     if l.is_led and l.special_spectrum:
                         special_spectrum_values = dict(
                             l.fields_get('special_spectrum', 'selection')['special_spectrum']['selection'])
@@ -282,7 +282,7 @@ class LightingProductSource(models.Model):
             src_k = src.line_ids.get_cri()
             k_l = None
             if src_k:
-                k_l = ','.join(['%iCRI' % x for x in src_k])
+                k_l = ','.join(['CRI%i' % x for x in src_k])
             res.append(k_l)
 
         if not any(res):
