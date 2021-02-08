@@ -12,7 +12,7 @@
             <!-- to review layout -->
             <xpath expr="//sheet" position="inside">
                 <field name="review_mode" invisible="1"/>
-                <field name="toreview_count" invisible="0"/>
+                <field name="toreview_count" invisible="1"/>
             </xpath>
 
             <!-- to review fields -->
