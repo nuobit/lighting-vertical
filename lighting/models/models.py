@@ -276,6 +276,19 @@ class LightingProductSource(models.Model):
             return None
         return res
 
+    def get_cri(self):
+        res = []
+        for src in self.sorted(lambda x: x.sequence):
+            src_k = src.line_ids.get_cri()
+            k_l = None
+            if src_k:
+                k_l = ','.join(['%iCRI' % x for x in src_k])
+            res.append(k_l)
+
+        if not any(res):
+            return None
+        return res
+
     def get_special_spectrum(self):
         res = []
         for src in self.sorted(lambda x: x.sequence):
