@@ -106,6 +106,10 @@ class LightingProduct(models.Model):
             if s_temp:
                 s_res.append(s_temp[0])
 
+            s_cri = s.get_cri()
+            if s_cri:
+                s_res.append(s_cri[0])
+
             s_spectrum = s.get_special_spectrum()
             if s_spectrum:
                 s_res.append(s_spectrum[0].upper())
