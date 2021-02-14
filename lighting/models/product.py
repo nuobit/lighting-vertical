@@ -763,6 +763,16 @@ class LightingProduct(models.Model):
                     _('The reference has trailing and/or leading spaces, plese remove them before saving.'))
 
     @api.multi
+    @api.constrains('catalog_ids')
+    def _check_catalog_ids(self):
+        # TODO remove this constrain and change the catalog_ids attribute to
+        # many2one
+        for rec in self:
+            if len(rec.catalog_ids) != 1:
+                raise ValidationError(
+                    _('Only one catalog is allowed per product'))
+
+    @api.multi
     @api.constrains('is_composite', 'required_ids')
     def _check_composite_product(self):
         for rec in self:
