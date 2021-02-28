@@ -21,11 +21,9 @@ class LightingProductAdapter(Component):
                     oitm_base AS (
                         SELECT p.*
                         FROM %(schema)s.OITM p
-                        WHERE p."ItemCode" NOT LIKE_REGEXPR '^.+\..+$' AND
-                              p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado',
-                                                    'Fe Digital', 'Histórico') and
-                              COALESCE(p."U_U_especiales", 'N') = 'N' AND
-                              p."ItmsGrpCod" IN (107, 108, 109, 111, 110) -- Cristher, Dopo, Exo, Indeluz, Accesorios
+                        WHERE p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado',
+                                                    'Fe Digital', 'Histórico', 'Fe Histórico') and
+                              p."ItmsGrpCod" IN (107, 108, 109, 110, 111) -- Cristher, Dopo, Exo, Indeluz, Accesorios
                     ),
                     -- purchase pricelist
                     purchase_price1 AS (

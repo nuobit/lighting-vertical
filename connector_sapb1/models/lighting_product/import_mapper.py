@@ -19,6 +19,7 @@ MAP_STATUS_MARKETING = {
     'Descatalogado': 'D',
     'Fe Digital': 'ES',
     'Histórico': 'H',
+    'Fe Histórico': 'ESH',
 }
 
 
