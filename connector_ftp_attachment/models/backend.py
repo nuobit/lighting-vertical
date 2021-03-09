@@ -50,6 +50,7 @@ class FTPAttachmentBackend(models.Model):
 
     def get_ftp_connection(self, timeout=None):
         ftp = ftplib.FTP()
+        ftp.encoding = 'utf-8'
         connect_params = {
             'host': self.host,
             'port': self.port
