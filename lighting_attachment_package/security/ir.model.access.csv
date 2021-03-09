@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lighting_attachment_package_guest,lighting.attachment.package guest,model_lighting_attachment_package,lighting.group_lighting_guest,1,0,0,0
+access_lighting_attachment_package_user,lighting.attachment.package user,model_lighting_attachment_package,lighting.group_lighting_user,1,0,0,0
+access_lighting_attachment_package_manager,lighting.attachment.package manager,model_lighting_attachment_package,lighting.group_lighting_manager,1,1,1,1
