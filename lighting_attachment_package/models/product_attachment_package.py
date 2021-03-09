@@ -99,7 +99,7 @@ class LightingAttachmentPackage(models.Model):
                                x.product_id.reference, x.datas_fname))
         in_memory = io.BytesIO()
         zf = zipfile.ZipFile(in_memory, mode="w",
-                             compression=zipfile.ZIP_DEFLATED, compresslevel=9)
+                             compression=zipfile.ZIP_DEFLATED)
         for a in attachs:
             zf.write(self.env['ir.attachment']._full_path(
                 a.attachment_id.store_fname), arcname=a.datas_fname)
