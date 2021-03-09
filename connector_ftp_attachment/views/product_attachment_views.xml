@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="attachment_package_form_view" model="ir.ui.view">
+        <field name="name">attachment.package.form.inherit.ftp.attachment</field>
+        <field name="model">lighting.attachment.package</field>
+        <field name="inherit_id" ref="lighting_attachment_package.attachment_package_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='last_update']/.." position="after">
+                <group>
+                    <field name="last_upload"/>
+                    <field name="auto"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="attachment_type_form_view" model="ir.ui.view">
+        <field name="name">attachment.type.form.inherit.packages</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="inherit_id" ref="lighting_attachment_package.attachment_type_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='package_ids']/tree" position="inside">
+                <field name="last_upload"/>
+                <button class="oe_stat_button" name="upload_button"
+                        string="Upload"
+                        type="object"
+                        groups="connector.group_connector_manager"/>
+                <field name="auto"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
