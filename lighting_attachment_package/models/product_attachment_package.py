@@ -5,9 +5,12 @@
 import io
 import zipfile
 import base64
+import logging
 
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError, UserError
+
+_logger = logging.getLogger(__name__)
 
 
 def pretty_size(value):
@@ -85,7 +88,7 @@ class LightingAttachmentPackage(models.Model):
         ondelete='restrict'
     )
 
-    def generate_zip_file(self):
+    def generate_attach_zipfile(self):
         domain = [
             ('type_id', '=', self.type_id.id),
             ('product_id.website_published', '=', True),
@@ -109,7 +112,7 @@ class LightingAttachmentPackage(models.Model):
         in_memory.close()
         return file_bin
 
-    def generate_pdf_file(self):
+    def generate_pdf_zipfile(self):
         if not self.lang_id:
             raise UserError(_("Language not selected in %s") % self.datas_fname)
         domain = [
@@ -119,15 +122,29 @@ class LightingAttachmentPackage(models.Model):
             domain.append(('catalog_ids', 'in', self.catalog_ids.ids))
         products = self.env['lighting.product'].search(domain).sorted(
             lambda x: (x.family_ids.mapped('name')[:1], x.reference))
-        return self.env.ref('lighting_reporting.action_report_product'). \
-            with_context(lang=self.lang_id.code).render_qweb_pdf(products.ids)[0]
+        in_memory = io.BytesIO()
+        zf = zipfile.ZipFile(in_memory, mode="w",
+                             compression=zipfile.ZIP_DEFLATED)
+        for p in products:
+            family_name = p.family_ids.mapped('name') and \
+                          p.family_ids.mapped('name')[0].upper() or None
+            fname = '%s.pdf' % '_'.join(
+                filter(None, [self.type_id.code, family_name, p.reference]))
+            product_bin = self.env.ref('lighting_reporting.action_report_product'). \
+                with_context(lang=self.lang_id.code).render_qweb_pdf(p.ids)[0]
+            zf.writestr(fname, product_bin)
+        zf.close()
+        in_memory.seek(0)
+        file_bin = in_memory.read()
+        in_memory.close()
+        return file_bin
 
     def generate_file_button(self):
         self.last_update = fields.datetime.now()
         # TODO: use check field to mark technical spreadsheet
         if self.type_id.code == 'FT':
-            file_bin = self.generate_pdf_file()
+            file_bin = self.generate_pdf_zipfile()
         else:
-            file_bin = self.generate_zip_file()
+            file_bin = self.generate_attach_zipfile()
 
         self.datas = base64.b64encode(file_bin)
