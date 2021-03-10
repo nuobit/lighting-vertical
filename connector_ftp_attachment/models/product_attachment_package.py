@@ -34,9 +34,5 @@ class LightingAttachmentPackage(models.Model):
         ftp.quit()
 
     def upload_button(self):
-        backend = self.env['ftp.attachment.backend'].search([
-            ('state', '=', 'checked')
-        ], order='sequence,id desc', limit=1)
-        if not backend:
-            raise UserError(_("No checked FTP configuration found"))
+        backend = self.env['ftp.attachment.backend'].get_default()
         self.upload(backend)
