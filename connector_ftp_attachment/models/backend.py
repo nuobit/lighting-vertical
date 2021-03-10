@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
 import logging
 import ftplib
 
@@ -85,4 +85,17 @@ class FTPAttachmentBackend(models.Model):
         ])
         for pkg in packages:
             pkg.with_delay().upload(self, generate=True)
-        return True
+
+    @api.model
+    def get_default(self):
+        backend = self.env['ftp.attachment.backend'].search([
+            ('state', '=', 'checked')
+        ], order='sequence,id desc', limit=1)
+        if not backend:
+            raise ValidationError(_("No checked FTP configuration found"))
+        return backend
+
+    @api.model
+    def _scheduler_upload_packages(self):
+        backend = self.get_default()
+        backend.upload_packages()
