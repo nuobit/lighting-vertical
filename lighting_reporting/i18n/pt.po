@@ -461,13 +461,13 @@ msgstr "Post com câmara de inspeção"
 #: model:ir.actions.act_window,name:lighting_reporting.product_datasheet_wizard_action
 #: model:ir.actions.report,name:lighting_reporting.action_report_product
 #: model:ir.ui.view,arch_db:lighting_reporting.product_view_form_inherit_lighting_reporting
-msgid "Print datasheet"
-msgstr "Imprimir folha de dados"
+msgid "Datasheet"
+msgstr "Folha de dados"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.product_datasheet_wizard_view
-msgid "Print product datasheet"
-msgstr "Imprimir folha de dados"
+msgid "Product datasheet"
+msgstr "Folha de dados"
 
 #. module: lighting_reporting
 #: model:ir.model,name:lighting_reporting.model_lighting_product

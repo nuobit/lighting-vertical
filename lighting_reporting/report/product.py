@@ -16,6 +16,7 @@ class ProductReport(models.AbstractModel):
             model = data['model']
             docids = data['ids']
             lang = data['lang']
+            attach = data['attach']
 
         docs = self.env[model].with_context(lang=lang).browse(docids)
 
@@ -24,4 +25,5 @@ class ProductReport(models.AbstractModel):
             'doc_model': model,
             'docs': docs,
             'lang': lang,
+            'attach': attach,
         }

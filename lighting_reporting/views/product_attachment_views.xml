@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="attachment_form_view" model="ir.ui.view">
+        <field name="name">product.attachment.form.view.inherit.reporting</field>
+        <field name="model">lighting.attachment</field>
+        <field name="inherit_id" ref="lighting.attachment_form_view"/>
+        <field name="arch" type="xml">
+            <field name="type_id" position="after">
+                <field name="is_datasheet" invisible="1"/>
+                <field name="manual" attrs="{'invisible': [('is_datasheet', '=', False)]}"/>
+            </field>
+            <field name="lang_id" position="attributes">
+                <attribute name="attrs">{'required': [('is_datasheet', '=', True), ('manual', '=', False)]}</attribute>
+            </field>
+            <field name="datas" position="attributes">
+                <attribute name="required">0</attribute>
+                <attribute name="attrs">{
+                    'required': ['|', ('is_datasheet', '=', False), ('manual', '=', True)],
+                    'readonly': [('is_datasheet', '=', True), ('manual', '=', False)]
+                }</attribute>
+            </field>
+            <field name="datas_fname" position="attributes">
+                <attribute name="required">0</attribute>
+                <attribute name="attrs">{
+                    'required': ['|', ('is_datasheet', '=', False), ('manual', '=', True)]
+                }</attribute>
+            </field>
+            <field name="datas_fname" position="after">
+                <field name="last_update"
+                       attrs="{'invisible': ['|',('is_datasheet', '=', False),('manual', '=', True)]}"/>
+            </field>
+            <xpath expr="//header" position="inside">
+                <button name="generate_datasheet" string="Regenerate datasheet"
+                        type="object" class="o_sale_print"
+                        groups="base.group_no_one"
+                        attrs="{'invisible': ['|',('is_datasheet', '=', False),('manual', '=', True)]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="attachment_tree_view" model="ir.ui.view">
+        <field name="name">product.attachment.tree.view.inherit.reporting</field>
+        <field name="model">lighting.attachment</field>
+        <field name="inherit_id" ref="lighting.attachment_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="is_datasheet"/>
+                <field name="last_update"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
