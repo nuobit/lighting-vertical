@@ -3,4 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from . import product
+from . import product_attachment
+from . import product_attachment_type
 from . import product_source
