@@ -32,8 +32,10 @@ class LightingReportingProductDatasheetWizard(models.TransientModel):
         model = self.env.context.get('active_model')
         products = self.env[model].browse(self.env.context.get('active_ids'))
         if self.only_generate_background:
-            ck_size = int(len(products) / 100)
-            for ck in chunks(products, ck_size):
+            ir_config = self.env['ir.config_parameter'].sudo()
+            chunk_size = int(ir_config.get_param('lighting.datasheet.prepare.chunk.size', 25))
+            ck_num = int(len(products) / chunk_size)
+            for ck in chunks(products, ck_num):
                 ck.with_delay().update_product_datasheets(
                     lang_ids=self.lang_id.id, delayed=True, force_update=self.force_update)
         else:
