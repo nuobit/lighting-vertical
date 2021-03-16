@@ -3,9 +3,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import http
-import base64
 import werkzeug.exceptions
-
+from odoo import exceptions
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -15,6 +14,15 @@ class ProductDatasheetController(http.Controller):
     def generate_lighting_report(self, product_ids, lang_id=None):
         if not lang_id:
             lang_id = http.request.env.ref('base.lang_en')
+        # try:
+        #     self.check_access_rights('create')
+        #     self.check_access_rights('write')
+        # except exceptions.AccessError:
+        #     product_ids = product_ids.sudo()
+
+        if http.request.env.user.has_group('lighting.group_lighting_guest'):
+            product_ids = product_ids.sudo()
+
         pdf = product_ids.get_product_datasheet(lang_id.id)
 
         pdfhttpheaders = [

@@ -9,6 +9,10 @@ from PyPDF2 import PdfFileWriter, PdfFileReader
 import base64
 import io
 
+import logging
+
+_logger = logging.getLogger(__name__)
+
 
 def chunks(li, n):
     if not li:
@@ -50,11 +54,14 @@ class LightingProduct(models.Model):
                         })
                     for attach in attachments:
                         if not attach.manual:
-                            if not attach.last_update or force_update:
+                            if not attach.datas or force_update:
                                 if delayed:
                                     attach.with_delay().generate_datasheet()
                                 else:
                                     attach.generate_datasheet()
+                            else:
+                                _logger.info("Datasheet from %s: %s (%s) already generated" % (
+                                    p.reference, ds.code, llang.code))
 
     def get_product_datasheet(self, lang_ids=None):
         self.update_product_datasheets(lang_ids)
