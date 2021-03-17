@@ -30,13 +30,14 @@ class LightingReportingProductDatasheetWizard(models.TransientModel):
     @api.multi
     def print_product_datasheet(self):
         model = self.env.context.get('active_model')
-        products = self.env[model].browse(self.env.context.get('active_ids'))
+        product_ids = self.env.context.get('active_ids')
         if self.only_generate_background:
             ir_config = self.env['ir.config_parameter'].sudo()
             chunk_size = int(ir_config.get_param('lighting.datasheet.prepare.chunk.size', 25))
-            ck_num = int(len(products) / chunk_size)
-            for ck in chunks(products, ck_num):
-                ck.with_delay().update_product_datasheets(
+            ck_num = int(len(product_ids) / chunk_size) or 1
+            for ck_product_ids in chunks(product_ids, ck_num):
+                self.env[model].with_delay().update_product_datasheets(
+                    ck_product_ids,
                     lang_ids=self.lang_id.id, delayed=True, force_update=self.force_update)
         else:
             lang = self.env['res.lang'].search([
@@ -44,7 +45,7 @@ class LightingReportingProductDatasheetWizard(models.TransientModel):
             ])
             return {
                 'type': 'ir.actions.act_url',
-                'url': '/web/datasheets/%i/%s' % (lang.id, ','.join([str(x) for x in products.ids])),
+                'url': '/web/datasheets/%i/%s' % (lang.id, ','.join([str(x) for x in product_ids])),
                 'target': 'new',
                 'context': {'pepe': 'ooo'}
             }
