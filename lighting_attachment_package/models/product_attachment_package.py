@@ -125,7 +125,8 @@ class LightingAttachmentPackage(models.Model):
         in_memory = io.BytesIO()
         zf = zipfile.ZipFile(in_memory, mode="w",
                              compression=zipfile.ZIP_DEFLATED)
-        for p in products:
+        N = len(products)
+        for i, p in enumerate(products):
             family_name = p.family_ids.mapped('name') and \
                           p.family_ids.mapped('name')[0].upper() or None
             fname = '%s.pdf' % '_'.join(
@@ -133,6 +134,8 @@ class LightingAttachmentPackage(models.Model):
             product_bin = self.env.ref('lighting_reporting.action_report_product'). \
                 with_context(lang=self.lang_id.code).render_qweb_pdf(p.ids)[0]
             zf.writestr(fname, product_bin)
+            _logger.info("Generating zip file '%s' with datasheet pdf's %i/%i" % (
+                self.datas_fname, i, N))
         zf.close()
         in_memory.seek(0)
         file_bin = in_memory.read()
