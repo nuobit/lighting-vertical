@@ -7,15 +7,10 @@
         <field name="name">product.wizard.form</field>
         <field name="model">lighting.reporting.product.datasheet.wizard</field>
         <field name="arch" type="xml">
-            <form string="Product datasheet">
+            <form string="Print product datasheet">
                 <header/>
                 <group>
-                    <field colspan="2" name="lang_id" attrs="{'required': [('only_generate_background', '=', False)]}"/>
-                </group>
-                <group>
-                    <field colspan="2" name="only_generate_background" groups="lighting.group_lighting_manager"/>
-                    <field colspan="2" name="force_update" groups="lighting.group_lighting_manager"
-                           attrs="{'invisible': [('only_generate_background', '=', False)]}"/>
+                    <field colspan="2" name="lang_id"/>
                 </group>
                 <footer>
                     <button string="Ok" name="print_product_datasheet" type="object" default_focus="1"
@@ -27,7 +22,7 @@
     </record>
 
     <act_window id="product_datasheet_wizard_action"
-                name="Datasheet"
+                name="Print datasheet"
                 res_model="lighting.reporting.product.datasheet.wizard"
                 src_model="lighting.product" key2="client_action_multi"
                 view_type="form" view_mode="form" target="new"/>

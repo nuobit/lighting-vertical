@@ -6,13 +6,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
-def chunks(li, n):
-    if not li:
-        return
-    yield li[:n]
-    yield from chunks(li[n:], n)
-
-
 class LightingReportingProductDatasheetWizard(models.TransientModel):
     _name = "lighting.reporting.product.datasheet.wizard"
 
@@ -22,27 +15,15 @@ class LightingReportingProductDatasheetWizard(models.TransientModel):
             return self.env['res.lang'].search([('code', '=', lang)]).id
         return False
 
-    lang_id = fields.Many2one(string='Language', comodel_name='res.lang', default=_default_lang_id)
-
-    only_generate_background = fields.Boolean(string="Generate only (in background)")
-    force_update = fields.Boolean(string="Force update")
+    lang_id = fields.Many2one(string='Language', comodel_name='res.lang', required=True, default=_default_lang_id)
 
     @api.multi
     def print_product_datasheet(self):
-        model = self.env.context.get('active_model')
-        products = self.env[model].browse(self.env.context.get('active_ids'))
-        if self.only_generate_background:
-            ck_size = int(len(products) / 100)
-            for ck in chunks(products, ck_size):
-                ck.with_delay().update_product_datasheets(
-                    lang_ids=self.lang_id.id, delayed=True, force_update=self.force_update)
-        else:
-            lang = self.env['res.lang'].search([
-                ('code', '=', self.lang_id.code)
-            ])
-            return {
-                'type': 'ir.actions.act_url',
-                'url': '/web/datasheets/%i/%s' % (lang.id, ','.join([str(x) for x in products.ids])),
-                'target': 'new',
-                'context': {'pepe': 'ooo'}
-            }
+        data = {
+            'ids': self.env.context.get('active_ids'),
+            'model': self.env.context.get('active_model'),
+            'lang': self.lang_id.code,
+        }
+
+        return self.env.ref('lighting_reporting.action_report_product') \
+            .report_action(self, data=data)
