@@ -35,7 +35,7 @@
             <xpath expr="//header" position="inside">
                 <button name="generate_datasheet" string="Regenerate datasheet"
                         type="object" class="o_sale_print"
-                        groups="lighting.group_lighting_user"
+                        groups="base.group_no_one"
                         attrs="{'invisible': ['|',('is_datasheet', '=', False),('manual', '=', True)]}"/>
             </xpath>
         </field>
