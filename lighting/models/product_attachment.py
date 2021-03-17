@@ -62,8 +62,8 @@ class LightingAttachment(models.Model):
     type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='restrict', required=True,
                               string='Type')
 
-    datas = fields.Binary(string="Document", attachment=True)
-    datas_fname = fields.Char(string='Filename')
+    datas = fields.Binary(string="Document", attachment=True, required=True)
+    datas_fname = fields.Char(string='Filename', required=True)
     datas_size = fields.Char(string='Size', compute="_compute_datas_size", store=True)
 
     @api.depends('datas')
