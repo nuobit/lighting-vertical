@@ -7,6 +7,7 @@ import zipfile
 import base64
 import logging
 import uuid
+import tempfile
 
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError, UserError
@@ -123,24 +124,24 @@ class LightingAttachmentPackage(models.Model):
             domain.append(('catalog_ids', 'in', self.catalog_ids.ids))
         products = self.env['lighting.product'].search(domain).sorted(
             lambda x: (x.family_ids.mapped('name')[:1], x.reference))
+        with tempfile.TemporaryFile() as tf:
+            zf = zipfile.ZipFile(tf, mode="w",
+                                 compression=zipfile.ZIP_DEFLATED)
+            N = len(products)
+            for i, p in enumerate(products):
+                family_name = p.family_ids.mapped('name') and \
+                              p.family_ids.mapped('name')[0].upper() or None
+                fname = '%s.pdf' % '_'.join(
+                    filter(None, [self.type_id.code, family_name, p.reference]))
+                product_bin = self.env.ref('lighting_reporting.action_report_product'). \
+                    with_context(lang=self.lang_id.code).render_qweb_pdf(p.ids)[0]
+                zf.writestr(fname, product_bin)
+                _logger.info("Generating zip file '%s' with datasheet pdf's %i/%i" % (
+                    self.datas_fname, i, N))
+            zf.close()
+            tf.seek(0)
+            file_bin = tf.read()
 
-        tmp_filename = '/tmp/lighting_attachment_package_%s_%s' % (str(uuid.uuid4()), self.datas_fname)
-        zf = zipfile.ZipFile(tmp_filename, mode="w",
-                             compression=zipfile.ZIP_DEFLATED)
-        N = len(products)
-        for i, p in enumerate(products):
-            family_name = p.family_ids.mapped('name') and \
-                          p.family_ids.mapped('name')[0].upper() or None
-            fname = '%s.pdf' % '_'.join(
-                filter(None, [self.type_id.code, family_name, p.reference]))
-            product_bin = self.env.ref('lighting_reporting.action_report_product'). \
-                with_context(lang=self.lang_id.code).render_qweb_pdf(p.ids)[0]
-            zf.writestr(fname, product_bin)
-            _logger.info("Generating zip file '%s' with datasheet pdf's %i/%i" % (
-                self.datas_fname, i, N))
-        zf.close()
-        with open(tmp_filename, 'rb') as f:
-            file_bin = f.read()
         return file_bin
 
     def generate_file_button(self):
