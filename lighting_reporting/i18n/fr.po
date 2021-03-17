@@ -461,13 +461,13 @@ msgstr "Poste avec chambre d'inspection"
 #: model:ir.actions.act_window,name:lighting_reporting.product_datasheet_wizard_action
 #: model:ir.actions.report,name:lighting_reporting.action_report_product
 #: model:ir.ui.view,arch_db:lighting_reporting.product_view_form_inherit_lighting_reporting
-msgid "Datasheet"
-msgstr "Fiche technique"
+msgid "Print datasheet"
+msgstr "Fiche technique imprimer"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.product_datasheet_wizard_view
-msgid "Product datasheet"
-msgstr "Fiche produit"
+msgid "Print product datasheet"
+msgstr "Imprimer fiche produit"
 
 #. module: lighting_reporting
 #: model:ir.model,name:lighting_reporting.model_lighting_product

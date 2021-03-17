@@ -5,7 +5,7 @@
 {
     'name': "Lighting Reporting",
     'description': """* Product datasheet""",
-    'version': '11.0.0.14.0',
+    'version': '11.0.0.13.11',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -18,15 +18,12 @@
     'depends': [
         'lighting',
         'lighting_seo',
-        'queue_job',
     ],
     'data': [
         'wizard/datasheet_wizard_views.xml',
         'report/report.xml',
         'views/report_product.xml',
         'views/product_views.xml',
-        'views/product_attachment_views.xml',
-        'views/product_attachment_type_views.xml',
     ],
     'installable': True,
 }
