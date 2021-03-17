@@ -29,7 +29,8 @@ class LightingProduct(models.Model):
         return action
 
     @job(default_channel='root.lighting_datasheet_prepare')
-    def update_product_datasheets(self, lang_ids=None, delayed=False, force_update=False):
+    @api.model
+    def update_product_datasheets(self, product_ids, lang_ids=None, delayed=False, force_update=False):
         """ Prepare background datasheet update """
         if lang_ids:
             langs = self.env['res.lang'].browse(lang_ids)
@@ -40,31 +41,34 @@ class LightingProduct(models.Model):
             llangs = self.env['lighting.language'].search([])
         datasheet_types = self.env['lighting.attachment.type'].search([
             ('is_datasheet', '=', True)], order='sequence,id')
-        for p in self:
+
+        for product_id in product_ids:
             for ds in datasheet_types:
                 for llang in llangs:
-                    attachments = p.attachment_ids.filtered(
-                        lambda x: x.type_id == ds and
-                                  x.lang_id.code == llang.code)
+                    attachments = self.env['lighting.attachment'].search([
+                        ('product_id', '=', product_id),
+                        ('type_id', '=', ds.id),
+                        ('lang_id.code', '=', llang.code),
+                    ])
                     if not attachments:
-                        attachments |= p.attachment_ids.create({
-                            'product_id': p.id,
+                        attachments |= self.env['lighting.attachment'].create({
+                            'product_id': product_id,
                             'type_id': ds.id,
                             'lang_id': llang.id
                         })
                     for attach in attachments:
                         if not attach.manual:
-                            if not attach.datas or force_update:
+                            if not attach.attachment_id or force_update:
                                 if delayed:
-                                    attach.with_delay().generate_datasheet()
+                                    attach.with_delay().generate_datasheet(attach.id)
                                 else:
-                                    attach.generate_datasheet()
+                                    attach.generate_datasheet(attach.id)
                             else:
-                                _logger.info("Datasheet from %s: %s (%s) already generated" % (
-                                    p.reference, ds.code, llang.code))
+                                _logger.info("Datasheet from %i: %s (%s) already generated" % (
+                                    product_id, ds.code, llang.code))
 
     def get_product_datasheet(self, lang_ids=None):
-        self.update_product_datasheets(lang_ids)
+        self.update_product_datasheets(self.ids, lang_ids)
         if lang_ids:
             langs = self.env['res.lang'].browse(lang_ids)
             llangs = self.env['lighting.language'].search([
@@ -252,11 +256,11 @@ class LightingProduct(models.Model):
     @api.multi
     def write(self, values):
         res = super().write(values)
-        self.update_product_datasheets(delayed=True, force_update=True)
+        self.update_product_datasheets(self.ids, delayed=True, force_update=True)
         return res
 
     @api.model
     def create(self, values):
         res = super().create(values)
-        res.update_product_datasheets(delayed=True)
+        res.update_product_datasheets(res.ids, delayed=True)
         return res

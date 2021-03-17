@@ -77,31 +77,32 @@ class LightingAttachment(models.Model):
     manual = fields.Boolean(string='Manual')
 
     @job(default_channel='root.lighting_datasheet')
-    def generate_datasheet(self):
+    @api.model
+    def generate_datasheet(self, attach_id):
         """ Generate product datasheet """
-        self.ensure_one()
-        if not self.type_id.is_datasheet:
+        attach = self.env['lighting.attachment'].browse(attach_id)
+        if not attach.type_id.is_datasheet:
             raise ValidationError(_("You can only generate a datasheet if attachment type is datasheet"))
-        if self.manual:
+        if attach.manual:
             raise ValidationError(_("You cannot generate a datasheet if is manual"))
 
-        self.last_update = fields.Datetime.now()
+        attach.last_update = fields.Datetime.now()
         data = {
-            'ids': self.product_id.ids,
-            'model': self.product_id._name,
-            'lang': self.lang_id.code,
-            'attach': self,
+            'ids': attach.product_id.ids,
+            'model': attach.product_id._name,
+            'lang': attach.lang_id.code,
+            'attach': attach,
         }
         pdfbin = self.env.ref('lighting_reporting.action_report_product') \
-            .render_qweb_pdf(self.product_id.ids, data=data)[0]
+            .render_qweb_pdf(attach.product_id.ids, data=data)[0]
 
-        family_name = self.product_id.family_ids.mapped('name') and \
-                      self.product_id.family_ids.mapped('name')[0].upper() or None
-        self.write({
+        family_name = attach.product_id.family_ids.mapped('name') and \
+                      attach.product_id.family_ids.mapped('name')[0].upper() or None
+        attach.write({
             'datas': base64.b64encode(pdfbin),
             'datas_fname': '%s.pdf' % '_'.join(
-                filter(None, [self.type_id.code, family_name, self.product_id.reference])),
-            'date': self.last_update,
+                filter(None, [attach.type_id.code, family_name, attach.product_id.reference])),
+            'date': attach.last_update,
         })
 
     def get_optimized_image(self, enabled=True):
