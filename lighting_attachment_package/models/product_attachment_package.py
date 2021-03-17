@@ -6,6 +6,7 @@ import io
 import zipfile
 import base64
 import logging
+import uuid
 
 from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError, UserError
@@ -122,8 +123,9 @@ class LightingAttachmentPackage(models.Model):
             domain.append(('catalog_ids', 'in', self.catalog_ids.ids))
         products = self.env['lighting.product'].search(domain).sorted(
             lambda x: (x.family_ids.mapped('name')[:1], x.reference))
-        in_memory = io.BytesIO()
-        zf = zipfile.ZipFile(in_memory, mode="w",
+
+        tmp_filename = '/tmp/lighting_attachment_package_%s_%s' % (str(uuid.uuid4()), self.datas_fname)
+        zf = zipfile.ZipFile(tmp_filename, mode="w",
                              compression=zipfile.ZIP_DEFLATED)
         N = len(products)
         for i, p in enumerate(products):
@@ -137,9 +139,8 @@ class LightingAttachmentPackage(models.Model):
             _logger.info("Generating zip file '%s' with datasheet pdf's %i/%i" % (
                 self.datas_fname, i, N))
         zf.close()
-        in_memory.seek(0)
-        file_bin = in_memory.read()
-        in_memory.close()
+        with open(tmp_filename, 'rb') as f:
+            file_bin = f.read()
         return file_bin
 
     def generate_file_button(self):
