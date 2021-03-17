@@ -18,8 +18,8 @@
                     <field name="image_medium" class="oe_avatar" widget="image" readonly="1"/>
                     <group>
                         <field name="type_id"/>
-                        <field name="datas" filename="datas_fname" required="1"/>
-                        <field name="datas_fname" invisible="1" required="1"/>
+                        <field name="datas" filename="datas_fname"/>
+                        <field name="datas_fname" invisible="1"/>
                         <field name="name"/>
                         <field name="lang_id"/>
                         <field name="date"/>
