@@ -5,7 +5,7 @@
 {
     'name': "Connector FTP attachment",
     'description': "Connector to upload attachments to FTP",
-    'version': '11.0.1.0.1',
+    'version': '11.0.1.0.2',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
