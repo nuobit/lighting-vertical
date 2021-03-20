@@ -5,7 +5,7 @@
 {
     'name': "Lighting Attachment Package",
     'description': "Generate attachment packages",
-    'version': '11.0.1.0.5',
+    'version': '11.0.1.0.6',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
