@@ -2,15 +2,13 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import io
 import zipfile
 import base64
 import logging
-import uuid
 import tempfile
 
 from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 
@@ -102,17 +100,21 @@ class LightingAttachmentPackage(models.Model):
         attachs = self.env['lighting.attachment'].search(domain) \
             .sorted(lambda x: (x.product_id.family_ids.mapped('name')[:1],
                                x.product_id.reference, x.datas_fname))
-        in_memory = io.BytesIO()
-        zf = zipfile.ZipFile(in_memory, mode="w",
-                             compression=zipfile.ZIP_DEFLATED)
-        for a in attachs:
-            zf.write(self.env['ir.attachment']._full_path(
-                a.attachment_id.store_fname), arcname=a.datas_fname)
-        zf.close()
-        in_memory.seek(0)
-        file_bin = in_memory.read()
-        in_memory.close()
+        with tempfile.TemporaryFile() as tf:
+            zf = zipfile.ZipFile(tf, mode="w",
+                                 compression=zipfile.ZIP_DEFLATED)
+            for a in attachs:
+                zf.write(self.env['ir.attachment']._full_path(
+                    a.attachment_id.store_fname), arcname=a.datas_fname)
+            zf.close()
+            tf.seek(0)
+            file_bin = tf.read()
+
         return file_bin
+
+    def _generate_pdf(self, id):
+        return self.env.ref('lighting_reporting.action_report_product'). \
+            with_context(lang=self.lang_id.code).render_qweb_pdf([id])[0]
 
     def generate_pdf_zipfile(self):
         if not self.lang_id:
@@ -133,11 +135,13 @@ class LightingAttachmentPackage(models.Model):
                               p.family_ids.mapped('name')[0].upper() or None
                 fname = '%s.pdf' % '_'.join(
                     filter(None, [self.type_id.code, family_name, p.reference]))
-                product_bin = self.env.ref('lighting_reporting.action_report_product'). \
-                    with_context(lang=self.lang_id.code).render_qweb_pdf(p.ids)[0]
-                zf.writestr(fname, product_bin)
+                zf.writestr(fname, self._generate_pdf(p.id))
                 _logger.info("Generating zip file '%s' with datasheet pdf's %i/%i" % (
                     self.datas_fname, i, N))
+                # we need to invalidate cache, pdf renderization caches a lot of data
+                # and ends with run out of memory
+                if int(i % 10) == 0:
+                    self.invalidate_cache()
             zf.close()
             tf.seek(0)
             file_bin = tf.read()
