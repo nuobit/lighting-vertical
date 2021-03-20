@@ -83,7 +83,7 @@ class FTPAttachmentBackend(models.Model):
         packages = self.env['lighting.attachment.package'].search([
             ('auto', '=', True)
         ])
-        for pkg in packages:
+        for pkg in packages.sorted(lambda x: (x.type_id.sequence, x.id)):
             pkg.with_delay().upload(self, generate=True)
 
     @api.model
