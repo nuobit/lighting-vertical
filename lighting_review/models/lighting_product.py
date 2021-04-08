@@ -51,3 +51,9 @@ class LightingProduct(models.Model, mixin.LightingReviewMixin):
     toreview_led_lifetime_b = fields.Boolean(string=mixin.get_string('LED lifetime B'),
                                              help=mixin.TOREVIEW_HELP,
                                              track_visibility='onchange')
+    toreview_dimmable_ids = fields.Boolean(string=mixin.get_string('Dimmables'),
+                                       help=mixin.TOREVIEW_HELP,
+                                       track_visibility='onchange')
+    toreview_input_voltage_id = fields.Boolean(string=mixin.get_string('Input voltage'),
+                                       help=mixin.TOREVIEW_HELP,
+                                       track_visibility='onchange')
