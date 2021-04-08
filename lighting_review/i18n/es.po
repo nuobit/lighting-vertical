@@ -110,6 +110,11 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_dimmable_ids
+msgid "Dimmables (to review)"
+msgstr "Dimmables (to review)"
+
+#. module: lighting_review
 #: model:ir.ui.view,arch_db:lighting_review.product_form_view
 msgid "Disable review mode"
 msgstr "Desactivar modo revisión"
@@ -166,6 +171,11 @@ msgstr "Agrupar por"
 #: model:ir.model.fields,field_description:lighting_review.field_lighting_review_package_id
 msgid "ID"
 msgstr "ID (identificación)"
+
+#. module: lighting_review
+#: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_input_voltage_id
+msgid "Input voltage (to review)"
+msgstr "Input voltage (to review)"
 
 #. module: lighting_review
 #: model:ir.model.fields,field_description:lighting_review.field_lighting_product_toreview_led_lifetime_b

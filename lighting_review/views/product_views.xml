@@ -78,6 +78,24 @@
                            attrs="{'invisible': [('review_mode', '=', False)]}"/>
                 </div>
             </field>
+
+            <field name="dimmable_ids" position="replace">
+                <label for="dimmable_ids"/>
+                <div>
+                    <field name="dimmable_ids" widget="many2many_tags" class="oe_inline"/>
+                    <field name="toreview_dimmable_ids"
+                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                </div>
+            </field>
+
+            <field name="input_voltage_id" position="replace">
+                <label for="input_voltage_id"/>
+                <div>
+                    <field name="input_voltage_id" class="oe_inline"/>
+                    <field name="toreview_input_voltage_id"
+                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                </div>
+            </field>
         </field>
     </record>
 
