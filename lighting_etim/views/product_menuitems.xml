@@ -6,6 +6,6 @@
     <!--========== etim root menu ================-->
     <menuitem id="menu_lighting_etim"
               name="ETIM"
-              parent="lighting.lighting_product_menu"
+              parent="lighting.lighting_menu"
               sequence="30"/>
 </odoo>
