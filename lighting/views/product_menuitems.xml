@@ -8,6 +8,7 @@
     <menuitem id="lighting_menu"
               name="Lighting"
               groups="group_lighting_guest,group_lighting_user,group_lighting_manager"
+              web_icon="lighting,static/description/app.png"
               sequence="0"/>
     
     <!-- A first level in the left side menu is needed
