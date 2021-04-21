@@ -42,7 +42,7 @@ class LightingExportTemplate(models.Model):
 
     hide_empty_fields = fields.Boolean(string="Hide empty fields", default=True)
 
-    output_type = fields.Selection(selection=[], string="Output type", required=True)
+    output_type = fields.Selection(selection=[], string="Output type")
 
     domain = fields.Text(string='Domain')
 
