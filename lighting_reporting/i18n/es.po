@@ -358,6 +358,11 @@ msgstr "Voltaje de entrada"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Total wattage"
+msgstr "Potencia total"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Location"
 msgstr "Ubicación"
 
@@ -493,6 +498,11 @@ msgstr "Sensores"
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Sources"
 msgstr "Fuentes"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Total flux"
+msgstr "Flujo total"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
