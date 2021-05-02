@@ -287,6 +287,15 @@
                                     </ul>
                                 </td>
                             </tr>
+                            <tr t-if="doc.total_nominal_flux">
+                                <td>
+                                    Total flux
+                                </td>
+                                <td>
+                                    <span t-esc="int(doc.total_nominal_flux)"/>
+                                    <span>lm</span>
+                                </td>
+                            </tr>
                             <tr t-if="doc.source_ids.get_energy_efficiency()">
                                 <td>
                                     Energy efficiency
@@ -437,6 +446,15 @@
                                 <td>
                                     <span t-field="doc.input_voltage_id"/>
                                     <span>V</span>
+                                </td>
+                            </tr>
+                            <tr t-if="doc.total_wattage and not doc.total_wattage_auto">
+                                <td>
+                                    Total wattage
+                                </td>
+                                <td>
+                                    <span t-esc="int(doc.total_wattage)"/>
+                                    <span>W</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.output_current">
