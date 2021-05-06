@@ -71,6 +71,9 @@ access_lighting_product_fanwattage_user,lighting.product.fanwattage user,model_l
 access_lighting_product_finish_guest,lighting.product.finish guest,model_lighting_product_finish,lighting.group_lighting_guest,1,0,0,0
 access_lighting_product_finish_manager,lighting.product.finish manager,model_lighting_product_finish,lighting.group_lighting_manager,1,1,1,1
 access_lighting_product_finish_user,lighting.product.finish user,model_lighting_product_finish,lighting.group_lighting_user,1,0,0,0
+access_lighting_product_ral_guest,lighting.product.ral guest,model_lighting_product_ral,lighting.group_lighting_guest,1,0,0,0
+access_lighting_product_ral_manager,lighting.product.ral manager,model_lighting_product_ral,lighting.group_lighting_manager,1,1,1,1
+access_lighting_product_ral_user,lighting.product.ral user,model_lighting_product_ral,lighting.group_lighting_user,1,0,0,0
 access_lighting_product_frequency_guest,lighting.product.frequency guest,model_lighting_product_frequency,lighting.group_lighting_guest,1,0,0,0
 access_lighting_product_frequency_manager,lighting.product.frequency manager,model_lighting_product_frequency,lighting.group_lighting_manager,1,1,1,1
 access_lighting_product_frequency_user,lighting.product.frequency user,model_lighting_product_frequency,lighting.group_lighting_user,1,0,0,0

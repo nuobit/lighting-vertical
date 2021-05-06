@@ -384,6 +384,9 @@ class LightingProduct(models.Model):
     finish2_id = fields.Many2one(comodel_name='lighting.product.finish', ondelete='restrict', string='Finish 2',
                                  track_visibility='onchange')
 
+    ral_id = fields.Many2one(comodel_name='lighting.product.ral', ondelete='restrict', string='RAL',
+                             track_visibility='onchange')
+
     body_material_ids = fields.Many2many(comodel_name='lighting.product.material',
                                          relation='lighting_product_body_material_rel',
                                          string='Body material', track_visibility='onchange')
