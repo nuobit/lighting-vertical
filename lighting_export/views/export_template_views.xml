@@ -41,7 +41,7 @@
                                         class="btn btn-sm oe_edit_only"/>
                             </group>
                         </page>
-                        <page string="Attachments">
+                        <page string="File Attachments">
                             <group>
                                 <group>
                                     <field name="max_attachments"/>
@@ -53,6 +53,22 @@
                                         <field name="sequence" widget="handle"/>
                                         <field name="type_id"/>
                                         <field name="resolution"/>
+                                        <field name="max_count"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                        <page string="Url Attachments">
+                            <group>
+                                <group>
+                                    <field name="max_url_attachments"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="attachment_url_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="type_id"/>
                                         <field name="max_count"/>
                                     </tree>
                                 </field>
