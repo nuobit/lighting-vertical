@@ -147,7 +147,7 @@ class LightingProduct(models.Model):
 
                 # classify
                 attachment_type_d = {}
-                for a in rec.attachment_ids:
+                for a in rec.attachment_ids.filtered(lambda x: x.datas_location == 'file'):
                     attach_type = a.type_id
                     if attach_type in attachment_order_d:
                         if attach_type not in attachment_type_d:
@@ -343,23 +343,51 @@ class LightingProduct(models.Model):
     def _compute_json_display_photo(self):
         template_id = self.env.context.get('template_id')
         if template_id:
-            attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
+            attachment_order_d = {x.type_id.id: x.sequence for x in template_id.attachment_ids}
             for rec in self:
                 if rec.product_group_id:
                     attachment_ids = rec.product_group_id.flat_product_ids.mapped('attachment_ids')
                 else:
                     attachment_ids = rec.attachment_ids
 
-                images = attachment_ids.filtered(lambda x: x.type_id.is_image and
-                                                           x.type_id in attachment_order_d.keys())
+                images = attachment_ids.filtered(lambda x: x.datas_location == 'file' and
+                                                           x.datas_fname and
+                                                           x.type_id.is_image and
+                                                           x.image_known and
+                                                           x.type_id.id in attachment_order_d.keys())
                 if images:
-                    images = images.sorted(lambda x: (attachment_order_d[x.type_id],
+                    images = images.sorted(lambda x: (attachment_order_d[x.type_id.id],
                                                       x.product_id.sequence, x.sequence, x.id))
                     attachment_d = {
                         'datas_fname': images[0].datas_fname,
                         'store_fname': images[0].attachment_id.store_fname,
                     }
                     rec.json_display_photo = json.dumps(attachment_d)
+
+    ## Display First Product Video
+    json_display_video = fields.Serialized(string="Video JSON Display",
+                                           compute='_compute_json_display_video')
+
+    def _compute_json_display_video(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            attachment_order_d = {x.type_id.id: x.sequence for x in template_id.attachment_url_ids}
+            for rec in self:
+                if rec.product_group_id:
+                    attachment_ids = rec.product_group_id.flat_product_ids.mapped('attachment_ids')
+                else:
+                    attachment_ids = rec.attachment_ids
+
+                urls = attachment_ids.filtered(lambda x: x.datas_location == 'url' and
+                                                         x.datas_url and
+                                                         x.type_id.id in attachment_order_d.keys())
+                if urls:
+                    urls = urls.sorted(lambda x: (attachment_order_d[x.type_id.id],
+                                                  x.product_id.sequence, x.sequence, x.id))
+                    attachment_d = {
+                        'video_url': urls[0].datas_url,
+                    }
+                    rec.json_display_video = json.dumps(attachment_d)
 
     ##################### Search fields ##################################
 
