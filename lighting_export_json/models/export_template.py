@@ -411,15 +411,18 @@ class LightingExportTemplate(models.Model):
                     })
 
                 ## common fields
-                product = products[0].with_context(template_id=self)
-                group_id = product.product_group_id
                 product_data = {}
-                fields = [self.get_efective_field_name(x.name) for x in group_id.field_ids]
+                fields = [self.get_efective_field_name(x.name) for x in group.field_ids]
                 for f in fields:
-                    if f in objects_d[product.reference]:
-                        product_data[f] = objects_d[product.reference][f]
+                    for product in products:
+                        if f in product_data:
+                            break
+                        if f in objects_d[product.reference]:
+                            product_data[f] = objects_d[product.reference][f]
+                            break
 
                 # description (is a common field too)
+                product = products[0].with_context(template_id=self)
                 group_desc_d = {}
                 for lang in active_langs:
                     lang_group_description = product.with_context(lang=lang).group_description
