@@ -14,11 +14,22 @@
                            statusbar_colors='{"pending":"blue", "error":"red", "done":"green"}'/>
                 </header>
                 <group states="pending">
-                    <field name="type_id"/>
-                    <field name="datas" filename="datas_fname"/>
-                    <field name="datas_fname" invisible="1"/>
-                    <field name="name"/>
-                    <field name="lang_id"/>
+                    <group>
+                        <field name="type_id"/>
+                    </group>
+                    <group>
+                        <field name="datas_location"/>
+                        <field name="datas_url"
+                               attrs="{'invisible': [('datas_location', '!=', 'url')],'required': [('datas_location', '=', 'url')]}"/>
+                        <field name="datas" filename="datas_fname"
+                               attrs="{'invisible': [('datas_location', '!=', 'file')],'required': [('datas_location', '=', 'file')]}"/>
+                        <field name="datas_fname" invisible="1"
+                               attrs="{'required': [('datas_location', '=', 'file')]}"/>
+                    </group>
+                    <group>
+                        <field name="name"/>
+                        <field name="lang_id"/>
+                    </group>
                 </group>
                 <group states="error,done">
                     <field name="result" widget="text" nolabel="1"/>

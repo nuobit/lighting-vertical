@@ -967,12 +967,6 @@ msgid "Display Name"
 msgstr "Nombre mostrado"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas
-msgid "Document"
-msgstr "Documento"
-
-#. module: lighting
 #: selection:lighting.product.addattachment,state:0
 msgid "Done"
 msgstr "Hecho"
@@ -1168,6 +1162,13 @@ msgid "Fan blades"
 msgstr "Número de aspas"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas
+#: selection:lighting.attachment,datas_location:0
+msgid "File"
+msgstr "Fichero"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_noise_level
 msgid "Noise level (dB)"
 msgstr "Nivel sonoro (dB)"
@@ -1350,6 +1351,11 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ik
 msgid "IK"
 msgstr "IK"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog_image
+msgid "Image"
+msgstr "Imagen"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_sealing_menu
@@ -1690,6 +1696,13 @@ msgstr "Iluminación"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_ids
 msgid "Lines"
 msgstr "Líneas"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas_location
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment_location_id
+#: model:ir.ui.view,arch_db:lighting.product_location_form_view
+msgid "Location"
+msgstr "Ubicación"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
@@ -2863,8 +2876,8 @@ msgstr "UGR"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_url
-msgid "URL"
-msgstr "URL"
+msgid "Url"
+msgstr "Url"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_ports
