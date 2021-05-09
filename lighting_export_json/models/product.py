@@ -385,7 +385,7 @@ class LightingProduct(models.Model):
                     urls = urls.sorted(lambda x: (attachment_order_d[x.type_id.id],
                                                   x.product_id.sequence, x.sequence, x.id))
                     attachment_d = {
-                        'video_url': urls[0].datas_url,
+                        'datas_url': urls[0].datas_url,
                     }
                     rec.json_display_video = json.dumps(attachment_d)
 
