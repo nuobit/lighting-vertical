@@ -33,12 +33,13 @@ class LightingProduct(models.Model):
     image_small = fields.Binary("Small-sized image", attachment=True, compute='_compute_images', store=True)
     image_medium = fields.Binary("Medium-sized image", attachment=True, compute='_compute_images', store=True)
 
-    @api.depends('attachment_ids.datas', 'attachment_ids.image_small', 'attachment_ids.image_medium',
+    @api.depends('attachment_ids.datas_location', 'attachment_ids.datas', 'attachment_ids.datas_url',
+                 'attachment_ids.image_small', 'attachment_ids.image_medium',
                  'attachment_ids.sequence',
                  'attachment_ids.type_id', 'attachment_ids.type_id.is_image')
     def _compute_images(self):
         for rec in self:
-            resized_images = rec.attachment_ids.get_main_resized_images()
+            resized_images = rec.attachment_ids.get_main_resized_image()
             if resized_images:
                 rec.image_medium = resized_images['image_medium']
                 rec.image_small = resized_images['image_small']
