@@ -39,6 +39,7 @@ from . import product_ecorraecategory
 from . import product_connectortype
 
 from . import product_attachment
+from . import product_attachment_type
 
 from . import product_source_type
 from . import product_source_lampholder
