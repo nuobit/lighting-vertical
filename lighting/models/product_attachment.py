@@ -106,7 +106,7 @@ class LightingAttachment(models.Model):
 
     image_known = fields.Boolean(
         string="Image Known", required=True,
-        default=False, readonly=True)  # , store=True, compute="_compute_known_image")
+        default=False, readonly=True, store=True, compute="_compute_known_image")
 
     @api.depends('datas', 'datas_url', 'datas_location', 'type_id', 'type_id.is_image')
     def _compute_known_image(self):
