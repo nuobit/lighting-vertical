@@ -29,9 +29,15 @@ class LightingExportTemplate(models.Model):
                                 string='Fields', copy=True)
 
     attachment_ids = fields.One2many(comodel_name='lighting.export.template.attachment', inverse_name='template_id',
-                                     string='Attachments', copy=True)
+                                     string='File Attachments', copy=True)
 
-    max_attachments = fields.Integer(string='Max. attachments', default=-1)
+    max_attachments = fields.Integer(string='Max. file attachments', default=-1)
+
+    attachment_url_ids = fields.One2many(comodel_name='lighting.export.template.attachment.url',
+                                         inverse_name='template_id',
+                                         string='Url Attachments', copy=True)
+
+    max_url_attachments = fields.Integer(string='Max. Url attachments', default=-1)
 
     lang_ids = fields.Many2many(comodel_name='res.lang',
                                 relation='lighting_export_template_lang_rel',
@@ -133,4 +139,23 @@ class LightingExportTemplateAttachment(models.Model):
 
     _sql_constraints = [
         ('line_uniq', 'unique (type_id,template_id)', 'The template attachment must be unique per template!'),
+    ]
+
+
+class LightingExportTemplateAttachmentUrl(models.Model):
+    _name = 'lighting.export.template.attachment.url'
+    _order = 'sequence'
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+
+    type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='cascade',
+                              string='Type', required=True)
+
+    max_count = fields.Integer(string='Max. count', default=-1)
+
+    template_id = fields.Many2one(comodel_name='lighting.export.template', ondelete='cascade',
+                                  string='Template', required=True)
+
+    _sql_constraints = [
+        ('line_uniq', 'unique (type_id,template_id)', 'The template attachment Url must be unique per template!'),
     ]
