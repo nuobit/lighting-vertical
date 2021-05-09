@@ -196,7 +196,7 @@ class LightingProduct(models.Model):
         for rec in self:
             attachments |= rec.attachment_ids.filtered(
                 lambda x: x.type_id.code == atype and
-                          (not only_images or x.attachment_id.index_content == 'image')
+                          (not only_images or x.image_known)
             ).sorted(lambda x: (x.sequence, x.id))
 
         return attachments
@@ -240,11 +240,12 @@ class LightingAttachment(models.Model):
     _inherit = 'lighting.attachment'
 
     def get_optimized_image(self, enabled=True):
+        datas = self.get_datas()
         if not enabled:
-            return self.datas
+            return datas
 
-        datas = base64.decodebytes(self.datas)
-        im = Image.open(io.BytesIO(datas))
+        datas_bin = base64.decodebytes(datas)
+        im = Image.open(io.BytesIO(datas_bin))
 
         im99 = resize(im, (500, None), by_side_long=True, allow_scale=False)
 
