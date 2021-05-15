@@ -14,6 +14,10 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+MRK_STATE_ORD = {
+    x: i for i, x in enumerate(['C', 'N', 'O', 'ES', 'ESH'])
+}
+
 
 class LightingExportTemplate(models.Model):
     _inherit = 'lighting.export.template'
@@ -371,7 +375,8 @@ class LightingExportTemplate(models.Model):
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in field_ids]
                 for f in fields:
-                    for product in products.sorted('sequence'):
+                    for product in products.sorted(
+                            lambda x: (MRK_STATE_ORD.get(x.state_marketing, len(MRK_STATE_ORD)), x.sequence)):
                         if f in product_data:
                             break
                         if f in objects_d[product.reference]:
@@ -416,7 +421,8 @@ class LightingExportTemplate(models.Model):
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in group.field_ids]
                 for f in fields:
-                    for product in products.sorted('sequence'):
+                    for product in products.sorted(
+                            lambda x: (MRK_STATE_ORD.get(x.state_marketing, len(MRK_STATE_ORD)), x.sequence)):
                         if f in product_data:
                             break
                         if f in objects_d[product.reference]:
