@@ -364,30 +364,22 @@ class LightingProduct(models.Model):
                     }
                     rec.json_display_photo = json.dumps(attachment_d)
 
-    ## Display First Product Video
-    json_display_video = fields.Serialized(string="Video JSON Display",
-                                           compute='_compute_json_display_video')
+    ## Display Product Video url
+    json_display_video = fields.Char(string="Video JSON Display",
+                                     compute='_compute_json_display_video')
 
     def _compute_json_display_video(self):
         template_id = self.env.context.get('template_id')
         if template_id:
             attachment_order_d = {x.type_id.id: x.sequence for x in template_id.attachment_url_ids}
             for rec in self:
-                if rec.product_group_id:
-                    attachment_ids = rec.product_group_id.flat_product_ids.mapped('attachment_ids')
-                else:
-                    attachment_ids = rec.attachment_ids
-
-                urls = attachment_ids.filtered(lambda x: x.datas_location == 'url' and
-                                                         x.datas_url and
-                                                         x.type_id.id in attachment_order_d.keys())
+                urls = rec.attachment_ids.filtered(lambda x: x.datas_location == 'url' and
+                                                             x.datas_url and
+                                                             x.type_id.id in attachment_order_d.keys())
                 if urls:
                     urls = urls.sorted(lambda x: (attachment_order_d[x.type_id.id],
                                                   x.product_id.sequence, x.sequence, x.id))
-                    attachment_d = {
-                        'datas_url': urls[0].datas_url,
-                    }
-                    rec.json_display_video = json.dumps(attachment_d)
+                    rec.json_display_video = urls[0].datas_url
 
     ##################### Search fields ##################################
 

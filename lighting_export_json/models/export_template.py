@@ -363,18 +363,20 @@ class LightingExportTemplate(models.Model):
                     })
 
                 ### common attributes
-                product = products[0].with_context(template_id=self)
-                group_id = product.product_group_id
+                field_ids = products.mapped('product_group_id.field_ids')
 
                 ## merge common fields with attributes from the category
-                field_ids = group_id.field_ids
-                field_ids |= product.category_id.effective_attribute_ids
+                field_ids |= products.mapped('category_id.effective_attribute_ids')
 
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in field_ids]
                 for f in fields:
-                    if f in objects_d[product.reference]:
-                        product_data[f] = objects_d[product.reference][f]
+                    for product in products.sorted('sequence'):
+                        if f in product_data:
+                            break
+                        if f in objects_d[product.reference]:
+                            product_data[f] = objects_d[product.reference][f]
+                            break
 
                 if product_data:
                     template_clean_d[k].update(product_data)
@@ -414,7 +416,7 @@ class LightingExportTemplate(models.Model):
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in group.field_ids]
                 for f in fields:
-                    for product in products:
+                    for product in products.sorted('sequence'):
                         if f in product_data:
                             break
                         if f in objects_d[product.reference]:
