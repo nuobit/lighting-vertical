@@ -9,7 +9,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('ral_id','=',active_id)]</field>
+        <field name="domain">[('ral_id', '=', active_id)]</field>
         <field name="context">{'default_ral_id': active_id}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Product</p>
@@ -54,6 +54,20 @@
                         string="Products" icon="fa-external-link"
                         attrs="{'invisible': [('product_count', '=', 0)]}"/>
             </tree>
+        </field>
+    </record>
+
+    <!-- search view RAL -->
+    <record id="product_ral_search_view" model="ir.ui.view">
+        <field name="name">lighting.product.ral.search</field>
+        <field name="model">lighting.product.ral</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="RAL"
+                       filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]"/>
+                <field name="name"/>
+                <field name="code"/>
+            </search>
         </field>
     </record>
 
