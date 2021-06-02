@@ -24,6 +24,12 @@ class LightingProductRal(models.Model):
                         ('code_uniq', 'unique (code)', 'The ral code must be unique!'),
                         ]
 
+    @api.model
+    def name_search(self, name, args=None, operator='ilike', limit=100):
+        if args is None:
+            args = []
+        return self.search(['|', ('code', operator, name), ('name', operator, name)] + args, limit=320).name_get()
+
     @api.multi
     def name_get(self):
         vals = []
