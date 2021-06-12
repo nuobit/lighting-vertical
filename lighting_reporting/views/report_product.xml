@@ -370,7 +370,7 @@
                                     <span t-field="doc.sealing2_id"/>
                                 </td>
                             </tr>
-                            <tr t-if="doc.ik">
+                            <tr t-if="doc.ik and int(doc.ik) > 7">
                                 <td>
                                     IK
                                 </td>
