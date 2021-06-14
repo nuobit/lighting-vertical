@@ -712,14 +712,6 @@ class LightingProduct(models.Model):
     last_purchase_date = fields.Date(string="Last purchase date", readonly=True,
                                      copy=False, track_visibility='onchange')
 
-    @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
-    def _onchange_stock_qty(self):
-        state_trans = {'ES': 'D', 'ESH': 'H'}
-        if self.state_marketing in state_trans and \
-                self.available_qty == 0 and \
-                self.stock_future_qty == 0:
-            self.state_marketing = state_trans[self.state_marketing]
-
     # marketing tab
     state_marketing = fields.Selection([
         ('O', 'Online'),
@@ -758,6 +750,17 @@ class LightingProduct(models.Model):
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
     # inherites base functions
+    @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
+    def _onchange_stock_qty(self):
+        if self.available_qty != 0 or self.stock_future_qty != 0:
+            state_trans = {'D': 'ES', 'H': 'ESH'}
+            if self.state_marketing in state_trans:
+                self.state_marketing = state_trans[self.state_marketing]
+        else:
+            state_trans = {'ES': 'D', 'ESH': 'H'}
+            if self.state_marketing in state_trans:
+                self.state_marketing = state_trans[self.state_marketing]
+
     @api.multi
     @api.constrains('reference')
     def _check_reference_spaces(self):
@@ -807,15 +810,20 @@ class LightingProduct(models.Model):
                 raise ValidationError(
                     _("The current reference cannot be defined as a recomended accessory"))
 
-    @api.constrains('state_marketing', 'available_qty', 'stock_future_qty')
+    @api.constrains('state_marketing')
     def _check_state_marketing_stock(self):
         for rec in self:
             if rec.state_marketing in ('D', 'H') and \
                     (rec.available_qty != 0 or rec.stock_future_qty != 0):
                 raise ValidationError(_(
                     "A reference with stock or future stock cannot be Discontinued or Historical"))
+            if rec.state_marketing in ('ES', 'ESH') and \
+                    (rec.available_qty == 0 and rec.stock_future_qty == 0):
+                raise ValidationError(_(
+                    "A reference without stock or future stock cannot be neither "
+                    "'End of Stock' nor 'End of Stock Historical'"))
 
-    @api.constrains('state_marketing', 'available_qty', 'stock_future_qty')
+    @api.constrains('available_qty', 'stock_future_qty')
     def _update_state_marketing_by_stock_qty(self):
         for rec in self:
             rec._onchange_stock_qty()
