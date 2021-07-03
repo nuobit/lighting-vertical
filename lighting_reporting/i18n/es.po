@@ -51,6 +51,11 @@ msgstr "Material de la pantalla"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
+msgid "Cutting length"
+msgstr "Longitud de corte"
+
+#. module: lighting_reporting
+#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Cable outlets"
 msgstr "Salidas de cable"
 
