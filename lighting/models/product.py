@@ -517,6 +517,7 @@ class LightingProduct(models.Model):
                                     inverse_name='product_id', string='Dimensions', copy=True,
                                     track_visibility='onchange')
 
+    cutting_length = fields.Integer(string='Cutting length (cm)', track_visibility='onchange')
     cable_outlets = fields.Integer(string='Cable outlets', help="Number of cable outlets", track_visibility='onchange')
     lead_wire_length = fields.Float(string='Length of the lead wire supplied (mm)', track_visibility='onchange')
     inclination_angle_max = fields.Float(string='Maximum tilt angle (º)', track_visibility='onchange')
