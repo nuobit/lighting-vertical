@@ -648,6 +648,15 @@
                                     <span>Kg</span>
                                 </td>
                             </tr>
+                            <tr t-if="doc.cutting_length">
+                                <td>
+                                    Cutting length
+                                </td>
+                                <td>
+                                    <span t-field="doc.cutting_length"/>
+                                    <span>cm</span>
+                                </td>
+                            </tr>
                             <tr t-if="doc.cable_outlets">
                                 <td>
                                     Cable outlets
