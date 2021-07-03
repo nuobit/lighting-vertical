@@ -282,10 +282,9 @@ class LightingProductSource(models.Model):
         res = []
         for src in self.sorted(lambda x: x.sequence):
             src_k = src.line_ids.get_cri()
-            k_l = None
             if src_k:
                 k_l = ','.join(['CRI%i' % x for x in src_k])
-            res.append(k_l)
+                res.append(k_l)
 
         if not any(res):
             return None
@@ -295,10 +294,9 @@ class LightingProductSource(models.Model):
         res = []
         for src in self.sorted(lambda x: x.sequence):
             src_k = src.line_ids.get_leds_m()
-            k_l = None
             if src_k:
                 k_l = ','.join([str(x) for x in src_k])
-            res.append('%s Leds/m' % (k_l,))
+                res.append('%s Leds/m' % (k_l,))
 
         if not any(res):
             return None
@@ -308,10 +306,9 @@ class LightingProductSource(models.Model):
         res = []
         for src in self.sorted(lambda x: x.sequence):
             src_k = src.line_ids.get_special_spectrum()
-            k_l = None
             if src_k:
                 k_l = ','.join(src_k)
-            res.append(k_l)
+                res.append(k_l)
 
         if not any(res):
             return None
@@ -535,14 +532,16 @@ class LightingProductSourceLine(models.Model):
         return res
 
     def get_cri(self):
-        res = self.sorted(lambda x: x.sequence) \
+        res = self.sorted(lambda x: x.sequence)\
+            .filtered(lambda x: x.cri_min)\
             .mapped('cri_min')
         if not res:
             return None
         return res
 
     def get_leds_m(self):
-        res = self.sorted(lambda x: x.sequence) \
+        res = self.sorted(lambda x: x.sequence)\
+            .filtered(lambda x: x.leds_m)\
             .mapped('leds_m')
         if not res:
             return None
