@@ -212,6 +212,8 @@ class LightingProductSource(models.Model):
                             line.append(l.luminous_flux_display)
                     if l.is_led and l.cri_min:
                         line.append("CRI%i" % l.cri_min)
+                    if l.is_led and l.leds_m:
+                        line.append("%i Leds/m" % l.leds_m)
                     if l.is_led and l.special_spectrum:
                         special_spectrum_values = dict(
                             l.fields_get('special_spectrum', 'selection')['special_spectrum']['selection'])
@@ -284,6 +286,19 @@ class LightingProductSource(models.Model):
             if src_k:
                 k_l = ','.join(['CRI%i' % x for x in src_k])
             res.append(k_l)
+
+        if not any(res):
+            return None
+        return res
+
+    def get_leds_m(self):
+        res = []
+        for src in self.sorted(lambda x: x.sequence):
+            src_k = src.line_ids.get_leds_m()
+            k_l = None
+            if src_k:
+                k_l = ','.join([str(x) for x in src_k])
+            res.append('%s Leds/m' % (k_l,))
 
         if not any(res):
             return None
@@ -417,6 +432,7 @@ class LightingProductSourceLine(models.Model):
         ('green', _('Green')), ('red', _('Red')),
         ('purple', _('Purple')), ('pink', _('Pink')),
     ], string='Special spectrum')
+    leds_m = fields.Integer(string="Leds/m", track_visibility='onchange')
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
                                    inverse_name='source_line_id', string='Chip', copy=True)
 
@@ -521,6 +537,13 @@ class LightingProductSourceLine(models.Model):
     def get_cri(self):
         res = self.sorted(lambda x: x.sequence) \
             .mapped('cri_min')
+        if not res:
+            return None
+        return res
+
+    def get_leds_m(self):
+        res = self.sorted(lambda x: x.sequence) \
+            .mapped('leds_m')
         if not res:
             return None
         return res

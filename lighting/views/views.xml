@@ -208,6 +208,7 @@
                                         <field name="value"/>
                                     </tree>
                                 </field>
+                                <field name="cutting_length"/>
                                 <field name="cable_outlets"/>
                                 <field name="lead_wire_length"/>
                                 <field name="inclination_angle_max"/>
@@ -769,6 +770,7 @@
                         <field name="cri_min"/>
                         <field name="color_consistency"/>
                         <field name="special_spectrum"/>
+                        <field name="leds_m"/>
                         <field name="led_chip_ids">
                             <tree editable="bottom">
                                 <field name="reference"/>
