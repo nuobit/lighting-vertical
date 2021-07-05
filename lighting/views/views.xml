@@ -24,7 +24,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('optional_ids','=',active_id)]</field>
+        <field name="domain">[('optional_ids', '=', active_id)]</field>
         <field name="context">{'default_optional_ids': [(4, active_id, False)]}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product</p>
@@ -37,7 +37,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('required_ids','=',active_id)]</field>
+        <field name="domain">[('required_ids', '=', active_id)]</field>
         <field name="context">{'default_required_ids': [(4, active_id, False)]}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product</p>
@@ -97,8 +97,9 @@
                     <group>
                         <field name="ean"/>
                         <field name="catalog_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        <field name="category_id"/>
-                        <field name="family_ids" widget="many2many_tags"/>
+                        <field name="category_id" attrs="{'required': [('state', '=', 'published')]}"/>
+                        <field name="family_ids" widget="many2many_tags"
+                               attrs="{'required': [('state', '=', 'published')]}"/>
                     </group>
                     <group>
                         <field name="is_composite"/>
@@ -110,7 +111,8 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="location_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="location_ids" widget="many2many_tags" options="{'color_field': 'color'}"
+                                       attrs="{'required': [('state', '=', 'published')]}"/>
                                 <field name="installation_ids" widget="many2many_tags"/>
                                 <field name="application_ids" widget="many2many_tags"/>
                                 <field name="finish_id"/>
@@ -539,7 +541,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('dimmable_ids','=',active_id)]</field>
+        <field name="domain">[('dimmable_ids', '=', active_id)]</field>
         <field name="context">{'default_dimmable_ids': [(4, active_id, False)]}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Product</p>

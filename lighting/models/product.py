@@ -279,13 +279,13 @@ class LightingProduct(models.Model):
 
     family_ids = fields.Many2many(comodel_name='lighting.product.family',
                                   relation='lighting_product_family_rel', string='Families',
-                                  required=True,
+                                  required=False,
                                   track_visibility='onchange')
     catalog_ids = fields.Many2many(comodel_name='lighting.catalog', relation='lighting_product_catalog_rel',
                                    string='Catalogs', required=True, track_visibility='onchange')
 
     category_id = fields.Many2one(comodel_name='lighting.product.category',
-                                  string='Category', required=True,
+                                  string='Category', required=False,
                                   ondelete='restrict', track_visibility='onchange')
 
     category_completename = fields.Char(string='Category (complete name)',
@@ -359,7 +359,7 @@ class LightingProduct(models.Model):
     # Description tab
     location_ids = fields.Many2many(comodel_name='lighting.product.location',
                                     relation='lighting_product_location_rel', string='Locations',
-                                    required=True,
+                                    required=False,
                                     track_visibility='onchange')
 
     installation_ids = fields.Many2many(comodel_name='lighting.product.installation',
@@ -836,6 +836,13 @@ class LightingProduct(models.Model):
     @api.constrains('description')
     def _check_description_updated(self):
         self._update_computed_descriptions(exclude_lang=[self.env.lang])
+
+    @api.constrains('state', 'family_ids', 'category_id')
+    def _check_published_mandatory_fields(self):
+        for rec in self:
+            if rec.state == 'published':
+                if not rec.family_ids or not rec.category_id or not rec.location_ids:
+                    raise ValidationError("The Family, Category and Locations are mandatory in Published state")
 
     @api.multi
     def copy(self, default=None):
