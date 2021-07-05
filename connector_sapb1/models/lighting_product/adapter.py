@@ -140,7 +140,7 @@ class LightingProductAdapter(Component):
                     product_data as (
                         SELECT p."ItemCode", p."ItemName",
                                p."CodeBars",
-                               g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
+                               g."ItmsGrpCod", g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
                                p."U_ACC_Obsmark",
                                p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
                                s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
@@ -161,7 +161,7 @@ class LightingProductAdapter(Component):
                                     COALESCE(to_binary(p."ItemCode"), '00'), '00',
                                     COALESCE(to_binary(p."ItemName"), '00'), '00',
                                     COALESCE(to_binary(p."CodeBars"), '00'), '00',
-                                    COALESCE(to_binary(p."ItmsGrpNam"), '00'), '00',
+                                    COALESCE(to_binary(p."ItmsGrpCod"), '00'), '00',
                                     COALESCE(to_binary(p."U_U_familia"), '00'), '00',
                                     COALESCE(to_binary(p."U_U_aplicacion"), '00'), '00',
                                     COALESCE(to_binary(p."U_ACC_Obsmark"), '00'), '00',

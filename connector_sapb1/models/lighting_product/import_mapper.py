@@ -10,17 +10,9 @@ from odoo import _
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
     mapping, external_to_m2o, only_create)
+from odoo.exceptions import ValidationError
 
-MAP_CAT_LOC = {'Cristher': 'EXT', 'Dopo': 'EXT', 'Indeluz': 'INT', 'Exo': 'INT'}
-
-MAP_STATUS_MARKETING = {
-    'Novedades': 'N',
-    'Catalogado': 'C',
-    'Descatalogado': 'D',
-    'Fe Digital': 'ES',
-    'Histórico': 'H',
-    'Fe Histórico': 'ESH',
-}
+ACCESSORY_CATALOG = 'NX Lighting'
 
 
 class LigthingProductImportMapper(Component):
@@ -36,11 +28,6 @@ class LigthingProductImportMapper(Component):
     @mapping
     def content_hash(self, record):
         return {'external_content_hash': record['Hash']}
-
-    @mapping
-    def description_manual(self, record):
-        return {'description_manual': record['ItemName'] and
-                                      record['ItemName'].strip() or None}
 
     @mapping
     def ean_codebar(self, record):
@@ -110,62 +97,35 @@ class LigthingProductImportMapper(Component):
 
     @only_create
     @mapping
-    def state_marketing_state(self, record):
-        u_acc_obsmark = record['U_ACC_Obsmark'] and record['U_ACC_Obsmark'].strip() or None
-        if u_acc_obsmark:
-            state_marketing = MAP_STATUS_MARKETING.get(u_acc_obsmark)
-            if state_marketing:
-                return {
-                    'state_marketing': state_marketing,
-                    'state': 'published',
-                }
-
-        return {
-            'state_marketing': None,
-            'state': 'draft',
-        }
-
-    def _get_sibling_reference(self, reference, pattern):
-        m = re.match(pattern, reference)
-        if not m:
-            return None
-
-        reference_prefix = m.group(1)
-        references = self.env['lighting.product'].search([
-            ('reference', '=like', '%s%%' % reference_prefix),
-        ])
-
-        return references
+    def description_manual(self, record):
+        return {'description_manual': record['ItemName'] and
+                                      record['ItemName'].strip() or None}
 
     @only_create
     @mapping
-    def catalog_and_location(self, record):
-        catalogs = None
-        itms_grp_name = record['ItmsGrpNam'] and record['ItmsGrpNam'].strip() or None
-        if not itms_grp_name:
-            references = self._get_sibling_reference(record['ItemCode'].strip(), "^(.+)-[^-]{2}")
-            if references:
-                catalogs = references.mapped('catalog_ids')
-        else:
-            domain = []
-            if itms_grp_name != 'Accesorios':
-                domain.append(
-                    ('name', '=ilike', itms_grp_name),
-                )
-            catalogs = self.env['lighting.catalog'].search(domain)
-        if not catalogs:
-            raise Exception(_("Catalog '%s' not found and cannot be inferred") % itms_grp_name)
+    def state_marketing(self, record):
+        u_acc_obsmark = record['U_ACC_Obsmark'] and record['U_ACC_Obsmark'].strip() or None
+        if u_acc_obsmark:
+            state_marketing = self.backend_record.state_marketing_map \
+                .filtered(lambda x: x.sap_state_reference == u_acc_obsmark) \
+                .state_marketing
+            if not state_marketing:
+                raise ValidationError("There's no mapping to %s in the Backend configuration" % (u_acc_obsmark,))
+            return {
+                'state_marketing': state_marketing,
+            }
 
-        location_codes = [MAP_CAT_LOC[x] for x in catalogs.mapped('name')]
-        locations = self.env['lighting.product.location'].search([
-            ('code', 'in', location_codes),
-        ])
-        if not locations:
-            raise Exception(_("Locations with codes '%s' not found and cannot be inferred") % location_codes)
+    @only_create
+    @mapping
+    def catalog(self, record):
+        catalog = self.backend_record.catalog_map.filtered(
+            lambda x: x.sap_item_group_id == record['ItmsGrpCod']
+        ).catalog_id
+        if not catalog:
+            raise ValidationError("There's no mapping for %s configured in Backend" % record['ItmsGrpCod'])
 
         return {
-            'catalog_ids': [(6, False, catalogs.mapped('id'))],
-            'location_ids': [(6, False, locations.mapped('id'))],
+            'catalog_ids': [(6, False, catalog.ids)],
         }
 
     @only_create
@@ -198,10 +158,8 @@ class LigthingProductImportMapper(Component):
                 ('name', '=ilike', familia),
             ])
 
-        if not families:
-            raise Exception(_("Family '%s' not found and it cannot be inferred") % familia)
-
-        return {'family_ids': [(6, False, families.mapped('id'))]}
+        if families:
+            return {'family_ids': [(6, False, families.ids)]}
 
     @only_create
     @mapping
@@ -229,7 +187,7 @@ class LigthingProductImportMapper(Component):
 
         if not category:
             catalog_name = record['ItmsGrpNam'] and record['ItmsGrpNam'].strip() or None
-            if catalog_name == 'Accesorios':
+            if catalog_name == ACCESSORY_CATALOG:
                 category = self.env['lighting.product.category'] \
                     .with_context(lang='es_ES') \
                     .search([
@@ -239,12 +197,30 @@ class LigthingProductImportMapper(Component):
                 if len(category) > 1:
                     raise Exception(_("Multiple Accessory category %s found") % (', '.join(category.mapped('name')),))
 
-        if not category:
-            raise Exception(_("Category '%s' not found and it cannot be inferred") % aplicacion)
-
-        return {'category_id': category.id}
+        if category:
+            return {'category_id': category.id}
 
     @only_create
     @mapping
     def reference(self, record):
         return {'reference': record['ItemCode'] and record['ItemCode'].strip() or None}
+
+    # aux
+    def _get_sibling_reference(self, reference, pattern):
+        m = re.match(pattern, reference)
+        if not m:
+            return None
+
+        reference_prefix = m.group(1)
+        references = self.env['lighting.product'].search([
+            ('reference', '=like', '%s%%' % reference_prefix),
+        ])
+
+        return references
+
+    def finalize(self, map_record, values):
+        if values.get('family_ids') and values.get('category_id') \
+                and values.get('location_ids'):
+            values['state'] = 'published'
+
+        return values

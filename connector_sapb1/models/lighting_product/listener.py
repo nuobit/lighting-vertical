@@ -14,5 +14,10 @@ class SAPB1LightingProductImporter(Component):
 
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
-        for backend in record.sapb1_bind_ids.mapped('backend_id'):
-            self.env["sapb1.lighting.product"].with_delay().export_record(backend, record)
+        relevant_fields = {
+            'description', 'category_id',
+            'family_ids', 'state_marketing', 'catalog_ids'
+        }
+        if fields is None or relevant_fields & set(fields):
+            for backend in record.sapb1_bind_ids.mapped('backend_id'):
+                self.env["sapb1.lighting.product"].with_delay().export_record(backend, record)
