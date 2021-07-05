@@ -30,6 +30,11 @@ class LigthingProductImportMapper(Component):
         return {'external_content_hash': record['Hash']}
 
     @mapping
+    def effective_date(self, record):
+        if record['U_U_FECHACAT']:
+            return {'effective_date': record['U_U_FECHACAT']}
+
+    @mapping
     def ean_codebar(self, record):
         return {'ean': record['CodeBars'] and
                        record['CodeBars'].strip() or None}
