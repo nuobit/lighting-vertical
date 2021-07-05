@@ -6,11 +6,12 @@ from odoo.addons.component.core import AbstractComponent
 
 from odoo import exceptions, _
 from odoo.addons.connector.exception import NetworkRetryableError
-
+from odoo.exceptions import ValidationError
 from contextlib import contextmanager
 from requests.exceptions import HTTPError, RequestException, ConnectionError
 import random
 import logging
+import requests
 
 from functools import partial
 
@@ -119,6 +120,8 @@ class GenericAdapter(AbstractComponent):
     _name = 'sapb1.adapter'
     _inherit = 'sapb1.crud.adapter'
 
+    # _id = None
+
     ## private methods
 
     def _escape(self, s):
@@ -208,6 +211,31 @@ class GenericAdapter(AbstractComponent):
     def id2dict(self, id):
         return dict(zip(self._id, id))
 
+    def _login(self):
+        # TODO: convert this login/logout to the contextmanager call
+        if hasattr(self, 'session') and self.session:
+            raise ConnectionError("The session should have been empty on  new transaction")
+        self.session = requests.session()
+
+        payload = {
+            "CompanyDB": self.backend_record.db_schema,
+            "UserName": self.backend_record.sl_username,
+            "Password": self.backend_record.sl_password,
+        }
+        r = self.session.post(self.backend_record.sl_url + "/Login", json=payload, verify=False)
+        if not r.ok:
+            raise ConnectionError(f"Error trying to log in\n{r.text}")
+        return True
+
+    def _logout(self):
+        # TODO: convert this login/logout to the contextmanager call
+        if not self.session:
+            raise ConnectionError("The session is not set, you cannot make a logout without being logged in")
+        r = self.session.post(self.backend_record.sl_url + "/Logout")  # , verify=False)
+        if not r.ok:
+            raise ConnectionError(f"Error trying to log outyo me ofrezco\n{r.text}")
+        return True
+
     ########## exposed methods
 
     def search_read(self, filters=[]):
@@ -258,109 +286,98 @@ class GenericAdapter(AbstractComponent):
 
         return res and res[0] or []
 
-    def write(self, id, values_d):
+    def write(self, id, values):
         """ Update records on the external system """
         _logger.debug(
-            'method write, sql %s id %s, values %s',
-            self._sql_read, id, values_d)
+            'method write, id %s, values %s',
+            id, values)
 
-        if not values_d:
-            return 0
+        self._login()
 
-        # check if schema exists to avoid injection
-        self._check_schema()
+        _id = self.id2dict(id)['ItemCode']
 
-        # get id fieldnames and values
-        id_d = dict(zip(self._id, id))
+        sap_main_lang_id = self.backend_record.language_map \
+            .filtered(lambda x: x.sap_main_lang).sap_lang_id
+        root_url = self.backend_record.sl_url
 
-        # fix same field on set and on where, change set fields
-        qset_map_d = {}
-        for k, v in values_d.items():
-            if k in id_d:
-                while True:
-                    k9 = '%s%i' % (k, random.randint(0, 999))
-                    if k9 not in values_d and k9 not in id_d:
-                        qset_map_d[k] = (k9, v)
-                        break
+        translate_fields = hasattr(self, '_translatable_fields') and self._translatable_fields or []
+        if not isinstance(translate_fields, (list, tuple)):
+            translate_fields = [translate_fields]
+
+        payload = {}
+        add_lang = {}
+        for k, v in values.items():
+            if k not in translate_fields or not isinstance(v, dict):
+                payload[k] = v
             else:
-                qset_map_d[k] = (k, v)
+                for lang, value in v.items():
+                    if lang == sap_main_lang_id:
+                        payload[k] = value
+                    else:
+                        add_lang.setdefault(k, {})
+                        add_lang[k][lang] = value
 
-        # get the set data
-        qset_l = []
-        for k, (k9, v) in qset_map_d.items():
-            qset_l.append('%(field)s = %%(%(field9)s)s' % dict(field=k, field9=k9))
-        qset = "%s" % (', '.join(qset_l),)
+        if payload:
+            r = self.session.patch(root_url + f"/Items(ItemCode='{_id}')", json=payload)
+            if not r.ok:
+                raise ValidationError(f"Error updating main data {list(payload.keys())}\n{r.text}")
 
-        # prepare the sql with base strucrture
-        sql = self._sql_update % dict(schema=self.schema, qset=qset)
+        if add_lang:
+            # update/create data
+            for field, trls in add_lang.items():
+                qry = [
+                    f"$filter=TableName eq '{self._base_table}' and FieldAlias eq '{field}' and PrimaryKeyofobject eq '"
+                    f"{_id}'",
+                    "$select=TranslationsInUserLanguages,Numerator"
+                ]
+                r = self.session.get(root_url + "/MultiLanguageTranslations?" + '&'.join(qry))
+                res = r.json()['value']
+                if len(res) > 1:
+                    raise ValidationError("Unexpected more than one language register found")
+                elif len(res) == 1:
+                    res = res[0]
+                    numerator = res['Numerator']
+                    new_trls = res['TranslationsInUserLanguages']
+                    for tr in new_trls:
+                        lang_code = tr['LanguageCodeOfUserLanguage']
+                        if lang_code in trls:
+                            trl_text = trls.pop(lang_code)
+                            if tr['Translationscontent'] != trl_text:
+                                tr['Translationscontent'] = trl_text
 
-        # prepare params
-        params = dict(id_d)
-        for k, (k9, v) in qset_map_d.items():
-            params[k9] = v
+                    for lang_code, tr_text in trls.items():
+                        new_trls.append({
+                            'KeyFromHeaderTable': numerator,
+                            'LanguageCodeOfUserLanguage': lang_code,
+                            'Translationscontent': tr_text
+                        })
+                    payload = {
+                        "TranslationsInUserLanguages": new_trls,
+                    }
+                    r = self.session.patch(root_url + f"/MultiLanguageTranslations(Numerator={numerator})",
+                                           json=payload)
+                    if not r.ok:
+                        raise ValidationError(f"Error updating translation of {field}\n{r.text}")
+                else:
+                    payload = {
+                        "TableName": self._base_table,
+                        "FieldAlias": field,
+                        "PrimaryKeyofobject": f"{_id}",
+                    }
+                    new_trls = []
+                    for lang_code, tr_text in trls.items():
+                        new_trls.append({
+                            'LanguageCodeOfUserLanguage': lang_code,
+                            'Translationscontent': tr_text
+                        })
+                    payload['TranslationsInUserLanguages'] = new_trls
+                    r = self.session.post(root_url + "/MultiLanguageTranslations", json=payload)
+                    if not r.ok:
+                        raise ValidationError(f"Error creating translation of {field}\n{r.text}")
 
-        conn = self.conn()
-        cr = conn.cursor()
-        cr.execute(sql, params)
-        count = cr.rowcount
-        if count == 0:
-            raise Exception(_("Impossible to update external record with ID '%s': "
-                              "Register not found on Backend") % (id_d,))
-        elif count > 1:
-            conn.rollback()
-            raise dbapi.IntegrityError("Unexpected error: Returned more the one row with ID: %s" % (id_d,))
-        conn.commit()
-        cr.close()
-        conn.close()
+        self._logout()
 
-        return count
-
-    def create(self, values_d):
-        """ Create a record on the external system """
-        _logger.debug(
-            'method create, model %s, attributes %s',
-            self._name, values_d)
-
-        if not values_d:
-            return 0
-
-        # check if schema exists to avoid injection
-        self._check_schema()
-
-        # build the sql parts
-        fields, params, phvalues = [], [], []
-        for k, v in values_d.items():
-            fields.append(k)
-            params.append(v)
-            if v is None or isinstance(v, str):
-                phvalues.append('%s')
-            elif isinstance(v, (int, float)):
-                phvalues.append('%d')
-            else:
-                raise NotImplementedError("Type %s" % type(v))
-
-        # build retvalues
-        retvalues = ['inserted.%s' % x for x in self._id]
-
-        # prepare the sql with base structure
-        sql = self._sql_insert % dict(schema=self.schema,
-                                      fields=', '.join(fields),
-                                      phvalues=', '.join(phvalues),
-                                      retvalues=', '.join(retvalues))
-
-        # executem la insercio
-        res = self._exec_sql(sql, tuple(params), commit=True)
-        if not res:
-            raise Exception(_("Unexpected!! Nothing created: %s") % (values_d,))
-        elif len(res) > 1:
-            raise Exception("Unexpected!!: Returned more the one row:%s -  %s" % (res, values_d,))
-
-        return res[0]
-
-    def delete(self, resource, ids):
-        _logger.debug('method delete, model %s, ids %s',
-                      resource, ids)
-        raise NotImplementedError
+        return True
 
     def get_version(self):
         res = self._exec_query()

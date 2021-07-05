@@ -149,7 +149,7 @@ class SAPB1Importer(AbstractComponent):
         # persist data
         if binding:
             # if yes, we update it
-            binding.write(internal_data.values(**opts))
+            binding.with_context(connector_no_export=True).write(internal_data.values(**opts))
             _logger.debug('%d updated from SAP B1 %s', binding, external_id)
         else:
             odoo_d = self._find_existing(external_id)
@@ -159,7 +159,7 @@ class SAPB1Importer(AbstractComponent):
                 values = internal_data.values(**opts)
                 values.update(odoo_d)
 
-            binding = self.model.create(values)
+            binding = self.model.with_context(connector_no_export=True).create(values)
             _logger.debug('%d created from SAP B1 %s', binding, external_id)
 
         # finally, we bind both, so the next time we import

@@ -60,8 +60,18 @@
                 <field name="odoo_id"/>
                 <field name="external_id_display" readonly="True"/>
                 <field name="sync_date"/>
-                <button name="resync" type="object"
-                        string="Resynchronize" icon="fa-refresh fa-lg"/>
+                <button
+                        type="object"
+                        string="Resynchronize (import)"
+                        name="resync_import"
+                        icon="fa fa-download"
+                />
+                <button
+                        type="object"
+                        string="Resynchronize (export)"
+                        name="resync_export"
+                        icon="fa fa-upload"
+                />
             </tree>
         </field>
     </record>

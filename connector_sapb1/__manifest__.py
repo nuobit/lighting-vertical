@@ -5,7 +5,7 @@
 {
     'name': "Connector SAP B1",
     'description': "SAP Business One connector",
-    'version': '11.0.0.3.5',
+    'version': '11.0.0.4.0',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Connector',
@@ -14,6 +14,7 @@
         'python': [
             'paramiko',
             'hdbcli',
+            'requests',
         ],
     },
     'depends': [

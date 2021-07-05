@@ -29,16 +29,28 @@
                     <group>
                         <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
-                    <group string="Database">
-                        <field name="db_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="db_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="db_schema" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-
-                        <field name="db_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-                        <field name="db_password" password="True"
-                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
-
-                        <field name="db_version"/>
+                    <group>
+                        <group colspan="2">
+                            <field name="db_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_schema" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group string="Database">
+                            <field name="db_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_password" password="True"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_version"/>
+                        </group>
+                        <group string="Service Layer">
+                            <field name="sl_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_base_url" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_ssl_enabled" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_url"/>
+                            <field name="sl_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_password" password="True"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_version"/>
+                        </group>
                     </group>
                     <group string="File server">
                         <field name="fileserver_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
@@ -85,6 +97,43 @@
                                 </div>
                                 <button name="import_products_since" type="object"
                                         class="oe_highlight" string="Import in background"/>
+                            </group>
+                            <group>
+                                <div>
+                                    <label string="Export Products since"
+                                           class="oe_inline"/>
+                                    <field name="export_products_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="export_products_since" type="object"
+                                        class="oe_highlight" string="Export in background"/>
+                            </group>
+                        </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Catalogs">
+                                <field name="catalog_map" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="catalog_id"/>
+                                        <field name="sap_item_group_id"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="State Marketing">
+                                <field name="state_marketing_map" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="state_marketing"/>
+                                        <field name="sap_state_reference"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Languages">
+                                <field name="language_map" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="lang_id"/>
+                                        <field name="sap_lang_id"/>
+                                        <field name="sap_main_lang"/>
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                     </notebook>

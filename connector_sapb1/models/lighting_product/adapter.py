@@ -21,9 +21,9 @@ class LightingProductAdapter(Component):
                     oitm_base AS (
                         SELECT p.*
                         FROM %(schema)s.OITM p
-                        WHERE p."U_ACC_Obsmark" IN ('Novedades', 'Catalogado', 'Descatalogado',
-                                                    'Fe Digital', 'Histórico', 'Fe Histórico') and
-                              p."ItmsGrpCod" IN (107, 108, 109, 110, 111) -- Cristher, Dopo, Exo, Indeluz, Accesorios
+                        WHERE p."U_ACC_Obsmark" IN ('Online', 'Novedades', 'Catalogado', 'Fe Digital', 
+                                                    'Descatalogado', 'Fe Histórico','Histórico') and
+                              p."ItmsGrpCod" IN (107, 108, 109, 110, 111) -- Cristher, Dopo, Exo, Indeluz, NX Lighting
                     ),
                     -- purchase pricelist
                     purchase_price1 AS (
@@ -191,6 +191,13 @@ class LightingProductAdapter(Component):
                      """
 
     _id = ('ItemCode',)
+
+    _base_table = 'OITM'
+    _translatable_fields = ['ItemName', 'U_U_aplicacion']
+
+    def create(self, values_d):
+        """ Create a record on the external system """
+        raise NotImplementedError("Create products to the Backend is not allowed")
 
     def search(self, filters=[]):
         """ Search records according to some criterias

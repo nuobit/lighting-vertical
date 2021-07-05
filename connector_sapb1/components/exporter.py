@@ -43,8 +43,8 @@ class SAPB1Exporter(AbstractComponent):
         # exports (due to dependencies) and one of them fails.
         # The commit will also release the lock acquired on the binding
         # record
-        if not odoo.tools.config['test_enable']:
-            self.env.cr.commit()  # noqa
+        # if not odoo.tools.config['test_enable']:
+        #     self.env.cr.commit()  # noqa
 
         self._after_export()
         return result
@@ -92,7 +92,7 @@ class SAPB1Exporter(AbstractComponent):
             fields = None  # should be created with all the fields
 
         if self._has_to_skip():
-            return
+            return _('Record skipped.')
 
         # export the missing linked resources
         self._export_dependencies()
