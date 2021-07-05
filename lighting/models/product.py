@@ -18,6 +18,16 @@ YESNO = [
     ('N', _('No')),
 ]
 
+STATES_MARKETING = [
+    ('O', 'Online'),
+    ('N', 'New'),
+    ('C', 'Cataloged'),
+    ('ES', 'Until end of stock'),
+    ('ESH', 'Until end of stock (historical)'),
+    ('D', 'Discontinued'),
+    ('H', 'Historical'),
+]
+
 
 class LightingProduct(models.Model):
     _name = 'lighting.product'
@@ -714,15 +724,9 @@ class LightingProduct(models.Model):
                                      copy=False, track_visibility='onchange')
 
     # marketing tab
-    state_marketing = fields.Selection([
-        ('O', 'Online'),
-        ('N', 'New'),
-        ('C', 'Cataloged'),
-        ('ES', 'Until end of stock'),
-        ('ESH', 'Until end of stock (historical)'),
-        ('D', 'Discontinued'),
-        ('H', 'Historical'),
-    ], string='Marketing status', track_visibility='onchange')
+    state_marketing = fields.Selection(
+        selection=STATES_MARKETING,
+        string='Marketing status', track_visibility='onchange')
 
     on_request = fields.Boolean(string='On request', track_visibility='onchange')
 
