@@ -480,15 +480,15 @@ msgstr "Consistencia del color (SDCM)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_ids
-msgid "Color temperature (K)/Flux (lm)"
-msgstr "Temperatura de color (K)/Flujo (lm)"
+msgid "Color temperature/Flux"
+msgstr "Temperatura de color/Flujo"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_color_temperature_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_ids
-msgid "Color temperature (K)"
-msgstr "Temperatura de color (K)"
+msgid "Color temperature"
+msgstr "Temperatura de color"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_color_temperature_flux_tunable
@@ -1727,8 +1727,13 @@ msgstr "Luminarie con luz de emergencia."
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_id
-msgid "Luminous flux (lm)"
-msgstr "Flujo nominal (lm)"
+msgid "Luminous flux"
+msgstr "Flujo nominal"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_magnitude
+msgid "Flux Magnitude"
+msgstr "Magnitud del flujo"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_flux_menu

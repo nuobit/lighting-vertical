@@ -762,6 +762,7 @@
                             <tree editable="bottom">
                                 <field name="color_temperature_id"/>
                                 <field name="flux_id"/>
+                                <field name="flux_magnitude"/>
                             </tree>
                         </field>
                         <field name="is_color_temperature_flux_tunable" colspan="2"/>

@@ -465,13 +465,13 @@ msgstr "Consistance chromatique (SDCM)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_ids
-msgid "Color temperature (K)/Flux (lm)"
-msgstr "Color temperature (K)/Flux (lm)"
+msgid "Color temperature/Flux"
+msgstr "Color temperature/Flux"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_display
-msgid "Color temperature (K)"
-msgstr "Température de couleur (K)"
+msgid "Color temperature"
+msgstr "Température de couleur"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_color_temperature_flux_tunable
@@ -1647,8 +1647,13 @@ msgstr "Luminarie avec éclairage d'urgence"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
-msgid "Luminous flux (lm)"
-msgstr "Flux nominal (lm)"
+msgid "Luminous flux"
+msgstr "Flux nominal"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_magnitude
+msgid "Flux Magnitude"
+msgstr "Ampleur du flux"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0
