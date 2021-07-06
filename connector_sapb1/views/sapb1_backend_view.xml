@@ -28,6 +28,7 @@
                     </h1>
                     <group>
                         <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
                     </group>
                     <group>
                         <group colspan="2">

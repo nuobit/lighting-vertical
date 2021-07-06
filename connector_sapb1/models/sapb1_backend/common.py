@@ -37,6 +37,13 @@ class SapB1Backend(models.Model):
         string='Company',
     )
 
+    user_id = fields.Many2one(
+        comodel_name='res.users',
+        required=True,
+        string='User',
+        domain="[('company_id', '=', company_id)]"
+    )
+
     # fileserver
     fileserver_host = fields.Char('Hostname', required=True)
     fileserver_port = fields.Integer('Port', default=22, required=True)
@@ -148,7 +155,6 @@ class SapB1Backend(models.Model):
     @api.multi
     def import_products_since(self):
         for rec in self:
-            since_date = fields.Datetime.from_string(rec.import_products_since_date)
             self.env['sapb1.lighting.product'].with_delay(
             ).import_products_since(
                 backend_record=rec)
@@ -158,7 +164,6 @@ class SapB1Backend(models.Model):
     @api.multi
     def export_products_since(self):
         for rec in self:
-            since_date = fields.Datetime.from_string(rec.export_products_since_date)
             self.env['sapb1.lighting.product'].with_delay(
             ).export_products_since(
                 backend_record=rec)

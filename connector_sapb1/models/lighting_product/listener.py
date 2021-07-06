@@ -22,5 +22,6 @@ class SAPB1LightingProductImporter(Component):
             if record.state == 'published':
                 relevant_fields.add('state')
         if fields is None or relevant_fields & set(fields):
-            for backend in record.sapb1_bind_ids.mapped('backend_id'):
-                self.env["sapb1.lighting.product"].with_delay().export_record(backend, record)
+            for backend in record.sudo().sapb1_bind_ids.mapped('backend_id'):
+                self.env["sapb1.lighting.product"].sudo(backend.user_id) \
+                    .with_delay().export_record(backend, record)
