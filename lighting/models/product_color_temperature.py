@@ -32,7 +32,8 @@ class LightingProductColorTemperature(models.Model):
 
     @api.multi
     def unlink(self):
-        records = self.env['lighting.product.source.line'].search([('color_temperature_flux_ids.color_temperature_id', 'in', self.ids)])
+        records = self.env['lighting.product.source.line'].search(
+            [('color_temperature_flux_ids.color_temperature_id', 'in', self.ids)])
         if records:
             raise UserError(_("You are trying to delete a record that is still referenced!"))
         return super().unlink()

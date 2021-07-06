@@ -24,7 +24,8 @@ class LightingProductSourceType(models.Model):
 
     def _compute_product_count(self):
         for record in self:
-            record.product_count = self.env['lighting.product'].search_count([('source_ids.line_ids.type_id', '=', record.id)])
+            record.product_count = self.env['lighting.product'].search_count(
+                [('source_ids.line_ids.type_id', '=', record.id)])
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The source type description must be unique!'),
                         ('code_uniq', 'unique (code)', 'The source type code must be unique!'),
