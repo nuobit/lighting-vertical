@@ -400,8 +400,8 @@ msgstr "CRI"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cutting_length
-msgid "Cutting length (cm)"
-msgstr "Longitud de corte (cm)"
+msgid "Cutting length (mm)"
+msgstr "Longitud de corte (mm)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cable_outlets
