@@ -38,10 +38,33 @@ from . import product_photobiologicalriskgroup
 from . import product_ecorraecategory
 from . import product_connectortype
 
+from . import product_auxiliaryequipment
+from . import product_auxiliaryequipmentbrand
+from . import product_auxiliaryequipmentmodel
+
+from . import product_dimmable
+from . import product_energyefficiency
+from . import product_fanwattage
+
+from . import product_ledbrand
+from . import product_ledchip
+
+from . import product_sensor
+
 from . import product_attachment
 from . import product_attachment_type
 
+from . import product_source
+from . import product_source_line
 from . import product_source_type
 from . import product_source_lampholder
 
-from . import models
+from . import product_beam
+from . import product_beam_dimension
+from . import product_beam_photodistribution
+
+from . import assembler
+from . import language
+
+from . import supplier
+from . import supplier_product
