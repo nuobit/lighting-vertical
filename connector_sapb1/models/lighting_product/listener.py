@@ -24,4 +24,4 @@ class SAPB1LightingProductImporter(Component):
         if fields is None or relevant_fields & set(fields):
             for backend in record.sudo().sapb1_bind_ids.mapped('backend_id'):
                 self.env["sapb1.lighting.product"].sudo(backend.user_id) \
-                    .with_delay().export_record(backend, record)
+                    .with_delay().export_record(backend.sudo(backend.user_id), record)
