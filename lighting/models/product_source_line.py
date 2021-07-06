@@ -39,7 +39,7 @@ class LightingProductSourceLine(models.Model):
                         rec.source_id.product_id.display_name,
                         rec.type_id.display_name))
 
-    color_temperature_flux_ids = fields.One2many(string='Color temperature (K)/Flux (lm)',
+    color_temperature_flux_ids = fields.One2many(string='Color temperature/Flux',
                                                  comodel_name='lighting.product.source.line.color.temperature.flux',
                                                  inverse_name='source_line_id',
                                                  copy=True)
@@ -57,10 +57,10 @@ class LightingProductSourceLine(models.Model):
             if self.is_color_temperature_flux_tunable:
                 self.is_color_temperature_flux_tunable = False
 
-    color_temperature_display = fields.Char(string='Color temperature (K)',
+    color_temperature_display = fields.Char(string='Color temperature',
                                             compute='_compute_color_temperature_flux_display')
 
-    luminous_flux_display = fields.Char(string='Luminous flux (lm)',
+    luminous_flux_display = fields.Char(string='Luminous flux',
                                         compute='_compute_color_temperature_flux_display')
 
     @api.depends('color_temperature_flux_ids',
@@ -68,6 +68,7 @@ class LightingProductSourceLine(models.Model):
                  'color_temperature_flux_ids.color_temperature_id.value',
                  'color_temperature_flux_ids.flux_id',
                  'color_temperature_flux_ids.flux_id.value',
+                 'color_temperature_flux_ids.flux_magnitude',
                  'is_color_temperature_flux_tunable',
                  'source_id')
     def _compute_color_temperature_flux_display(self):
@@ -86,12 +87,16 @@ class LightingProductSourceLine(models.Model):
                     flux_values = rec.color_temperature_flux_ids \
                         .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.flux_id.value) \
                         .sorted(lambda x: x.color_temperature_id.value)
+                    flux_magnitude_options = dict(
+                        self.color_temperature_flux_ids.fields_get(['flux_magnitude'], ['selection'])
+                            .get('flux_magnitude').get('selection'))
                     rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
-                        .join([x.flux_id.value and ('%ilm' % x.flux_id.value) or '-'
+                        .join([x.flux_id.value and ('%i%s' % (
+                        x.flux_id.value, flux_magnitude_options[x.flux_magnitude])) or '-'
                                for x in flux_values])
 
     ############## to remove
-    color_temperature_ids = fields.Many2many(string='Color temperature (K)',
+    color_temperature_ids = fields.Many2many(string='Color temperature',
                                              comodel_name='lighting.product.color.temperature',
                                              relation='lighting_product_source_line_color_temperature_rel',
                                              column1='source_line_id', column2='color_temperature_id')
