@@ -23,12 +23,12 @@ class LightingProductFlux(models.Model):
     _sql_constraints = [('name_uniq', 'unique (value)', 'The flux must be unique!'),
                         ]
 
-    @api.multi
-    def name_get(self):
-        res = []
-        for rec in self:
-            res.append((rec.id, '%ilm' % rec.value))
-        return res
+    # @api.multi
+    # def name_get(self):
+    #     res = []
+    #     for rec in self:
+    #         res.append((rec.id, '%ilm' % rec.value))
+    #     return res
 
     @api.multi
     def unlink(self):
