@@ -314,7 +314,8 @@ class LightingProduct(models.Model):
     @api.depends('category_id', 'category_id.is_accessory')
     def _compute_is_accessory(self):
         for rec in self:
-            rec.is_accessory = rec.category_id._get_is_accessory()
+            if rec.category_id:
+                rec.is_accessory = rec.category_id._get_is_accessory()
 
     is_composite = fields.Boolean(string="Is composite", default=False)
 
