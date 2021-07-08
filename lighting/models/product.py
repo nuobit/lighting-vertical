@@ -699,29 +699,29 @@ class LightingProduct(models.Model):
     # inventory tab
     onhand_qty = fields.Float(string="On hand", readonly=True,
                               required=True, default=0,
-                              copy=False, track_visibility='onchange')
+                              copy=False)
     commited_qty = fields.Float(string="Commited", readonly=True,
                                 required=True, default=0,
-                                copy=False, track_visibility='onchange')
+                                copy=False)
     available_qty = fields.Float(string="Available", readonly=True,
                                  required=True, default=0,
-                                 copy=False, track_visibility='onchange')
+                                 copy=False)
 
     capacity_qty = fields.Float(string="Capacity", readonly=True,
                                 required=True, default=0,
-                                copy=False, track_visibility='onchange')
+                                copy=False)
 
     onorder_qty = fields.Float(string="On order", readonly=True,
                                required=True, default=0,
-                               copy=False, track_visibility='onchange')
+                               copy=False)
 
     stock_future_qty = fields.Float(string="Future stock", readonly=True,
                                     required=True, default=0,
-                                    copy=False, track_visibility='onchange')
+                                    copy=False)
     stock_future_date = fields.Date(string="Future stock date", readonly=True,
-                                    copy=False, track_visibility='onchange')
+                                    copy=False)
     last_purchase_date = fields.Date(string="Last purchase date", readonly=True,
-                                     copy=False, track_visibility='onchange')
+                                     copy=False)
 
     # marketing tab
     state_marketing = fields.Selection(
