@@ -88,7 +88,7 @@ class LightingProductSourceLine(models.Model):
                         .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.flux_id.value) \
                         .sorted(lambda x: x.color_temperature_id.value)
                     flux_magnitude_options = dict(
-                        self.color_temperature_flux_ids.fields_get(['flux_magnitude'], ['selection'])
+                        rec.color_temperature_flux_ids.fields_get(['flux_magnitude'], ['selection'])
                             .get('flux_magnitude').get('selection'))
                     rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
                         .join([x.flux_id.value and ('%i%s' % (
