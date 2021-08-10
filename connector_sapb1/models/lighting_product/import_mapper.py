@@ -33,11 +33,6 @@ class LigthingProductImportMapper(Component):
             return {'effective_date': record['U_U_FECHACAT']}
 
     @mapping
-    def description_manual(self, record):
-        return {'description_manual': record['ItemName'] and
-                                      record['ItemName'].strip() or None}
-
-    @mapping
     def ean_codebar(self, record):
         return {'ean': record['CodeBars'] and
                        record['CodeBars'].strip() or None}
@@ -103,7 +98,7 @@ class LigthingProductImportMapper(Component):
             values['ibox_height'] = record['SHeight1']
         return values
 
-    @only_create
+    # @only_create
     @mapping
     def description_manual(self, record):
         return {'description_manual': record['ItemName'] and
