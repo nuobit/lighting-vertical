@@ -3,13 +3,11 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import re
-import decimal
 
 from odoo import _
-
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create)
+    mapping, only_create)
 from odoo.exceptions import ValidationError
 
 ACCESSORY_CATALOG = 'NX Lighting'
@@ -33,6 +31,11 @@ class LigthingProductImportMapper(Component):
     def effective_date(self, record):
         if record['U_U_FECHACAT']:
             return {'effective_date': record['U_U_FECHACAT']}
+
+    @mapping
+    def description_manual(self, record):
+        return {'description_manual': record['ItemName'] and
+                                      record['ItemName'].strip() or None}
 
     @mapping
     def ean_codebar(self, record):

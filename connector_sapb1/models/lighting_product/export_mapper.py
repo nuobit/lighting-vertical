@@ -2,14 +2,9 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import re
-import decimal
-
-from odoo import _
-
 from odoo.addons.component.core import Component
 from odoo.addons.connector.components.mapper import (
-    mapping, external_to_m2o, only_create)
+    mapping)
 
 from odoo.exceptions import ValidationError
 
@@ -62,13 +57,13 @@ class LigthingProductExportMapper(Component):
                 .category_id._get_root().name
         return {'U_U_aplicacion': values}
 
-    @mapping
-    def description(self, record):
-        if not self.backend_record.language_map:
-            raise ValidationError("There's no language mapping "
-                                  "in the Backend configuration")
-        values = {}
-        for lmap in self.backend_record.language_map:
-            values[lmap.sap_lang_id] = record.odoo_id.with_context(lang=lmap.lang_id.code) \
-                .description
-        return {'ItemName': values}
+    # @mapping
+    # def description(self, record):
+    #     if not self.backend_record.language_map:
+    #         raise ValidationError("There's no language mapping "
+    #                               "in the Backend configuration")
+    #     values = {}
+    #     for lmap in self.backend_record.language_map:
+    #         values[lmap.sap_lang_id] = record.odoo_id.with_context(lang=lmap.lang_id.code) \
+    #             .description
+    #     return {'ItemName': values}
