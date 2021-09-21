@@ -86,10 +86,9 @@
                                     <field name="domain"/>
                                 </group>
                             </group>
-                            <group>
-                                <group>
-                                    <field name="lang_ids" widget="many2many_checkboxes"/>
-                                </group>
+                            <group col="4">
+                                <field name="lang_ids" widget="many2many_checkboxes"/>
+                                <field name="lang_field_format"/>
                             </group>
                         </page>
                     </notebook>

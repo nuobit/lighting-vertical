@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _, tools
-from odoo.exceptions import UserError
 
 
 class LightingExportTemplate(models.Model):
@@ -45,6 +44,12 @@ class LightingExportTemplate(models.Model):
                                 string='Languages',
                                 domain=[('active', '=', True)],
                                 track_visibility='onchange')
+    lang_field_format = fields.Selection(
+        string="Language Field Format",
+        selection=[('postfix', 'Postfix')],
+        required=True, default='postfix',
+        help="Only used if multiple languages are selected and all of them are shown on the same file. "
+             "Used to differentiate the same field from different languages. p.e descrption_EN, description_FR, etc.")
 
     hide_empty_fields = fields.Boolean(string="Hide empty fields", default=True)
 
