@@ -21,6 +21,9 @@ MRK_STATE_ORD = {
 class LightingExportTemplate(models.Model):
     _inherit = 'lighting.export.template'
 
+    lang_field_format = fields.Selection(
+        selection_add=[('json', 'Json')])
+
     export_labels = fields.Boolean(string="Labels")
     export_products = fields.Boolean(string="Products")
     export_categories = fields.Boolean(string="Categories")
@@ -121,13 +124,13 @@ class LightingExportTemplate(models.Model):
         for field, meta in header.items():
             field_d = {}
             has_value = False
-            meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x) if x == 'en_US' else (1, x))
+            meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x.code) if x.code == 'en_US' else (1, x.code))
             for lang in meta_langs:
-                datum = getattr(obj.with_context(lang=lang, template_id=self), field)
+                datum = getattr(obj.with_context(lang=lang.code, template_id=self), field)
                 subfield = meta['subfield'] or 'display_name'
                 order_field = 'sequence'
                 if meta['type'] == 'selection':
-                    datum = dict(meta['selection'][lang]).get(datum)
+                    datum = dict(meta['selection'][lang.code]).get(datum)
                 elif meta['type'] == 'boolean':
                     if meta['translate']:
                         datum = _('Yes') if datum else _('No')
@@ -158,12 +161,22 @@ class LightingExportTemplate(models.Model):
                     field_d = datum
                     break
                 else:
-                    field_d[lang] = datum
+                    if self.lang_field_format == 'json':
+                        field_d[lang.code] = datum
+                    elif self.lang_field_format == 'postfix':
+                        field_d[lang.iso_code] = datum
+                    else:
+                        raise UserError("Language field format %s not supported on json templates" % (
+                            self.lang_field_format))
 
             if has_value or not hide_empty_fields:
                 if meta['effective_field_name']:
                     field = meta['effective_field_name']
-                obj_d[field] = field_d
+                if meta['translate'] and self.lang_field_format == 'postfix':
+                    for lang, datum in field_d.items():
+                        obj_d['%s_%s' % (field, lang)] = datum
+                else:
+                    obj_d[field] = field_d
 
         return obj_d
 
@@ -173,7 +186,14 @@ class LightingExportTemplate(models.Model):
         for field, meta in header.items():
             if meta['effective_field_name']:
                 field = meta['effective_field_name']
-            label_d[field] = meta['string']
+            if self.lang_field_format == 'json':
+                label_d[field] = {k.code: v for k, v in meta['string'].items()}
+            elif self.lang_field_format == 'postfix':
+                for lang, label in meta['string'].items():
+                    label_d['%s_%s' % (field, lang.iso_code)] = label
+            else:
+                raise UserError("Language field format %s not supported on json templates" % (
+                    self.lang_field_format))
         _logger.info("Product labels successfully generated.")
         return label_d
 
@@ -573,7 +593,7 @@ class LightingExportTemplate(models.Model):
                             if k not in item:
                                 item[k] = {}
 
-                            item[k][lang.code] = v
+                            item[k][lang] = v
             if item:
                 item['effective_field_name'] = line.effective_field_name
                 item['subfield'] = line.subfield_name
