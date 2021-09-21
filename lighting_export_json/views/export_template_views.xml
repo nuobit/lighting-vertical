@@ -18,6 +18,15 @@
                         attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}"/>
             </xpath>
             <xpath expr="//page[@name='config']" position="inside">
+                <group col="4" string="Files" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
+                    <field name="export_labels"/>
+                    <field name="export_products"/>
+                    <field name="export_categories"/>
+                    <field name="export_families"/>
+                    <field name="export_templates"/>
+                    <field name="export_groups"/>
+                    <field name="export_bundles"/>
+                </group>
                 <group col="4" string="Output" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
                     <group col="3" colspan="4">
                         <field colspan="1" name="output_base_directory"/>
