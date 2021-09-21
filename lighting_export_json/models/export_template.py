@@ -2,15 +2,14 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+import ast
+import datetime
+import json
+import logging
+import os
+
 from odoo import api, fields, models, _, tools
 from odoo.exceptions import UserError
-
-import os
-import json
-import datetime
-import ast
-
-import logging
 
 _logger = logging.getLogger(__name__)
 
@@ -21,6 +20,14 @@ MRK_STATE_ORD = {
 
 class LightingExportTemplate(models.Model):
     _inherit = 'lighting.export.template'
+
+    export_labels = fields.Boolean(string="Labels")
+    export_products = fields.Boolean(string="Products")
+    export_categories = fields.Boolean(string="Categories")
+    export_families = fields.Boolean(string="Families")
+    export_templates = fields.Boolean(string="Templates")
+    export_groups = fields.Boolean(string="Groups")
+    export_bundles = fields.Boolean(string="Bundles")
 
     output_type = fields.Selection(selection_add=[('export_product_json', _('Json file (.json)'))])
 
@@ -68,6 +75,9 @@ class LightingExportTemplate(models.Model):
 
             if isinstance(o, set):
                 return sorted(list(o))
+
+        if not self.field_ids:
+            raise UserError("You need to define at least one field")
 
         kwargs = {}
         if self.pretty_print:
@@ -157,54 +167,17 @@ class LightingExportTemplate(models.Model):
 
         return obj_d
 
-    def generate_data(self, object_ids, hide_empty_fields=True):
-        _logger.info("Export data started...")
-        active_langs = self.lang_ids.mapped('code')
-
-        res = {}
-        ## base headers with labels replaced and subset acoridng to template
-        _logger.info("Generating product headers...")
-        header = {}
-        for line in self.field_ids.sorted(lambda x: x.sequence):
-            field_name = line.field_id.name
-            item = {}
-            for lang in active_langs:
-                item_lang = self.env['lighting.product']. \
-                    with_context(lang=lang).fields_get([field_name], ['type', 'string', 'selection'])
-                if item_lang:
-                    meta = item_lang[field_name]
-                    for k, v in meta.items():
-                        if k in ('type',):
-                            if k not in item:
-                                item[k] = v
-                        else:
-                            if k == 'string':
-                                line_lang = line.with_context(lang=lang)
-                                if line_lang.label and line_lang.label.strip():
-                                    v = line_lang.label
-
-                            if k not in item:
-                                item[k] = {}
-
-                            item[k][lang] = v
-            if item:
-                item['effective_field_name'] = line.effective_field_name
-                item['subfield'] = line.subfield_name
-                item['translate'] = line.translate
-                header[field_name] = item
-        _logger.info("Product headers successfully generated.")
-
-        ############## LABELS ################
+    def _generate_labels(self, header):
         _logger.info("Generating product labels...")
         label_d = {}
         for field, meta in header.items():
             if meta['effective_field_name']:
                 field = meta['effective_field_name']
             label_d[field] = meta['string']
-        res.update({'labels': label_d})
         _logger.info("Product labels successfully generated.")
+        return label_d
 
-        ############## SIMPLE PRODUCTS ################
+    def _generate_products(self, header, object_ids, hide_empty_fields):
         n = len(object_ids)
         _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
@@ -217,48 +190,11 @@ class LightingExportTemplate(models.Model):
 
             if (i % th) == 0:
                 _logger.info(" - Progress products generation %i%%" % (int(i / n * 100)))
-
-        res.update({'products': objects_ld})
         _logger.info("Products successfully generated...")
+        return objects_ld
 
-        ############ AUXILIARS  #####
-        ### per poder indexat els prodductes i brenir les dades directament
-        _logger.info("Generating dictionary of products...")
-        objects_d = {}
-        for obj in objects_ld:
-            key = obj['reference']
-            if key in objects_d:
-                raise Exception("Unexpected!! The key %s is duplicated!" % key)
-            objects_d[key] = obj
-        _logger.info("Dictionary of products successfully generated.")
-
-        ## auxiliar per agrupar referneeicas amb el mateix finish
-        _logger.info("Generating dictionary of groups by finish...")
-        template_d = {}
-        for obj_id in object_ids:
-            obj = self.env['lighting.product'].browse(obj_id)
-            template_name = getattr(obj, 'finish_group_name', None)
-            if template_name:
-                if template_name not in template_d:
-                    template_d[template_name] = []
-                template_d[template_name].append(obj)
-        _logger.info("Dictionary of groups by finish successfully generated.")
-
-        ## auxiliar per agrupar referneeicas amb el mateixa photo
-        _logger.info("Generating dictionary of groups by photo...")
-        photo_group_d = {}
-        for obj_id in object_ids:
-            obj = self.env['lighting.product'].browse(obj_id)
-            group_id = getattr(obj, 'photo_group_id', None)
-            if group_id:
-                if group_id not in photo_group_d:
-                    photo_group_d[group_id] = self.env['lighting.product']
-                photo_group_d[group_id] += obj
-        _logger.info("Dictionary of groups by photo successfully generated.")
-
-        ############## BUNDLES (by finish) ################
+    def _generate_bundles(self, template_d):
         _logger.info("Generating bundle products...")
-
         # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
         # dels requireds associats
         bundle_d = {}
@@ -273,10 +209,10 @@ class LightingExportTemplate(models.Model):
 
                 # bundle name
                 bundle_name_d = {}
-                for lang in active_langs:
-                    lang_group_description = products[0].with_context(lang=lang).group_description
+                for lang in self.lang_ids:
+                    lang_group_description = products[0].with_context(lang=lang.code).group_description
                     if lang_group_description:
-                        bundle_name_d[lang] = lang_group_description
+                        bundle_name_d[lang.code] = lang_group_description
 
                 if bundle_name_d:
                     # temporary solution to not break integration
@@ -317,15 +253,13 @@ class LightingExportTemplate(models.Model):
                                 'store_fname': attachment_ids[0].attachment_id.store_fname,
                             }
                         })
-
-        res.update({'bundles': bundle_d})
         _logger.info("Bundle products successfully generated...")
+        return bundle_d
 
-        ############## CONFIGURABLES (by finish) ################
+    def _generate_templates(self, template_d, objects_d):
         _logger.info("Generating configurable products (grouped by finish)...")
-
-        # comprovem que les temlates rene  mes dun element, sino, leliminem
-        # escollim un objet qualsevol o generalm al descricio sense el finish
+        # comprovem que les templates rene  mes dun element, sino, l'eliminem
+        # escollim un objecte qualsevol o generalm al descricio sense el finish
         template_clean_d = {}
         for k, v in template_d.items():
             if len(v) > 1:
@@ -338,11 +272,11 @@ class LightingExportTemplate(models.Model):
 
                 ## description
                 template_desc_d = {}
-                for lang in active_langs:
-                    lang_description = v[0].with_context(lang=lang)._generate_description(
+                for lang in self.lang_ids:
+                    lang_description = v[0].with_context(lang=lang.code)._generate_description(
                         show_variant_data=False)
                     if lang_description:
-                        template_desc_d[lang] = lang_description
+                        template_desc_d[lang.code] = lang_description
                 if template_desc_d:
                     if k not in template_clean_d:
                         template_clean_d[k] = {}
@@ -385,13 +319,11 @@ class LightingExportTemplate(models.Model):
 
                 if product_data:
                     template_clean_d[k].update(product_data)
-
-        res.update({'templates': template_clean_d})
         _logger.info("Configurable products successfully generated...")
+        return template_clean_d
 
-        ############## GROUPS ################
+    def _generate_groups(self, photo_group_d, objects_d):
         _logger.info("Generating product groups...")
-
         groups_d = {}
         for group, products in photo_group_d.items():
             # if the group does not contain any bundle
@@ -432,10 +364,10 @@ class LightingExportTemplate(models.Model):
                 # description (is a common field too)
                 product = products[0].with_context(template_id=self)
                 group_desc_d = {}
-                for lang in active_langs:
-                    lang_group_description = product.with_context(lang=lang).group_description
+                for lang in self.lang_ids:
+                    lang_group_description = product.with_context(lang=lang.code).group_description
                     if lang_group_description:
-                        group_desc_d[lang] = lang_group_description
+                        group_desc_d[lang.code] = lang_group_description
 
                 if group_desc_d:
                     product_data.update({
@@ -449,182 +381,298 @@ class LightingExportTemplate(models.Model):
 
                 if group_d:
                     groups_d[group.name] = group_d
-
-        res.update({'groups': groups_d})
         _logger.info("Product groups successfully generated...")
+        return groups_d
 
-        ############## FAMILIES ################
-        if objects_ld:
-            ## generm la informacio de les families
-            _logger.info("Generating family data...")
-            # obtenim els ids de es fmailie sel sobjectes seleccionats
-            objects = self.env['lighting.product'].browse(object_ids)
-            families = objects.mapped('family_ids')
-            if families:
-                family_ld = []
-                for family in families.sorted(lambda x: x.sequence):
-                    family_d = {}
-                    # descricpio llarga
-                    family_descr_lang = {}
-                    for lang in active_langs:
-                        descr = family.with_context(lang=lang).description
-                        if descr:
-                            family_descr_lang[lang] = descr
-                    if family_descr_lang:
+    def _generate_families(self, object_ids):
+        ## generm la informacio de les families
+        _logger.info("Generating family data...")
+        # obtenim els ids de es fmailie sel sobjectes seleccionats
+        objects = self.env['lighting.product'].browse(object_ids)
+        families = objects.mapped('family_ids')
+        if families:
+            family_ld = []
+            for family in families.sorted(lambda x: x.sequence):
+                family_d = {}
+                # descricpio llarga
+                family_descr_lang = {}
+                for lang in self.lang_ids:
+                    descr = family.with_context(lang=lang.code).description
+                    if descr:
+                        family_descr_lang[lang.code] = descr
+                if family_descr_lang:
+                    family_d.update({
+                        'description': family_descr_lang,
+                    })
+                # adjunts ordenats
+                if family.attachment_ids:
+                    attachments = family.attachment_ids \
+                        .filtered(lambda x: x.is_default) \
+                        .sorted(lambda x: (x.sequence, x.id))
+                    if attachments:
                         family_d.update({
-                            'description': family_descr_lang,
+                            'attachment': {
+                                'datas_fname': attachments[0].datas_fname,
+                                'store_fname': attachments[0].attachment_id.store_fname,
+                            },
                         })
-                    # adjunts ordenats
-                    if family.attachment_ids:
-                        attachments = family.attachment_ids \
-                            .filtered(lambda x: x.is_default) \
-                            .sorted(lambda x: (x.sequence, x.id))
-                        if attachments:
-                            family_d.update({
-                                'attachment': {
-                                    'datas_fname': attachments[0].datas_fname,
-                                    'store_fname': attachments[0].attachment_id.store_fname,
-                                },
-                            })
 
-                    # nom: si la familia te dades, afegim el nom i lafegim, sino no
-                    if family_d:
-                        family_d.update({
-                            'name': family.name,
-                        })
-                        family_ld.append(family_d)
-
-                res.update({'families': family_ld})
-
+                # nom: si la familia te dades, afegim el nom i lafegim, sino no
+                if family_d:
+                    family_d.update({
+                        'name': family.name,
+                    })
+                    family_ld.append(family_d)
             _logger.info("Family data successfully generated...")
+            return family_ld
+
+    def _generate_categories(self, categories):
+        ## generem la informacio de les categories
+        _logger.info("Generating category data...")
+        category_ld = []
+        for category in categories.sorted(lambda x: x.sequence):
+            category_d = {
+                'id': category.id,
+            }
+            if category.attachment_ids:
+                category_attach_d = {}
+
+                # brands OLD
+                brand_attach_d = {}
+                brand_attachments = category.attachment_ids \
+                    .filtered(lambda x: x.brand_id) \
+                    .sorted(lambda x: (x.sequence, x.id))
+                for a in brand_attachments:
+                    brand = a.brand_id.name
+                    if brand not in brand_attach_d:
+                        brand_attach_d[brand] = {
+                            'datas_fname': a.datas_fname,
+                            'store_fname': a.attachment_id.store_fname,
+                        }
+                if brand_attach_d:
+                    category_attach_d.update({
+                        'catalog': brand_attach_d,
+                    })
+
+                # location OLD
+                location_attach_d = {}
+                location_attachments = category.attachment_ids \
+                    .filtered(lambda x: x.location_id) \
+                    .sorted(lambda x: (x.sequence, x.id))
+                if location_attachments:
+                    a = location_attachments[0]
+                    location_attach_d = {
+                        'datas_fname': a.datas_fname,
+                        'store_fname': a.attachment_id.store_fname,
+                    }
+                if location_attach_d:
+                    category_attach_d.update({
+                        'location': location_attach_d,
+                    })
+
+                # global
+                if not category_attach_d:
+                    global_attach_d = {}
+                    global_attachments = category.attachment_ids \
+                        .sorted(lambda x: (x.sequence, x.id))
+                    if global_attachments:
+                        a = global_attachments[0]
+                        global_attach_d = {
+                            'datas_fname': a.datas_fname,
+                            'store_fname': a.attachment_id.store_fname,
+                        }
+                    if global_attach_d:
+                        category_attach_d.update({
+                            None: global_attach_d,
+                        })
+
+                # category attach OLD
+                if category_attach_d:
+                    category_d.update({
+                        'attachment': category_attach_d,
+                    })
+
+                category_attach_d = {}
+
+                # brands NEW
+                brand_attach_d = {}
+                brand_attachments = category.attachment_ids \
+                    .sorted(lambda x: (x.sequence, x.id))
+                for a in brand_attachments:
+                    brand = not a.brand_default and a.brand_id.name or None
+                    if brand not in brand_attach_d:
+                        brand_attach_d[brand] = {
+                            'datas_fname': a.datas_fname,
+                            'store_fname': a.attachment_id.store_fname,
+                        }
+                if brand_attach_d:
+                    category_attach_d.update({
+                        'catalog': brand_attach_d,
+                    })
+
+                # location NEW
+                location_attachments = category.attachment_ids \
+                    .sorted(lambda x: (x.sequence, x.id))
+                location_attach_d = {}
+                for la in location_attachments:
+                    location_code = not la.location_default and la.location_id.code or None
+                    if location_code not in location_attach_d:
+                        location_attach_d[location_code] = {
+                            'datas_fname': a.datas_fname,
+                            'store_fname': a.attachment_id.store_fname,
+                        }
+                if location_attach_d:
+                    category_attach_d.update({
+                        'location': location_attach_d,
+                    })
+
+                # category attach NEW
+                if category_attach_d:
+                    category_d.update({
+                        'attachmentNEW': category_attach_d,
+                    })
+
+            # nom de la categoria
+            name_lang_d = {}
+            for lang in self.lang_ids:
+                lang_name = category.with_context(lang=lang.code).name
+                if lang_name:
+                    name_lang_d[lang.code] = lang_name
+            if name_lang_d:
+                category_d.update({
+                    'name': name_lang_d,
+                })
+
+            if category_d:
+                category_ld.append(category_d)
+        _logger.info("Category data successfully generated...")
+        return category_ld
+
+    def _generate_product_header(self):
+        ## base headers with labels replaced and subset acoridng to template
+        _logger.info("Generating product headers...")
+        header = {}
+        for line in self.field_ids.sorted(lambda x: x.sequence):
+            field_name = line.field_id.name
+            item = {}
+            for lang in self.lang_ids:
+                item_lang = self.env['lighting.product']. \
+                    with_context(lang=lang.code).fields_get([field_name], ['type', 'string', 'selection'])
+                if item_lang:
+                    meta = item_lang[field_name]
+                    for k, v in meta.items():
+                        if k in ('type',):
+                            if k not in item:
+                                item[k] = v
+                        else:
+                            if k == 'string':
+                                line_lang = line.with_context(lang=lang.code)
+                                if line_lang.label and line_lang.label.strip():
+                                    v = line_lang.label
+
+                            if k not in item:
+                                item[k] = {}
+
+                            item[k][lang.code] = v
+            if item:
+                item['effective_field_name'] = line.effective_field_name
+                item['subfield'] = line.subfield_name
+                item['translate'] = line.translate
+                header[field_name] = item
+        _logger.info("Product headers successfully generated.")
+        return header
+
+    ############ AUXILIARS  #####
+    def _groups_by_finish(self, object_ids):
+        ## auxiliar per agrupar referneeicas amb el mateix finish
+        _logger.info("Generating dictionary of groups by finish...")
+        template_d = {}
+        for obj_id in object_ids:
+            obj = self.env['lighting.product'].browse(obj_id)
+            template_name = getattr(obj, 'finish_group_name', None)
+            if template_name:
+                if template_name not in template_d:
+                    template_d[template_name] = []
+                template_d[template_name].append(obj)
+        _logger.info("Dictionary of groups by finish successfully generated.")
+        return template_d
+
+    def _groups_by_photo(self, object_ids):
+        ## auxiliar per agrupar referneeicas amb el mateixa photo
+        _logger.info("Generating dictionary of groups by photo...")
+        photo_group_d = {}
+        for obj_id in object_ids:
+            obj = self.env['lighting.product'].browse(obj_id)
+            group_id = getattr(obj, 'photo_group_id', None)
+            if group_id:
+                if group_id not in photo_group_d:
+                    photo_group_d[group_id] = self.env['lighting.product']
+                photo_group_d[group_id] += obj
+        _logger.info("Dictionary of groups by photo successfully generated.")
+        return photo_group_d
+
+    def _products_by_reference(self, objects_ld):
+        ### per poder indexat els prodductes i brenir les dades directament
+        _logger.info("Generating dictionary of products...")
+        objects_d = {}
+        for obj in objects_ld:
+            key = obj['reference']
+            if key in objects_d:
+                raise Exception("Unexpected!! The key %s is duplicated!" % key)
+            objects_d[key] = obj
+        _logger.info("Dictionary of products successfully generated.")
+        return objects_d
+
+    ###### MAIN method
+    def generate_data(self, object_ids, hide_empty_fields=True):
+        _logger.info("Export data started...")
+
+        ####### HEADER ########
+        header = self._generate_product_header()
+
+        res = {}
+        ############## LABELS ################
+        if self.export_labels:
+            res.update({'labels': self._generate_labels(header)})
+
+        ############## PRODUCTS ################
+        objects_ld = self._generate_products(header, object_ids, hide_empty_fields)
+        if self.export_products:
+            res.update({'products': objects_ld})
+
+        ############## FAMILIES ###############
+        if self.export_families:
+            if objects_ld:
+                res.update({'families': self._generate_families(object_ids)})
 
         ############## CATEGORIES ################
-        if objects_ld:
-            ## generm la informacio de les categories
-            _logger.info("Generating category data...")
-            objects = self.env['lighting.product'].browse(object_ids)
-            categories = objects.mapped('category_id.root_id')
-            if categories:
-                category_ld = []
-                for category in categories.sorted(lambda x: x.sequence):
-                    category_d = {
-                        'id': category.id,
-                    }
-                    if category.attachment_ids:
-                        category_attach_d = {}
+        if self.export_categories:
+            if objects_ld:
+                objects = self.env['lighting.product'].browse(object_ids)
+                categories = objects.mapped('category_id.root_id')
+                if categories:
+                    res.update({'categories': self._generate_categories(categories)})
 
-                        # brands OLD
-                        brand_attach_d = {}
-                        brand_attachments = category.attachment_ids \
-                            .filtered(lambda x: x.brand_id) \
-                            .sorted(lambda x: (x.sequence, x.id))
-                        for a in brand_attachments:
-                            brand = a.brand_id.name
-                            if brand not in brand_attach_d:
-                                brand_attach_d[brand] = {
-                                    'datas_fname': a.datas_fname,
-                                    'store_fname': a.attachment_id.store_fname,
-                                }
-                        if brand_attach_d:
-                            category_attach_d.update({
-                                'catalog': brand_attach_d,
-                            })
+        objects_d = None
+        ############## GROUPS ################
+        if self.export_groups:
+            photo_group_d = self._groups_by_photo(object_ids)
+            objects_d = self._products_by_reference(objects_ld)
+            res.update({'groups': self._generate_groups(photo_group_d, objects_d)})
 
-                        # location OLD
-                        location_attach_d = {}
-                        location_attachments = category.attachment_ids \
-                            .filtered(lambda x: x.location_id) \
-                            .sorted(lambda x: (x.sequence, x.id))
-                        if location_attachments:
-                            a = location_attachments[0]
-                            location_attach_d = {
-                                'datas_fname': a.datas_fname,
-                                'store_fname': a.attachment_id.store_fname,
-                            }
-                        if location_attach_d:
-                            category_attach_d.update({
-                                'location': location_attach_d,
-                            })
+        template_d = None
+        ############## BUNDLES (by finish) ################
+        if self.export_bundles:
+            template_d = self._groups_by_finish(object_ids)
+            res.update({'bundles': self._generate_bundles(template_d)})
 
-                        # global
-                        if not category_attach_d:
-                            global_attach_d = {}
-                            global_attachments = category.attachment_ids \
-                                .sorted(lambda x: (x.sequence, x.id))
-                            if global_attachments:
-                                a = global_attachments[0]
-                                global_attach_d = {
-                                    'datas_fname': a.datas_fname,
-                                    'store_fname': a.attachment_id.store_fname,
-                                }
-                            if global_attach_d:
-                                category_attach_d.update({
-                                    None: global_attach_d,
-                                })
-
-                        # category attach OLD
-                        if category_attach_d:
-                            category_d.update({
-                                'attachment': category_attach_d,
-                            })
-
-                        category_attach_d = {}
-
-                        # brands NEW
-                        brand_attach_d = {}
-                        brand_attachments = category.attachment_ids \
-                            .sorted(lambda x: (x.sequence, x.id))
-                        for a in brand_attachments:
-                            brand = not a.brand_default and a.brand_id.name or None
-                            if brand not in brand_attach_d:
-                                brand_attach_d[brand] = {
-                                    'datas_fname': a.datas_fname,
-                                    'store_fname': a.attachment_id.store_fname,
-                                }
-                        if brand_attach_d:
-                            category_attach_d.update({
-                                'catalog': brand_attach_d,
-                            })
-
-                        # location NEW
-                        location_attachments = category.attachment_ids \
-                            .sorted(lambda x: (x.sequence, x.id))
-                        location_attach_d = {}
-                        for la in location_attachments:
-                            location_code = not la.location_default and la.location_id.code or None
-                            if location_code not in location_attach_d:
-                                location_attach_d[location_code] = {
-                                    'datas_fname': a.datas_fname,
-                                    'store_fname': a.attachment_id.store_fname,
-                                }
-                        if location_attach_d:
-                            category_attach_d.update({
-                                'location': location_attach_d,
-                            })
-
-                        # category attach NEW
-                        if category_attach_d:
-                            category_d.update({
-                                'attachmentNEW': category_attach_d,
-                            })
-
-                    # nom de la categoria
-                    name_lang_d = {}
-                    for lang in active_langs:
-                        lang_name = category.with_context(lang=lang).name
-                        if lang_name:
-                            name_lang_d[lang] = lang_name
-                    if name_lang_d:
-                        category_d.update({
-                            'name': name_lang_d,
-                        })
-
-                    if category_d:
-                        category_ld.append(category_d)
-
-                res.update({'categories': category_ld})
-
-            _logger.info("Category data successfully generated...")
+        ############## CONFIGURABLES (by finish) ################
+        if self.export_templates:
+            if template_d is None:
+                template_d = self._groups_by_finish(object_ids)
+            if objects_d is None:
+                objects_d = self._products_by_reference(objects_ld)
+            res.update({'templates': self._generate_templates(template_d, objects_d)})
 
         _logger.info("Export data successfully done")
 
