@@ -143,6 +143,8 @@ class LightingExportTemplate(models.Model):
                                 raise Exception("The subfield %s value must return a singleton" % subfield)
                             datum1.append(value_l[0])
                     if datum1:
+                        if meta['multivalue_separator']:
+                            datum1 = meta['multivalue_separator'].join(map(str, datum1))
                         datum = datum1
                 elif meta['type'] == 'many2one':
                     value_l = datum.mapped(subfield)
@@ -597,6 +599,7 @@ class LightingExportTemplate(models.Model):
             if item:
                 item['effective_field_name'] = line.effective_field_name
                 item['subfield'] = line.subfield_name
+                item['multivalue_separator'] = line.multivalue_separator
                 item['translate'] = line.translate
                 header[field_name] = item
         _logger.info("Product headers successfully generated.")
