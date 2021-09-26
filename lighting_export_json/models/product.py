@@ -164,7 +164,10 @@ class LightingProduct(models.Model):
                         else:
                             attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
 
-                        for a in attachs_date[:attachment_max_d[attach_type]]:
+                        max_idx = attachment_max_d[attach_type]
+                        if max_idx < 0:
+                            max_idx = len(attachs_date)
+                        for a in attachs_date[:max_idx]:
                             attachment_d = {
                                 'datas_fname': a.datas_fname,
                                 'store_fname': a.attachment_id.store_fname,
@@ -223,7 +226,10 @@ class LightingProduct(models.Model):
                         else:
                             attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
 
-                        for a in attachs_date[:attachment_max_d[attach_type]]:
+                        max_idx = attachment_max_d[attach_type]
+                        if max_idx < 0:
+                            max_idx = len(attachs_date)
+                        for a in attachs_date[:max_idx]:
                             if not a.public:
                                 a.sudo().public = True
                             attachment_l.append(
