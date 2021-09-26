@@ -2,10 +2,9 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields, api, _
-
-import datetime
 import json
+
+from odoo import models, fields, api, _
 
 
 def _values2range(values, range, magnitude=None):
@@ -184,6 +183,54 @@ class LightingProduct(models.Model):
 
                     if attachment_l:
                         rec.json_display_attachment = json.dumps(attachment_l)
+
+    ## Export Url Attachments
+    export_url_attachments = fields.Serialized(string='Export Url Attachments',
+                                               compute='_compute_export_url_attachments')
+
+    @api.depends('attachment_ids.datas_fname',
+                 'attachment_ids.sequence',
+                 'attachment_ids.attachment_id.store_fname',
+                 'attachment_ids.type_id.code',
+                 'attachment_ids.type_id.name',
+                 )
+    def _compute_export_url_attachments(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                # map attach type with order
+                attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
+                attachment_resolution_d = {x.type_id: x.resolution for x in template_id.attachment_ids}
+                attachment_max_d = {x.type_id: x.max_count for x in template_id.attachment_ids}
+
+                # classify
+                attachment_type_d = {}
+                for a in rec.attachment_ids.filtered(lambda x: x.datas_location == 'file'):
+                    attach_type = a.type_id
+                    if attach_type in attachment_order_d:
+                        if attach_type not in attachment_type_d:
+                            attachment_type_d[attach_type] = self.env['lighting.attachment']
+                        attachment_type_d[attach_type] |= a
+
+                # final attachment sort and formatting
+                if attachment_type_d:
+                    attachment_l = []
+                    for attach_type, attachs in sorted(attachment_type_d.items(),
+                                                       key=lambda x: attachment_order_d[x[0]]):
+                        attachs_date = attachs.filtered(lambda x: x.date)
+                        if attachs_date:
+                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)
+                        else:
+                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
+
+                        for a in attachs_date[:attachment_max_d[attach_type]]:
+                            if not a.public:
+                                a.sudo().public = True
+                            attachment_l.append(
+                                a.url_get(resolution=attachment_resolution_d.get(attach_type)))
+
+                    if attachment_l:
+                        rec.export_url_attachments = json.dumps(attachment_l)
 
     ## Display Sources
     json_display_source_type = fields.Serialized(string="Source type JSON Display",
