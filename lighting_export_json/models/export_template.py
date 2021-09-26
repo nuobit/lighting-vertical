@@ -21,6 +21,10 @@ MRK_STATE_ORD = {
 class LightingExportTemplate(models.Model):
     _inherit = 'lighting.export.template'
 
+    _VALID_OBJECTS = ['labels', 'products', 'families', 'categories',
+                      'groups', 'bundles', 'templates',
+                      ]
+
     lang_field_format = fields.Selection(
         selection_add=[('json', 'Json')])
 
@@ -46,6 +50,10 @@ class LightingExportTemplate(models.Model):
 
     auto_execute = fields.Boolean("Auto execute")
 
+    link_enabled = fields.Boolean(string="Enabled")
+    link_username = fields.Char(string="Username")
+    link_password = fields.Char(string="Password")
+
     @api.onchange('db_filestore')
     def onchange_db_filestore(self):
         if self.db_filestore:
@@ -67,15 +75,28 @@ class LightingExportTemplate(models.Model):
         for t in self.env[self._name].search([('auto_execute', '=', True)]):
             t.action_json_export()
 
+    def get_full_filepath(self, object, lang=None):
+        today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime('%Y%m%d')
+        d = dict(object=object, date=today_str)
+        if lang:
+            d['lang'] = lang
+        base_filename = self.output_filename_prefix % d
+        filename = '%s.json' % base_filename
+        parts = [self.output_base_directory]
+        if self.output_directory:
+            parts.append(self.output_directory)
+            os.makedirs(os.path.join(*parts), mode=0o774, exist_ok=True)
+        parts.append(filename)
+        path = os.path.join(*parts)
+        return path
+
     @api.multi
     def action_json_export(self):
         def default(o):
             if isinstance(o, datetime.date):
                 return fields.Date.to_string(o)
-
             if isinstance(o, datetime.datetime):
                 return fields.Datetime.to_string(o)
-
             if isinstance(o, set):
                 return sorted(list(o))
 
@@ -94,21 +115,15 @@ class LightingExportTemplate(models.Model):
 
         objects_rs = self.env['lighting.product'].search(domain)
         object_ids = objects_rs.sorted(lambda x: x.reference).mapped('id')
-        res = self.generate_data(object_ids, hide_empty_fields=self.hide_empty_fields)
 
-        today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime('%Y%m%d')
-        for suffix, data in res.items():
-            base_filename = self.output_filename_prefix % dict(object=suffix, date=today_str)
-            filename = '%s.json' % base_filename
-            parts = [self.output_base_directory]
-            if self.output_directory:
-                parts.append(self.output_directory)
-                os.makedirs(os.path.join(*parts), mode=0o774, exist_ok=True)
-            parts.append(filename)
-            path = os.path.join(*parts)
-
-            with open(path, 'w') as f:
-                json.dump(data, f, ensure_ascii=False, default=default, **kwargs)
+        langs = self.lang_multiple_files and self.lang_ids or self.default_lang_id
+        for lang in langs:
+            res = self.with_context(lang=lang.code).generate_data(
+                object_ids, hide_empty_fields=self.hide_empty_fields)
+            for object, data in res.items():
+                path = self.get_full_filepath(object, lang=lang.code)
+                with open(path, 'w') as f:
+                    json.dump(data, f, ensure_ascii=False, default=default, **kwargs)
 
     def get_efective_field_name(self, field_name):
         field = self.field_ids.filtered(lambda x: x.field_name == field_name)
@@ -124,16 +139,25 @@ class LightingExportTemplate(models.Model):
         for field, meta in header.items():
             field_d = {}
             has_value = False
-            meta_langs = sorted(meta['string'].keys(), key=lambda x: (0, x.code) if x.code == 'en_US' else (1, x.code))
+            meta_langs = sorted(meta['string'].keys(),
+                                key=lambda x: (0, x.code)
+                                if x.code == self.env.context.get('lang', self.default_lang_id.code)
+                                else (1, x.code))
             for lang in meta_langs:
                 datum = getattr(obj.with_context(lang=lang.code, template_id=self), field)
                 subfield = meta['subfield'] or 'display_name'
                 order_field = 'sequence'
                 if meta['type'] == 'selection':
-                    datum = dict(meta['selection'][lang.code]).get(datum)
+                    datum = dict(meta['selection'][lang]).get(datum)
                 elif meta['type'] == 'boolean':
                     if meta['translate']:
                         datum = _('Yes') if datum else _('No')
+                elif meta['type'] == 'many2one':
+                    value_l = datum.mapped(subfield)
+                    if value_l:
+                        if len(value_l) > 1:
+                            raise Exception("The subfield %s value must return a singleton" % subfield)
+                        datum = value_l[0]
                 elif meta['type'] in ('one2many', 'many2many'):
                     datum1 = []
                     for x in datum.sorted(lambda x: order_field not in x or x[order_field]):
@@ -143,15 +167,8 @@ class LightingExportTemplate(models.Model):
                                 raise Exception("The subfield %s value must return a singleton" % subfield)
                             datum1.append(value_l[0])
                     if datum1:
-                        if meta['multivalue_separator']:
-                            datum1 = meta['multivalue_separator'].join(map(str, datum1))
                         datum = datum1
-                elif meta['type'] == 'many2one':
-                    value_l = datum.mapped(subfield)
-                    if value_l:
-                        if len(value_l) > 1:
-                            raise Exception("The subfield %s value must return a singleton" % subfield)
-                        datum = value_l[0]
+
                 if meta['type'] != 'boolean' and not datum:
                     datum = None
 
@@ -174,12 +191,57 @@ class LightingExportTemplate(models.Model):
             if has_value or not hide_empty_fields:
                 if meta['effective_field_name']:
                     field = meta['effective_field_name']
-                if meta['translate'] and self.lang_field_format == 'postfix':
-                    for lang, datum in field_d.items():
-                        obj_d['%s_%s' % (field, lang)] = datum
-                else:
-                    obj_d[field] = field_d
 
+                separator = meta['multivalue_separator']
+                if separator:
+                    if separator == 'by_field':
+                        if not meta['translate']:
+                            if not isinstance(field_d, list):
+                                raise Exception(
+                                    "Type %s no supported on Serialized fields with multivalue separator" % (
+                                        type(field_d),))
+                            for i, elem in enumerate(field_d, 1):
+                                obj_d['%s_%02d' % (field, i)] = elem
+                        else:
+                            field1_d = {}
+                            for lang, datum in field_d.items():
+                                if not isinstance(datum, list):
+                                    raise Exception(
+                                        "Type %s no supported on Serialized fields with multivalue separator" % (
+                                            type(field_d),))
+                                for i, elem in enumerate(datum, 1):
+                                    field1_d.setdefault(i, []).append((lang, elem))
+                            if self.lang_field_format == 'postfix':
+                                for i, langelem in field1_d.items():
+                                    for lang, elem in langelem:
+                                        obj_d['%s_%02d_%s' % (field, i, lang)] = elem
+                            elif self.lang_field_format == 'json':
+                                for i, langelem in field1_d.items():
+                                    obj_d['%s_%02d' % (field, i)] = dict(langelem)
+                            else:
+                                raise Exception("Language field format %s not supported" % self.lang_field_format)
+                    else:
+                        if not meta['translate']:
+                            obj_d[field] = separator.join(map(str, field_d))
+                        else:
+                            if self.lang_field_format == 'postfix':
+                                for lang, datum in field_d.items():
+                                    obj_d['%s_%s' % (field, lang)] = separator.join(map(str, datum))
+                            elif self.lang_field_format == 'json':
+                                obj_d[field] = field_d
+                            else:
+                                raise Exception("Language field format %s not supported" % self.lang_field_format)
+                else:
+                    if meta['translate']:
+                        if self.lang_field_format == 'postfix':
+                            for lang, datum in field_d.items():
+                                obj_d['%s_%s' % (field, lang)] = datum
+                        elif self.lang_field_format == 'json':
+                            obj_d[field] = field_d
+                        else:
+                            raise Exception("Language field format %s not supported" % self.lang_field_format)
+                    else:
+                        obj_d[field] = field_d
         return obj_d
 
     def _generate_labels(self, header):
