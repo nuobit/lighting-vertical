@@ -29,8 +29,7 @@
                 </group>
                 <group col="4" string="Output" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
                     <group col="3" colspan="4">
-                        <field colspan="1" name="output_base_directory"
-                               attrs="{'readonly': [('db_filestore', '=', True)]}"/>
+                        <field colspan="1" name="output_base_directory"/>
                         <field colspan="1" name="db_filestore"/>
                     </group>
                     <newline/>
