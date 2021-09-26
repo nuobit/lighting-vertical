@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _, tools
+from odoo.exceptions import ValidationError
 
 
 class LightingExportTemplate(models.Model):
@@ -11,6 +12,8 @@ class LightingExportTemplate(models.Model):
     _order = 'name'
 
     name = fields.Char(required=True)
+
+    code = fields.Char(string="Code", required=True)
 
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary("Image", attachment=True,
@@ -44,12 +47,22 @@ class LightingExportTemplate(models.Model):
                                 string='Languages',
                                 domain=[('active', '=', True)],
                                 track_visibility='onchange')
+
+    default_lang_id = fields.Many2one(comodel_name='res.lang',
+                                      string='Default Language',
+                                      domain="[('id', 'in', lang_ids)]",
+                                      required=True,
+                                      track_visibility='onchange')
     lang_field_format = fields.Selection(
         string="Language Field Format",
         selection=[('postfix', 'Postfix')],
         required=True, default='postfix',
         help="Only used if multiple languages are selected and all of them are shown on the same file. "
              "Used to differentiate the same field from different languages. p.e descrption_EN, description_FR, etc.")
+
+    lang_multiple_files = fields.Boolean(
+        string="Language Multiple Files",
+        help="If enabled multiple files will be generated, one per language")
 
     hide_empty_fields = fields.Boolean(string="Hide empty fields", default=True)
 
@@ -58,6 +71,8 @@ class LightingExportTemplate(models.Model):
     domain = fields.Text(string='Domain')
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The template name must be unique!'),
+                        ('code_uniq', 'unique (code)',
+                         'The Code should be unique. It identifies the export template'),
                         ]
 
     @api.multi
@@ -96,6 +111,12 @@ class LightingExportTemplate(models.Model):
 
         return super().copy(default)
 
+    @api.constrains('lang_ids', 'default_lang_id')
+    def check_languages(self):
+        for rec in self:
+            if rec.default_lang_id not in rec.lang_ids:
+                raise ValidationError("Default language should be one of the selected languages")
+
 
 class LightingExportTemplateField(models.Model):
     _name = 'lighting.export.template.field'
@@ -115,7 +136,8 @@ class LightingExportTemplateField(models.Model):
 
     multivalue_separator = fields.Selection(
         string="Multivalue Separator",
-        selection=[(',',','), (';',';'), ('|','|'), ('-', '-'), ('>', '>')],
+        selection=[('by_field', 'By Field'),
+                   (',', ','), (';', ';'), ('|', '|'), ('-', '-'), ('>', '>')],
     )
 
     effective_field_name = fields.Char(string='Effective field name')
