@@ -46,17 +46,18 @@ class LightingExportJsonController(http.Controller):
                 'Resource %s not valid' % (object,))
 
         # check authentication
-        auth = http.request.httprequest.authorization
-        if not auth or not isinstance(auth, dict):
-            return werkzeug.exceptions.Forbidden('Invalid credentials')
-        username, password = auth.get('username', None), auth.get('password', None)
-        if any([
-            not username,
-            not password,
-            tmpl.link_username != username,
-            tmpl.link_password != password
-        ]):
-            return werkzeug.exceptions.Forbidden('Invalid credentials')
+        if tmpl.link_auth_enabled:
+            auth = http.request.httprequest.authorization
+            if not auth or not isinstance(auth, dict):
+                return werkzeug.exceptions.Forbidden('Invalid credentials')
+            username, password = auth.get('username', None), auth.get('password', None)
+            if any([
+                not username,
+                not password,
+                tmpl.link_username != username,
+                tmpl.link_password != password
+            ]):
+                return werkzeug.exceptions.Forbidden('Invalid credentials')
 
         # read the resource
         filename = tmpl.get_full_filepath(object, lang_id.code)

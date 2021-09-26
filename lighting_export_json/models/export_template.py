@@ -51,6 +51,7 @@ class LightingExportTemplate(models.Model):
     auto_execute = fields.Boolean("Auto execute")
 
     link_enabled = fields.Boolean(string="Enabled")
+    link_auth_enabled = fields.Boolean(string="Authentication enabled", default=True)
     link_username = fields.Char(string="Username")
     link_password = fields.Char(string="Password")
 
