@@ -48,9 +48,6 @@
                         <field name="link_enabled"/>
                     </group>
                     <group attrs="{'invisible': [('link_enabled', '=', False)]}">
-                        <field name="link_resource" attrs="{'required': [('link_enabled', '=', True)]}"/>
-                    </group>
-                    <group attrs="{'invisible': [('link_enabled', '=', False)]}">
                         <field name="link_username" attrs="{'required': [('link_enabled', '=', True)]}"/>
                         <field name="link_password" password="1" attrs="{'required': [('link_enabled', '=', True)]}"/>
                     </group>
