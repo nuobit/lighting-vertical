@@ -29,7 +29,8 @@
                 </group>
                 <group col="4" string="Output" attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
                     <group col="3" colspan="4">
-                        <field colspan="1" name="output_base_directory"/>
+                        <field colspan="1" name="output_base_directory"
+                               attrs="{'readonly': [('db_filestore', '=', True)]}"/>
                         <field colspan="1" name="db_filestore"/>
                     </group>
                     <newline/>
@@ -39,6 +40,19 @@
                     </group>
                     <group col="2" colspan="2">
                         <field colspan="2" name="auto_execute"/>
+                    </group>
+                </group>
+                <group col="2" string="External HTTP link"
+                       attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
+                    <group colspan="2">
+                        <field name="link_enabled"/>
+                    </group>
+                    <group attrs="{'invisible': [('link_enabled', '=', False)]}">
+                        <field name="link_resource" attrs="{'required': [('link_enabled', '=', True)]}"/>
+                    </group>
+                    <group attrs="{'invisible': [('link_enabled', '=', False)]}">
+                        <field name="link_username" attrs="{'required': [('link_enabled', '=', True)]}"/>
+                        <field name="link_password" password="1" attrs="{'required': [('link_enabled', '=', True)]}"/>
                     </group>
                 </group>
             </xpath>
