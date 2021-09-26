@@ -41,14 +41,21 @@
                         <field colspan="2" name="auto_execute"/>
                     </group>
                 </group>
-                <group col="2" string="External HTTP link"
+                <group col="4" string="External HTTP link"
                        attrs="{'invisible': [('output_type', '!=', 'export_product_json')]}">
-                    <group colspan="2">
+                    <group colspan="4">
                         <field name="link_enabled"/>
                     </group>
-                    <group attrs="{'invisible': [('link_enabled', '=', False)]}">
-                        <field name="link_username" attrs="{'required': [('link_enabled', '=', True)]}"/>
-                        <field name="link_password" password="1" attrs="{'required': [('link_enabled', '=', True)]}"/>
+                    <group colspan="4" attrs="{'invisible': [('link_enabled', '=', False)]}">
+                        <group>
+                            <field name="link_auth_enabled"/>
+                        </group>
+                        <group attrs="{'invisible': [('link_auth_enabled', '=', False)]}">
+                            <field name="link_username"
+                                   attrs="{'required': [('link_enabled', '=', True),('link_auth_enabled', '=', True)]}"/>
+                            <field name="link_password" password="1"
+                                   attrs="{'required': [('link_enabled', '=', True),('link_auth_enabled', '=', True)]}"/>
+                        </group>
                     </group>
                 </group>
             </xpath>
