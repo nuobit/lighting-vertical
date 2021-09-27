@@ -202,7 +202,7 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 # map attach type with order
-                attachment_order_d = {x.type_id: x.sequence for x in template_id.attachment_ids}
+                attachment_order_d = {x.type_id: (x.sequence, x.id) for x in template_id.attachment_ids}
                 attachment_resolution_d = {x.type_id: x.resolution for x in template_id.attachment_ids}
                 attachment_max_d = {x.type_id: x.max_count for x in template_id.attachment_ids}
 
