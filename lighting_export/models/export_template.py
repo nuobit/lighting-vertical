@@ -156,7 +156,7 @@ class LightingExportTemplateField(models.Model):
 
 class LightingExportTemplateAttachment(models.Model):
     _name = 'lighting.export.template.attachment'
-    _order = 'sequence'
+    _order = 'sequence,id'
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
@@ -176,7 +176,7 @@ class LightingExportTemplateAttachment(models.Model):
 
 class LightingExportTemplateAttachmentUrl(models.Model):
     _name = 'lighting.export.template.attachment.url'
-    _order = 'sequence'
+    _order = 'sequence,id'
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
