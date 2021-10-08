@@ -10,100 +10,104 @@
         <field name="arch" type="xml">
             <form string="Export template Form">
                 <header/>
-                <sheet>
-                    <field name="image" widget="image" class="oe_avatar"
-                           options="{'preview_image': 'image_medium'}"/>
-                    <div class="oe_title">
-                        <h1>
-                            <field name="name" default_focus="1" placeholder="Template"/>
-                        </h1>
-                    </div>
-                    <group>
-                        <field name="code" class="oe_inline"/>
-                    </group>
-                    <notebook>
-                        <page string="Fields">
+                <field name="image" widget="image" class="oe_avatar"
+                       options="{'preview_image': 'image_medium'}"/>
+                <div class="oe_title">
+                    <h1>
+                        <field name="name" default_focus="1" placeholder="Template"/>
+                    </h1>
+                </div>
+                <group>
+                    <field name="code" class="oe_inline"/>
+                </group>
+                <notebook>
+                    <page string="Fields">
+                        <group>
+                            <field name="field_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="sequence_aux"/>
+                                    <field name="field_id"/>
+                                    <field name="field_name" groups="lighting.group_lighting_manager"/>
+                                    <field name="field_ttype" groups="lighting.group_lighting_manager"/>
+                                    <field name="subfield_name"
+                                           attrs="{'invisible': [('field_ttype', 'not in', ('many2one', 'many2many', 'one2many'))]}"/>
+                                    <field name="multivalue_method"
+                                           attrs="{'invisible': [('field_ttype', 'not in', ('many2many', 'one2many', 'serialized'))]}"/>
+                                    <field name="multivalue_separator"
+                                           attrs="{'invisible': [('multivalue_method', '!=', 'by_separator')]}"/>
+                                    <field name="multivalue_order"
+                                           attrs="{'invisible': [('multivalue_method', '=', False)]}"/>
+                                    <field name="effective_field_name"/>
+                                    <field name="float_round"
+                                           attrs="{'invisible': [('field_ttype', '!=', 'float')]}"/>
+                                    <field name="translate" groups="lighting.group_lighting_manager"/>
+                                    <field name="label"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <button name="add_all_fields" type="object" string="Add all fields"
+                                    class="btn btn-sm oe_edit_only"/>
+                        </group>
+                    </page>
+                    <page string="File Attachments">
+                        <group>
                             <group>
-                                <field name="field_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="sequence" widget="handle"/>
-                                        <field name="sequence_aux"/>
-                                        <field name="field_id"/>
-                                        <field name="field_name" groups="lighting.group_lighting_manager"/>
-                                        <field name="field_ttype" groups="lighting.group_lighting_manager"/>
-                                        <field name="subfield_name"
-                                               attrs="{'readonly': [('field_ttype', 'not in', ('many2one', 'many2many', 'one2many'))]}"/>
-                                        <field name="multivalue_separator"
-                                               attrs="{'readonly': [('field_ttype', 'not in', ('many2many', 'one2many', 'serialized'))]}"/>
-                                        <field name="effective_field_name"/>
-                                        <field name="translate" groups="lighting.group_lighting_manager"/>
-                                        <field name="label"/>
-                                    </tree>
-                                </field>
+                                <field name="max_attachments"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="attachment_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="type_id"/>
+                                    <field name="resolution"/>
+                                    <field name="max_count"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    <page string="Url Attachments">
+                        <group>
+                            <group>
+                                <field name="max_url_attachments"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="attachment_url_ids" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="type_id"/>
+                                    <field name="max_count"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                    <page string="Config" name="config">
+                        <group>
+                            <group>
+                                <field name="output_type"/>
+                                <field name="hide_empty_fields"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="domain"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="lang_ids" widget="many2many_checkboxes"/>
+                                <field name="default_lang_id"/>
                             </group>
                             <group>
-                                <button name="add_all_fields" type="object" string="Add all fields"
-                                        class="btn btn-sm oe_edit_only"/>
+                                <field name="lang_field_format"/>
+                                <field name="lang_multiple_files"/>
                             </group>
-                        </page>
-                        <page string="File Attachments">
-                            <group>
-                                <group>
-                                    <field name="max_attachments"/>
-                                </group>
-                            </group>
-                            <group>
-                                <field name="attachment_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="sequence" widget="handle"/>
-                                        <field name="type_id"/>
-                                        <field name="resolution"/>
-                                        <field name="max_count"/>
-                                    </tree>
-                                </field>
-                            </group>
-                        </page>
-                        <page string="Url Attachments">
-                            <group>
-                                <group>
-                                    <field name="max_url_attachments"/>
-                                </group>
-                            </group>
-                            <group>
-                                <field name="attachment_url_ids" nolabel="1">
-                                    <tree editable="bottom">
-                                        <field name="sequence" widget="handle"/>
-                                        <field name="type_id"/>
-                                        <field name="max_count"/>
-                                    </tree>
-                                </field>
-                            </group>
-                        </page>
-                        <page string="Config" name="config">
-                            <group>
-                                <group>
-                                    <field name="output_type"/>
-                                    <field name="hide_empty_fields"/>
-                                </group>
-                            </group>
-                            <group>
-                                <group>
-                                    <field name="domain"/>
-                                </group>
-                            </group>
-                            <group>
-                                <group>
-                                    <field name="lang_ids" widget="many2many_checkboxes"/>
-                                    <field name="default_lang_id"/>
-                                </group>
-                                <group>
-                                    <field name="lang_field_format"/>
-                                    <field name="lang_multiple_files"/>
-                                </group>
-                            </group>
-                        </page>
-                    </notebook>
-                </sheet>
+                        </group>
+                    </page>
+                </notebook>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" widget="mail_followers"/>
                     <field name="activity_ids" widget="mail_activity"/>
