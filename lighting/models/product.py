@@ -2,14 +2,13 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-
-from odoo.tools.safe_eval import safe_eval
-
+import logging
 import re
 from collections import OrderedDict
-import logging
+
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -309,13 +308,33 @@ class LightingProduct(models.Model):
             else:
                 rec.category_id = False
 
-    is_accessory = fields.Boolean(string="Is accessory", compute="_compute_is_accessory", readonly=True)
+    is_accessory = fields.Boolean(
+        string="Is accessory",
+        compute="_compute_is_accessory",
+        search="_search_is_accessory",
+        readonly=True)
 
     @api.depends('category_id', 'category_id.is_accessory')
     def _compute_is_accessory(self):
         for rec in self:
             if rec.category_id:
                 rec.is_accessory = rec.category_id._get_is_accessory()
+
+    def _search_is_accessory(self, operator, value):
+        ids = []
+        for prod in self.env['lighting.product'].search([
+            ('category_id', '!=', False),
+        ]):
+            is_accessory = prod.category_id._get_is_accessory()
+            if operator == '=':
+                if is_accessory == value:
+                    ids.append(prod.id)
+            elif operator == '!=':
+                if is_accessory != value:
+                    ids.append(prod.id)
+            else:
+                raise ValidationError("Operator '%s' not supported" % operator)
+        return [('id', 'in', ids)]
 
     is_composite = fields.Boolean(string="Is composite", default=False)
 
