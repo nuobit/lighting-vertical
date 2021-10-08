@@ -30,6 +30,9 @@
                     <group attrs="{'invisible': [('meta_preview', '=', False )]}">
                         <field name="meta_preview" widget="html"/>
                     </group>
+                    <group>
+                        <field name="marketplace_description"/>
+                    </group>
                 </group>
             </xpath>
         </field>
