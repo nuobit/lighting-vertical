@@ -147,12 +147,19 @@ class LightingExportTemplate(models.Model):
             for lang in meta_langs:
                 datum = getattr(obj.with_context(lang=lang.code, template_id=self), field)
                 subfield = meta['subfield'] or 'display_name'
-                order_field = 'sequence'
+                order_field = meta['multivalue_order'] and 'sequence' or None
                 if meta['type'] == 'selection':
                     datum = dict(meta['selection'][lang]).get(datum)
                 elif meta['type'] == 'boolean':
                     if meta['translate']:
                         datum = _('Yes') if datum else _('No')
+                if meta['type'] == 'float':
+                    float_round = meta['float_round']
+                    if float_round < 0:
+                        raise Exception("The rounding value can not be negative")
+                    datum = round(datum, float_round)
+                    if float_round == 0:
+                        datum = int(datum)
                 elif meta['type'] == 'many2one':
                     value_l = datum.mapped(subfield)
                     if value_l:
@@ -161,7 +168,7 @@ class LightingExportTemplate(models.Model):
                         datum = value_l[0]
                 elif meta['type'] in ('one2many', 'many2many'):
                     datum1 = []
-                    for x in datum.sorted(lambda x: order_field not in x or x[order_field]):
+                    for x in datum.sorted(lambda x: not order_field or order_field not in x or x[order_field]):
                         value_l = x.mapped(subfield)
                         if value_l:
                             if len(value_l) > 1:
@@ -193,9 +200,9 @@ class LightingExportTemplate(models.Model):
                 if meta['effective_field_name']:
                     field = meta['effective_field_name']
 
-                separator = meta['multivalue_separator']
-                if separator:
-                    if separator == 'by_field':
+                multivalue_method = meta['multivalue_method']
+                if multivalue_method:
+                    if multivalue_method == 'by_field':
                         if not meta['translate']:
                             if not isinstance(field_d, list):
                                 raise Exception(
@@ -221,7 +228,8 @@ class LightingExportTemplate(models.Model):
                                     obj_d['%s_%02d' % (field, i)] = dict(langelem)
                             else:
                                 raise Exception("Language field format %s not supported" % self.lang_field_format)
-                    else:
+                    elif multivalue_method == 'by_separator':
+                        separator = meta['multivalue_separator']
                         if not meta['translate']:
                             obj_d[field] = separator.join(map(str, field_d))
                         else:
@@ -232,6 +240,8 @@ class LightingExportTemplate(models.Model):
                                 obj_d[field] = field_d
                             else:
                                 raise Exception("Language field format %s not supported" % self.lang_field_format)
+                    else:
+                        raise Exception("Multivalue Method '%s' does not exist" % multivalue_method)
                 else:
                     if meta['translate']:
                         if self.lang_field_format == 'postfix':
@@ -662,7 +672,11 @@ class LightingExportTemplate(models.Model):
             if item:
                 item['effective_field_name'] = line.effective_field_name
                 item['subfield'] = line.subfield_name
-                item['multivalue_separator'] = line.multivalue_separator
+                item['multivalue_method'] = line.multivalue_method
+                item['multivalue_separator'] = \
+                    line.multivalue_method == 'by_separator' and line.multivalue_separator or None
+                item['multivalue_order'] = line.multivalue_method and line.multivalue_order or None
+                item['float_round'] = line.float_round
                 item['translate'] = line.translate
                 header[field_name] = item
         _logger.info("Product headers successfully generated.")
