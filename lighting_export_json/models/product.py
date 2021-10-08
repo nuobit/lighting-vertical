@@ -87,6 +87,15 @@ class LightingProduct(models.Model):
             if description:
                 rec.group_description = description
 
+    category_complete_ids = fields.Many2many(
+        string="Export Category Complete",
+        comodel_name='lighting.product.category',
+        compute="_compute_category_complete_ids")
+
+    def _compute_category_complete_ids(self):
+        for rec in self:
+            rec.category_complete_ids = rec.category_id.complete_chain_ids
+
     ############### Display fields ################################
 
     json_display_finish_group_name = fields.Char(string='Finish group name JSON Display',
