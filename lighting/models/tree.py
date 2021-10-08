@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 
 
 class LightingTreeMixin(models.AbstractModel):
@@ -14,17 +14,26 @@ class LightingTreeMixin(models.AbstractModel):
                                 compute='_compute_complete_name',
                                 search='_search_complete_name')
 
+    complete_chain_ids = fields.Many2many(
+        string="Complete Chain",
+        comodel_name='lighting.product.category',
+        compute='_compute_complete_chain_ids',
+    )
+
+    def _get_node_ancestors_chain(self):
+        self.ensure_one()
+        return (self.parent_id and self.parent_id._get_node_ancestors_chain() or \
+                self.env[self._name]) | self
+
+    @api.depends('parent_id')
+    def _compute_complete_chain_ids(self):
+        for rec in self:
+            rec.complete_chain_ids = rec._get_node_ancestors_chain()
+
     def get_complete_name(self):
         self.ensure_one()
-
-        def get_node_ancestors_chain(parent_id, child_ids):
-            if not parent_id:
-                return child_ids
-            else:
-                return get_node_ancestors_chain(parent_id.parent_id, parent_id | child_ids)
-
         return ' / '.join(
-            get_node_ancestors_chain(self, self.env[self._name]).mapped('name')
+            self.complete_chain_ids.mapped('name')
         )
 
     @api.depends('name', 'parent_id.complete_name')
