@@ -2,8 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models, api, _
-from odoo.exceptions import ValidationError
+from odoo import fields, models, api
 
 
 def seo_preview(title, url, description):
@@ -74,6 +73,8 @@ class LightingProduct(models.Model):
     def _compute_preview(self):
         for rec in self:
             rec.meta_preview = seo_preview(rec.seo_title, rec.seo_url, rec.seo_description)
+
+    marketplace_description = fields.Text(string='Marketplace Description', translate=True, track_visibility='onchange')
 
     @api.constrains('state_marketing', 'website_published')
     def check_state_published(self):
