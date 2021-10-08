@@ -134,13 +134,25 @@ class LightingExportTemplateField(models.Model):
 
     subfield_name = fields.Char(string='Subfield')
 
-    multivalue_separator = fields.Selection(
-        string="Multivalue Separator",
+    multivalue_method = fields.Selection(
+        string="Multivalue Method",
         selection=[('by_field', 'By Field'),
-                   (',', ','), (';', ';'), ('|', '|'), ('-', '-'), ('>', '>')],
+                   ('by_separator', 'By Separator')],
+    )
+
+    multivalue_separator = fields.Char(
+        string="Multivalue Separator",
+    )
+
+    multivalue_order = fields.Boolean(
+        string="Multivalue Order",
+        help="Order the subelements by sequence",
+        default=True,
     )
 
     effective_field_name = fields.Char(string='Effective field name')
+
+    float_round = fields.Integer(string='Round To', default=2)
 
     translate = fields.Boolean(string='Translate')
 
