@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _
@@ -9,8 +8,14 @@ class LightingProductCategory(models.Model):
     _name = 'lighting.product.category'
     _inherit = 'lighting.tree.mixin'
     _parent_name = 'parent_id'
-    _rec_name = 'complete_name'
     _order = 'sequence,name'
+
+    @api.multi
+    def name_get(self):
+        vals = []
+        for record in self:
+            vals.append((record.id, record.complete_name))
+        return vals
 
     @api.model
     def _get_domain(self):
