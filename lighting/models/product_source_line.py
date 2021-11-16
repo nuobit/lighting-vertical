@@ -118,6 +118,8 @@ class LightingProductSourceLine(models.Model):
         ('blue', _('Blue')), ('orange', _('Orange')),
         ('green', _('Green')), ('red', _('Red')),
         ('purple', _('Purple')), ('pink', _('Pink')),
+        ('sunlike', _('Sunlike')), ('dtw', _('DtW')),
+        ('tw', _('TW')),
     ], string='Special spectrum')
     leds_m = fields.Integer(string="Leds/m", track_visibility='onchange')
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
