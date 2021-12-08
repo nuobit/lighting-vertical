@@ -156,7 +156,7 @@ class LightingExportTemplateField(models.Model):
 
     effective_field_name = fields.Char(string='Effective field name')
 
-    float_round = fields.Integer(string='Round To', default=2)
+    conv_code = fields.Char(string='Conversion Code')
 
     translate = fields.Boolean(string='Translate')
 
