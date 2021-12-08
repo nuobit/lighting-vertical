@@ -140,6 +140,10 @@ class LightingExportTemplateField(models.Model):
                    ('by_separator', 'By Separator')],
     )
 
+    multivalue_key = fields.Char(
+        string="Multivalue Key",
+    )
+
     multivalue_separator = fields.Char(
         string="Multivalue Separator",
     )
