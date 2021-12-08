@@ -10,6 +10,7 @@ import os
 
 from odoo import api, fields, models, _, tools
 from odoo.exceptions import UserError
+from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -166,6 +167,7 @@ class LightingExportTemplate(models.Model):
             subfield = meta['subfield'] or 'display_name'
             order_field = meta['multivalue_order'] and 'sequence' or None
             key_field_name = meta['multivalue_key']
+            conv_func = lambda x: meta['conv_code'] and safe_eval(meta['conv_code'] % x) or x
             key_fields = []
             field_d = {}
             has_value = False
@@ -176,23 +178,16 @@ class LightingExportTemplate(models.Model):
             for lang in meta_langs:
                 datum = getattr(obj.with_context(lang=lang.code, template_id=self), field)
                 if meta['type'] == 'selection':
-                    datum = dict(meta['selection'][lang]).get(datum)
+                    datum = conv_func(dict(meta['selection'][lang]).get(datum))
                 elif meta['type'] == 'boolean':
                     if meta['translate']:
-                        datum = _('Yes') if datum else _('No')
-                if meta['type'] == 'float':
-                    float_round = meta['float_round']
-                    if float_round < 0:
-                        raise Exception("The rounding value can not be negative")
-                    datum = round(datum, float_round)
-                    if float_round == 0:
-                        datum = int(datum)
+                        datum = _('Yes') if conv_func(datum) else _('No')
                 elif meta['type'] == 'many2one':
                     value_l = datum.mapped(subfield)
                     if value_l:
                         if len(value_l) > 1:
                             raise Exception("The subfield %s value must return a singleton" % subfield)
-                        datum = value_l[0]
+                        datum = conv_func(value_l[0])
                 elif meta['type'] in ('one2many', 'many2many'):
                     datum1 = []
                     for x in datum.sorted(lambda x: not order_field or order_field not in x or x[order_field]):
@@ -200,7 +195,7 @@ class LightingExportTemplate(models.Model):
                         if subfield_l:
                             if len(subfield_l) > 1:
                                 raise Exception("The subfield %s value must return a singleton" % subfield)
-                            datum1.append(subfield_l[0])
+                            datum1.append(conv_func(subfield_l[0]))
                             if key_field_name:
                                 key_fields_l = x.with_context(lang=None).mapped(key_field_name)
                                 if key_fields_l:
@@ -210,6 +205,8 @@ class LightingExportTemplate(models.Model):
                                     key_fields.append(slug(key_fields_l[0]))
                     if datum1:
                         datum = datum1
+                else:
+                    datum = conv_func(datum)
 
                 if meta['type'] != 'boolean' and not datum:
                     datum = None
@@ -715,7 +712,7 @@ class LightingExportTemplate(models.Model):
                 item['multivalue_separator'] = \
                     line.multivalue_method == 'by_separator' and line.multivalue_separator or None
                 item['multivalue_order'] = line.multivalue_method and line.multivalue_order or None
-                item['float_round'] = line.float_round
+                item['conv_code'] = line.conv_code
                 item['translate'] = line.translate
                 header[field_name] = item
         _logger.info("Product headers successfully generated.")
