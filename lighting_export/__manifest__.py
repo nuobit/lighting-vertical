@@ -5,7 +5,7 @@
 {
     'name': "Lighting Export",
     'description': "Lighting export data",
-    'version': '11.0.1.13.0',
+    'version': '11.0.1.13.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -16,6 +16,6 @@
         'security/ir.model.access.csv',
         'wizard/export_views.xml',
         'views/export_template_views.xml',
-        ],
+    ],
     'installable': True,
 }
