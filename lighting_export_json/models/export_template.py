@@ -136,8 +136,37 @@ class LightingExportTemplate(models.Model):
         return field_name
 
     def generate_dict(self, obj, header, hide_empty_fields=True):
+        def slug(s):
+            char_map = {
+                'à': 'a',
+                'á': 'a',
+                'è': 'e',
+                'é': 'e',
+                'í': 'i',
+                'ú': 'u',
+                'ñ': 'n',
+                'ç': 'c',
+                "'": '',
+                '"': '',
+                ' ': '_',
+                '(': '',
+                ')': '',
+                '-': '_',
+                '.': '_',
+                ',': '_',
+                ':': '_',
+            }
+            s9 = s.lower()
+            for k, v in char_map.items():
+                s9 = s9.replace(k, v)
+            return s9
+
         obj_d = {}
         for field, meta in header.items():
+            subfield = meta['subfield'] or 'display_name'
+            order_field = meta['multivalue_order'] and 'sequence' or None
+            key_field_name = meta['multivalue_key']
+            key_fields = []
             field_d = {}
             has_value = False
             meta_langs = sorted(meta['string'].keys(),
@@ -146,8 +175,6 @@ class LightingExportTemplate(models.Model):
                                 else (1, x.code))
             for lang in meta_langs:
                 datum = getattr(obj.with_context(lang=lang.code, template_id=self), field)
-                subfield = meta['subfield'] or 'display_name'
-                order_field = meta['multivalue_order'] and 'sequence' or None
                 if meta['type'] == 'selection':
                     datum = dict(meta['selection'][lang]).get(datum)
                 elif meta['type'] == 'boolean':
@@ -169,11 +196,18 @@ class LightingExportTemplate(models.Model):
                 elif meta['type'] in ('one2many', 'many2many'):
                     datum1 = []
                     for x in datum.sorted(lambda x: not order_field or order_field not in x or x[order_field]):
-                        value_l = x.mapped(subfield)
-                        if value_l:
-                            if len(value_l) > 1:
+                        subfield_l = x.mapped(subfield)
+                        if subfield_l:
+                            if len(subfield_l) > 1:
                                 raise Exception("The subfield %s value must return a singleton" % subfield)
-                            datum1.append(value_l[0])
+                            datum1.append(subfield_l[0])
+                            if key_field_name:
+                                key_fields_l = x.with_context(lang=None).mapped(key_field_name)
+                                if key_fields_l:
+                                    if len(key_fields_l) > 1:
+                                        raise Exception(
+                                            "The key subfield %s value must return a singleton" % key_field_name)
+                                    key_fields.append(slug(key_fields_l[0]))
                     if datum1:
                         datum = datum1
 
@@ -208,8 +242,10 @@ class LightingExportTemplate(models.Model):
                                 raise Exception(
                                     "Type %s no supported on Serialized fields with multivalue separator" % (
                                         type(field_d),))
-                            for i, elem in enumerate(field_d, 1):
-                                obj_d['%s_%02d' % (field, i)] = elem
+
+                            ndxs = key_fields or ["%02d" % x for x in range(1, len(field_d) + 1)]
+                            for i, elem in zip(ndxs, field_d):
+                                obj_d['%s_%s' % (field, i)] = elem
                         else:
                             field1_d = {}
                             for lang, datum in field_d.items():
@@ -217,15 +253,16 @@ class LightingExportTemplate(models.Model):
                                     raise Exception(
                                         "Type %s no supported on Serialized fields with multivalue separator" % (
                                             type(field_d),))
-                                for i, elem in enumerate(datum, 1):
+                                ndxs = key_fields or ["%02d" % x for x in range(1, len(datum) + 1)]
+                                for i, elem in zip(ndxs, datum):
                                     field1_d.setdefault(i, []).append((lang, elem))
                             if self.lang_field_format == 'postfix':
                                 for i, langelem in field1_d.items():
                                     for lang, elem in langelem:
-                                        obj_d['%s_%02d_%s' % (field, i, lang)] = elem
+                                        obj_d['%s_%s_%s' % (field, i, lang)] = elem
                             elif self.lang_field_format == 'json':
                                 for i, langelem in field1_d.items():
-                                    obj_d['%s_%02d' % (field, i)] = dict(langelem)
+                                    obj_d['%s_%s' % (field, i)] = dict(langelem)
                             else:
                                 raise Exception("Language field format %s not supported" % self.lang_field_format)
                     elif multivalue_method == 'by_separator':
@@ -673,6 +710,8 @@ class LightingExportTemplate(models.Model):
                 item['effective_field_name'] = line.effective_field_name
                 item['subfield'] = line.subfield_name
                 item['multivalue_method'] = line.multivalue_method
+                item['multivalue_key'] = \
+                    line.multivalue_method == 'by_field' and line.multivalue_key or None
                 item['multivalue_separator'] = \
                     line.multivalue_method == 'by_separator' and line.multivalue_separator or None
                 item['multivalue_order'] = line.multivalue_method and line.multivalue_order or None
