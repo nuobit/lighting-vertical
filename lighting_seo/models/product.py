@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models, api
@@ -47,6 +47,9 @@ class LightingProduct(models.Model):
         if self.state_marketing in ('D', 'H'):
             if self.website_published:
                 self.website_published = False
+        elif self.state_marketing in ('ES', 'ESH'):
+            if not self.website_published:
+                self.website_published = True
 
     seo_title = fields.Char(string='Meta title', translate=True)
     seo_url = fields.Char(string='URL')
