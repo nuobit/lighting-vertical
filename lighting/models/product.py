@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -26,6 +26,8 @@ STATES_MARKETING = [
     ('D', 'Discontinued'),
     ('H', 'Historical'),
 ]
+
+MIN_STOCK = 10
 
 
 class LightingProduct(models.Model):
@@ -771,10 +773,13 @@ class LightingProduct(models.Model):
         ('published', 'Published'),
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
 
+    def _has_min_stock(self):
+        return self.available_qty + self.stock_future_qty >= MIN_STOCK
+
     # inherites base functions
     @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
     def _onchange_stock_qty(self):
-        if self.available_qty != 0 or self.stock_future_qty != 0:
+        if self._has_min_stock():
             state_trans = {'D': 'ES', 'H': 'ESH'}
             if self.state_marketing in state_trans:
                 self.state_marketing = state_trans[self.state_marketing]
@@ -835,12 +840,10 @@ class LightingProduct(models.Model):
     @api.constrains('state_marketing')
     def _check_state_marketing_stock(self):
         for rec in self:
-            if rec.state_marketing in ('D', 'H') and \
-                    (rec.available_qty != 0 or rec.stock_future_qty != 0):
+            if rec.state_marketing in ('D', 'H') and self._has_min_stock():
                 raise ValidationError(_(
                     "A reference with stock or future stock cannot be Discontinued or Historical"))
-            if rec.state_marketing in ('ES', 'ESH') and \
-                    (rec.available_qty == 0 and rec.stock_future_qty == 0):
+            if rec.state_marketing in ('ES', 'ESH') and not self._has_min_stock():
                 raise ValidationError(_(
                     "A reference without stock or future stock cannot be neither "
                     "'End of Stock' nor 'End of Stock Historical'"))
