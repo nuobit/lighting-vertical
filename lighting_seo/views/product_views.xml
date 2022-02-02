@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_view_form_inherit_seo" model="ir.ui.view">
@@ -9,9 +9,11 @@
         <field name="inherit_id" ref="lighting.product_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <field name="website_published_readonly" invisible="1"/>
                 <button class="oe_stat_button" name="website_publish_button"
                         type="object" icon="fa-globe">
-                    <field name="website_published" widget="website_button"/>
+                    <field name="website_published" widget="website_button"
+                           attrs="{'readonly':[('website_published_readonly','=',True)]}"/>
                 </button>
             </xpath>
             <xpath expr="//page[@id='marketing_tab']" position="inside">
