@@ -13,6 +13,7 @@
     'depends': ['lighting'],
     'data': [
         'security/ir.model.access.csv',
+        'security/lighting_seo_security.xml',
         'views/seo_keyword_views.xml',
         'views/product_views.xml',
     ],

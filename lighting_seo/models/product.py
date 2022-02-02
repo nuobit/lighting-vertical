@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 
 def seo_preview(title, url, description):
@@ -36,6 +37,13 @@ class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
     website_published = fields.Boolean('Published on Website', copy=False, track_visibility='onchange')
+
+    website_published_readonly=fields.Boolean(compute="_compute_website_published_readonly")
+
+    @api.multi
+    def _compute_website_published_readonly(self):
+        for rec in self:
+            rec.website_published_readonly=not rec.user_has_groups('lighting_seo.group_lighting_ecommerce_manager')
 
     @api.multi
     def website_publish_button(self):
@@ -83,6 +91,12 @@ class LightingProduct(models.Model):
     def check_state_published(self):
         for rec in self:
             rec.onchange_state_marketing()
+
+    @api.constrains('website_published')
+    def check_website_published(self):
+        for rec in self:
+            if rec.website_published_readonly:
+                raise ValidationError("You have no permissions to modify this field")
 
 
 class LightingProductFamily(models.Model):
