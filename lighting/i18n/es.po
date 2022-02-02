@@ -27,6 +27,7 @@ msgstr ""
 #: selection:lighting.product,post_with_inspection_chamber:0
 #: selection:lighting.product,recessing_box_included:0
 #: selection:lighting.product,fan_reverse_direction:0
+#: selection:lighting.product,configurator:0
 #, python-format
 msgid "Yes"
 msgstr "Sí"
@@ -43,6 +44,7 @@ msgstr "Sí"
 #: selection:lighting.product,post_with_inspection_chamber:0
 #: selection:lighting.product,recessing_box_included:0
 #: selection:lighting.product,fan_reverse_direction:0
+#: selection:lighting.product,configurator:0
 #, python-format
 msgid "No"
 msgstr "No"
@@ -436,6 +438,11 @@ msgstr "Árbol de catálogo"
 #: model:ir.ui.menu,name:lighting.catalogs_menu
 msgid "Catalogs"
 msgstr "Catálogos"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_configurator
+msgid "Configurator"
+msgstr "Configurador"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_checksum
