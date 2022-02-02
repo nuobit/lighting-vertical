@@ -38,12 +38,12 @@ class LightingProduct(models.Model):
 
     website_published = fields.Boolean('Published on Website', copy=False, track_visibility='onchange')
 
-    website_published_readonly=fields.Boolean(compute="_compute_website_published_readonly")
+    website_published_readonly = fields.Boolean(compute="_compute_website_published_readonly")
 
     @api.multi
     def _compute_website_published_readonly(self):
         for rec in self:
-            rec.website_published_readonly=not rec.user_has_groups('lighting_seo.group_lighting_ecommerce_manager')
+            rec.website_published_readonly = not rec.user_has_groups('lighting_seo.group_lighting_ecommerce_manager')
 
     @api.multi
     def website_publish_button(self):
@@ -95,7 +95,7 @@ class LightingProduct(models.Model):
     @api.constrains('website_published')
     def check_website_published(self):
         for rec in self:
-            if rec.website_published_readonly:
+            if rec.website_published and rec.website_published_readonly:
                 raise ValidationError("You have no permissions to modify this field")
 
 
