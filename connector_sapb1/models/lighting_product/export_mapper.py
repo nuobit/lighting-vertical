@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.addons.component.core import Component
@@ -56,6 +56,10 @@ class LigthingProductExportMapper(Component):
             values[lmap.sap_lang_id] = record.with_context(lang=lmap.lang_id.code) \
                 .category_id._get_root().name
         return {'U_U_aplicacion': values}
+
+    @mapping
+    def configurator(self, record):
+        return {'U_U_Configurador': record.configurator or None}
 
     # @mapping
     # def description(self, record):
