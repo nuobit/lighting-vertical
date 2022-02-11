@@ -3260,3 +3260,18 @@ msgstr "max."
 #: model:ir.actions.act_window,name:lighting.product_finish_list_action
 msgid "product finish"
 msgstr "acabado del producto"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "with configurator"
+msgstr "Con configurador"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Blank configurator"
+msgstr "Configurador en blanco"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Without configurator"
+msgstr "Sin configurador"
