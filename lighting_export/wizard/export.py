@@ -1,10 +1,9 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-
 
 
 class LightingExport(models.TransientModel):
@@ -22,9 +21,10 @@ class LightingExport(models.TransientModel):
 
     output_type = fields.Selection(selection=[], string="Output type", required=True)
 
+    exclude_configurator = fields.Boolean(string="Exclude configurator")
+
     @api.multi
     def export_product(self):
         self.ensure_one()
 
         return getattr(self, self.output_type)()
-
