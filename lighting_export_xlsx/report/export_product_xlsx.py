@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -16,11 +16,16 @@ class ExportProductXlsx(models.AbstractModel):
 
     def generate_xlsx_report_ctx(self, workbook, data, objects):
         template_id = self.env['lighting.export.template'].browse(data.get('template_id'))
-        objects = self.env['lighting.product'].browse(data.get('active_ids'))
+
         if data.get('interval') == 'all':
             active_model = self.env.context.get('active_model')
             active_domain = data.get('context').get('active_domain')
             objects = self.env[active_model].search(active_domain)
+        else:
+            objects = self.env['lighting.product'].browse(data.get('active_ids'))
+        if data.get('exclude_configurator'):
+            objects = objects.filtered(
+                lambda x: x.configurator != 'Y')
 
         ## base headers with labels replaced and subset acoridng to template
         header = []

@@ -64,3 +64,8 @@ msgstr "Products XLSX report"
 msgid "Yes"
 msgstr "Sí"
 
+#. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/wizard/export.py:25
+#, python-format
+msgid "Specify a configurator"
+msgstr "Especifique un configurador"
