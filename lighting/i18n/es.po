@@ -2873,8 +2873,15 @@ msgstr "Categoría (nombre completo)"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_is_composite
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "Is composite"
 msgstr "Es compuesto"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_configurator
+#: model:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Configurator"
+msgstr "Configurador"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
@@ -3263,7 +3270,7 @@ msgstr "acabado del producto"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "with configurator"
+msgid "With configurator"
 msgstr "Con configurador"
 
 #. module: lighting
