@@ -208,6 +208,11 @@ class LigthingProductImportMapper(Component):
     def reference(self, record):
         return {'reference': record['ItemCode'] and record['ItemCode'].strip() or None}
 
+    @only_create
+    @mapping
+    def configurator(self, record):
+        return {'configurator': record['U_U_Configurador']}
+
     # aux
     def _get_sibling_reference(self, reference, pattern):
         m = re.match(pattern, reference)
