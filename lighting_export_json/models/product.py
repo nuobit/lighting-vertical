@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import json
@@ -613,3 +613,12 @@ class LightingProduct(models.Model):
 
                 if source_type_d:
                     rec.json_search_source_type = json.dumps(source_type_d)
+
+    marketplace_description_html = fields.Html(string='Marketplace description html', store=False, readonly=True,
+                                               compute='_compute_marketplace_description_html')
+
+    @api.depends('marketplace_description')
+    def _compute_marketplace_description_html(self):
+        for rec in self:
+            if rec.marketplace_description:
+                self.marketplace_description_html = self.marketplace_description.replace("\n", "<br>")
