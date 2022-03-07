@@ -4,7 +4,6 @@
 import logging
 
 from odoo import _, models
-from odoo.exceptions import UserError, ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -12,6 +11,9 @@ _logger = logging.getLogger(__name__)
 class ExportProductXlsx(models.AbstractModel):
     _name = 'report.lighting_export_xlsx.export_product_xlsx'
     _inherit = 'report.report_xlsx.abstract'
+
+    def get_workbook_options(self):
+        return {'strings_to_urls': False}
 
     def generate_xlsx_report(self, workbook, data, objects):
         self.with_context(lang=data['lang']).generate_xlsx_report_ctx(workbook, data, objects)
