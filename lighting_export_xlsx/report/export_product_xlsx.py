@@ -1,10 +1,12 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+import logging
 
 from odoo import _, models
 from odoo.exceptions import UserError, ValidationError
+
+_logger = logging.getLogger(__name__)
 
 
 class ExportProductXlsx(models.AbstractModel):
@@ -39,8 +41,12 @@ class ExportProductXlsx(models.AbstractModel):
                 header.append((field, meta))
 
         ## generate data and gather header data
+        n = len(objects)
+        _logger.info("Generating %i products..." % n)
+        th = int(n / 100) or 1
         objects_ld = []
-        for obj in objects:
+        for i, obj_id in enumerate(objects.ids, 1):
+            obj = objects.browse(obj_id)
             obj_d = {}
             for field, meta in header:
                 datum = getattr(obj, field)
@@ -63,7 +69,7 @@ class ExportProductXlsx(models.AbstractModel):
 
                 if isinstance(datum, (tuple, list)):
                     subfields = []
-                    for i, sf in enumerate(datum, 1):
+                    for j, sf in enumerate(datum, 1):
                         ## update x als headers
                         sf1 = list(sf.keys())
                         if subfields:
@@ -73,7 +79,7 @@ class ExportProductXlsx(models.AbstractModel):
                             subfields = sf1
 
                         ## afegim dades
-                        fnam = '%s%i' % (meta['string'], i)
+                        fnam = '%s%i' % (meta['string'], j)
                         for k, v in sf.items():
                             sfkey = '%s/%s' % (fnam, k)
                             if sfkey in obj_d:
@@ -96,6 +102,11 @@ class ExportProductXlsx(models.AbstractModel):
                         meta['num'] = 1
 
             objects_ld.append(obj_d)
+
+            if (i % th) == 0:
+                _logger.info(" - Progress products generation %i%%" % round(i / n * 100))
+
+        _logger.info("Products successfully generated...")
 
         ## generate xlsx headers according to data
         xlsx_header = []
