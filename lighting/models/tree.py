@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class LightingTreeMixin(models.AbstractModel):
@@ -124,3 +124,8 @@ class LightingTreeMixin(models.AbstractModel):
             return self
         else:
             return self.parent_id._get_root()
+
+    @api.constrains('parent_id')
+    def _check_parent_id(self):
+        if not self._check_recursion():
+            raise ValidationError(_('Error ! You cannot create recursive categories.'))
