@@ -43,12 +43,53 @@ class ExportProductXlsx(models.AbstractModel):
                 header.append((field, meta))
 
         ## generate data and gather header data
-        n = len(objects)
+        objects_ld = self._generate_products(header, objects.ids, template_id)
+
+        ## generate xlsx headers according to data
+        xlsx_header = []
+        for field, meta in header:
+            if not meta['num'] and data.get('hide_empty_fields'):
+                continue
+            if not meta['subfields']:
+                xlsx_header.append(meta['string'])
+            else:
+                for sf in meta['subfields']:
+                    xlsx_header.append(sf)
+
+        ## write to xlsx
+        sheet = workbook.add_worksheet(template_id.display_name)
+        row = col = 0
+
+        # write header to xlsx
+        bold = workbook.add_format({'bold': True})
+        for col_header in xlsx_header:
+            sheet.write(row, col, col_header, bold)
+            col += 1
+
+        # write data to xlsx according to header multiplicity
+        row = 1
+        for obj in objects_ld:
+            col = 0
+            for field, meta in header:
+                if not meta['num'] and data.get('hide_empty_fields'):
+                    continue
+
+                if not meta['subfields']:
+                    sheet.write(row, col, obj[meta['string']])
+                    col += 1
+                else:
+                    for k in meta['subfields']:
+                        sheet.write(row, col, obj.get(k))
+                        col += 1
+            row += 1
+
+    def _generate_products(self, header, object_ids, template_id):
+        n = len(object_ids)
         _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
         objects_ld = []
-        for i, obj_id in enumerate(objects.ids, 1):
-            obj = objects.browse(obj_id)
+        for i, obj_id in enumerate(object_ids, 1):
+            obj = self.env['lighting.product'].browse(obj_id)
             obj_d = {}
             for field, meta in header:
                 datum = getattr(obj, field)
@@ -110,40 +151,4 @@ class ExportProductXlsx(models.AbstractModel):
 
         _logger.info("Products successfully generated...")
 
-        ## generate xlsx headers according to data
-        xlsx_header = []
-        for field, meta in header:
-            if not meta['num'] and data.get('hide_empty_fields'):
-                continue
-            if not meta['subfields']:
-                xlsx_header.append(meta['string'])
-            else:
-                for sf in meta['subfields']:
-                    xlsx_header.append(sf)
-
-        ## write to xlsx
-        sheet = workbook.add_worksheet(template_id.display_name)
-        row = col = 0
-
-        # write header to xlsx
-        bold = workbook.add_format({'bold': True})
-        for col_header in xlsx_header:
-            sheet.write(row, col, col_header, bold)
-            col += 1
-
-        # write data to xlsx according to header multiplicity
-        row = 1
-        for obj in objects_ld:
-            col = 0
-            for field, meta in header:
-                if not meta['num'] and data.get('hide_empty_fields'):
-                    continue
-
-                if not meta['subfields']:
-                    sheet.write(row, col, obj[meta['string']])
-                    col += 1
-                else:
-                    for k in meta['subfields']:
-                        sheet.write(row, col, obj.get(k))
-                        col += 1
-            row += 1
+        return objects_ld
