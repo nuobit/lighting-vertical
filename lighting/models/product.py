@@ -27,7 +27,13 @@ STATES_MARKETING = [
     ('H', 'Historical'),
 ]
 
-MIN_STOCK = 10
+ES_MAP = {'ES': 'D', 'ESH': 'H'}
+D_MAP = {v: k for k, v in ES_MAP.items()}
+C_STATES = {'O', 'N', 'C', False}
+STATE_NAME_MAP = lambda x: {
+    False: '',
+    **dict(x.fields_get('state_marketing', 'selection')['state_marketing']['selection'])
+}
 
 
 class LightingProduct(models.Model):
@@ -727,7 +733,7 @@ class LightingProduct(models.Model):
     commited_qty = fields.Float(string="Commited", readonly=True,
                                 required=True, default=0,
                                 copy=False)
-    available_qty = fields.Float(string="Available", readonly=True,
+    available_qty = fields.Float(string="Available", readonly=False,
                                  required=True, default=0,
                                  copy=False)
 
@@ -739,7 +745,7 @@ class LightingProduct(models.Model):
                                required=True, default=0,
                                copy=False)
 
-    stock_future_qty = fields.Float(string="Future stock", readonly=True,
+    stock_future_qty = fields.Float(string="Future stock", readonly=False,
                                     required=True, default=0,
                                     copy=False)
     stock_future_date = fields.Date(string="Future stock date", readonly=True,
@@ -774,21 +780,6 @@ class LightingProduct(models.Model):
         ('to_review', 'To review'),
         ('published', 'Published'),
     ], string='Status', default='draft', readonly=False, required=True, copy=False, track_visibility='onchange')
-
-    def _has_min_stock(self):
-        return self.available_qty + self.stock_future_qty >= MIN_STOCK
-
-    # inherites base functions
-    @api.onchange('state_marketing', 'available_qty', 'stock_future_qty')
-    def _onchange_stock_qty(self):
-        if self._has_min_stock():
-            state_trans = {'D': 'ES', 'H': 'ESH'}
-            if self.state_marketing in state_trans:
-                self.state_marketing = state_trans[self.state_marketing]
-        else:
-            state_trans = {'ES': 'D', 'ESH': 'H'}
-            if self.state_marketing in state_trans:
-                self.state_marketing = state_trans[self.state_marketing]
 
     @api.multi
     @api.constrains('reference')
@@ -839,22 +830,6 @@ class LightingProduct(models.Model):
                 raise ValidationError(
                     _("The current reference cannot be defined as a recomended accessory"))
 
-    @api.constrains('state_marketing')
-    def _check_state_marketing_stock(self):
-        for rec in self:
-            if rec.state_marketing in ('D', 'H') and self._has_min_stock():
-                raise ValidationError(_(
-                    "A reference with stock or future stock cannot be Discontinued or Historical"))
-            if rec.state_marketing in ('ES', 'ESH') and not self._has_min_stock():
-                raise ValidationError(_(
-                    "A reference without stock or future stock cannot be neither "
-                    "'End of Stock' nor 'End of Stock Historical'"))
-
-    @api.constrains('available_qty', 'stock_future_qty')
-    def _update_state_marketing_by_stock_qty(self):
-        for rec in self:
-            rec._onchange_stock_qty()
-
     @api.constrains('description')
     def _check_description_updated(self):
         self._update_computed_descriptions(exclude_lang=[self.env.lang])
@@ -865,6 +840,87 @@ class LightingProduct(models.Model):
             if rec.state == 'published':
                 if not rec.family_ids or not rec.category_id or not rec.location_ids:
                     raise ValidationError("The Family, Category and Locations are mandatory in Published state")
+
+    def _update_with_check(self, values, key, value):
+        if key not in values:
+            values[key] = value
+        else:
+            if values[key] != value:
+                raise ValidationError(
+                    _("Inconsistency due to multi nature of the method, not all records have the "
+                      "same values"))
+
+    def _check_state_marketing_stock(self, values):
+        self.ensure_one()
+        new_values = {}
+        current_state, new_state = self.state_marketing, values.get('state_marketing', self.state_marketing)
+        current_state_str, new_state_str = [STATE_NAME_MAP(self)[x] for x in [current_state, new_state]]
+        new_stock = sum([values[f] if f in values else self[f] for f in ('available_qty', 'stock_future_qty')])
+        if current_state in C_STATES:
+            if new_state in ES_MAP:
+                if new_stock == 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
+                            current_state_str, new_state_str))
+            elif new_state in D_MAP:
+                if new_stock != 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has stock (%g)") % (
+                            current_state_str, new_state_str, new_stock))
+            elif new_state in C_STATES:
+                if new_state and new_stock == 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
+                            current_state_str, new_state_str))
+            else:
+                raise ValidationError(_("Transition from '%s' to '%s' not allowed") % (
+                    current_state_str, new_state_str))
+        elif current_state in ES_MAP:
+            if new_state in C_STATES:
+                if new_state and new_stock == 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
+                            current_state_str, new_state_str))
+            elif new_state == ES_MAP[current_state]:
+                if new_stock != 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has stock (%g)") % (
+                            current_state_str, new_state_str, new_stock))
+            elif new_state == current_state:
+                if new_stock == 0:
+                    self._update_with_check(new_values, 'state_marketing', ES_MAP[current_state])
+            elif new_state in ES_MAP:
+                pass
+            elif not new_state:
+                pass
+            else:
+                raise ValidationError(_("Transition from '%s' to '%s' not allowed") % (
+                    current_state_str, new_state_str))
+        elif current_state in D_MAP:
+            if new_state in C_STATES:
+                if new_state and new_stock == 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
+                            current_state_str, new_state_str))
+            elif new_state == D_MAP[current_state]:
+                if new_stock == 0:
+                    raise ValidationError(
+                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
+                            current_state_str, new_state_str))
+            elif new_state == current_state:
+                if new_stock != 0:
+                    self._update_with_check(new_values, 'state_marketing', D_MAP[current_state])
+            elif new_state in D_MAP:
+                pass
+            elif not new_state:
+                pass
+            else:
+                raise ValidationError(_("Transition from '%s' to '%s' not allowed") % (
+                    current_state_str, new_state_str))
+        else:
+            raise ValidationError(_("State '%s' not exists") % (current_state_str,))
+
+        return new_values
 
     @api.multi
     def copy(self, default=None):
@@ -884,3 +940,18 @@ class LightingProduct(models.Model):
                        )
 
         return super(LightingProduct, self).copy(default)
+
+    @api.multi
+    def write(self, values):
+        for rec in self:
+            new_values = rec._check_state_marketing_stock(values)
+            if new_values:
+                values.update(new_values)
+        return super(LightingProduct, self).write(values)
+
+    @api.model
+    def create(self, values):
+        new_values = self._check_state_marketing_stock(values)
+        if new_values:
+            values.update(new_values)
+        return super(LightingProduct, self).create(values)
