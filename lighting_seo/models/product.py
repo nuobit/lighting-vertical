@@ -2,8 +2,12 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models, api
+from odoo.addons.lighting.models.product import ES_MAP, D_MAP, C_STATES
+
+from odoo import fields, models, api, _
 from odoo.exceptions import ValidationError
+
+MIN_STOCK = 10
 
 
 def seo_preview(title, url, description):
@@ -50,15 +54,6 @@ class LightingProduct(models.Model):
         self.ensure_one()
         return self.write({'website_published': not self.website_published})
 
-    @api.onchange('state_marketing', 'website_published')
-    def onchange_state_marketing(self):
-        if self.state_marketing in ('D', 'H'):
-            if self.website_published:
-                self.website_published = False
-        elif self.state_marketing in ('ES', 'ESH'):
-            if not self.website_published:
-                self.website_published = True
-
     seo_title = fields.Char(string='Meta title', translate=True)
     seo_url = fields.Char(string='URL')
     seo_description = fields.Text(string='Meta description', translate=True)
@@ -87,16 +82,34 @@ class LightingProduct(models.Model):
 
     marketplace_description = fields.Text(string='Marketplace Description', translate=True, track_visibility='onchange')
 
-    @api.constrains('state_marketing', 'website_published')
-    def check_state_published(self):
-        for rec in self:
-            rec.onchange_state_marketing()
-
     @api.constrains('website_published')
     def check_website_published(self):
         for rec in self:
             if rec.website_published and rec.website_published_readonly:
                 raise ValidationError("You have no permissions to modify this field")
+
+    def _check_state_marketing_stock(self, values):
+        new_values = super(LightingProduct, self)._check_state_marketing_stock(values)
+        current_state, new_state = self.state_marketing, values.get('state_marketing', self.state_marketing)
+        current_stock = self.available_qty + self.stock_future_qty
+        new_stock = sum([values[f] if f in values else self[f] for f in ('available_qty', 'stock_future_qty')])
+        if current_state in ES_MAP:
+            if new_state == current_state:
+                if new_stock == 0:
+                    self._update_with_check(new_values, 'website_published', False)
+                else:
+                    if new_stock > current_stock:
+                        if new_stock >= MIN_STOCK:
+                            self._update_with_check(new_values, 'website_published', True)
+        elif current_state in D_MAP:
+            if new_state == D_MAP[current_state]:
+                if new_stock != 0:
+                    self._update_with_check(new_values, 'website_published', True)
+            elif new_state == current_state:
+                if new_stock != 0:
+                    self._update_with_check(new_values, 'website_published', new_stock >= MIN_STOCK)
+
+        return new_values
 
 
 class LightingProductFamily(models.Model):
