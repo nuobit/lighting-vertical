@@ -851,7 +851,6 @@ class LightingProduct(models.Model):
                       "same values"))
 
     def _check_state_marketing_stock(self, values):
-        self.ensure_one()
         new_values = {}
         current_state, new_state = self.state_marketing, values.get('state_marketing', self.state_marketing)
         current_state_str, new_state_str = [STATE_NAME_MAP(self)[x] for x in [current_state, new_state]]
@@ -868,10 +867,7 @@ class LightingProduct(models.Model):
                         _("You cannot change the state from '%s' to '%s' if the product has stock (%g)") % (
                             current_state_str, new_state_str, new_stock))
             elif new_state in C_STATES:
-                if new_state and new_stock == 0:
-                    raise ValidationError(
-                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
-                            current_state_str, new_state_str))
+                pass
             else:
                 raise ValidationError(_("Transition from '%s' to '%s' not allowed") % (
                     current_state_str, new_state_str))
@@ -919,7 +915,6 @@ class LightingProduct(models.Model):
                     current_state_str, new_state_str))
         else:
             raise ValidationError(_("State '%s' not exists") % (current_state_str,))
-
         return new_values
 
     @api.multi

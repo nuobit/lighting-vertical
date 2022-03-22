@@ -26,10 +26,6 @@ class TestProduct(common.SavepointCase):
             'name': 'Category 1',
             'code': 'CAT1'
         })
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-        })
 
         # ACT & ASSERT
         assert_validationerror = lambda x, y: self.assertRaises(ValidationError, x, y)
@@ -90,12 +86,12 @@ class TestProduct(common.SavepointCase):
              },
 
             {'arrange': {'state_marketing': 'ESH', 'available_qty': MIN_QTY, 'stock_future_qty': MIN_QTY},
-             'act': lambda x: x.write({'available_qty': 0}),
+             'act': lambda x: x.write({'available_qty': MIN_QTY + 1}),
              'assert': lambda x: self.assertEqual(
                  x.state_marketing, 'ESH', "The state marketing has changed and it shouldn't"),
              },
             {'arrange': {'state_marketing': 'ESH', 'available_qty': MIN_QTY, 'stock_future_qty': MIN_QTY},
-             'act': lambda x: x.write({'stock_future_qty': 0}),
+             'act': lambda x: x.write({'stock_future_qty': MIN_QTY + 1}),
              'assert': lambda x: self.assertEqual(
                  x.state_marketing, 'ESH', "The state marketing has changed and it shouldn't"),
              },
@@ -129,11 +125,16 @@ class TestProduct(common.SavepointCase):
             {'arrange': {'state_marketing': 'H', 'available_qty': 0, 'stock_future_qty': 0},
              'act': lambda x: x.write({'available_qty': MIN_QTY - 1, 'stock_future_qty': MIN_QTY - 1}),
              'assert': lambda x: self.assertEqual(
-                 x.state_marketing, 'EtSH',
+                 x.state_marketing, 'ESH',
                  "The state marketing has changed and it shouldn't"),
              },
         ]
-        for t in tests:
+        for i, t in enumerate(tests):
+            # ARRANGE
+            p1 = self.env['lighting.product'].create({
+                'reference': 'REF%i' % i,
+                'category_id': c1.id,
+            })
             if 'arrange' in t:
                 p1.write(t['arrange'])
             if 'act' in t:
