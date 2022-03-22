@@ -90,25 +90,25 @@ class LightingProduct(models.Model):
 
     def _check_state_marketing_stock(self, values):
         new_values = super(LightingProduct, self)._check_state_marketing_stock(values)
+        values.update(new_values)
         current_state, new_state = self.state_marketing, values.get('state_marketing', self.state_marketing)
         current_stock = self.available_qty + self.stock_future_qty
         new_stock = sum([values[f] if f in values else self[f] for f in ('available_qty', 'stock_future_qty')])
-        if current_state in ES_MAP:
+        if current_state in C_STATES:
+            if new_state in D_MAP:
+                self._update_with_check(new_values, 'website_published', False)
+        elif current_state in ES_MAP:
             if new_state == current_state:
-                if new_stock == 0:
-                    self._update_with_check(new_values, 'website_published', False)
-                else:
-                    if new_stock > current_stock:
-                        if new_stock >= MIN_STOCK:
-                            self._update_with_check(new_values, 'website_published', True)
+                if new_stock > current_stock:
+                    if new_stock >= MIN_STOCK:
+                        self._update_with_check(new_values, 'website_published', True)
+            elif new_state == ES_MAP[current_state]:
+                self._update_with_check(new_values, 'website_published', False)
         elif current_state in D_MAP:
-            if new_state == D_MAP[current_state]:
-                if new_stock != 0:
-                    self._update_with_check(new_values, 'website_published', True)
-            elif new_state == current_state:
-                if new_stock != 0:
-                    self._update_with_check(new_values, 'website_published', new_stock >= MIN_STOCK)
-
+            if new_state == current_state:
+                self._update_with_check(new_values, 'website_published', False)
+            elif new_state == D_MAP[current_state]:
+                self._update_with_check(new_values, 'website_published', new_stock >= MIN_STOCK)
         return new_values
 
 
