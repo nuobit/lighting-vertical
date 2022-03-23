@@ -733,7 +733,7 @@ class LightingProduct(models.Model):
     commited_qty = fields.Float(string="Commited", readonly=True,
                                 required=True, default=0,
                                 copy=False)
-    available_qty = fields.Float(string="Available", readonly=False,
+    available_qty = fields.Float(string="Available", readonly=True,
                                  required=True, default=0,
                                  copy=False)
 
@@ -745,7 +745,7 @@ class LightingProduct(models.Model):
                                required=True, default=0,
                                copy=False)
 
-    stock_future_qty = fields.Float(string="Future stock", readonly=False,
+    stock_future_qty = fields.Float(string="Future stock", readonly=True,
                                     required=True, default=0,
                                     copy=False)
     stock_future_date = fields.Date(string="Future stock date", readonly=True,
