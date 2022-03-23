@@ -39,9 +39,18 @@ STATE_NAME_MAP = lambda x: {
 class LightingProduct(models.Model):
     _name = 'lighting.product'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherits = {"product.product": "odoo_id"}
     _rec_name = 'reference'
     _order = 'sequence,reference'
     _description = 'Product'
+
+    # binding fields
+    odoo_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Odoo Product ID",
+        required=True,
+        ondelete="cascade",
+    )
 
     # Common data
     reference = fields.Char(string='Reference', required=True, track_visibility='onchange')
@@ -935,14 +944,35 @@ class LightingProduct(models.Model):
 
     @api.multi
     def write(self, values):
+        update_values = {}
+        original_description = {x.id: x.description for x in self}
+        if 'reference' in values:
+            update_values['default_code'] = values['reference']
+        if 'price' in values:
+            update_values['lst_price'] = values['price']
+
         for rec in self:
+            if update_values:
+                rec.odoo_id.write(update_values)
             new_values = rec._check_state_marketing_stock(values)
             if new_values:
                 values.update(new_values)
-        return super(LightingProduct, self).write(values)
+        res = super(LightingProduct, self).write(values)
+        for rec in self:
+            if rec.description != original_description[rec.id]:
+                for lang in self.env['res.lang'].search([]):
+                    rec.with_context(lang=lang.code).name = rec.with_context(lang=lang.code).description
+
+        return res
 
     @api.model
     def create(self, values):
+        product_tmp = self.env['lighting.product'].new(values)
+        values.update({
+            'name': product_tmp.description or product_tmp.description_manual or values['reference'],
+            'default_code': values['reference'],
+            'lst_price': 0
+        })
         new_values = self._check_state_marketing_stock(values)
         if new_values:
             values.update(new_values)
