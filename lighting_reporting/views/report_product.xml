@@ -654,7 +654,7 @@
                                 </td>
                                 <td>
                                     <span t-field="doc.cutting_length"/>
-                                    <span>cm</span>
+                                    <span>mm</span>
                                 </td>
                             </tr>
                             <tr t-if="doc.cable_outlets">
