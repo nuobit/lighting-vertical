@@ -894,10 +894,7 @@ class LightingProduct(models.Model):
                     current_state_str, new_state_str))
         elif current_state in D_MAP:
             if new_state in C_STATES:
-                if new_state and new_stock == 0:
-                    raise ValidationError(
-                        _("You cannot change the state from '%s' to '%s' if the product has no stock") % (
-                            current_state_str, new_state_str))
+                pass
             elif new_state == D_MAP[current_state]:
                 if new_stock == 0:
                     raise ValidationError(
