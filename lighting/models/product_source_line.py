@@ -186,6 +186,13 @@ class LightingProductSourceLine(models.Model):
                 len(self.color_temperature_flux_ids) != 2:
             raise ValidationError(_("A tunable source must have exactly 2 pairs color temperature/luminous flux"))
 
+    @api.multi
+    @api.constrains('efficiency_ids')
+    def _check_efficiency_lampholder(self):
+        for rec in self:
+            if rec.efficiency_ids and (rec.source_id.lampholder_id or rec.source_id.lampholder_technical_id):
+                raise ValidationError(_("A source with lampholder cannot have efficiency"))
+
     # aux display fucnitons
     def get_source_type(self):
         res = self.sorted(lambda x: x.sequence) \
