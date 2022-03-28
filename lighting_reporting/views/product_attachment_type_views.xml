@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="attachment_type_form_view" model="ir.ui.view">
+        <field name="name">attachment.type.form.lighting_reporting</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="inherit_id" ref="lighting.attachment_type_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']/.." position="after">
+                <group>
+                    <field name="include_in_datasheet"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
