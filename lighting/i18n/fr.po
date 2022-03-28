@@ -2221,6 +2221,7 @@ msgstr "Arbre de tension produit"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_connectortype_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_product_count
 msgid "Product(s)"
 msgstr "Des produits"
 
@@ -2248,6 +2249,8 @@ msgstr "Des produits"
 #: model:ir.ui.view,arch_db:lighting.product_voltage_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_connectortype_form_view
 #: model:ir.ui.view,arch_db:lighting.product_connectortype_tree_view
+#: model:ir.ui.view,arch_db:lighting.energyefficiency_form_view
+#: model:ir.ui.view,arch_db:lighting.energyefficiency_tree_view
 msgid "Products"
 msgstr "Articles"
 

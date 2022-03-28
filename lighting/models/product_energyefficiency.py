@@ -18,6 +18,13 @@ class LightingEnergyEfficiency(models.Model):
 
     color = fields.Integer(string='Color Index')
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count(
+                [('source_ids.line_ids.efficiency_ids', 'in', record.ids)])
+
     _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
                         ]
 
