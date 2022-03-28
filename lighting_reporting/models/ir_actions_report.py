@@ -28,6 +28,15 @@ class IrActionsReport(models.Model):
             if pdf_content:
                 model, res_ids = data['model'], data['ids']
 
+                res_ids_map = {}
+                for i, res_id in enumerate(res_ids):
+                    attachs = self.env[model].browse(res_id).attachment_ids.filtered(
+                        lambda x: x.type_id.include_in_datasheet).sorted('sequence')
+                    if attachs:
+                        res_ids_map[i] = attachs
+                if not res_ids_map:
+                    return result
+
                 streams = []
                 pdf_content_stream = io.BytesIO(pdf_content)
                 reader = PdfFileReader(pdf_content_stream)
@@ -51,15 +60,12 @@ class IrActionsReport(models.Model):
                         for j in range(num, to):
                             writer.addPage(reader.getPage(j))
 
-                        addt_docs = self.env[model].browse(res_ids[i]).attachment_ids.filtered(
-                            lambda x: x.type_id.include_in_datasheet).sorted('sequence')
                         streams_to_close = []
-                        for ad in addt_docs:
+                        for ad in res_ids_map.get(i, []):
                             addt_content_stream = io.BytesIO(base64.decodebytes(ad.datas))
                             streams_to_close.append(addt_content_stream)
                             addt_reader = PdfFileReader(addt_content_stream)
                             writer.appendPagesFromReader(addt_reader)
-
                         stream = io.BytesIO()
                         writer.write(stream)
                         streams.append(stream)
@@ -75,11 +81,10 @@ class IrActionsReport(models.Model):
                 result_stream = io.BytesIO()
                 streams.append(result_stream)
                 writer.write(result_stream)
-                result = result_stream.getvalue()
-
+                result_value = result_stream.getvalue()
                 # We have to close the streams after PdfFileWriter's call to write()
                 close_streams(streams)
 
-                return result, 'pdf'
+                return result_value, 'pdf'
 
         return result
