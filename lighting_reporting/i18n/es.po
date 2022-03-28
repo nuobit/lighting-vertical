@@ -141,6 +141,11 @@ msgid "ECORAEE II"
 msgstr "ECORAEE II"
 
 #. module: lighting_reporting
+#: model:ir.model.fields,field_description:lighting_reporting.field_lighting_attachment_type_include_in_datasheet
+msgid "Include in Datasheet"
+msgstr "Incluir en Ficha Técnica"
+
+#. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Periodic maintenance"
 msgstr "Mantenimiento periódico"
