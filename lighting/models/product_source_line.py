@@ -190,8 +190,12 @@ class LightingProductSourceLine(models.Model):
     @api.constrains('efficiency_ids')
     def _check_efficiency_lampholder(self):
         for rec in self:
-            if rec.efficiency_ids and (rec.source_id.lampholder_id or rec.source_id.lampholder_technical_id):
-                raise ValidationError(_("A source with lampholder cannot have efficiency"))
+            if all([
+                rec.source_id.lampholder_id or rec.source_id.lampholder_technical_id,
+                rec.efficiency_ids,
+                not rec.source_id.product_id.is_accessory,
+            ]):
+                raise ValidationError(_("A non accessory source with lampholder cannot have efficiency"))
 
     # aux display fucnitons
     def get_source_type(self):

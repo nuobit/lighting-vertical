@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class LightingProductCategory(models.Model):
@@ -154,6 +155,19 @@ class LightingProductCategory(models.Model):
     _sql_constraints = [('name_uniq', 'unique (parent_id,name)', 'The type must be unique by parent!'),
                         ('code_uniq', 'unique (code)', 'The code must be unique!')
                         ]
+
+    @api.multi
+    @api.constrains('is_accessory')
+    def _check_efficiency_lampholder(self):
+        for rec in self:
+            lamp_eff_products = rec.product_ids.filtered(
+                lambda x: (x.source_ids.mapped('lampholder_id') or x.source_ids.mapped(
+                    'lampholder_technical_id')) and
+                          x.source_ids.mapped('line_ids.efficiency_ids')
+            )
+            if not rec._get_is_accessory() and lamp_eff_products:
+                raise ValidationError(_("A non accessory source with lampholder cannot have efficiency: %s") % (
+                    lamp_eff_products.sorted('reference').mapped('reference')))
 
     def _get_is_accessory(self):
         self.ensure_one()
