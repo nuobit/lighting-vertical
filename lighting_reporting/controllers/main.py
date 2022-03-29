@@ -13,9 +13,13 @@ _logger = logging.getLogger(__name__)
 
 class ProductDatasheetController(http.Controller):
     def generate_lighting_report(self, product_id, lang_id=None):
-        lang = lang_id and lang_id.code or None
-        pdf = http.request.env.ref('lighting_reporting.action_report_product'). \
-            with_context(lang=lang).render_qweb_pdf([product_id.id])[0]
+        data = {
+            'model': product_id._name,
+            'ids': product_id.ids,
+            'lang': lang_id and lang_id.code or None,
+        }
+        pdf, _ = http.request.env.ref('lighting_reporting.action_report_product'). \
+            render_qweb_pdf(data=data)
         pdfhttpheaders = [
             ('Content-Type', 'application/pdf'),
             ('Content-Length', len(pdf)),
