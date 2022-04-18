@@ -20,9 +20,10 @@ class LightingProductAbstractDimension(models.AbstractModel):
     @api.multi
     def get_display(self):
         if self:
+            records = self.sorted(key=lambda r: (r.sequence, r.id))
             same_uom = True
             uoms = set()
-            for rec in self:
+            for rec in records:
                 if rec.type_id.uom not in uoms:
                     if not uoms:
                         uoms.add(rec.type_id.uom)
@@ -30,13 +31,13 @@ class LightingProductAbstractDimension(models.AbstractModel):
                         same_uom = False
                         break
 
-            res_label = ' x '.join(['%s' % x.type_id.name for x in self])
-            res_value = ' x '.join(['%g' % x.value for x in self])
+            res_label = ' x '.join(['%s' % x.type_id.name for x in records])
+            res_value = ' x '.join(['%g' % x.value for x in records])
 
             if same_uom:
                 res_label = '%s (%s)' % (res_label, uoms.pop())
             else:
-                res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in self])
+                res_value = ' x '.join(['%g%s' % (x.value, x.type_id.uom) for x in records])
 
             return '%s: %s' % (res_label, res_value)
 
