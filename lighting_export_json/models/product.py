@@ -214,10 +214,11 @@ class LightingProduct(models.Model):
                 attachment_order_d = {x.type_id: (x.sequence, x.id) for x in template_id.attachment_ids}
                 attachment_resolution_d = {x.type_id: x.resolution for x in template_id.attachment_ids}
                 attachment_max_d = {x.type_id: x.max_count for x in template_id.attachment_ids}
+                attachment_prefix_d = {x.type_id: x.prefix or '' for x in template_id.attachment_ids}
 
                 # classify
                 attachment_type_d = {}
-                for a in rec.attachment_ids.filtered(lambda x: x.datas_location == 'file'):
+                for a in rec.attachment_ids:
                     attach_type = a.type_id
                     if attach_type in attachment_order_d:
                         if attach_type not in attachment_type_d:
@@ -226,7 +227,7 @@ class LightingProduct(models.Model):
 
                 # final attachment sort and formatting
                 if attachment_type_d:
-                    attachment_l = []
+                    attachment_d = {}
                     for attach_type, attachs in sorted(attachment_type_d.items(),
                                                        key=lambda x: attachment_order_d[x[0]]):
                         attachs_date = attachs.filtered(lambda x: x.date)
@@ -239,61 +240,15 @@ class LightingProduct(models.Model):
                         if max_idx < 0:
                             max_idx = len(attachs_date)
                         for a in attachs_date[:max_idx]:
-                            if not a.public:
-                                a.sudo().public = True
-                            attachment_l.append(
+                            if a.datas_location == 'file':
+                                if not a.public:
+                                    a.sudo().public = True
+                            prefix = attachment_prefix_d[attach_type]
+                            attachment_d.setdefault(prefix, []).append(
                                 a.url_get(resolution=attachment_resolution_d.get(attach_type)))
 
-                    if attachment_l:
-                        rec.export_url_attachments = json.dumps(attachment_l)
-
-    ## Export Url Attachments URL
-    export_url_attachments_url = fields.Serialized(string='Export Url Attachments URL',
-                                                   compute='_compute_export_url_attachments_url')
-
-    @api.depends('attachment_ids.datas_fname',
-                 'attachment_ids.sequence',
-                 'attachment_ids.attachment_id.store_fname',
-                 'attachment_ids.type_id.code',
-                 'attachment_ids.type_id.name',
-                 )
-    def _compute_export_url_attachments_url(self):
-        template_id = self.env.context.get('template_id')
-        if template_id:
-            for rec in self:
-                # map attach type with order
-                attachment_order_d = {x.type_id: (x.sequence, x.id) for x in template_id.attachment_url_ids}
-                attachment_max_d = {x.type_id: x.max_count for x in template_id.attachment_url_ids}
-
-                # classify
-                attachment_type_d = {}
-                for a in rec.attachment_ids.filtered(lambda x: x.datas_location == 'url'):
-                    attach_type = a.type_id
-                    if attach_type in attachment_order_d:
-                        if attach_type not in attachment_type_d:
-                            attachment_type_d[attach_type] = self.env['lighting.attachment']
-                        attachment_type_d[attach_type] |= a
-
-                # final attachment sort and formatting
-                if attachment_type_d:
-                    attachment_l = []
-                    for attach_type, attachs in sorted(attachment_type_d.items(),
-                                                       key=lambda x: attachment_order_d[x[0]]):
-                        attachs_date = attachs.filtered(lambda x: x.date)
-                        if attachs_date:
-                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)
-                        else:
-                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
-
-                        max_idx = attachment_max_d[attach_type]
-                        if max_idx < 0:
-                            max_idx = len(attachs_date)
-                        for a in attachs_date[:max_idx]:
-                            attachment_l.append(
-                                a.url_get())
-
-                    if attachment_l:
-                        rec.export_url_attachments_url = json.dumps(attachment_l)
+                    if attachment_d:
+                        rec.export_url_attachments = json.dumps(attachment_d)
 
     ## Display Sources
     json_display_source_type = fields.Serialized(string="Source type JSON Display",
