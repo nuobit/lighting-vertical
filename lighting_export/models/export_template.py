@@ -178,7 +178,10 @@ class LightingExportTemplateAttachment(models.Model):
 
     type_id = fields.Many2one(comodel_name='lighting.attachment.type', ondelete='cascade',
                               string='Type', required=True)
+
     resolution = fields.Char(string='Resolution')
+
+    prefix = fields.Char(string='Prefix')
 
     max_count = fields.Integer(string='Max. count', default=-1)
 
