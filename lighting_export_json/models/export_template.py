@@ -235,31 +235,41 @@ class LightingExportTemplate(models.Model):
                 if multivalue_method:
                     if multivalue_method == 'by_field':
                         if not meta['translate']:
-                            if not isinstance(field_d, list):
+                            if not isinstance(field_d, (list, dict)):
                                 raise Exception(
                                     "Type %s no supported on Serialized fields with multivalue separator" % (
                                         type(field_d),))
-
-                            ndxs = key_fields or ["%02d" % x for x in range(1, len(field_d) + 1)]
-                            for i, elem in zip(ndxs, field_d):
-                                obj_d['%s_%s' % (field, i)] = elem
+                            if isinstance(field_d, list):
+                                field_d = {None: field_d}
+                            for prefix, field_d in field_d.items():
+                                ndxs = key_fields or ["%02d" % x for x in range(1, len(field_d) + 1)]
+                                base_key = prefix and '%s_%s' % (field, prefix) or field
+                                for i, elem in zip(ndxs, field_d):
+                                    obj_d["%s_%s" % (base_key, i)] = elem
                         else:
                             field1_d = {}
                             for lang, datum in field_d.items():
-                                if not isinstance(datum, list):
+                                if not isinstance(datum, (list, dict)):
                                     raise Exception(
                                         "Type %s no supported on Serialized fields with multivalue separator" % (
                                             type(field_d),))
-                                ndxs = key_fields or ["%02d" % x for x in range(1, len(datum) + 1)]
-                                for i, elem in zip(ndxs, datum):
-                                    field1_d.setdefault(i, []).append((lang, elem))
+                                if isinstance(datum, list):
+                                    datum = {None: datum}
+                                for prefix, datum in datum.items():
+                                    ndxs = key_fields or ["%02d" % x for x in range(1, len(datum) + 1)]
+                                    for i, elem in zip(ndxs, datum):
+                                        field1_d.setdefault(prefix, {}).setdefault(i, []).append((lang, elem))
                             if self.lang_field_format == 'postfix':
-                                for i, langelem in field1_d.items():
-                                    for lang, elem in langelem:
-                                        obj_d['%s_%s_%s' % (field, i, lang)] = elem
+                                for prefix, prefixelem in field1_d.items():
+                                    base_key = prefix and '%s_%s' % (field, prefix) or field
+                                    for i, langelem in prefixelem.items():
+                                        for lang, elem in langelem:
+                                            obj_d['%s_%s_%s' % (base_key, i, lang)] = elem
                             elif self.lang_field_format == 'json':
-                                for i, langelem in field1_d.items():
-                                    obj_d['%s_%s' % (field, i)] = dict(langelem)
+                                for prefix, prefixelem in field1_d.items():
+                                    base_key = prefix and '%s_%s' % (field, prefix) or field
+                                    for i, langelem in prefixelem.items():
+                                        obj_d['%s_%s' % (base_key, i)] = dict(langelem)
                             else:
                                 raise Exception("Language field format %s not supported" % self.lang_field_format)
                     elif multivalue_method == 'by_separator':
