@@ -73,14 +73,14 @@ msgstr "Añadir adjunto"
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:99
 #, python-format
-msgid "Already exists an attachment but with different types: %s"
-msgstr "Ya existe un archivo adjunto pero con diferentes tipos:% s"
+msgid "Already exists other attachment with exactly the same content: %s"
+msgstr "Ya existen otros archivos adjuntos con exactamente el mismo contenido: %s"
 
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:97
 #, python-format
-msgid "Already exists an attachment with the same type"
-msgstr "Ya existe un archivo adjunto con el mismo tipo."
+msgid "More than one attachment found with the same name: %s"
+msgstr "Encontrado más de un archivo adjunto con el mismo nombre: %s"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group_alt_name
@@ -1179,6 +1179,11 @@ msgstr "Número de aspas"
 #: selection:lighting.attachment,datas_location:0
 msgid "File"
 msgstr "Fichero"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_overwrite
+msgid "Overwrite"
+msgstr "Sobreescribir"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_noise_level

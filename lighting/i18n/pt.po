@@ -67,14 +67,14 @@ msgstr "Juntar anexo"
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:99
 #, python-format
-msgid "Already exists an attachment but with different types: %s"
-msgstr "Já existe um anexo, mas com diferentes tipos:% s"
+msgid "Already exists other attachment with exactly the same content: %s"
+msgstr "Já existe outro anexo com exatamente o mesmo conteúdo: %s"
 
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:97
 #, python-format
-msgid "Already exists an attachment with the same type"
-msgstr "Já existe um anexo com o mesmo tipo"
+msgid "More than one attachment found with the same name: %s"
+msgstr "Mais de um anexo encontrado com o mesmo nome: %s"
 
 #. module: lighting
 #: selection:lighting.product.voltage,current_type:0
@@ -1077,6 +1077,11 @@ msgstr "Pás de ventilador"
 #: selection:lighting.attachment,datas_location:0
 msgid "File"
 msgstr "Arquivo"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_overwrite
+msgid "Overwrite"
+msgstr "Substituir"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_noise_level
