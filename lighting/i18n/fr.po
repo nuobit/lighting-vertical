@@ -81,14 +81,14 @@ msgstr "Ajouter une pièce jointe"
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:99
 #, python-format
-msgid "Already exists an attachment but with different types: %s"
-msgstr "Il existe déjà une pièce jointe mais avec différents types:% s"
+msgid "Already exists other attachment with exactly the same content: %s"
+msgstr "Il existe déjà une autre pièce jointe avec exactement le même contenu : %s"
 
 #. module: lighting
 #: code:addons/lighting/wizard/lighting_product_addattachment.py:97
 #, python-format
-msgid "Already exists an attachment with the same type"
-msgstr "Existe déjà une pièce jointe du même type"
+msgid "More than one attachment found with the same name: %s"
+msgstr "Plusieurs pièces jointes portant le même nom ont été trouvées : %s"
 
 #. module: lighting
 #: selection:lighting.product.voltage,current_type:0
@@ -1100,6 +1100,11 @@ msgstr "Nombre d'aspas"
 #: selection:lighting.attachment,datas_location:0
 msgid "File"
 msgstr "Ficher"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_overwrite
+msgid "Overwrite"
+msgstr "Écraser"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_noise_level
