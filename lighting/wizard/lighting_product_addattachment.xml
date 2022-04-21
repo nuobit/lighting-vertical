@@ -30,6 +30,9 @@
                         <field name="name"/>
                         <field name="lang_id"/>
                     </group>
+                    <group>
+                        <field name="overwrite"/>
+                    </group>
                 </group>
                 <group states="error,done">
                     <field name="result" widget="text" nolabel="1"/>
