@@ -30,8 +30,8 @@ class LightingReviewMixin:
     @api.model
     def _get_toreview_fields(self):
         return {x for x, _ in filter(
-            lambda x: x[1]['type'] == 'boolean' and x[0].startswith('toreview_'),
-            self.fields_get([], ['type']).items()
+            lambda x: x[1].type == 'boolean' and x[0].startswith('toreview_'),
+            self._fields.items()
         )}
 
     @api.depends(_get_toreview_fields)
