@@ -12,10 +12,10 @@ from odoo.addons.connector.components.mapper import (
 
 
 class LightingProductExporter(Component):
-    _name = 'sapb1.lighting.product.exporter'
+    _name = 'sapb1.light.product.exporter'
     _inherit = 'sapb1.exporter'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
     def _has_to_skip(self):
         """ Return True if the export can be skipped """
@@ -27,10 +27,10 @@ class LightingProductDirectBatchExporter(Component):
 
     For every product in the list, import it directly.
     """
-    _name = 'sapb1.lighting.product.direct.batch.exporter'
+    _name = 'sapb1.light.product.direct.batch.exporter'
     _inherit = 'sapb1.direct.batch.exporter'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
 
 class LightingProductDelayedBatchExporter(Component):
@@ -38,7 +38,7 @@ class LightingProductDelayedBatchExporter(Component):
 
     For every product in the list, a delayed job is created.
     """
-    _name = 'sapb1.lighting.product.delayed.batch.exporter'
+    _name = 'sapb1.light.product.delayed.batch.exporter'
     _inherit = 'sapb1.delayed.batch.exporter'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'

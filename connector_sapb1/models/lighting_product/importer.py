@@ -12,10 +12,10 @@ from odoo.addons.connector.components.mapper import (
 
 
 class LightingProductImporter(Component):
-    _name = 'sapb1.lighting.product.importer'
+    _name = 'sapb1.light.product.importer'
     _inherit = 'sapb1.importer'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
     def _find_existing(self, external_id):
         """ Find existing record by external_id  """
@@ -46,10 +46,10 @@ class LightingProductDirectBatchImporter(Component):
 
     For every product in the list, import it directly.
     """
-    _name = 'sapb1.lighting.product.direct.batch.importer'
+    _name = 'sapb1.light.product.direct.batch.importer'
     _inherit = 'sapb1.direct.batch.importer'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
 
 class LightingProductDelayedBatchImporter(Component):
@@ -57,7 +57,7 @@ class LightingProductDelayedBatchImporter(Component):
 
     For every product in the list, a delayed job is created.
     """
-    _name = 'sapb1.lighting.product.delayed.batch.importer'
+    _name = 'sapb1.light.product.delayed.batch.importer'
     _inherit = 'sapb1.delayed.batch.importer'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
