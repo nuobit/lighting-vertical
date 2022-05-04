@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- SAPB1 lighting backend -->
+    <record id="sapb1_lighting_backend_view_form" model="ir.ui.view">
+        <field name="name">sapb1.lighting.backend.form</field>
+        <field name="model">sapb1.lighting.backend</field>
+        <field name="arch" type="xml">
+            <form string="SAP B1 Backend">
+                <header>
+                    <button name="button_check_connection" type="object" class="oe_highlight"
+                            string="Check Connection" attrs="{'invisible':[('state', 'not in', ['draft'])]}"/>
+                    <button name="button_reset_to_draft" type="object"
+                            string="Reset To draft Connection" attrs="{'invisible':[('state', 'in', ['draft'])]}"/>
+                    <field name="state" widget="statusbar" readonly="1"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" type="object" name="toggle_active"
+                                icon="fa-archive">
+                            <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name" class="oe_inline" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </h1>
+                    <group>
+                        <field name="company_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="user_id" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                    </group>
+                    <group>
+                        <group colspan="2">
+                            <field name="db_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_schema" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        </group>
+                        <group string="Database">
+                            <field name="db_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_password" password="True"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="db_version"/>
+                        </group>
+                        <group string="Service Layer">
+                            <field name="sl_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_base_url" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_ssl_enabled" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_url"/>
+                            <field name="sl_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_password" password="True"
+                                   attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                            <field name="sl_version"/>
+                        </group>
+                    </group>
+                    <group string="File server">
+                        <field name="fileserver_host" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="fileserver_port" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        <field name="fileserver_username" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                        <field name="fileserver_password" password="True"
+                               attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        <field name="fileserver_basepath" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+
+                        <field name="fileserver_version"/>
+                    </group>
+                    <notebook attrs="{'invisible':[('state', 'in', ['draft'])]}">
+                        <page name="import" string="Imports">
+                            <p class="oe_grey oe_inline">
+                                By clicking on the buttons,
+                                you will initiate the
+                                synchronizations
+                                with SAP B1.
+                                Note that the import or exports
+                                won't be done directly,
+                                they will create 'Jobs'
+                                executed as soon
+                                as possible.
+                            </p>
+                            <p class="oe_grey oe_inline">
+                                Once imported,
+                                some types of records,
+                                like the products
+                                or categories,
+                                need a manual review.
+                                You will find the list
+                                of the
+                                new records to review
+                                in the menu 'Connectors > Checkpoint'.
+                            </p>
+                            <group>
+                                <div>
+                                    <label string="Import Products since"
+                                           class="oe_inline"/>
+                                    <field name="import_products_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="import_products_since" type="object"
+                                        class="oe_highlight" string="Import in background"/>
+                            </group>
+                            <group>
+                                <div>
+                                    <label string="Export Products since"
+                                           class="oe_inline"/>
+                                    <field name="export_products_since_date" class="oe_inline"
+                                           nolabel="1"/>
+                                </div>
+                                <button name="export_products_since" type="object"
+                                        class="oe_highlight" string="Export in background"/>
+                            </group>
+                        </page>
+                        <page name="mappings" string="Mappings">
+                            <group string="Catalogs">
+                                <field name="catalog_map" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="catalog_id"/>
+                                        <field name="sap_item_group_id"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="State Marketing">
+                                <field name="state_marketing_map" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="state_marketing"/>
+                                        <field name="sap_state_reference"/>
+                                    </tree>
+                                </field>
+                            </group>
+                            <group string="Languages">
+                                <field name="language_map" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="lang_id"/>
+                                        <field name="sap_lang_id"/>
+                                        <field name="sap_main_lang"/>
+                                    </tree>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sapb1_lighting_backend_view_tree" model="ir.ui.view">
+        <field name="name">sapb1.lighting.backend.tree</field>
+        <field name="model">sapb1.lighting.backend</field>
+        <field name="arch" type="xml">
+            <tree string="SAP B1 Backend">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="db_host" string="DB host"/>
+                <field name="db_port" string="DB port"/>
+                <field name="db_schema" string="DB schema"/>
+                <field name="fileserver_host" string="File server host"/>
+                <field name="fileserver_port" string="File server port"/>
+                <field name="fileserver_basepath" string="File server path"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="sapb1_lighting_backend_action" model="ir.actions.act_window">
+        <field name="name">SAP B1 Backends</field>
+        <field name="res_model">sapb1.lighting.backend</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
