@@ -10,10 +10,10 @@ from odoo.exceptions import ValidationError
 
 
 class LigthingProductExportMapper(Component):
-    _name = 'sapb1.lighting.product.export.mapper'
+    _name = 'sapb1.light.product.export.mapper'
     _inherit = 'sapb1.export.mapper'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
     @mapping
     def catalog(self, record):

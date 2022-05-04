@@ -10,10 +10,10 @@ _logger = logging.getLogger(__name__)
 
 
 class LightingProductAdapter(Component):
-    _name = 'sapb1.lighting.product.adapter'
+    _name = 'sapb1.light.product.adapter'
     _inherit = 'sapb1.adapter'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
     _sql_search = r""""""
 

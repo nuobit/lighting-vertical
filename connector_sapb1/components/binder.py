@@ -9,7 +9,7 @@ class SAPB1ModelBinder(AbstractComponent):
     """ Bind records and give odoo/sapb1 ids correspondence
 
     Binding models are models called ``sapb1.{normal_model}``,
-    like ``sapb1.lighting.product``.
+    like ``sapb1.light.product``.
     They are ``_inherits`` of the normal models and contains
     the SAP B1 ID, the ID of the SAP B1 Backend and the additional
     fields belonging to the SAP B1 instance.
