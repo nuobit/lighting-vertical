@@ -17,6 +17,6 @@
 
     <menuitem id="sapb1_external_products_menu" name="External Products"
               parent="sapb1_external_objects_menu"
-              action="sapb1_lighting_product_action"
+              action="sapb1_light_product_action"
               sequence="10"/>
 </odoo>

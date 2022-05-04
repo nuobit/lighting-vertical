@@ -155,7 +155,7 @@ class SapB1Backend(models.Model):
     @api.multi
     def import_products_since(self):
         for rec in self:
-            self.env['sapb1.lighting.product'].with_delay(
+            self.env['sapb1.light.product'].with_delay(
             ).import_products_since(
                 backend_record=rec)
 
@@ -164,7 +164,7 @@ class SapB1Backend(models.Model):
     @api.multi
     def export_products_since(self):
         for rec in self:
-            self.env['sapb1.lighting.product'].with_delay(
+            self.env['sapb1.light.product'].with_delay(
             ).export_products_since(
                 backend_record=rec)
 

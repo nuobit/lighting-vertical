@@ -103,7 +103,7 @@ class BinderComposite(AbstractComponent):
             binding_field = self._default_binding_field
 
         # wrap is typically True if the relation is a 'lighting.product'
-        # record but the binding model is 'sapb1.lighting.product'
+        # record but the binding model is 'sapb1.light.product'
         wrap = relation._name != self.model._name
         if wrap and hasattr(relation, binding_field):
             binding = self._find_binding(relation, binding_extra_vals)

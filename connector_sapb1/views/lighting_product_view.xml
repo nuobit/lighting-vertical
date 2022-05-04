@@ -35,9 +35,9 @@
         </field>
     </record>
 
-    <record id="sapb1_lighting_product_view_form" model="ir.ui.view">
-        <field name="name">sapb1.lighting.product.form</field>
-        <field name="model">sapb1.lighting.product</field>
+    <record id="sapb1_light_product_view_form" model="ir.ui.view">
+        <field name="name">sapb1.light.product.form</field>
+        <field name="model">sapb1.light.product</field>
         <field name="arch" type="xml">
             <form string="SAP B1 Product">
                 <group>
@@ -51,9 +51,9 @@
         </field>
     </record>
 
-    <record id="sapb1_lighting_product_view_tree" model="ir.ui.view">
-        <field name="name">sapb1.lighting.product.tree</field>
-        <field name="model">sapb1.lighting.product</field>
+    <record id="sapb1_light_product_view_tree" model="ir.ui.view">
+        <field name="name">sapb1.light.product.tree</field>
+        <field name="model">sapb1.light.product</field>
         <field name="arch" type="xml">
             <tree string="SAP B1 Product">
                 <field name="backend_id"/>
@@ -76,9 +76,9 @@
         </field>
     </record>
 
-    <record id="sapb1_lighting_product_action" model="ir.actions.act_window">
+    <record id="sapb1_light_product_action" model="ir.actions.act_window">
         <field name="name">Product</field>
-        <field name="res_model">sapb1.lighting.product</field>
+        <field name="res_model">sapb1.light.product</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

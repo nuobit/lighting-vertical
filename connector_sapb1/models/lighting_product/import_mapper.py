@@ -14,10 +14,10 @@ ACCESSORY_CATALOG = 'NX Lighting'
 
 
 class LigthingProductImportMapper(Component):
-    _name = 'sapb1.lighting.product.import.mapper'
+    _name = 'sapb1.light.product.import.mapper'
     _inherit = 'sapb1.import.mapper'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
 
     @mapping
     def backend_id(self, record):

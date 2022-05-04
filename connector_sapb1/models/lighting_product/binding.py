@@ -11,14 +11,14 @@ class LightingProduct(models.Model):
     _inherit = 'lighting.product'
 
     sapb1_bind_ids = fields.One2many(
-        comodel_name='sapb1.lighting.product',
+        comodel_name='sapb1.light.product',
         inverse_name='odoo_id',
         string='SAP B1 Bindings',
     )
 
 
 class LightingProductBinding(models.Model):
-    _name = 'sapb1.lighting.product'
+    _name = 'sapb1.light.product'
     _inherit = 'sapb1.binding'
     _inherits = {'lighting.product': 'odoo_id'}
 
@@ -31,13 +31,13 @@ class LightingProductBinding(models.Model):
     def import_products_since(self, backend_record=None):
         """ Prepare the batch import of products modified on SAP B1 """
         filters = []
-        existing_hashes = self.env['sapb1.lighting.product'].search([
+        existing_hashes = self.env['sapb1.light.product'].search([
             ('external_content_hash', '!=', False),
         ]).mapped('external_content_hash')
         if existing_hashes:
             filters = [('Hash', 'not in', existing_hashes)]
         now_fmt = fields.Datetime.now()
-        self.env['sapb1.lighting.product'].import_batch(
+        self.env['sapb1.light.product'].import_batch(
             backend=backend_record, filters=filters)
         backend_record.import_products_since_date = now_fmt
 
@@ -52,7 +52,7 @@ class LightingProductBinding(models.Model):
                 ('write_date', '>', backend_record.export_products_since_date),
             ]
         now_fmt = fields.Datetime.now()
-        self.env['sapb1.lighting.product'].export_batch(
+        self.env['sapb1.light.product'].export_batch(
             backend=backend_record, domain=domain)
         backend_record.export_products_since_date = now_fmt
 

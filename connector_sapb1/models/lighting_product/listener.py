@@ -7,7 +7,7 @@ from odoo.addons.component_event import skip_if
 
 
 class SAPB1LightingProductImporter(Component):
-    _name = "sapb1.lighting.product.listener"
+    _name = "sapb1.light.product.listener"
     _inherit = "sapb1.listener"
 
     _apply_on = "lighting.product"
@@ -23,5 +23,5 @@ class SAPB1LightingProductImporter(Component):
                 relevant_fields.add('state')
         if fields is None or relevant_fields & set(fields):
             for backend in record.sudo().sapb1_bind_ids.mapped('backend_id'):
-                self.env["sapb1.lighting.product"].sudo(backend.user_id) \
+                self.env["sapb1.light.product"].sudo(backend.user_id) \
                     .with_delay().export_record(backend.sudo(backend.user_id), record)

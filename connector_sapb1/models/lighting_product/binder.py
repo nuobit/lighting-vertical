@@ -15,7 +15,7 @@ class LightingProductBinder(Component):
     the SAP B1 ID, the ID of the SAP B1 Backend and the additional
     fields belonging to the SAP B1 instance.
     """
-    _name = 'sapb1.lighting.product.binder'
+    _name = 'sapb1.light.product.binder'
     _inherit = 'sapb1.binder'
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = 'sapb1.light.product'
