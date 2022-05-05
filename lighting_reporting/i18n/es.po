@@ -547,7 +547,7 @@ msgstr "Potencia"
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.external_layout_lighting
 msgid "We reserve the right to change product specifications"
-msgstr "Nos reservamos el derecho de cambiar las especificaicones de producto"
+msgstr "Nos reservamos el derecho de cambiar las especificaciones de producto"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
