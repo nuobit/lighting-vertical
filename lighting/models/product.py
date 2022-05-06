@@ -973,3 +973,10 @@ class LightingProduct(models.Model):
         if new_values:
             values.update(new_values)
         return super(LightingProduct, self).create(values)
+
+    @api.multi
+    def unlink(self):
+        product_tmpl = self.mapped('odoop_id.product_tmpl_id')
+        res = super(LightingProduct, self).unlink()
+        res &= product_tmpl.unlink()
+        return res
