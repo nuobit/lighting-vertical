@@ -39,13 +39,13 @@ STATE_NAME_MAP = lambda x: {
 class LightingProduct(models.Model):
     _name = 'lighting.product'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _inherits = {"product.product": "odoo_id"}
+    _inherits = {"product.product": "odoop_id"}
     _rec_name = 'reference'
     _order = 'sequence,reference'
     _description = 'Product'
 
     # binding fields
-    odoo_id = fields.Many2one(
+    odoop_id = fields.Many2one(
         comodel_name="product.product",
         string="Odoo Product ID",
         required=True,
@@ -953,7 +953,7 @@ class LightingProduct(models.Model):
 
         for rec in self:
             if update_values:
-                rec.odoo_id.write(update_values)
+                rec.odoop_id.write(update_values)
             new_values = rec._check_state_marketing_stock(values)
             if new_values:
                 values.update(new_values)
