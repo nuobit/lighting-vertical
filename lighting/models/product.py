@@ -944,25 +944,22 @@ class LightingProduct(models.Model):
 
     @api.multi
     def write(self, values):
-        update_values = {}
-        original_description = {x.id: x.description for x in self}
-        if 'reference' in values:
-            update_values['default_code'] = values['reference']
-        if 'price' in values:
-            update_values['lst_price'] = values['price']
+        if 'reference' in values and 'default_code' not in values:
+            values['default_code'] = values['reference']
+        if 'price' in values and 'lst_price' not in values:
+            values['lst_price'] = values['price']
+        result = True
         for rec in self:
-            if update_values:
-                rec.odoop_id.write(update_values)
             new_values = rec._check_state_marketing_stock(values)
             if new_values:
                 values.update(new_values)
-        res = super(LightingProduct, self).write(values)
-        for rec in self:
-            if rec.description != original_description[rec.id]:
+            original_description = rec.description
+            result &= super(LightingProduct, rec).write(values)
+            if rec.description != original_description:
                 for lang in self.env['res.lang'].search([]):
                     rec = rec.with_context(lang=lang.code)
                     rec.name = rec.description or rec.description_manual or rec.reference
-        return res
+        return result
 
     @api.model
     def create(self, values):
