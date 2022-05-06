@@ -950,7 +950,6 @@ class LightingProduct(models.Model):
             update_values['default_code'] = values['reference']
         if 'price' in values:
             update_values['lst_price'] = values['price']
-
         for rec in self:
             if update_values:
                 rec.odoop_id.write(update_values)
@@ -961,8 +960,8 @@ class LightingProduct(models.Model):
         for rec in self:
             if rec.description != original_description[rec.id]:
                 for lang in self.env['res.lang'].search([]):
-                    rec.with_context(lang=lang.code).name = rec.with_context(lang=lang.code).description
-
+                    rec = rec.with_context(lang=lang.code)
+                    rec.name = rec.description or rec.description_manual or rec.reference
         return res
 
     @api.model
