@@ -1,7 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-"access_sapb1_light_product","sapb1_light_product connector manager","model_sapb1_light_product","connector.group_connector_manager",1,1,1,1
-"access_sapb1_light_product_group_user","sapb1_light_product group_user","model_sapb1_light_product","base.group_user",1,0,0,0
-"access_sapb1_backend_manager","sapb1_backend connector manager","model_sapb1_backend","connector.group_connector_manager",1,1,1,1
-"access_sapb1_backend_catalog_map_manager","sapb1_backend_catalog_map connector manager","model_sapb1_backend_catalog_map","connector.group_connector_manager",1,1,1,1
-"access_sapb1_backend_state_marketing_map_manager","sapb1_backend_state_marketing_map connector manager","model_sapb1_backend_state_marketing_map","connector.group_connector_manager",1,1,1,1
-"access_sapb1_backend_lang_map_manager","sapb1_backend_lang_map connector manager","model_sapb1_backend_lang_map","connector.group_connector_manager",1,1,1,1
