@@ -14,8 +14,10 @@ class LightingDimensionType(models.Model):
     uom = fields.Char(string='Uom', help='Unit of mesure')
     description = fields.Char(string='Internal description')
 
-    _sql_constraints = [('name_uniq', 'unique (name, uom)', 'The dimension name must be unique!'),
-                        ]
+    _sql_constraints = [
+        ('name_uniq', 'unique (name, uom)', 'The dimension name must be unique!'),
+        ('code_uniq', 'unique (code)', 'The dimension code must be unique!'),
+    ]
 
     @api.multi
     def name_get(self):
