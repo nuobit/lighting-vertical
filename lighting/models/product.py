@@ -82,7 +82,13 @@ class LightingProduct(models.Model):
                  'catalog_ids.description_show_ip_condition',
                  'sealing_id',
                  'sealing_id.name',
+                 'sensor_ids',
+                 'sensor_ids.name',
                  'dimmable_ids.name',
+                 'dimension_ids',
+                 'dimension_ids.type_id',
+                 'dimension_ids.type_id.code',
+                 'dimension_ids.value',
                  'source_ids.sequence',
                  'source_ids.lampholder_id.code',
                  'source_ids.line_ids.sequence',
@@ -93,11 +99,18 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.is_lamp_included',
                  'source_ids.line_ids.wattage',
                  'source_ids.line_ids.wattage_magnitude',
+                 'source_ids.line_ids.cri_min',
                  'source_ids.line_ids.special_spectrum',
                  'source_ids.line_ids.is_color_temperature_flux_tunable',
                  'source_ids.line_ids.color_temperature_flux_ids',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
+                 'source_ids.line_ids.color_temperature_flux_ids.flux_id',
+                 'source_ids.line_ids.color_temperature_flux_ids.flux_id.value',
+                 'beam_ids.dimension_ids',
+                 'beam_ids.dimension_ids.type_id',
+                 'beam_ids.dimension_ids.type_id.uom',
+                 'beam_ids.dimension_ids.value',
                  'finish_id.name',
                  'finish2_id.name')
     def _compute_description(self):
@@ -205,10 +218,19 @@ class LightingProduct(models.Model):
                             data_line.append(wattage_total_display)
 
                         if line.color_temperature_flux_ids:
+                            luminous_flux_display = line.with_context(ignore_nulls=True).luminous_flux_display
+                            if luminous_flux_display:
+                                data_line.append(luminous_flux_display)
+
+                        if line.cri_min:
+                            data_line.append("CRI%i" % line.cri_min)
+
+                        if line.color_temperature_flux_ids:
                             color_temperature_display = line.with_context(ignore_nulls=True).color_temperature_display
                             if color_temperature_display:
                                 data_line.append(color_temperature_display)
-                        else:
+
+                        if not line.color_temperature_flux_ids:
                             if line.is_led and line.special_spectrum:
                                 special_spectrum_option = dict(
                                     line.fields_get(['special_spectrum'], ['selection']) \
@@ -238,9 +260,17 @@ class LightingProduct(models.Model):
                                     data_line.append(wattage_total_display)
 
                                 if line.color_temperature_flux_ids:
+                                    if line.luminous_flux_display:
+                                        data_line.append(line.luminous_flux_display)
+
+                                if line.cri_min:
+                                    data_line.append("CRI%i" % line.cri_min)
+
+                                if line.color_temperature_flux_ids:
                                     if line.color_temperature_display:
                                         data_line.append(line.color_temperature_display)
-                                else:
+
+                                if not line.color_temperature_flux_ids:
                                     if line.is_led and line.special_spectrum:
                                         special_spectrum_option = dict(
                                             line.fields_get(['special_spectrum'], ['selection']) \
@@ -272,6 +302,23 @@ class LightingProduct(models.Model):
 
         if data_sources:
             data.append('+'.join(data_sources))
+
+        if self.beam_ids:
+            beam_angle_display = self.beam_ids.get_beam_angle_display()
+            if beam_angle_display:
+                data.append(beam_angle_display)
+
+        if self.sensor_ids:
+            data.append(','.join(self.sensor_ids.sorted(lambda x: x.name).mapped('name')))
+
+        if self.charger_connector_type_id:
+            data.append(self.charger_connector_type_id.name)
+
+        if self.category_id:
+            if self.category_id._get_root().code == 'BAL':
+                height_dimension = self.dimension_ids.filtered(lambda x: x.type_id.code == 'HEIGHTMM')
+                if height_dimension:
+                    data.append(height_dimension.get_value_display(spaces=False))
 
         if show_variant_data and self.finish_id:
             data.append(self.finish_id.name)
