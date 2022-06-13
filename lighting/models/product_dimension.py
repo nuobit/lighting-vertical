@@ -18,6 +18,17 @@ class LightingProductAbstractDimension(models.AbstractModel):
                               help="The sequence field is used to define order in which the dimension lines are sorted")
 
     @api.multi
+    def get_value_display(self, spaces=True):
+        res = []
+        for rec in self:
+            data = ['%g' % rec.value]
+            if rec.type_id.uom:
+                data.append(rec.type_id.uom)
+            res.append(''.join(data))
+        separator = spaces and ', ' or ','
+        return res and separator.join(res) or False
+
+    @api.multi
     def get_display(self):
         if self:
             records = self.sorted(key=lambda r: (r.sequence, r.id))

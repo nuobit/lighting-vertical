@@ -12,6 +12,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
+                        <field name="code"/>
                         <field name="uom"/>
                         <field name="description" widget="text"/>
                     </group>
@@ -25,8 +26,8 @@
         <field name="model">lighting.dimension.type</field>
         <field name="arch" type="xml">
             <tree string="Dimension type Tree">
-                <field name="name"/>
-                <field name="uom"/>
+                <field name="display_name"/>
+                <field name="code"/>
             </tree>
         </field>
     </record>
