@@ -85,7 +85,7 @@ class LightingProduct(models.Model):
     @api.constrains('website_published')
     def check_website_published(self):
         for rec in self:
-            if rec.website_published and rec.website_published_readonly:
+            if rec.website_published_readonly:
                 raise ValidationError("You have no permissions to modify this field")
 
     def _check_state_marketing_stock(self, values):
