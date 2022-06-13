@@ -81,3 +81,11 @@ class LightingProductBeam(models.Model):
         if not any(res):
             return None
         return res
+
+    def get_beam_angle_display(self, spaces=False):
+        value_display = False
+        beam_angle = self.get_beam_angle()
+        if beam_angle:
+            separator = spaces and ', ' or ','
+            value_display = separator.join(beam_angle)
+        return value_display

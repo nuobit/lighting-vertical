@@ -10,6 +10,7 @@ class LightingDimensionType(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Name', required=True, translate=True)
+    code = fields.Char(string='Code', required=True, help='Code used to identify the dimension type')
     uom = fields.Char(string='Uom', help='Unit of mesure')
     description = fields.Char(string='Internal description')
 
@@ -20,7 +21,9 @@ class LightingDimensionType(models.Model):
     def name_get(self):
         vals = []
         for record in self:
-            name = '%s (%s)' % (record.name, record.uom)
-            vals.append((record.id, name))
+            name_l = [record.name]
+            if record.uom:
+                name_l.append('(%s)' % record.uom)
+            vals.append((record.id, ' '.join(name_l)))
 
         return vals
