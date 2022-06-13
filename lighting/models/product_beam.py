@@ -87,5 +87,5 @@ class LightingProductBeam(models.Model):
         beam_angle = self.get_beam_angle()
         if beam_angle:
             separator = spaces and ', ' or ','
-            value_display = separator.join(beam_angle)
+            value_display = separator.join(filter(None, beam_angle))
         return value_display
