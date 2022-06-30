@@ -82,12 +82,6 @@ class LightingProduct(models.Model):
 
     marketplace_description = fields.Text(string='Marketplace Description', translate=True, track_visibility='onchange')
 
-    @api.constrains('website_published')
-    def check_website_published(self):
-        for rec in self:
-            if rec.website_published_readonly:
-                raise ValidationError("You have no permissions to modify this field")
-
     def _check_state_marketing_stock(self, values):
         new_values = super(LightingProduct, self)._check_state_marketing_stock(values)
         values.update(new_values)
@@ -110,6 +104,23 @@ class LightingProduct(models.Model):
             elif new_state == D_MAP[current_state]:
                 self._update_with_check(new_values, 'website_published', new_stock >= MIN_STOCK)
         return new_values
+
+    @api.multi
+    def _check_website_published_readonly(self, vals):
+        if 'website_published' in vals:
+            for rec in self:
+                if rec.website_published_readonly:
+                    raise ValidationError("You have no permissions to modify the Website Published field")
+
+    @api.multi
+    def write(self, vals):
+        self._check_website_published_readonly(vals)
+        return super().write(vals)
+
+    @api.model
+    def create(self, vals):
+        self._check_website_published_readonly(vals)
+        return super().create(vals)
 
 
 class LightingProductFamily(models.Model):
