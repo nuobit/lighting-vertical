@@ -31,7 +31,7 @@
                     <group>
                         <field name="name"/>
                         <field name="lang_id"/>
-                        <field name="date"/>
+                        <field name="write_date" readonly="1"/>
                         <field name="is_default"/>
                         <field name="sequence"/>
                     </group>
@@ -58,7 +58,7 @@
                 <field name="datas_url"/>
                 <field name="name"/>
                 <field name="lang_id"/>
-                <field name="date"/>
+                <field name="write_date"/>
                 <field name="is_default"/>
                 <field name="public"/>
             </tree>
@@ -100,7 +100,7 @@
                                     <field name="lang_id"/>
                                 </div>
                                 <div>
-                                    <field name="date"/>
+                                    <field name="write_date"/>
                                 </div>
                             </div>
                         </div>
