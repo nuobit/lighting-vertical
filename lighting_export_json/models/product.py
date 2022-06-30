@@ -167,9 +167,10 @@ class LightingProduct(models.Model):
                     attachment_l = []
                     for attach_type, attachs in sorted(attachment_type_d.items(),
                                                        key=lambda x: attachment_order_d[x[0]]):
-                        attachs_date = attachs.filtered(lambda x: x.date)
+                        attachs_date = attachs.filtered(lambda x: x.write_date)
                         if attachs_date:
-                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)
+                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.write_date),
+                                                               reverse=True)
                         else:
                             attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
 
@@ -230,9 +231,10 @@ class LightingProduct(models.Model):
                     attachment_d = {}
                     for attach_type, attachs in sorted(attachment_type_d.items(),
                                                        key=lambda x: attachment_order_d[x[0]]):
-                        attachs_date = attachs.filtered(lambda x: x.date)
+                        attachs_date = attachs.filtered(lambda x: x.write_date)
                         if attachs_date:
-                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.date), reverse=True)
+                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.write_date),
+                                                               reverse=True)
                         else:
                             attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
 
