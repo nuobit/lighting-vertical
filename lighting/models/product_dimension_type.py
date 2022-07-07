@@ -10,7 +10,7 @@ class LightingDimensionType(models.Model):
     _order = 'name'
 
     name = fields.Char(string='Name', required=True, translate=True)
-    code = fields.Char(string='Code', required=True, help='Code used to identify the dimension type')
+    code = fields.Char(string='Code', help='Code used to identify the dimension type')
     uom = fields.Char(string='Uom', help='Unit of mesure')
     description = fields.Char(string='Internal description')
 
