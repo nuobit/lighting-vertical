@@ -481,6 +481,11 @@ msgid "Code"
 msgstr "Código"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_material_is_glass
+msgid "Glass"
+msgstr "Cristal"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_consistency
 msgid "Color consistency (SDCM)"
 msgstr "Consistencia del color (SDCM)"

@@ -82,6 +82,9 @@ class LightingProduct(models.Model):
                  'catalog_ids.description_show_ip_condition',
                  'sealing_id',
                  'sealing_id.name',
+                 'diffusor_material_ids',
+                 'diffusor_material_ids.name',
+                 'diffusor_material_ids.is_glass',
                  'sensor_ids',
                  'sensor_ids.name',
                  'dimmable_ids.name',
@@ -109,10 +112,12 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.color_temperature_flux_ids.flux_id.value',
                  'beam_ids.dimension_ids',
                  'beam_ids.dimension_ids.type_id',
+                 'beam_ids.dimension_ids.type_id.code',
                  'beam_ids.dimension_ids.type_id.uom',
                  'beam_ids.dimension_ids.value',
                  'finish_id.name',
-                 'finish2_id.name')
+                 'finish2_id.name',
+                 'inclination_angle_max')
     def _compute_description(self):
         for rec in self:
             rec.description_updated = True
@@ -319,6 +324,24 @@ class LightingProduct(models.Model):
                 height_dimension = self.dimension_ids.filtered(lambda x: x.type_id.code == 'HEIGHTMM')
                 if height_dimension:
                     data.append(height_dimension.get_value_display(spaces=False))
+
+        if self.family_ids:
+            if set(self.family_ids.mapped('code')) & {'984', 'GLOB', '129', '393'}:
+                diameter_dimension = self.dimension_ids.filtered(lambda x: x.type_id.code == 'DIAMETERMM')
+                if diameter_dimension:
+                    data.append('\u2300%s' % diameter_dimension.get_value_display(spaces=False))
+
+        if self.family_ids:
+            if set(self.family_ids.mapped('code')) & {'984', '264', '096'}:
+                glass_diffuser_material = self.diffusor_material_ids.filtered(lambda x: x.is_glass)
+                if glass_diffuser_material:
+                    data.append(','.join(glass_diffuser_material.mapped('name')))
+
+        if self.inclination_angle_max:
+            data.append("%gº" % self.inclination_angle_max)
+
+        if self.beam_count == 2:
+            data.append("up-down")
 
         if show_variant_data and self.finish_id:
             data.append(self.finish_id.name)
