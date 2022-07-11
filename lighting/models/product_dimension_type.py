@@ -14,6 +14,15 @@ class LightingDimensionType(models.Model):
     uom = fields.Char(string='Uom', help='Unit of mesure')
     description = fields.Char(string='Internal description')
 
+    product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env['lighting.product'].search_count(
+                ['|', '|', ('dimension_ids.type_id', '=', record.id),
+                 ('recess_dimension_ids.type_id', '=', record.id),
+                 ('beam_ids.dimension_ids.type_id', '=', record.id)])
+
     _sql_constraints = [
         ('name_uniq', 'unique (name, uom)', 'The dimension name must be unique!'),
         ('code_uniq', 'unique (code)', 'The dimension code must be unique!'),
