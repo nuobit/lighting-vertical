@@ -14,6 +14,7 @@ class LightingProductMaterial(models.Model):
 
     code = fields.Char(string='Code', required=True)
     name = fields.Char(string='Description', required=True, translate=True)
+    is_glass = fields.Boolean(string='Glass')
 
     product_count = fields.Integer(compute='_compute_product_count', string='Product(s)')
 

@@ -9,10 +9,10 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">['|', '|', '|', '|', '|', ('body_material_ids','=',active_id),
-            ('lampshade_material_ids','=',active_id),
-            ('diffusor_material_ids','=',active_id), ('frame_material_ids','=',active_id),
-            ('reflector_material_ids','=',active_id), ('blade_material_ids','=',active_id)]
+        <field name="domain">['|', '|', '|', '|', '|', ('body_material_ids', '=', active_id),
+                              ('lampshade_material_ids', '=', active_id),
+                              ('diffusor_material_ids', '=', active_id), ('frame_material_ids', '=', active_id),
+                              ('reflector_material_ids', '=', active_id), ('blade_material_ids', '=', active_id)]
         </field>
         <field name="context">{
             'default_body_material_ids': [(4, active_id, False)],
@@ -43,6 +43,7 @@
                     <group>
                         <field name="code"/>
                         <field name="name"/>
+                        <field name="is_glass"/>
                     </group>
                 </sheet>
             </form>
@@ -56,6 +57,7 @@
             <tree string="Product material Tree">
                 <field name="code"/>
                 <field name="name"/>
+                <field name="is_glass"/>
                 <field name="product_count"/>
                 <button name="%(product_material_action_product)d" type="action"
                         string="Products" icon="fa-external-link"
