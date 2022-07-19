@@ -167,13 +167,8 @@ class LightingProduct(models.Model):
                     attachment_l = []
                     for attach_type, attachs in sorted(attachment_type_d.items(),
                                                        key=lambda x: attachment_order_d[x[0]]):
-                        attachs_date = attachs.filtered(lambda x: x.write_date)
-                        if attachs_date:
-                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.write_date),
-                                                               reverse=True)
-                        else:
-                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
-
+                        attachs_date = attachs.sorted(lambda x: (fields.Date.from_string(x.write_date), x.id),
+                                                      reverse=True)
                         max_idx = attachment_max_d[attach_type]
                         if max_idx < 0:
                             max_idx = len(attachs_date)
@@ -231,13 +226,8 @@ class LightingProduct(models.Model):
                     attachment_d = {}
                     for attach_type, attachs in sorted(attachment_type_d.items(),
                                                        key=lambda x: attachment_order_d[x[0]]):
-                        attachs_date = attachs.filtered(lambda x: x.write_date)
-                        if attachs_date:
-                            attachs_date = attachs_date.sorted(lambda x: fields.Date.from_string(x.write_date),
-                                                               reverse=True)
-                        else:
-                            attachs_date = attachs.sorted(lambda x: (x.sequence, x.id))
-
+                        attachs_date = attachs.sorted(lambda x: (fields.Date.from_string(x.write_date), x.id),
+                                                      reverse=True)
                         max_idx = attachment_max_d[attach_type]
                         if max_idx < 0:
                             max_idx = len(attachs_date)
