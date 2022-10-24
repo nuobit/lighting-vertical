@@ -106,6 +106,23 @@ class LightingProduct(models.Model):
             if rec.finish_group_name != rec.reference:
                 rec.json_display_finish_group_name = rec.finish_group_name
 
+    ### Display finishes
+    def _get_finish_json(self, template_id, finish):
+        finish_d = {}
+        finish_lang_d = {}
+        for lang in template_id.lang_ids.mapped('code'):
+            finish_lang_d[lang] = finish.with_context(lang=lang).name
+        if finish_lang_d:
+            finish_d.update({
+                'description': finish_lang_d
+            })
+        if finish.html_color:
+            finish_d.update({
+                'html_color': finish.html_color
+            })
+        if finish_d:
+            return json.dumps(finish_d)
+
     ## Display Finish
     json_display_finish = fields.Serialized(string='Finish JSON Display',
                                             compute='_compute_json_display_finish')
@@ -119,21 +136,26 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.finish_id:
-                    finish_d = {}
-                    finish_lang_d = {}
-                    for lang in template_id.lang_ids.mapped('code'):
-                        finish_lang_d[lang] = rec.finish_id.with_context(lang=lang).name
-                    if finish_lang_d:
-                        finish_d.update({
-                            'description': finish_lang_d
-                        })
-                    if rec.finish_id.html_color:
-                        finish_d.update({
-                            'html_color': rec.finish_id.html_color
-                        })
-
+                    finish_d = self._get_finish_json(template_id, rec.finish_id)
                     if finish_d:
-                        rec.json_display_finish = json.dumps(finish_d)
+                        rec.json_display_finish = finish_d
+
+    ## Display Finish2
+    json_display_finish2 = fields.Serialized(string='Finish2 JSON Display',
+                                             compute='_compute_json_display_finish2')
+
+    @api.depends('finish2_id',
+                 'finish2_id.code',
+                 'finish2_id.name',
+                 'finish2_id.html_color')
+    def _compute_json_display_finish2(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.finish2_id:
+                    finish_d = self._get_finish_json(template_id, rec.finish2_id)
+                    if finish_d:
+                        rec.json_display_finish2 = finish_d
 
     ## Display Attachments
     json_display_attachment = fields.Serialized(string='Attachments JSON Display',
@@ -241,6 +263,18 @@ class LightingProduct(models.Model):
 
                     if attachment_d:
                         rec.export_url_attachments = json.dumps(attachment_d)
+
+    ## Display Model
+    json_display_model = fields.Serialized(string="Model JSON Display",
+                                           compute='_compute_json_display_model')
+
+    @api.depends('model_id', 'model_id.name')
+    def _compute_json_display_model(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                if rec.model_id:
+                    rec.json_display_model = json.dumps(rec.model_id.mapped('name'))
 
     ## Display Sources
     json_display_source_type = fields.Serialized(string="Source type JSON Display",
@@ -474,6 +508,44 @@ class LightingProduct(models.Model):
 
             rec.json_search_cri = json.dumps(sorted(list(set(cris))))
 
+    ## Search CRI - Temp
+    json_search_cri_color_temperature = fields.Serialized(string="CRI - Color Temperature JSON Search",
+                                                          compute='_compute_json_search_cri_color_temperature')
+
+    @api.depends(
+        'source_ids.line_ids',
+        'source_ids.line_ids.cri_min',
+        'source_ids.line_ids.color_temperature_flux_ids',
+        'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
+        'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
+    )
+    def _compute_json_search_cri_color_temperature(self):
+        for rec in self:
+            critemps = []
+            critemps_dup = set()
+            for line in rec.source_ids.mapped('line_ids').sorted('cri_min'):
+                ctemps = line.color_temperature_flux_ids.mapped('color_temperature_id') \
+                    .sorted(lambda x: x.value)
+                if line.cri_min and ctemps:
+                    for ctemp in ctemps:
+                        if ctemp.display_name:
+                            critemp = (line.cri_min, ctemp.display_name)
+                            if critemp not in critemps_dup:
+                                critemps_dup.add(critemp)
+                                critemps.append("CRI%i - %s" % critemp)
+            if critemps:
+                rec.json_search_cri_color_temperature = json.dumps(critemps)
+
+    ## Search Input Voltage
+    json_search_input_voltage = fields.Serialized(string="Input Voltage JSON Search",
+                                                  compute='_compute_json_search_input_voltage')
+
+    @api.depends('input_voltage_id')
+    def _compute_json_search_input_voltage(self):
+        for rec in self:
+            if rec.input_voltage_id:
+                rec.json_search_input_voltage = json.dumps(rec.input_voltage_id.mapped('name'))
+
     ## Search Beam
     json_search_beam_angle = fields.Serialized(string="Beam angle JSON Search",
                                                compute='_compute_json_search_beam_angle')
@@ -487,9 +559,12 @@ class LightingProduct(models.Model):
         for rec in self:
             angles = rec.beam_ids.mapped('dimension_ids.value')
             if angles:
-                arange = [(0, 20), (20, 40), (40, 60),
-                          (60, 80), (80, 100), (100, float('inf'))]
-                a_ranges = _values2range(angles, arange, magnitude='\u00B0')
+                if rec.configurator == 'Y':
+                    a_ranges = ["%i\u00B0" % x for x in angles]
+                else:
+                    arange = [(0, 20), (20, 40), (40, 60),
+                              (60, 80), (80, 100), (100, float('inf'))]
+                    a_ranges = _values2range(angles, arange, magnitude='\u00B0')
                 if a_ranges:
                     rec.json_search_beam_angle = json.dumps(a_ranges)
 
@@ -497,8 +572,7 @@ class LightingProduct(models.Model):
     json_search_wattage = fields.Serialized(string="Wattage JSON Search",
                                             compute='_compute_json_search_wattage')
 
-    @api.depends('source_ids.line_ids.wattage',
-                 )
+    @api.depends('source_ids.line_ids.wattage')
     def _compute_json_search_wattage(self):
         for rec in self:
             w_integrated = 0
