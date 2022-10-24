@@ -395,6 +395,10 @@ class LightingProduct(models.Model):
             else:
                 rec.category_id = False
 
+    model_id = fields.Many2one(
+        string="Model",
+        comodel_name='lighting.product.model',
+    )
     is_accessory = fields.Boolean(
         string="Is accessory",
         compute="_compute_is_accessory",

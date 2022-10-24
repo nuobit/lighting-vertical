@@ -581,6 +581,36 @@ msgid "Create the first Product state"
 msgstr "Créer le premier état du produit"
 
 #. module: lighting
+#: model:ir.actions.act_window,help:lighting.product_model_list_action
+msgid "Create the first product model"
+msgstr "Créer le premier modèle de produit"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_model_form_view
+msgid "Model name"
+msgstr "Nom du modèle"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_id
+msgid "Model"
+msgstr "Modèle"
+
+#. module: lighting
+#: model:ir.ui.menu,name:lighting.product_models_menu
+msgid "Models"
+msgstr "Des modèles"
+
+#. module: lighting
+#: sql_constraint:lighting.product.model:0
+msgid "The model name must be unique!"
+msgstr "Le nom du modèle doit être unique!"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_model_list_action
+msgid "Product Model"
+msgstr "modèle du produit"
+
+#. module: lighting
 #: model:ir.actions.act_window,help:lighting.product_protectionclass_list_action
 msgid "Create the first Protection class"
 msgstr "Créer la première classe de protection"
