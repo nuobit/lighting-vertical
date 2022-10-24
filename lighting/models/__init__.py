@@ -24,6 +24,7 @@ from . import product_material
 
 from . import product_sealing
 from . import product_finish
+from . import product_model
 from . import product_ral
 from . import product_voltage
 from . import product_color_temperature

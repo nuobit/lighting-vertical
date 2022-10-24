@@ -516,6 +516,36 @@ msgid "Create the first Assembler"
 msgstr "Crie o primeiro Assembler"
 
 #. module: lighting
+#: model:ir.actions.act_window,help:lighting.product_model_list_action
+msgid "Create the first product model"
+msgstr "Crie o primeiro modelo de produto"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_model_form_view
+msgid "Model name"
+msgstr "Nome do modelo"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_id
+msgid "Model"
+msgstr "Modelo"
+
+#. module: lighting
+#: model:ir.ui.menu,name:lighting.product_models_menu
+msgid "Models"
+msgstr "Modelos"
+
+#. module: lighting
+#: sql_constraint:lighting.product.model:0
+msgid "The model name must be unique!"
+msgstr "O nome do modelo deve ser exclusivo!"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_model_list_action
+msgid "Product Model"
+msgstr "Modelo do produto"
+
+#. module: lighting
 #: model:ir.actions.act_window,help:lighting.dimension_type_list_action
 msgid "Create the first Dimension type"
 msgstr "Crie o primeiro tipo de dimensão"

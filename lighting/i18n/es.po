@@ -575,6 +575,7 @@ msgstr "Crea el primer grupo de riesgo fotobiológico."
 #: model:ir.actions.act_window,help:lighting.product_application_action_product
 #: model:ir.actions.act_window,help:lighting.product_catalog_action_product
 #: model:ir.actions.act_window,help:lighting.product_finish_action_product
+#: model:ir.actions.act_window,help:lighting.product_model_action_product
 #: model:ir.actions.act_window,help:lighting.product_source_lampholder_action_product
 #: model:ir.actions.act_window,help:lighting.product_source_type_action_product
 #: model:ir.actions.act_window,help:lighting.product_type_action_product
@@ -666,6 +667,11 @@ msgid "Create the first product finish"
 msgstr "Crea el primer acabado del producto."
 
 #. module: lighting
+#: model:ir.actions.act_window,help:lighting.product_model_list_action
+msgid "Create the first product model"
+msgstr "Crea el primer modelo de producto."
+
+#. module: lighting
 #: model:ir.actions.act_window,help:lighting.product_frequency_list_action
 msgid "Create the first product frequency"
 msgstr "Crea la primera frecuencia del producto."
@@ -719,6 +725,7 @@ msgstr "Crea la primera tensión del producto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_create_uid
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frequency_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledbrand_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_create_uid
@@ -763,6 +770,7 @@ msgstr "Creado por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_create_date
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frequency_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledbrand_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_create_date
@@ -963,6 +971,7 @@ msgstr "Nuevo"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_display_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frequency_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledbrand_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_display_name
@@ -1053,6 +1062,11 @@ msgstr "Hasta fin de existencias (histórico)"
 #: selection:lighting.product,state_marketing:0
 msgid "Discontinued"
 msgstr "Descatalogado"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_model_form_view
+msgid "Model name"
+msgstr "Nombre del modelo"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
@@ -1222,6 +1236,11 @@ msgid "Filename"
 msgstr "Nombre de archivo"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_id
+msgid "Model"
+msgstr "Modelo"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_id
 msgid "Finish"
 msgstr "Acabado"
@@ -1235,6 +1254,11 @@ msgstr "Acabado 2"
 #: model:ir.ui.menu,name:lighting.product_finishes_menu
 msgid "Finishes"
 msgstr "Acabados"
+
+#. module: lighting
+#: model:ir.ui.menu,name:lighting.product_models_menu
+msgid "Models"
+msgstr "Modelos"
 
 #. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
@@ -2001,6 +2025,7 @@ msgstr "Interruptores de encendido"
 #: model:ir.actions.act_window,name:lighting.product_family_action_discontinued_product
 #: model:ir.actions.act_window,name:lighting.product_family_action_product
 #: model:ir.actions.act_window,name:lighting.product_finish_action_product
+#: model:ir.actions.act_window,name:lighting.product_model_action_product
 #: model:ir.actions.act_window,name:lighting.product_material_action_product
 #: model:ir.actions.act_window,name:lighting.product_source_lampholder_action_product
 #: model:ir.actions.act_window,name:lighting.product_source_type_action_product
@@ -2314,6 +2339,7 @@ msgstr "Product voltage Tree"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_product_count
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_material_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_product_count
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_product_count
@@ -2343,6 +2369,8 @@ msgstr "Producto(s)"
 #: model:ir.ui.view,arch_db:lighting.product_family_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_finish_form_view
 #: model:ir.ui.view,arch_db:lighting.product_finish_tree_view
+#: model:ir.ui.view,arch_db:lighting.product_model_form_view
+#: model:ir.ui.view,arch_db:lighting.product_model_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_material_form_view
 #: model:ir.ui.view,arch_db:lighting.product_material_tree_view
 #: model:ir.ui.view,arch_db:lighting.product_source_lampholder_form_view
@@ -2693,7 +2721,12 @@ msgstr "¡El código de acabado debe ser único!"
 #. module: lighting
 #: sql_constraint:lighting.product.finish:0
 msgid "The finish name must be unique!"
-msgstr "El nombre finlandés debe ser único!"
+msgstr "El nombre del acabado debe ser único!"
+
+#. module: lighting
+#: sql_constraint:lighting.product.model:0
+msgid "The model name must be unique!"
+msgstr "El nombre del modelo debe ser único!"
 
 #. module: lighting
 #: sql_constraint:lighting.product.frequency:0
@@ -3279,6 +3312,11 @@ msgstr "max."
 #: model:ir.actions.act_window,name:lighting.product_finish_list_action
 msgid "product finish"
 msgstr "acabado del producto"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_model_list_action
+msgid "Product Model"
+msgstr "Modelo de producto"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
