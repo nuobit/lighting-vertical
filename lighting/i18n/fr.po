@@ -27,7 +27,6 @@ msgstr ""
 #: selection:lighting.product,post_with_inspection_chamber:0
 #: selection:lighting.product,recessing_box_included:0
 #: selection:lighting.product,fan_reverse_direction:0
-#: selection:lighting.product,configurator:0
 #, python-format
 msgid "Yes"
 msgstr "Oui"
@@ -44,7 +43,6 @@ msgstr "Oui"
 #: selection:lighting.product,post_with_inspection_chamber:0
 #: selection:lighting.product,recessing_box_included:0
 #: selection:lighting.product,fan_reverse_direction:0
-#: selection:lighting.product,configurator:0
 #, python-format
 msgid "No"
 msgstr "Non"
