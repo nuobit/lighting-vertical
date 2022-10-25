@@ -559,7 +559,7 @@ class LightingProduct(models.Model):
         for rec in self:
             angles = rec.beam_ids.mapped('dimension_ids.value')
             if angles:
-                if rec.configurator == 'Y':
+                if rec.configurator:
                     a_ranges = ["%i\u00B0" % x for x in angles]
                 else:
                     arange = [(0, 20), (20, 40), (40, 60),
