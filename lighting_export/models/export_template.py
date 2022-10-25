@@ -13,7 +13,7 @@ class LightingExportTemplate(models.Model):
 
     name = fields.Char(required=True)
 
-    code = fields.Char(string="Code", required=True)
+    code = fields.Char(string="Code", required=True, copy=False)
 
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary("Image", attachment=True,
