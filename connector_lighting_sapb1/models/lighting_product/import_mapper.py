@@ -211,7 +211,7 @@ class LigthingProductImportMapper(Component):
     @only_create
     @mapping
     def configurator(self, record):
-        return {'configurator': record['U_U_Configurador']}
+        return {'configurator': record['U_U_Configurador'] == 'Y'}
 
     # aux
     def _get_sibling_reference(self, reference, pattern):

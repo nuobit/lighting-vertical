@@ -58,4 +58,4 @@ class LigthingProductExportMapper(Component):
 
     @mapping
     def configurator(self, record):
-        return {'U_U_Configurador': record.configurator or None}
+        return {'U_U_Configurador': record.configurator and 'Y' or 'N'}
