@@ -575,20 +575,13 @@ class LightingProduct(models.Model):
     @api.depends('source_ids.line_ids.wattage')
     def _compute_json_search_wattage(self):
         for rec in self:
-            w_integrated = 0
             wattages_s = set()
             for line in rec.source_ids.mapped('line_ids'):
                 if line.wattage:
-                    wattage = line.wattage * line.source_id.num
-                    if line.is_integrated:
-                        w_integrated += wattage
-                    else:
-                        wattages_s.add(wattage)
-
+                    wattages_s.add(line.wattage * line.source_id.num)
             wattages_s2 = set()
             for w in wattages_s:
-                wattages_s2.add(w + w_integrated)
-
+                wattages_s2.add(w)
             if wattages_s2:
                 wrange = [(0, 10), (10, 20), (20, 30), (30, 40), (40, 50), (50, float('inf'))]
                 wattage_ranges = _values2range(wattages_s2, wrange, magnitude='W')
