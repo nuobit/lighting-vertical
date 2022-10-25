@@ -5,7 +5,7 @@
 {
     'name': "Lighting Export",
     'description': "Lighting export data",
-    'version': '11.0.1.14.0',
+    'version': '11.0.1.14.1',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
