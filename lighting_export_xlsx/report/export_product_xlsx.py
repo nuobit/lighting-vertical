@@ -29,7 +29,7 @@ class ExportProductXlsx(models.AbstractModel):
             objects = self.env['lighting.product'].browse(data.get('active_ids'))
         if data.get('exclude_configurator'):
             objects = objects.filtered(
-                lambda x: x.configurator != 'Y')
+                lambda x: not x.configurator)
 
         ## base headers with labels replaced and subset acoridng to template
         header = []
