@@ -460,7 +460,8 @@ class LightingProduct(models.Model):
 
     last_update = fields.Date(string='Last modified on', track_visibility='onchange')
 
-    configurator = fields.Selection(string="Configurator", selection=YESNO, track_visibility='onchange')
+    configurator = fields.Boolean(string="Configurator", required=True, default=False,
+                                  track_visibility='onchange')
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order",
                               track_visibility='onchange')
