@@ -977,10 +977,8 @@
                         domain="[('is_required_accessory', '=', True)]"/>
                 <separator/>
                 <filter string="With configurator" name="with_configurator"
-                        domain="[('configurator', '=', 'Y')]"/>
+                        domain="[('configurator', '=', True)]"/>
                 <filter string="Without configurator" name="without_configurator"
-                        domain="[('configurator', '=', 'N')]"/>
-                <filter string="Blank configurator" name="blank_configurator"
                         domain="[('configurator', '=', False)]"/>
                 <group expand="0" string="Group By">
                     <filter string="State" name="groupby_state" domain="[]"
