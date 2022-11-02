@@ -78,14 +78,17 @@ class LightingProduct(models.Model):
 
     def _compute_group_description(self):
         for rec in self:
-            description_l = filter(lambda x: x, [
-                rec.category_id and rec.category_id.description_text or rec.category_id.name,
-                rec.photo_group_id and rec.photo_group_id.alt_name or rec.photo_group_id.name,
-            ])
+            if rec.configurator:
+                rec.group_description = rec.description
+            else:
+                description_l = filter(lambda x: x, [
+                    rec.category_id and rec.category_id.description_text or rec.category_id.name,
+                    rec.photo_group_id and rec.photo_group_id.alt_name or rec.photo_group_id.name,
+                ])
 
-            description = ' '.join(description_l)
-            if description:
-                rec.group_description = description
+                description = ' '.join(description_l)
+                if description:
+                    rec.group_description = description
 
     category_complete_ids = fields.Many2many(
         string="Export Category Complete",
@@ -587,6 +590,20 @@ class LightingProduct(models.Model):
                 wattage_ranges = _values2range(wattages_s2, wrange, magnitude='W')
                 if wattage_ranges:
                     rec.json_search_wattage = json.dumps(wattage_ranges)
+
+    ## Search Wattage 2
+    json_search_wattage2 = fields.Serialized(string="Wattage2 JSON Search",
+                                             compute='_compute_json_search_wattage2')
+
+    @api.depends('source_ids', 'source_ids.line_ids',
+                 'source_ids.line_ids.wattage',
+                 'source_ids.line_ids.wattage_magnitude',
+                 'source_ids.sequence')
+    def _compute_json_search_wattage2(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                rec.json_search_wattage2 = json.dumps(rec.source_ids.get_wattage())
 
     ## Search Color temperature
     json_search_color_temperature = fields.Serialized(string="Color temperature JSON Search",
