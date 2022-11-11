@@ -80,6 +80,7 @@ class LightingProduct(models.Model):
         for rec in self:
             rec.meta_preview = seo_preview(rec.seo_title, rec.seo_url, rec.seo_description)
 
+    marketplace_title = fields.Char(string='Marketplace Title', translate=True, track_visibility='onchange')
     marketplace_description = fields.Text(string='Marketplace Description', translate=True, track_visibility='onchange')
 
     def _check_state_marketing_stock(self, values):
