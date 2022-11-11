@@ -338,7 +338,7 @@ class LightingProduct(models.Model):
                     data.append(','.join(glass_diffuser_material.mapped('name')))
 
         if self.inclination_angle_max:
-            data.append("%gº" % self.inclination_angle_max)
+            data.append("tilt")
 
         if self.beam_count == 2:
             data.append("up-down")
