@@ -401,6 +401,20 @@ class LightingProduct(models.Model):
             for rec in self:
                 rec.json_display_dimension = rec.dimension_ids.get_display()
 
+    ## Display Dimmable
+    json_display_dimmable = fields.Serialized(string='Dimmable JSON Display',
+                                              compute='_compute_json_display_dimmable')
+
+    @api.depends('dimmable_ids',
+                 'dimmable_ids.name')
+    def _compute_json_display_dimmable(self):
+        template_id = self.env.context.get('template_id')
+        if template_id:
+            for rec in self:
+                rec.json_display_dimmable = json.dumps(
+                    rec.dimmable_ids.mapped("display_name") or ['ON-OFF']
+                )
+
     ## Display Optional products
     json_display_optional = fields.Serialized(string="Optional JSON Display",
                                               compute='_compute_json_display_optional')
