@@ -2935,6 +2935,11 @@ msgid "With charger"
 msgstr "Avec chargeur"
 
 #. module: lighting
+#: selection:lighting.product,rechargeable_type:0
+msgid "Solar/With charger"
+msgstr "Solaire/Avec chargeur"
+
+#. module: lighting
 #: selection:lighting.product.source.line,special_spectrum:0
 msgid "Vegetable"
 msgstr "Légume"
