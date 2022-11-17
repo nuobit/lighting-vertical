@@ -169,8 +169,7 @@ class LightingProductSource(models.Model):
                 if src.num > 1:
                     kn_l.append('%ix' % src.num)
                 kn_l.append(src_k)
-                src_k = ' '.join(kn_l)
-            res.append(src_k)
+                res.append(' '.join(kn_l))
 
         if not any(res):
             return None
