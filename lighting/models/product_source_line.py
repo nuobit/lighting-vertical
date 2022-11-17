@@ -256,7 +256,7 @@ class LightingProductSourceLine(models.Model):
             if rec.wattage:
                 if rec.wattage_magnitude not in w_d:
                     w_d[rec.wattage_magnitude] = []
-                w_d[rec.wattage_magnitude].append(rec.wattage)
+                w_d[rec.wattage_magnitude].append((rec.wattage, rec.is_max_wattage))
 
         if not w_d:
             return None
@@ -266,8 +266,19 @@ class LightingProductSourceLine(models.Model):
                 .get('wattage_magnitude').get('selection'))
 
         w_l = []
-        for wm, wv_l in w_d.items():
+        for wm, wvm_l in w_d.items():
             ws = wattage_magnitude_option.get(wm)
-            w_l.append('%g%s' % (max(wv_l), ws))
-
-        return '%s %s' % ('/'.join(w_l), _('max.'))
+            wt = None
+            if len(wvm_l) == 1:
+                wattage, is_max_wattage = wvm_l[0]
+                wt = '%g%s' % (wattage, ws)
+                if is_max_wattage:
+                    wt = "%s %s" % (wt, _('max.'))
+            elif len(wvm_l) > 1:
+                wv_l = [x[0] for x in wvm_l]
+                wt = '%g%s %s' % (max(wv_l), ws, _('max.'))
+            if wt:
+                w_l.append(wt)
+        if not w_l:
+            return None
+        return '/'.join(w_l)
