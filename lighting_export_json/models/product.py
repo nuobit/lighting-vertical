@@ -537,6 +537,7 @@ class LightingProduct(models.Model):
     @api.depends(
         'source_ids.line_ids',
         'source_ids.line_ids.cri_min',
+        'source_ids.line_ids.special_spectrum',
         'source_ids.line_ids.color_temperature_flux_ids',
         'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
         'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
@@ -545,16 +546,23 @@ class LightingProduct(models.Model):
         for rec in self:
             critemps = []
             critemps_dup = set()
-            for line in rec.source_ids.mapped('line_ids').sorted('cri_min'):
-                ctemps = line.color_temperature_flux_ids.mapped('color_temperature_id') \
-                    .sorted(lambda x: x.value)
-                if line.cri_min and ctemps:
-                    for ctemp in ctemps:
-                        if ctemp.display_name:
-                            critemp = (line.cri_min, ctemp.display_name)
-                            if critemp not in critemps_dup:
-                                critemps_dup.add(critemp)
-                                critemps.append("CRI%i - %s" % critemp)
+            lines = rec.source_ids.mapped('line_ids')
+            special_spectrum_option = dict(
+                lines.fields_get(['special_spectrum'], ['selection'])
+                    .get('special_spectrum').get('selection'))
+            for line in lines.sorted('cri_min'):
+                if line.special_spectrum in ('tw', 'dtw'):
+                    critemps.append(special_spectrum_option[line.special_spectrum])
+                else:
+                    ctemps = line.color_temperature_flux_ids.mapped('color_temperature_id') \
+                        .sorted(lambda x: x.value)
+                    if line.cri_min and ctemps:
+                        for ctemp in ctemps:
+                            if ctemp.display_name:
+                                critemp = (line.cri_min, ctemp.display_name)
+                                if critemp not in critemps_dup:
+                                    critemps_dup.add(critemp)
+                                    critemps.append("CRI%i - %s" % critemp)
             if critemps:
                 rec.json_search_cri_color_temperature = json.dumps(critemps)
 
