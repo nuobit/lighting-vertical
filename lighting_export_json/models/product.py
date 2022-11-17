@@ -411,9 +411,14 @@ class LightingProduct(models.Model):
         template_id = self.env.context.get('template_id')
         if template_id:
             for rec in self:
-                rec.json_display_dimmable = json.dumps(
-                    rec.dimmable_ids.mapped("display_name") or ['ON-OFF']
-                )
+                dimmables = None
+                if rec.dimmable_ids:
+                    dimmables = rec.dimmable_ids.mapped("display_name")
+                else:
+                    if rec.configurator:
+                        dimmables = ['ON-OFF']
+                if dimmables:
+                    rec.json_display_dimmable = json.dumps(dimmables)
 
     ## Display Optional products
     json_display_optional = fields.Serialized(string="Optional JSON Display",
