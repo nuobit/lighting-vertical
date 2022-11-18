@@ -169,6 +169,9 @@ class LightingProduct(models.Model):
         if self.category_id:
             data.append(self.category_id.description_text or self.category_id.name)
 
+        if self.inclination_angle_max:
+            data.append("tilt")
+
         if self.family_ids:
             data.append(','.join(map(lambda x: x.upper(),
                                      self.family_ids.sorted(lambda x: (x.sequence, x.name)).mapped('name'))))
@@ -336,9 +339,6 @@ class LightingProduct(models.Model):
                 glass_diffuser_material = self.diffusor_material_ids.filtered(lambda x: x.is_glass)
                 if glass_diffuser_material:
                     data.append(','.join(glass_diffuser_material.mapped('name')))
-
-        if self.inclination_angle_max:
-            data.append("tilt")
 
         if self.beam_count == 2:
             data.append("up-down")
