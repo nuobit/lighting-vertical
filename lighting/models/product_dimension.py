@@ -31,7 +31,9 @@ class LightingProductAbstractDimension(models.AbstractModel):
     @api.multi
     def get_display(self):
         if self:
-            records = self.sorted(key=lambda r: (r.sequence, r.id))
+            records = self.sorted(key=lambda r: (
+                r.sequence,
+                r.id if not isinstance(r.id, models.NewId) else int(r.id.ref.split("_")[1])))
             same_uom = True
             uoms = set()
             for rec in records:
