@@ -77,6 +77,7 @@ class LightingProduct(models.Model):
 
     @api.depends('category_id.name',
                  'category_id.description_text',
+                 'category_id.effective_description_dimension_ids',
                  'model_id',
                  'model_id.name',
                  'family_ids.name',
@@ -327,10 +328,12 @@ class LightingProduct(models.Model):
             data.append(self.charger_connector_type_id.name)
 
         if self.category_id:
-            if self.category_id._get_root().code == 'BAL':
-                height_dimension = self.dimension_ids.filtered(lambda x: x.type_id.code == 'HEIGHTMM')
-                if height_dimension:
-                    data.append(height_dimension.get_value_display(spaces=False))
+            if self.category_id.effective_description_dimension_ids:
+                if self.dimension_ids:
+                    dimensions = self.dimension_ids.filtered(
+                        lambda x: x.type_id in self.category_id.effective_description_dimension_ids)
+                    if dimensions:
+                        data.append(dimensions.get_value_display(spaces=False))
 
         if self.family_ids:
             if set(self.family_ids.mapped('code')) & {'984', 'GLOB', '129', '393'}:
