@@ -77,6 +77,8 @@ class LightingProduct(models.Model):
 
     @api.depends('category_id.name',
                  'category_id.description_text',
+                 'model_id',
+                 'model_id.name',
                  'family_ids.name',
                  'catalog_ids.description_show_ip',
                  'catalog_ids.description_show_ip_condition',
@@ -175,6 +177,8 @@ class LightingProduct(models.Model):
         if self.family_ids:
             data.append(','.join(map(lambda x: x.upper(),
                                      self.family_ids.sorted(lambda x: (x.sequence, x.name)).mapped('name'))))
+        if self.model_id:
+            data.append(self.model_id.name)
 
         if self.sealing_id:
             sealing_id = self.sealing_id
