@@ -27,9 +27,6 @@ class LightingProductCategory(models.Model):
 
     name = fields.Char(required=True, translate=True)
 
-    description_text = fields.Char(string='Description text', help='Text to show on a generated product description',
-                                   translate=True)
-
     parent_id = fields.Many2one(comodel_name='lighting.product.category', string='Parent',
                                 index=True, ondelete='cascade', track_visibility='onchange')
     child_ids = fields.One2many(comodel_name='lighting.product.category', inverse_name='parent_id',
@@ -46,6 +43,41 @@ class LightingProductCategory(models.Model):
     is_accessory = fields.Boolean(string="Is accessory")
 
     sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+
+    #### description
+    description_text = fields.Char(string='Description text', help='Text to show on a generated product description',
+                                   translate=True)
+
+    description_dimension_ids = fields.Many2many(
+        string="Description Dimensions",
+        comodel_name='lighting.dimension.type',
+        relation='lighting_category_dimension_type_rel',
+        column1='category_id',
+        column2='dimension_type_id',
+    )
+    inherit_description_dimensions = fields.Boolean(
+        string='Inherit Description Dimensions',
+    )
+    effective_description_dimension_ids = fields.Many2many(
+        comodel_name='lighting.dimension.type',
+        string='Effective Description Dimensions', readonly=True,
+        compute='_compute_effective_description_dimension_ids',
+    )
+
+    def _get_parents_description_dimensions(self):
+        self.ensure_one()
+        if not self.inherit_description_dimensions:
+            return self.description_dimension_ids
+        else:
+            if not self.parent_id:
+                return self.description_dimension_ids
+            else:
+                return self.description_dimension_ids | self.parent_id._get_parents_description_dimensions()
+
+    @api.depends('inherit_description_dimensions', 'description_dimension_ids', 'parent_id')
+    def _compute_effective_description_dimension_ids(self):
+        for rec in self:
+            rec.effective_description_dimension_ids = rec._get_parents_description_dimensions()
 
     #### attributes
     attribute_ids = fields.Many2many(comodel_name='ir.model.fields',
