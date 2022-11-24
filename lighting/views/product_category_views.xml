@@ -9,7 +9,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('category_id','=',active_id)]</field>
+        <field name="domain">[('category_id', '=', active_id)]</field>
         <field name="context">{'default_category_id': [(4, active_id, False)]}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Product</p>
@@ -60,13 +60,26 @@
                     </group>
                     <group>
                         <group>
-                            <field name="description_text"/>
                             <field name="is_accessory"/>
                         </group>
                     </group>
                     <group>
                         <group>
                             <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group name="description_fields" string="Description">
+                        <group colspan="2">
+                            <field name="description_text" string="Text"/>
+                        </group>
+                        <group colspan="2" col="6">
+                            <field name="description_dimension_ids"
+                                   string="Dimensions" widget="many2many_tags" colspan="4"/>
+                            <field name="inherit_description_dimensions" string="Inherit" colspan="2"/>
+                            <field name="effective_description_dimension_ids"
+                                   string="Effective Dimensions"
+                                   attrs="{'invisible': [('inherit_description_dimensions','=', False)]}"
+                                   widget="many2many_tags" colspan="4"/>
                         </group>
                     </group>
                     <group>
