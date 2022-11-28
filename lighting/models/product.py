@@ -911,6 +911,11 @@ class LightingProduct(models.Model):
             raise ValidationError(_("You cannot assign products to a grup with childs. "
                                     "The group must not have childs and be empty or already contain products"))
 
+    @api.constrains('configurator', 'product_group_id')
+    def _check_configurator_product_group(self):
+        if self.configurator and self.product_group_id:
+            raise ValidationError(_("Products with configurator cannot belong to a group"))
+
     @api.multi
     @api.constrains('optional_ids', 'required_ids')
     def _check_composite_product(self):
