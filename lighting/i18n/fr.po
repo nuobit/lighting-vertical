@@ -2293,6 +2293,12 @@ msgid "Products"
 msgstr "Articles"
 
 #. module: lighting
+#: code:addons/lighting/models/product.py:917
+#, python-format
+msgid "Products with configurator cannot belong to a group"
+msgstr "Products with configurator cannot belong to a group"
+
+#. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_protectionclass_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protection_class_id
 msgid "Protection class"
