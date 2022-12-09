@@ -245,7 +245,7 @@ class LightingAttachment(models.Model):
 
     def get_optimized_image(self, enabled=True):
         datas = self.get_datas()
-        if not enabled:
+        if not enabled or not datas:
             return datas
 
         datas_bin = base64.decodebytes(datas)
