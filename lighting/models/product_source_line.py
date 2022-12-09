@@ -172,12 +172,21 @@ class LightingProductSourceLine(models.Model):
 
     source_id = fields.Many2one(comodel_name='lighting.product.source', ondelete='cascade', string='Source')
 
+    @api.onchange('type_id', 'is_integrated')
+    def _onchange_type_id(self):
+        if self.type_id.is_integrated and self.is_lamp_included:
+            self.is_lamp_included = False
+
     @api.multi
-    @api.constrains('type_id')
+    @api.constrains('type_id', 'is_lamp_included')
     def _check_integrated_vs_lamp_included(self):
         for rec in self:
-            if rec.type_id.is_integrated:
-                rec.is_lamp_included = False
+            if rec.type_id.is_integrated and rec.is_lamp_included:
+                raise ValidationError(
+                    _("An integrated type is not compatible with having lamp included. Product %s."
+                      "Please select either a integrated type or lamp included but not both.") %
+                    rec.source_id.product_id.reference
+                )
 
     @api.multi
     @api.constrains('color_temperature_flux_ids', 'is_color_temperature_flux_tunable')
