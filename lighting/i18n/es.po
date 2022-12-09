@@ -1154,6 +1154,7 @@ msgstr "Eficiencias energéticas"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.energyefficiency_list_action
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_efficiency_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_efficiency_ids
 msgid "Energy efficiency"
 msgstr "Eficiencia energética"

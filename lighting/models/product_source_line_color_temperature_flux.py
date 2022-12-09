@@ -29,6 +29,8 @@ class LightingProductSourceLineColorTemperatureFlux(models.Model):
     source_line_id = fields.Many2one(comodel_name='lighting.product.source.line',
                                      required=True,
                                      ondelete='cascade')
+    efficiency_id = fields.Many2one(comodel_name='lighting.energyefficiency',
+                                    string='Energy efficiency', )
 
     _sql_constraints = [('k_uniq', 'unique (source_line_id, color_temperature_id)',
                          'The color temperature must be unique per source line'),
