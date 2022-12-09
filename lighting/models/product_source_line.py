@@ -30,7 +30,7 @@ class LightingProductSourceLine(models.Model):
     is_max_wattage = fields.Boolean(string='Is max. Wattage')
     wattage_magnitude = fields.Selection([('w', 'W'), ('wm', 'W/m')], string='Wattage magnitude', default='w')
 
-    @api.constrains('wattage', 'type_id')
+    @api.constrains('wattage', 'type_id', 'is_integrated')
     def _check_wattage(self):
         for rec in self:
             if rec.type_id.is_integrated and rec.wattage <= 0:
@@ -178,7 +178,7 @@ class LightingProductSourceLine(models.Model):
             self.is_lamp_included = False
 
     @api.multi
-    @api.constrains('type_id', 'is_lamp_included')
+    @api.constrains('type_id', 'is_integrated', 'is_lamp_included')
     def _check_integrated_vs_lamp_included(self):
         for rec in self:
             if rec.type_id.is_integrated and rec.is_lamp_included:
@@ -186,6 +186,37 @@ class LightingProductSourceLine(models.Model):
                     _("An integrated type is not compatible with having lamp included. Product %s."
                       "Please select either a integrated type or lamp included but not both.") %
                     rec.source_id.product_id.reference
+                )
+
+    @api.multi
+    @api.constrains('efficiency_ids', 'lamp_included_efficiency_ids')
+    def _check_efficiency_lamp_efficiency(self):
+        for rec in self:
+            if rec.efficiency_ids and rec.lamp_included_efficiency_ids:
+                raise ValidationError(
+                    _("Either Efficiency Energy is informed or Lamp Efficiency Energy but not both."
+                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
+                )
+
+    @api.multi
+    @api.constrains('lamp_included_efficiency_ids', 'is_lamp_included')
+    def _check_efficiency_lamp_included(self):
+        for rec in self:
+            if not rec.is_lamp_included and rec.lamp_included_efficiency_ids:
+                raise ValidationError(
+                    _("You cannot inform the Lamp Efficiency Energy if the lamp is not included."
+                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
+                )
+
+    @api.multi
+    @api.constrains('efficiency_ids', 'type_id', 'is_integrated', 'is_lamp_included')
+    def _check_efficiency_integrated_lamp_included(self):
+        for rec in self:
+            if rec.efficiency_ids and not rec.type_id.is_integrated and not rec.is_lamp_included:
+                raise ValidationError(
+                    _("You cannot inform the Efficiency Energy if the source "
+                      "is not integrated and the lamp is not included."
+                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
                 )
 
     @api.multi
