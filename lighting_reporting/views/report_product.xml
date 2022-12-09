@@ -300,7 +300,7 @@
                                         <t t-foreach="doc.source_ids.sorted(lambda x: x.sequence)" t-as="s">
                                             <t t-set="ef" t-value="s.get_energy_efficiency()"/>
                                             <t t-if="ef">
-                                                <li t-esc="', '.join(ef.mapped('name'))"/>
+                                                <li t-esc="s.energy_efficiency_display(ef)"/>
                                             </t>
                                         </t>
                                     </ul>
