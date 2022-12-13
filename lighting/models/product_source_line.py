@@ -189,26 +189,6 @@ class LightingProductSourceLine(models.Model):
                 )
 
     @api.multi
-    @api.constrains('efficiency_ids', 'lamp_included_efficiency_ids')
-    def _check_efficiency_lamp_efficiency(self):
-        for rec in self:
-            if rec.efficiency_ids and rec.lamp_included_efficiency_ids:
-                raise ValidationError(
-                    _("Either Efficiency Energy is informed or Lamp Efficiency Energy but not both."
-                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
-                )
-
-    @api.multi
-    @api.constrains('lamp_included_efficiency_ids', 'is_lamp_included')
-    def _check_efficiency_lamp_included(self):
-        for rec in self:
-            if not rec.is_lamp_included and rec.lamp_included_efficiency_ids:
-                raise ValidationError(
-                    _("You cannot inform the Lamp Efficiency Energy if the lamp is not included."
-                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
-                )
-
-    @api.multi
     @api.constrains('efficiency_ids', 'type_id', 'is_integrated', 'is_lamp_included')
     def _check_efficiency_integrated_lamp_included(self):
         for rec in self:
@@ -226,16 +206,21 @@ class LightingProductSourceLine(models.Model):
                 len(self.color_temperature_flux_ids) != 2:
             raise ValidationError(_("A tunable source must have exactly 2 pairs color temperature/luminous flux"))
 
-    @api.multi
-    @api.constrains('efficiency_ids')
-    def _check_efficiency_lampholder(self):
-        for rec in self:
-            if all([
-                rec.source_id.lampholder_id or rec.source_id.lampholder_technical_id,
-                rec.efficiency_ids,
-                not rec.source_id.product_id.is_accessory,
-            ]):
-                raise ValidationError(_("A non accessory source with lampholder cannot have efficiency"))
+    # @api.multi
+    # @api.constrains('efficiency_ids')
+    # def _check_integrated_vs_lampholder(self):
+    # si es integrat no pot tenir lampholder
+
+    # @api.multi
+    # @api.constrains('efficiency_ids')
+    # def _check_efficiency_lampholder(self):
+    #     for rec in self:
+    #         if all([
+    #             rec.source_id.lampholder_id or rec.source_id.lampholder_technical_id,
+    #             rec.efficiency_ids,
+    #             not rec.source_id.product_id.is_accessory,
+    #         ]):
+    #             raise ValidationError(_("A non accessory source with lampholder cannot have efficiency"))
 
     # aux display fucnitons
     def get_source_type(self):
