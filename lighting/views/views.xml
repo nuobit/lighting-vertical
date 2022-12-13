@@ -492,8 +492,7 @@
         <field name="res_model">lighting.product</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">['|', ('source_ids.line_ids.efficiency_ids', 'in', [active_id]),
-                              ('source_ids.line_ids.lamp_included_efficiency_ids', 'in', [active_id])]</field>
+        <field name="domain">[('source_ids.line_ids.efficiency_ids', 'in', [active_id])]</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product</p>
         </field>
@@ -746,9 +745,6 @@
                                        widget="many2many_tags" options="{'color_field': 'color'}"/>
 
                                 <field name="is_lamp_included"/>
-                                <field name="lamp_included_efficiency_ids"
-                                       widget="many2many_tags" options="{'color_field': 'color'}"
-                                       attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
                             </tree>
                         </field>
                     </group>
@@ -779,9 +775,6 @@
                         <field colspan="3" name="efficiency_ids"
                                widget="many2many_tags" options="{'color_field': 'color'}"
                                attrs="{'invisible': [('is_integrated', '=', False), ('is_lamp_included', '=', False)]}"/>
-                        <field colspan="3" name="lamp_included_efficiency_ids"
-                               widget="many2many_tags" options="{'color_field': 'color'}"
-                               attrs="{'invisible': [('is_lamp_included', '=', False)]}"/>
                     </group>
 
                     <group col="6"

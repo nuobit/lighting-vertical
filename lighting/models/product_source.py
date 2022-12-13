@@ -63,7 +63,7 @@ class LightingProductSource(models.Model):
                 rec.line_display = " / ".join(res)
 
     @api.multi
-    @api.constrains('lampholder_id', 'lampholder_technical_id')
+    @api.constrains('lampholder_id', 'lampholder_technical_id', 'line_ids')
     def _check_efficiency_lampholder(self):
         for rec in self:
             if all([
