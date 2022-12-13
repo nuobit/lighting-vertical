@@ -131,9 +131,6 @@ class LightingProductSourceLine(models.Model):
 
     is_integrated = fields.Boolean(related='type_id.is_integrated')
     is_lamp_included = fields.Boolean(string='Lamp included?')
-    lamp_included_efficiency_ids = fields.Many2many(comodel_name='lighting.energyefficiency',
-                                                    relation='lighting_product_source_lampenergyefficiency_rel',
-                                                    string='Lamp included efficiency')
 
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
@@ -189,26 +186,6 @@ class LightingProductSourceLine(models.Model):
                 )
 
     @api.multi
-    @api.constrains('efficiency_ids', 'lamp_included_efficiency_ids')
-    def _check_efficiency_lamp_efficiency(self):
-        for rec in self:
-            if rec.efficiency_ids and rec.lamp_included_efficiency_ids:
-                raise ValidationError(
-                    _("Either Efficiency Energy is informed or Lamp Efficiency Energy but not both."
-                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
-                )
-
-    @api.multi
-    @api.constrains('lamp_included_efficiency_ids', 'is_lamp_included')
-    def _check_efficiency_lamp_included(self):
-        for rec in self:
-            if not rec.is_lamp_included and rec.lamp_included_efficiency_ids:
-                raise ValidationError(
-                    _("You cannot inform the Lamp Efficiency Energy if the lamp is not included."
-                      "\nProducts affected: %s.") % rec.source_id.product_id.reference
-                )
-
-    @api.multi
     @api.constrains('efficiency_ids', 'type_id', 'is_integrated', 'is_lamp_included')
     def _check_efficiency_integrated_lamp_included(self):
         for rec in self:
@@ -225,6 +202,17 @@ class LightingProductSourceLine(models.Model):
         if self.is_color_temperature_flux_tunable and self.color_temperature_flux_ids and \
                 len(self.color_temperature_flux_ids) != 2:
             raise ValidationError(_("A tunable source must have exactly 2 pairs color temperature/luminous flux"))
+
+    @api.multi
+    @api.constrains('source_id', 'is_integrated')
+    def _check_integrated_vs_lampholder(self):
+        for rec in self:
+            if (rec.source_id.lampholder_id or rec.source_id.lampholder_technical_id) and rec.type_id.is_integrated:
+                raise ValidationError(
+                    _(
+                        "An integrated source cannot have lampholder"
+                    )
+                )
 
     @api.multi
     @api.constrains('efficiency_ids')
