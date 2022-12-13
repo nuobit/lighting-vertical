@@ -1433,11 +1433,6 @@ msgid "LED specifications"
 msgstr "Especificações de LED"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_lamp_included_efficiency_ids
-msgid "Lamp included efficiency"
-msgstr "Lâmpada incluída eficiência"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_lamp_included
 msgid "Lamp included?"
 msgstr "Lâmpada incluída?"

@@ -23,9 +23,7 @@ class LightingEnergyEfficiency(models.Model):
     def _compute_product_count(self):
         for record in self:
             record.product_count = self.env['lighting.product'].search_count([
-                '|',
                 ('source_ids.line_ids.efficiency_ids', 'in', record.ids),
-                ('source_ids.line_ids.lamp_included_efficiency_ids', 'in', record.ids),
             ])
 
     _sql_constraints = [('name_uniq', 'unique (name)', 'The energy efficiency must be unique!'),
@@ -34,9 +32,7 @@ class LightingEnergyEfficiency(models.Model):
     @api.multi
     def unlink(self):
         records = self.env['lighting.product.source.line'].search([
-            '|',
             ('efficiency_ids', 'in', self.ids),
-            ('lamp_included_efficiency_ids', 'in', self.ids),
         ])
         if records:
             raise UserError(_("You are trying to delete a record that is still referenced by products %s") %
