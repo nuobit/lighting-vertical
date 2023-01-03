@@ -35,3 +35,10 @@ class LightingProductSourceLineColorTemperatureFlux(models.Model):
     _sql_constraints = [('k_uniq', 'unique (source_line_id, color_temperature_id)',
                          'The color temperature must be unique per source line'),
                         ]
+
+    @api.multi
+    @api.constrains('efficiency_id', 'source_line_id')
+    def _check_efficiency(self):
+        for rec in self:
+            if rec.efficiency_id and rec.source_line_id.efficiency_ids:
+                raise ValidationError(_("Efficiency must be defined only in CCT table"))
