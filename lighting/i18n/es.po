@@ -1856,6 +1856,13 @@ msgid "Meat"
 msgstr "Carne"
 
 #. module: lighting
+#: code:addons/lighting/models/product_source_line.py:211
+#: code:addons/lighting/models/product_source_line_color_temperature_flux.py:44
+#, python-format
+msgid "Efficiency must be defined only in CCT table"
+msgstr "La eficiencia energética debe ser definida solo en la tabla de CCT"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_mechanical_screwdriver
 msgid "Electric screwdriver"
 msgstr "Atornillador eléctrico"

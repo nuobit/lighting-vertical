@@ -204,6 +204,13 @@ class LightingProductSourceLine(models.Model):
             raise ValidationError(_("A tunable source must have exactly 2 pairs color temperature/luminous flux"))
 
     @api.multi
+    @api.constrains('efficiency_ids', 'color_temperature_flux_ids')
+    def _check_efficiencies(self):
+        for rec in self:
+            if rec.color_temperature_flux_ids.mapped('efficiency_id') and rec.efficiency_ids:
+                raise ValidationError(_("Efficiency must be defined only in CCT table"))
+
+    @api.multi
     @api.constrains('source_id', 'is_integrated')
     def _check_integrated_vs_lampholder(self):
         for rec in self:
