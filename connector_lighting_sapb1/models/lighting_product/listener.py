@@ -15,7 +15,7 @@ class SAPB1LightingProductImporter(Component):
     @skip_if(lambda self, record, **kwargs: self.no_connector_export(record))
     def on_record_write(self, record, fields=None):
         relevant_fields = {
-            'description', 'category_id',
+            'category_id',
             'family_ids', 'state_marketing', 'catalog_ids', 'configurator'
         }
         if 'state' in fields:
