@@ -15,6 +15,17 @@ class LightingProduct(models.Model):
         inverse_name='odoo_id',
         string='SAP B1 Bindings',
     )
+    sapb1_write_date = fields.Datetime(
+        compute="_compute_sapb1_write_date",
+        store=True,
+        required=True,
+        default=fields.Datetime.now,
+    )
+
+    @api.depends("category_id", "family_ids", "state_marketing", "catalog_ids", "configurator")
+    def _compute_sapb1_write_date(self):
+        for rec in self:
+            rec.sapb1_write_date = fields.Datetime.now()
 
     @api.constrains("reference")
     def _check_reference(self):
@@ -28,6 +39,7 @@ class LightingProduct(models.Model):
                         "because the lot is connected to SAP B1"
                     )
                 )
+
 
 class SapLightingProductBinding(models.Model):
     _name = 'sapb1.lighting.product'
@@ -61,7 +73,8 @@ class SapLightingProductBinding(models.Model):
         domain = []
         if backend_record.export_products_since_date:
             domain += [
-                ('write_date', '>', backend_record.export_products_since_date),
+                ('sapb1_write_date', '>', backend_record.export_products_since_date),
+                ('sapb1_lighting_bind_ids.backend_id', 'in', backend_record.ids),
             ]
         now_fmt = fields.Datetime.now()
         self.env['sapb1.lighting.product'].export_batch(
