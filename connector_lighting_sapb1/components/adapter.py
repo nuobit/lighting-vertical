@@ -330,6 +330,8 @@ class GenericAdapter(AbstractComponent):
                     "$select=TranslationsInUserLanguages,Numerator"
                 ]
                 r = self.session.get(root_url + "/MultiLanguageTranslations?" + '&'.join(qry))
+                if not r.ok:
+                    raise ValidationError(f"Error getting translation of {field}\n{r.text}")
                 res = r.json()['value']
                 if len(res) > 1:
                     raise ValidationError("Unexpected more than one language register found")
