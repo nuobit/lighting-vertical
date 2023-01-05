@@ -186,3 +186,11 @@ class SapB1LightingBackend(models.Model):
             ('company_id', '=', company_id.id)
         ]
         self.search(domain).import_products_since()
+
+    @api.model
+    def _scheduler_export_products(self):
+        company_id = self.get_current_user_company()
+        domain = [
+            ('company_id', '=', company_id.id)
+        ]
+        self.search(domain).export_products_since()
