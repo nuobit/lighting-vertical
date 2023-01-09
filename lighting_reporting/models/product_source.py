@@ -19,7 +19,7 @@ class LightingProductSource(models.Model):
                     ccts_by_ef.setdefault(line.efficiency_id, self.env[line.color_temperature_id._name])
                     ccts_by_ef[line.efficiency_id] |= line.color_temperature_id
         else:
-            for efficiency in self.line_ids.efficiency_ids:
+            for efficiency in self.mapped('line_ids.efficiency_ids'):
                 ccts_by_ef[efficiency] = cct_flux.mapped('color_temperature_id')
         return ccts_by_ef
 
