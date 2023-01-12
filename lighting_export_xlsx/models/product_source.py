@@ -47,11 +47,16 @@ class LightingProductSource(models.Model):
         datum = self.line_ids.get_luminous_flux()
         return {_('Flux'): datum and ', '.join(datum) or None}
 
+    @property
+    def xlsx_energy_efficiency(self):
+        datum = self.line_ids.get_energy_efficiency()
+        return {_('Energy Efficiency'): datum and ', '.join(datum) or None}
+
     @api.multi
     def export_xlsx(self, template_id=None):
         valid_field = ['relevance', 'num', 'lampholder_id',
                        'xlsx_types', 'xlsx_wattage', 'xlsx_color_temperature',
-                       'xlsx_luminous_flux', 'xlsx_cri']
+                       'xlsx_luminous_flux', 'xlsx_cri', 'xlsx_energy_efficiency']
 
         field_meta_base = self.fields_get(valid_field, ['string', 'type', 'selection'])
         res = []
@@ -62,10 +67,13 @@ class LightingProductSource(models.Model):
                 if field in field_meta_base:
                     field_meta = field_meta_base[field]
                 else:
-                    field_meta = {
-                        'type': None,
-                        'string': list(datum.keys())[0],
-                    }
+                    try:
+                        field_meta = {
+                            'type': None,
+                            'string': list(datum.keys())[0],
+                        }
+                    except:
+                        raise
                     datum = list(datum.values())[0]
                 if field_meta['type'] == 'selection':
                     datum = dict(field_meta['selection']).get(datum)

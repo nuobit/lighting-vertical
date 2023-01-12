@@ -63,12 +63,17 @@ class LightingProductSourceLine(models.Model):
     luminous_flux_display = fields.Char(string='Luminous flux',
                                         compute='_compute_color_temperature_flux_display')
 
+    energy_efficiency_display = fields.Char(string='Energy Efficiency',
+                                            compute='_compute_color_temperature_flux_display')
+
     @api.depends('color_temperature_flux_ids',
                  'color_temperature_flux_ids.color_temperature_id',
                  'color_temperature_flux_ids.color_temperature_id.value',
                  'color_temperature_flux_ids.flux_id',
                  'color_temperature_flux_ids.flux_id.value',
                  'color_temperature_flux_ids.flux_magnitude',
+                 'color_temperature_flux_ids.efficiency_id',
+                 'color_temperature_flux_ids.efficiency_id.name',
                  'is_color_temperature_flux_tunable',
                  'source_id')
     def _compute_color_temperature_flux_display(self):
@@ -94,6 +99,21 @@ class LightingProductSourceLine(models.Model):
                         .join([x.flux_id.value and ('%i%s' % (
                         x.flux_id.value, flux_magnitude_options[x.flux_magnitude])) or '-'
                                for x in flux_values])
+                if rec.color_temperature_flux_ids.mapped('efficiency_id'):
+                    if len(rec.color_temperature_flux_ids) != 1 or \
+                            rec.color_temperature_flux_ids.efficiency_id.name:
+                        energy_efficiency_values = rec.color_temperature_flux_ids \
+                            .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.efficiency_id.name) \
+                            .sorted(lambda x: x.efficiency_id.sequence)
+                        rec.energy_efficiency_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
+                            .join([x.efficiency_id.name and ('%s' % x.efficiency_id.name) or '-'
+                                   for x in energy_efficiency_values])
+                else:
+                    if rec.efficiency_ids:
+                        energy_efficiency_values = rec.efficiency_ids \
+                            .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.name) \
+                            .sorted(lambda x: x.sequence)
+                        rec.energy_efficiency_display = '/'.join(energy_efficiency_values.mapped('name'))
 
     ############## to remove
     color_temperature_ids = fields.Many2many(string='Color temperature',
@@ -254,6 +274,14 @@ class LightingProductSourceLine(models.Model):
             .filtered(lambda x: x.luminous_flux_display) \
             .sorted(lambda x: x.sequence) \
             .mapped('luminous_flux_display')
+        if not res:
+            return None
+        return res
+
+    def get_energy_efficiency(self):
+        res = self.filtered(lambda x: x.energy_efficiency_display) \
+            .sorted(lambda x: x.sequence) \
+            .mapped('energy_efficiency_display')
         if not res:
             return None
         return res

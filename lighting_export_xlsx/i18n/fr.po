@@ -22,6 +22,12 @@ msgid "Color temperature"
 msgstr "Color temperature"
 
 #. module: lighting_export_xlsx
+#: code:addons/lighting_export_xlsx/models/product_source.py:31
+#, python-format
+msgid "Energy Efficiency"
+msgstr "Efficacité énergétique"
+
+#. module: lighting_export_xlsx
 #: model:ir.model.fields,field_description:lighting_export_xlsx.field_report_lighting_export_xlsx_export_product_xlsx_display_name
 msgid "Display Name"
 msgstr "Nom à afficher"
