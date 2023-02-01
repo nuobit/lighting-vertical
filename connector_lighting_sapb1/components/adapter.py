@@ -1,6 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import json
 
 from odoo.addons.component.core import AbstractComponent
 
@@ -14,6 +15,8 @@ import logging
 import requests
 
 from functools import partial
+
+from odoo.addons.queue_job.exception import RetryableJobError
 
 try:
     from hdbcli import dbapi
@@ -209,6 +212,28 @@ class GenericAdapter(AbstractComponent):
     def id2dict(self, id):
         return dict(zip(self._id, id))
 
+    def _check_response_error(self, r):
+        if not r.ok:
+            err_msg = _("Error trying to connect to %s: %s") % (r.url, r.text)
+            if r.status_code in (500, 502, 503, 504):
+                raise RetryableJobError('%s\n%s' % (err_msg, _("The job will be retried later")))
+            try:
+                # if it's a json response
+                # TODO: maybe use response 'Content-Type' instead??
+                err_json = r.json()
+                err = err_json['error']
+                if err['code'] == 305:
+                    if err['message']['lang'] != 'en-us':
+                        raise ValidationError(
+                            _("Only supported english (en-us) dealing with error messages from the server\n%s") %
+                            err_json)
+                    if err['message']['value'] == 'Switch company error: -1102':
+                        raise RetryableJobError(_("Temporarily connection error:\n%s\n"
+                                                  "It will be retried later.") % err_json)
+            except json.decoder.JSONDecodeError:
+                pass
+            raise ConnectionError(err_msg)
+
     def _login(self):
         # TODO: convert this login/logout to the contextmanager call
         if hasattr(self, 'session') and self.session:
@@ -221,8 +246,7 @@ class GenericAdapter(AbstractComponent):
             "Password": self.backend_record.sl_password,
         }
         r = self.session.post(self.backend_record.sl_url + "/Login", json=payload, verify=False)
-        if not r.ok:
-            raise ConnectionError(f"Error trying to log in\n{r.text}")
+        self._check_response_error(r)
         return True
 
     def _logout(self):
@@ -230,8 +254,7 @@ class GenericAdapter(AbstractComponent):
         if not self.session:
             raise ConnectionError("The session is not set, you cannot make a logout without being logged in")
         r = self.session.post(self.backend_record.sl_url + "/Logout")  # , verify=False)
-        if not r.ok:
-            raise ConnectionError(f"Error trying to log outyo me ofrezco\n{r.text}")
+        self._check_response_error(r)
         return True
 
     ########## exposed methods
@@ -318,8 +341,7 @@ class GenericAdapter(AbstractComponent):
 
         if payload:
             r = self.session.patch(root_url + f"/Items(ItemCode='{_id}')", json=payload)
-            if not r.ok:
-                raise ValidationError(f"Error updating main data {list(payload.keys())}\n{r.text}")
+            self._check_response_error(r)
 
         if add_lang:
             # update/create data
@@ -330,8 +352,7 @@ class GenericAdapter(AbstractComponent):
                     "$select=TranslationsInUserLanguages,Numerator"
                 ]
                 r = self.session.get(root_url + "/MultiLanguageTranslations?" + '&'.join(qry))
-                if not r.ok:
-                    raise ValidationError(f"Error getting translation of {field}\n{r.text}")
+                self._check_response_error(r)
                 res = r.json()['value']
                 if len(res) > 1:
                     raise ValidationError("Unexpected more than one language register found")
@@ -357,8 +378,7 @@ class GenericAdapter(AbstractComponent):
                     }
                     r = self.session.patch(root_url + f"/MultiLanguageTranslations(Numerator={numerator})",
                                            json=payload)
-                    if not r.ok:
-                        raise ValidationError(f"Error updating translation of {field}\n{r.text}")
+                    self._check_response_error(r)
                 else:
                     payload = {
                         "TableName": self._base_table,
@@ -373,8 +393,7 @@ class GenericAdapter(AbstractComponent):
                         })
                     payload['TranslationsInUserLanguages'] = new_trls
                     r = self.session.post(root_url + "/MultiLanguageTranslations", json=payload)
-                    if not r.ok:
-                        raise ValidationError(f"Error creating translation of {field}\n{r.text}")
+                    self._check_response_error(r)
 
         self._logout()
 
