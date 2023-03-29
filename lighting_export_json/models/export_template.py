@@ -300,7 +300,7 @@ class LightingExportTemplate(models.Model):
         return obj_d
 
     def _generate_labels(self, header):
-        _logger.info("Generating product labels...")
+        _logger.info("%s Template: Generating product labels..." % self.name)
         label_d = {}
         for field, meta in header.items():
             if meta['effective_field_name']:
@@ -313,12 +313,12 @@ class LightingExportTemplate(models.Model):
             else:
                 raise UserError("Language field format %s not supported on json templates" % (
                     self.lang_field_format))
-        _logger.info("Product labels successfully generated.")
+        _logger.info("%s Template: Product labels successfully generated." % self.name)
         return label_d
 
     def _generate_products(self, header, object_ids, hide_empty_fields):
         n = len(object_ids)
-        _logger.info("Generating %i products..." % n)
+        _logger.info("%s Template: Generating %i products..." % (self.name, n))
         th = int(n / 100) or 1
         objects_ld = []
         for i, object_id in enumerate(object_ids, 1):
@@ -328,12 +328,12 @@ class LightingExportTemplate(models.Model):
                 objects_ld.append(obj_d)
 
             if (i % th) == 0:
-                _logger.info(" - Progress products generation %i%%" % (int(i / n * 100)))
-        _logger.info("Products successfully generated...")
+                _logger.info("%s Template: - Progress products generation %i%%" % (self.name, int(i / n * 100)))
+        _logger.info("%s Template: Products successfully generated..." % self.name)
         return objects_ld
 
     def _generate_bundles(self, template_d):
-        _logger.info("Generating bundle products...")
+        _logger.info("%s Template: Generating bundle products..." % self.name)
         # generem els bundles agrupant cada bundle i posant dins tots els tempaltes
         # dels requireds associats
         bundle_d = {}
@@ -392,11 +392,11 @@ class LightingExportTemplate(models.Model):
                                 'store_fname': attachment_ids[0].attachment_id.store_fname,
                             }
                         })
-        _logger.info("Bundle products successfully generated...")
+        _logger.info("%s Template: Bundle products successfully generated..." % self.name)
         return bundle_d
 
     def _generate_templates(self, template_d, objects_d):
-        _logger.info("Generating configurable products (grouped by finish)...")
+        _logger.info("%s Template: Generating configurable products (grouped by finish)..." % self.name)
         # comprovem que les templates rene  mes dun element, sino, l'eliminem
         # escollim un objecte qualsevol o generalm al descricio sense el finish
         template_clean_d = {}
@@ -458,11 +458,11 @@ class LightingExportTemplate(models.Model):
 
                 if product_data:
                     template_clean_d[k].update(product_data)
-        _logger.info("Configurable products successfully generated...")
+        _logger.info("%s Template: Configurable products successfully generated..." % self.name)
         return template_clean_d
 
     def _generate_groups(self, photo_group_d, objects_d):
-        _logger.info("Generating product groups...")
+        _logger.info("%s Template: Generating product groups..." % self.name)
         groups_d = {}
         for group, products in photo_group_d.items():
             # if the group does not contain any bundle
@@ -520,12 +520,12 @@ class LightingExportTemplate(models.Model):
 
                 if group_d:
                     groups_d[group.name] = group_d
-        _logger.info("Product groups successfully generated...")
+        _logger.info("%s Template: Product groups successfully generated..." % self.name)
         return groups_d
 
     def _generate_families(self, object_ids):
         ## generm la informacio de les families
-        _logger.info("Generating family data...")
+        _logger.info("%s Template: Generating family data..." % self.name)
         # obtenim els ids de es fmailie sel sobjectes seleccionats
         objects = self.env['lighting.product'].browse(object_ids)
         families = objects.mapped('family_ids')
@@ -562,12 +562,12 @@ class LightingExportTemplate(models.Model):
                         'name': family.name,
                     })
                     family_ld.append(family_d)
-            _logger.info("Family data successfully generated...")
+            _logger.info("%s Template: Family data successfully generated..." % self.name)
             return family_ld
 
     def _generate_categories(self, categories):
         ## generem la informacio de les categories
-        _logger.info("Generating category data...")
+        _logger.info("%s Template: Generating category data..." % self.name)
         category_ld = []
         for category in categories.sorted(lambda x: x.sequence):
             category_d = {
@@ -684,12 +684,12 @@ class LightingExportTemplate(models.Model):
 
             if category_d:
                 category_ld.append(category_d)
-        _logger.info("Category data successfully generated...")
+        _logger.info("%s Template: Category data successfully generated..." % self.name)
         return category_ld
 
     def _generate_product_header(self):
         ## base headers with labels replaced and subset acoridng to template
-        _logger.info("Generating product headers...")
+        _logger.info("%s Template: Generating product headers..." % self.name)
         header = {}
         for line in self.field_ids.sorted(lambda x: x.sequence):
             field_name = line.field_id.name
@@ -725,13 +725,13 @@ class LightingExportTemplate(models.Model):
                 item['conv_code'] = line.conv_code
                 item['translate'] = line.translate
                 header[field_name] = item
-        _logger.info("Product headers successfully generated.")
+        _logger.info("%s Template: Product headers successfully generated." % self.name)
         return header
 
     ############ AUXILIARS  #####
     def _groups_by_finish(self, object_ids):
         ## auxiliar per agrupar referneeicas amb el mateix finish
-        _logger.info("Generating dictionary of groups by finish...")
+        _logger.info("%s Template: Generating dictionary of groups by finish..." % self.name)
         template_d = {}
         for obj_id in object_ids:
             obj = self.env['lighting.product'].browse(obj_id)
@@ -740,12 +740,12 @@ class LightingExportTemplate(models.Model):
                 if template_name not in template_d:
                     template_d[template_name] = []
                 template_d[template_name].append(obj)
-        _logger.info("Dictionary of groups by finish successfully generated.")
+        _logger.info("%s Template: Dictionary of groups by finish successfully generated." % self.name)
         return template_d
 
     def _groups_by_photo(self, object_ids):
         ## auxiliar per agrupar referneeicas amb el mateixa photo
-        _logger.info("Generating dictionary of groups by photo...")
+        _logger.info("%s Template: Generating dictionary of groups by photo..." % self.name)
         photo_group_d = {}
         for obj_id in object_ids:
             obj = self.env['lighting.product'].browse(obj_id)
@@ -754,24 +754,24 @@ class LightingExportTemplate(models.Model):
                 if group_id not in photo_group_d:
                     photo_group_d[group_id] = self.env['lighting.product']
                 photo_group_d[group_id] += obj
-        _logger.info("Dictionary of groups by photo successfully generated.")
+        _logger.info("%s Template: Dictionary of groups by photo successfully generated." % self.name)
         return photo_group_d
 
     def _products_by_reference(self, objects_ld):
         ### per poder indexat els prodductes i brenir les dades directament
-        _logger.info("Generating dictionary of products...")
+        _logger.info("%s Template: Generating dictionary of products..." % self.name)
         objects_d = {}
         for obj in objects_ld:
             key = obj['reference']
             if key in objects_d:
                 raise Exception("Unexpected!! The key %s is duplicated!" % key)
             objects_d[key] = obj
-        _logger.info("Dictionary of products successfully generated.")
+        _logger.info("%s Template: Dictionary of products successfully generated." % self.name)
         return objects_d
 
     ###### MAIN method
     def generate_data(self, object_ids, hide_empty_fields=True):
-        _logger.info("Export data started...")
+        _logger.info("%s Template: Export data started..." % self.name)
 
         ####### HEADER ########
         header = self._generate_product_header()
@@ -820,6 +820,6 @@ class LightingExportTemplate(models.Model):
                 objects_d = self._products_by_reference(objects_ld)
             res.update({'templates': self._generate_templates(template_d, objects_d)})
 
-        _logger.info("Export data successfully done")
+        _logger.info("%s Template: Export data successfully done" % self.name)
 
         return res
