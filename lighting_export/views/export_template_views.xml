@@ -18,7 +18,10 @@
                     </h1>
                 </div>
                 <group>
-                    <field name="code" class="oe_inline"/>
+                    <group>
+                        <field name="code" class="oe_inline"/>
+                        <field name="sequence"/>
+                    </group>
                 </group>
                 <notebook>
                     <page string="Fields">
@@ -160,6 +163,7 @@
         <field name="model">lighting.export.template</field>
         <field name="arch" type="xml">
             <tree string="Export template Tree">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </tree>
         </field>

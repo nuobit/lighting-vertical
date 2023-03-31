@@ -9,11 +9,13 @@ from odoo.exceptions import ValidationError
 class LightingExportTemplate(models.Model):
     _name = 'lighting.export.template'
     _inherit = ['mail.thread', 'mail.activity.mixin']
-    _order = 'name'
+    _order = 'sequence,name'
 
     name = fields.Char(required=True)
 
     code = fields.Char(string="Code", required=True, copy=False)
+
+    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
 
     # image: all image fields are base64 encoded and PIL-supported
     image = fields.Binary("Image", attachment=True,
