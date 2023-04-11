@@ -9,7 +9,7 @@
     'license': 'AGPL-3',
     'category': 'Custom',
     'website': 'https://github.com/nuobit',
-    'depends': ['lighting_seo', 'lighting_export', 'report_json'],
+    'depends': ['lighting_seo', 'lighting_export', 'report_json', 'queue_job'],
     'data': [
         'data/export_template_data.xml',
         'report/export_product_json_reports.xml',

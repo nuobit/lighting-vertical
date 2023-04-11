@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
 # Eric Antones <eantones@nuobit.com>
+# Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import ast
@@ -11,6 +12,7 @@ import os
 from odoo import api, fields, models, _, tools
 from odoo.exceptions import UserError
 from odoo.tools.safe_eval import safe_eval
+from odoo.addons.queue_job.job import job
 
 _logger = logging.getLogger(__name__)
 
@@ -75,7 +77,7 @@ class LightingExportTemplate(models.Model):
     @api.model
     def autoexecute(self):
         for t in self.env[self._name].search([('auto_execute', '=', True)]):
-            t.action_json_export()
+            t.with_delay().action_json_export()
 
     def get_full_filepath(self, object, lang=None):
         today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime('%Y%m%d')
@@ -93,6 +95,7 @@ class LightingExportTemplate(models.Model):
         return path
 
     @api.multi
+    @job(default_channel='root.lighting_export_json')
     def action_json_export(self):
         def default(o):
             if isinstance(o, datetime.date):
