@@ -762,7 +762,7 @@
                 <sheet>
                     <group col="6">
                         <field name="type_id" colspan="2"/>
-                        <field name="is_integrated" readonly="1" colspan="2"/>
+                        <field name="is_integrated" readonly="1" force_save="1" colspan="2"/>
                         <field name="is_lamp_included" attrs="{'invisible': [('is_integrated', '=', True)]}"
                                colspan="2"/>
                     </group>
