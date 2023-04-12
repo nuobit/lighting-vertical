@@ -149,8 +149,27 @@ class LightingProductSourceLine(models.Model):
                                       relation='lighting_product_source_energyefficiency_rel',
                                       string='Energy efficiency')
 
-    is_integrated = fields.Boolean(related='type_id.is_integrated')
+    is_integrated = fields.Boolean(related='type_id.is_integrated', store=True)
     is_lamp_included = fields.Boolean(string='Lamp included?')
+
+    def _update_color_temperature_flux_values(self, values):
+        is_lamp_included = values.get('is_lamp_included', self.is_lamp_included)
+        is_integrated = values.get('is_integrated', self.is_integrated)
+        color_temperature_flux_ids = values.get('color_temperature_flux_ids', self.color_temperature_flux_ids)
+        if not (is_lamp_included or is_integrated):
+            if color_temperature_flux_ids:
+                values['color_temperature_flux_ids'] = [(5, 0, 0)]
+
+    @api.multi
+    def write(self, values):
+        for rec in self:
+            rec._update_color_temperature_flux_values(values)
+        return super().write(values)
+
+    @api.model
+    def create(self, values):
+        self._update_color_temperature_flux_values(values)
+        return super().create(values)
 
     ## computed fields
     wattage_display = fields.Char(compute='_compute_wattage_display', string='Wattage (W)')
