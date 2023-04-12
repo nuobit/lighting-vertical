@@ -141,3 +141,232 @@ class TestProduct(common.SavepointCase):
                 t['act'](p1)
             with self.subTest():
                 t.get('assert', t.get('actassert'))(p1)
+
+    def test_color_temperature_flux_000(self):
+        """
+            is_integrated = False
+            is_lamp_included = False
+            color_temperature_flux_ids = []
+        """
+        # ARRANGE & ACT
+        f1 = self.env['lighting.product.flux'].create({
+            'value': 1000,
+        })
+
+        t1 = self.env['lighting.product.source.type'].create({
+            'code': 'code1',
+            'is_integrated': False,
+        })
+
+        p1 = self.env['lighting.product'].create({
+            'reference': 'reference1',
+            'source_ids': [(0, 0, {
+                'line_ids': [(0, 0, {
+                    'wattage': 100,
+                    'is_lamp_included': False,
+                    'type_id': t1.id,
+                    'color_temperature_flux_ids': [(0, 0, {})],
+                })],
+            })],
+        })
+
+        # ASSERT
+        self.assertListEqual(p1.source_ids.line_ids.color_temperature_flux_ids.ids, [],
+                             "The color_temperature_flux_ids should be empty")
+
+    def test_color_temperature_flux_001(self):
+        """
+            is_integrated = False
+            is_lamp_included = False
+            color_temperature_flux_ids = [Have content]
+        """
+        # ARRANGE & ACT
+        f1 = self.env['lighting.product.flux'].create({
+            'value': 1000,
+        })
+
+        t1 = self.env['lighting.product.source.type'].create({
+            'code': 'code1',
+            'is_integrated': False,
+        })
+
+        p1 = self.env['lighting.product'].create({
+            'reference': 'reference1',
+            'source_ids': [(0, 0, {
+                'line_ids': [(0, 0, {
+                    'wattage': 100,
+                    'is_lamp_included': False,
+                    'type_id': t1.id,
+                    'color_temperature_flux_ids': [(0, 0, {
+                        'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
+                        'flux_id': f1.id,
+                        'flux_magnitude': 'lm'})],
+                })],
+            })],
+        })
+
+        # ASSERT
+        self.assertListEqual(p1.source_ids.line_ids.color_temperature_flux_ids.ids, [],
+                             "The color_temperature_flux_ids should be empty")
+
+    def test_color_temperature_flux_000_to_011(self):
+        """
+            is_integrated = False
+            is_lamp_included = False -> True
+            color_temperature_flux_ids = [] -> [Have content]
+        """
+        # ARRANGE
+        f1 = self.env['lighting.product.flux'].create({
+            'value': 1000,
+        })
+
+        t1 = self.env['lighting.product.source.type'].create({
+            'code': 'code1',
+            'is_integrated': False,
+        })
+
+        p1 = self.env['lighting.product'].create({
+            'reference': 'reference1',
+            'source_ids': [(0, 0, {
+                'line_ids': [(0, 0, {
+                    'wattage': 100,
+                    'is_lamp_included': False,
+                    'type_id': t1.id,
+                    'color_temperature_flux_ids': [(0, 0, {})],
+                })],
+            })],
+        })
+
+        # ACT
+        p1.source_ids.line_ids.is_lamp_included = True
+        p1.source_ids.line_ids.color_temperature_flux_ids = [(0, 0, {
+            'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
+            'flux_id': f1.id,
+            'flux_magnitude': 'lm'
+        })]
+
+        # ASSERT
+        self.assertTupleEqual((p1.source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value,
+                               p1.source_ids.line_ids.color_temperature_flux_ids.flux_id.value,
+                               p1.source_ids.line_ids.color_temperature_flux_ids.flux_magnitude),
+                              (3000, 1000, 'lm'),
+                              "The color_temperature_flux_ids should be (3000, 1000, 'lm')")
+
+    def test_color_temperature_flux_011_to_000(self):
+        """
+            is_integrated = False
+            is_lamp_included = True
+            color_temperature_flux_ids = [Have content]
+        """
+        # ARRANGE
+        f1 = self.env['lighting.product.flux'].create({
+            'value': 1000,
+        })
+
+        t1 = self.env['lighting.product.source.type'].create({
+            'code': 'code1',
+            'is_integrated': False,
+        })
+
+        p1 = self.env['lighting.product'].create({
+            'reference': 'reference1',
+            'source_ids': [(0, 0, {
+                'line_ids': [(0, 0, {
+                    'wattage': 100,
+                    'is_lamp_included': False,
+                    'type_id': t1.id,
+                    'color_temperature_flux_ids': [(0, 0, {
+                        'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
+                        'flux_id': f1.id,
+                        'flux_magnitude': 'lm'})],
+                })],
+            })],
+        })
+
+        # ACT
+        p1.source_ids.line_ids.is_lamp_included = False
+
+        # ASSERT
+        self.assertListEqual(p1.source_ids.line_ids.color_temperature_flux_ids.ids, [],
+                             "The color_temperature_flux_ids should be empty")
+
+    def test_color_temperature_flux_101_to_000(self):
+        """
+            is_integrated = True -> False
+            is_lamp_included = False
+            color_temperature_flux_ids = [Have content] -> []
+        """
+        # ARRANGE
+        f1 = self.env['lighting.product.flux'].create({
+            'value': 1000,
+        })
+
+        t1 = self.env['lighting.product.source.type'].create({
+            'code': 'code1',
+            'is_integrated': True,
+        })
+
+        p1 = self.env['lighting.product'].create({
+            'reference': 'reference1',
+            'source_ids': [(0, 0, {
+                'line_ids': [(0, 0, {
+                    'wattage': 100,
+                    'is_lamp_included': False,
+                    'type_id': t1.id,
+                    'color_temperature_flux_ids': [(0, 0, {
+                        'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
+                        'flux_id': f1.id,
+                        'flux_magnitude': 'lm'})],
+                })],
+            })],
+        })
+
+        # ACT
+        p1.source_ids.line_ids.type_id.is_integrated = False
+
+        # ASSERT
+        self.assertListEqual(p1.source_ids.line_ids.color_temperature_flux_ids.ids, [],
+                             "The color_temperature_flux_ids should be empty")
+
+    def test_color_temperature_flux_101_to_000_2(self):
+        """
+            is_integrated = t1.True -> t2.False
+            is_lamp_included = False
+            color_temperature_flux_ids = [Have content] -> []
+        """
+        # ARRANGE
+        f1 = self.env['lighting.product.flux'].create({
+            'value': 1000,
+        })
+
+        t1 = self.env['lighting.product.source.type'].create({
+            'code': 'code1',
+            'is_integrated': True,
+        })
+
+        t2 = self.env['lighting.product.source.type'].create({
+            'code': 'code2',
+            'is_integrated': False,
+        })
+
+        p1 = self.env['lighting.product'].create({
+            'reference': 'reference1',
+            'source_ids': [(0, 0, {
+                'line_ids': [(0, 0, {
+                    'wattage': 100,
+                    'is_lamp_included': False,
+                    'type_id': t1.id,
+                    'color_temperature_flux_ids': [(0, 0, {
+                        'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
+                        'flux_id': f1.id,
+                        'flux_magnitude': 'lm'})],
+                })],
+            })],
+        })
+
+        # ACT
+        p1.source_ids.line_ids.type_id = t2
+
+        # ASSERT
+        self.assertListEqual(p1.source_ids.line_ids.color_temperature_flux_ids.ids, [],
+                             "The color_temperature_flux_ids should be empty")
