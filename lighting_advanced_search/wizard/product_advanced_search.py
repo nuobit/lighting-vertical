@@ -100,12 +100,8 @@ class LightingProductAdvancedSearch(models.TransientModel):
                                                 column1='advanced_search_id',
                                                 column2='color_temperature_id')
     # Luminous flux search
-    flux_in_ids = fields.Many2many(string='Luminous flux',
-                                   comodel_name='lighting.product.flux',
-                                   relation='lighting_product_advanced_search_flux_in_rel',
-                                   column1='advanced_search_id',
-                                   column2='flux_id')
-
+    nominal_flux_from_in = fields.Float(string='From')
+    nominal_flux_to_in = fields.Float(string='To')
     # wattage
     wattage_from_in = fields.Float(string='From')
     wattage_to_in = fields.Float(string='To')
@@ -141,7 +137,10 @@ class LightingProductAdvancedSearch(models.TransientModel):
                                     self.color_temperature_in_ids, 'or')
 
         # luminous flux
-        domain += prepare_in_domain(['source_ids.line_ids.color_temperature_flux_ids.flux_id'], self.flux_in_ids, 'or')
+        if self.nominal_flux_from_in:
+            domain += [('source_ids.line_ids.color_temperature_flux_ids.nominal_flux', '>=', self.nominal_flux_from_in)]
+        if self.nominal_flux_to_in:
+            domain += [('source_ids.line_ids.color_temperature_flux_ids.nominal_flux', '<=', self.nominal_flux_to_in)]
 
         # wattage
         if self.wattage_from_in:
