@@ -28,7 +28,6 @@ from . import product_model
 from . import product_ral
 from . import product_voltage
 from . import product_color_temperature
-from . import product_flux
 from . import product_source_line_color_temperature_flux
 
 from . import product_note

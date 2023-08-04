@@ -16,10 +16,8 @@ class LightingProductSourceLineColorTemperatureFlux(models.Model):
                                            ondelete='restrict')
     color_temperature_value = fields.Integer(related='color_temperature_id.value', store=True)
 
-    flux_id = fields.Many2one(string='Luminous flux',
-                              comodel_name='lighting.product.flux',
-                              required=True,
-                              ondelete='restrict')
+    nominal_flux = fields.Float(string='Nominal flux',
+                                required=True)
     flux_magnitude = fields.Selection(
         string='Flux Magnitude',
         selection=[('lm', 'lm'), ('lmm', 'lm/m')],

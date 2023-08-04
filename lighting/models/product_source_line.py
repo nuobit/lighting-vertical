@@ -69,8 +69,7 @@ class LightingProductSourceLine(models.Model):
     @api.depends('color_temperature_flux_ids',
                  'color_temperature_flux_ids.color_temperature_id',
                  'color_temperature_flux_ids.color_temperature_id.value',
-                 'color_temperature_flux_ids.flux_id',
-                 'color_temperature_flux_ids.flux_id.value',
+                 'color_temperature_flux_ids.nominal_flux',
                  'color_temperature_flux_ids.flux_magnitude',
                  'color_temperature_flux_ids.efficiency_id',
                  'color_temperature_flux_ids.efficiency_id.name',
@@ -79,6 +78,7 @@ class LightingProductSourceLine(models.Model):
     def _compute_color_temperature_flux_display(self):
         for rec in self:
             if rec.color_temperature_flux_ids:
+                # compute color_temperature_display
                 if len(rec.color_temperature_flux_ids) != 1 or \
                         rec.color_temperature_flux_ids.color_temperature_id.value:
                     color_temperature_values = rec.color_temperature_flux_ids \
@@ -87,18 +87,21 @@ class LightingProductSourceLine(models.Model):
                     rec.color_temperature_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
                         .join([x.color_temperature_id.value and ('%iK' % x.color_temperature_id.value) or '-'
                                for x in color_temperature_values])
-                if len(rec.color_temperature_flux_ids) != 1 or \
-                        rec.color_temperature_flux_ids.flux_id.value:
-                    flux_values = rec.color_temperature_flux_ids \
-                        .filtered(lambda x: not self.env.context.get('ignore_nulls') or x.flux_id.value) \
-                        .sorted(lambda x: x.color_temperature_id.value)
-                    flux_magnitude_options = dict(
-                        rec.color_temperature_flux_ids.fields_get(['flux_magnitude'], ['selection'])
-                            .get('flux_magnitude').get('selection'))
-                    rec.luminous_flux_display = (rec.is_color_temperature_flux_tunable and '-' or '/') \
-                        .join([x.flux_id.value and ('%i%s' % (
-                        x.flux_id.value, flux_magnitude_options[x.flux_magnitude])) or '-'
-                               for x in flux_values])
+                # compute luminous_flux_display
+                flux_magnitude_options = dict(
+                    rec.color_temperature_flux_ids.fields_get(['flux_magnitude'], ['selection'])
+                        .get('flux_magnitude').get('selection'))
+                separator = rec.is_color_temperature_flux_tunable and '-' or '/'
+                ctf_l = []
+                for ctf in rec.color_temperature_flux_ids.sorted(lambda x: x.color_temperature_id.value):
+                    f_l = []
+                    if not self.env.context.get('ignore_nulls') or ctf.nominal_flux:
+                        f_l.append('%g%s' % (ctf.nominal_flux, flux_magnitude_options[ctf.flux_magnitude]))
+                    else:
+                        f_l.append('-')
+                    ctf_l.append(''.join(f_l))
+                rec.luminous_flux_display = separator.join(ctf_l)
+                # compute energy_efficiency_display
                 if rec.color_temperature_flux_ids.mapped('efficiency_id'):
                     if len(rec.color_temperature_flux_ids) != 1 or \
                             rec.color_temperature_flux_ids.efficiency_id.name:
