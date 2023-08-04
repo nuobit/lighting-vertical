@@ -4,7 +4,7 @@
 {
     'name': "Lighting vertical",
     'description': "Lighting vertical",
-    'version': '11.0.0.100.3',
+    'version': '11.0.0.100.4',
     'author': 'NuoBiT Solutions, S.L., Eric Antones',
     'license': 'AGPL-3',
     'category': 'Custom',
@@ -27,7 +27,6 @@
         'views/product_application_views.xml',
         'views/product_installation_views.xml',
         'views/product_color_temperature_views.xml',
-        'views/product_flux_views.xml',
         'views/product_sealing_views.xml',
         'views/product_finish_views.xml',
         'views/product_model_views.xml',
