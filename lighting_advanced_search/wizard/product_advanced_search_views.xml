@@ -45,7 +45,8 @@
                 </group>
                 <group>
                     <group string="Luminous flux (Lm)">
-                        <field name="flux_in_ids" widget="many2many_tags" nolabel="1"/>
+                        <field name="nominal_flux_from_in"/>
+                        <field name="nominal_flux_to_in"/>
                     </group>
                     <group string="Wattage (W)">
                         <field name="wattage_from_in"/>
