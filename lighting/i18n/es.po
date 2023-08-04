@@ -1750,11 +1750,6 @@ msgid "Logistics"
 msgstr "Logística"
 
 #. module: lighting
-#: model:ir.model.fields,help:lighting.field_lighting_product_total_nominal_flux
-msgid "Luminaire total nominal flux"
-msgstr "Luminaria de flujo nominal total."
-
-#. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_emergency_light
 msgid "Luminarie with emergency light"
 msgstr "Luminarie con luz de emergencia."
@@ -1764,6 +1759,16 @@ msgstr "Luminarie con luz de emergencia."
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_nominal_flux
 msgid "Luminous flux"
 msgstr "Flujo nominal"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_total_flux
+msgid "Total flux"
+msgstr "Flujo total"
+
+#. module: lighting
+#: model:ir.model.fields,help:lighting.field_lighting_product_source_line_color_temperature_flux_total_flux
+msgid "Luminaire total nominal flux"
+msgstr "Luminaria de flujo nominal total."
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_magnitude
@@ -2872,11 +2877,6 @@ msgstr "¡Hay potencias duplicados en el mismo producto!"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_count
 msgid "Total beams"
 msgstr "Haces totales"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_total_nominal_flux
-msgid "Total flux (lm)"
-msgstr "Flujo total (lm)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_total_wattage
