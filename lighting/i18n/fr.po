@@ -1676,11 +1676,6 @@ msgid "Logistics"
 msgstr "Logistique"
 
 #. module: lighting
-#: model:ir.model.fields,help:lighting.field_lighting_product_total_nominal_flux
-msgid "Luminaire total nominal flux"
-msgstr "Flux nominal total du luminaire"
-
-#. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_emergency_light
 msgid "Luminarie with emergency light"
 msgstr "Luminarie avec éclairage d'urgence"
@@ -1689,6 +1684,16 @@ msgstr "Luminarie avec éclairage d'urgence"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
 msgid "Luminous flux"
 msgstr "Flux nominal"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_total_flux
+msgid "Total flux"
+msgstr "Flux total"
+
+#. module: lighting
+#: model:ir.model.fields,help:lighting.field_lighting_product_source_line_color_temperature_flux_total_flux
+msgid "Luminaire total nominal flux"
+msgstr "Flux nominal total du luminaire"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_magnitude
@@ -2795,11 +2800,6 @@ msgstr "Réviser"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_count
 msgid "Total beams"
 msgstr "Faisceaux totaux"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_total_nominal_flux
-msgid "Total flux (lm)"
-msgstr "Flux total (lm)"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_product_total_wattage
