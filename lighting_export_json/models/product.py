@@ -317,8 +317,7 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.color_temperature_flux_ids',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
-                 'source_ids.line_ids.color_temperature_flux_ids.flux_id',
-                 'source_ids.line_ids.color_temperature_flux_ids.flux_id.value',
+                 'source_ids.line_ids.color_temperature_flux_ids.nominal_flux',
                  'source_ids.sequence')
     def _compute_json_display_luminous_flux(self):
         template_id = self.env.context.get('template_id')
@@ -672,8 +671,7 @@ class LightingProduct(models.Model):
     @api.depends('source_ids.line_ids.color_temperature_flux_ids',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
-                 'source_ids.line_ids.color_temperature_flux_ids.flux_id',
-                 'source_ids.line_ids.color_temperature_flux_ids.flux_id.value',
+                 'source_ids.line_ids.color_temperature_flux_ids.nominal_flux',
                  )
     def _compute_json_search_luminous_flux(self):
         for rec in self:
@@ -683,13 +681,13 @@ class LightingProduct(models.Model):
                     if line.color_temperature_flux_ids:
                         if line.is_color_temperature_flux_tunable and len(line.color_temperature_flux_ids) > 1:
                             tunable_range = line.color_temperature_flux_ids \
-                                .sorted(lambda x: x.flux_id.value).mapped('flux_id.value')
-                            values = self.env['lighting.product.flux'].search([
-                                ('value', '>=', tunable_range[0]),
-                                ('value', '<=', tunable_range[-1]),
-                            ]).mapped('value')
+                                .sorted(lambda x: x.nominal_flux).mapped('nominal_flux')
+                            values = self.env['lighting.product.source.line.color.temperature.flux'].search([
+                                ('nominal_flux', '>=', tunable_range[0]),
+                                ('nominal_flux', '<=', tunable_range[-1]),
+                            ]).mapped('nominal_flux')
                         else:
-                            values = line.color_temperature_flux_ids.mapped('flux_id.value')
+                            values = line.color_temperature_flux_ids.mapped('nominal_flux')
                         fluxes_s |= set(map(lambda x: x * line.source_id.num, values))
 
             if fluxes_s:
