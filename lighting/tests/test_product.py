@@ -149,10 +149,6 @@ class TestProduct(common.SavepointCase):
             color_temperature_flux_ids = []
         """
         # ARRANGE & ACT
-        f1 = self.env['lighting.product.flux'].create({
-            'value': 1000,
-        })
-
         t1 = self.env['lighting.product.source.type'].create({
             'code': 'code1',
             'is_integrated': False,
@@ -181,10 +177,6 @@ class TestProduct(common.SavepointCase):
             color_temperature_flux_ids = [Have content]
         """
         # ARRANGE & ACT
-        f1 = self.env['lighting.product.flux'].create({
-            'value': 1000,
-        })
-
         t1 = self.env['lighting.product.source.type'].create({
             'code': 'code1',
             'is_integrated': False,
@@ -199,7 +191,7 @@ class TestProduct(common.SavepointCase):
                     'type_id': t1.id,
                     'color_temperature_flux_ids': [(0, 0, {
                         'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
-                        'flux_id': f1.id,
+                        'nominal_flux': 1000.11,
                         'flux_magnitude': 'lm'})],
                 })],
             })],
@@ -216,10 +208,6 @@ class TestProduct(common.SavepointCase):
             color_temperature_flux_ids = [] -> [Have content]
         """
         # ARRANGE
-        f1 = self.env['lighting.product.flux'].create({
-            'value': 1000,
-        })
-
         t1 = self.env['lighting.product.source.type'].create({
             'code': 'code1',
             'is_integrated': False,
@@ -241,16 +229,16 @@ class TestProduct(common.SavepointCase):
         p1.source_ids.line_ids.is_lamp_included = True
         p1.source_ids.line_ids.color_temperature_flux_ids = [(0, 0, {
             'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
-            'flux_id': f1.id,
+            'nominal_flux': 1000.01,
             'flux_magnitude': 'lm'
         })]
 
         # ASSERT
         self.assertTupleEqual((p1.source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value,
-                               p1.source_ids.line_ids.color_temperature_flux_ids.flux_id.value,
+                               p1.source_ids.line_ids.color_temperature_flux_ids.nominal_flux,
                                p1.source_ids.line_ids.color_temperature_flux_ids.flux_magnitude),
-                              (3000, 1000, 'lm'),
-                              "The color_temperature_flux_ids should be (3000, 1000, 'lm')")
+                              (3000, 1000.01, 'lm'),
+                              "The color_temperature_flux_ids should be (3000, 1000.01, 'lm')")
 
     def test_color_temperature_flux_011_to_000(self):
         """
@@ -259,10 +247,6 @@ class TestProduct(common.SavepointCase):
             color_temperature_flux_ids = [Have content]
         """
         # ARRANGE
-        f1 = self.env['lighting.product.flux'].create({
-            'value': 1000,
-        })
-
         t1 = self.env['lighting.product.source.type'].create({
             'code': 'code1',
             'is_integrated': False,
@@ -277,7 +261,7 @@ class TestProduct(common.SavepointCase):
                     'type_id': t1.id,
                     'color_temperature_flux_ids': [(0, 0, {
                         'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
-                        'flux_id': f1.id,
+                        'nominal_flux': 1000.99,
                         'flux_magnitude': 'lm'})],
                 })],
             })],
@@ -297,10 +281,6 @@ class TestProduct(common.SavepointCase):
             color_temperature_flux_ids = [Have content] -> []
         """
         # ARRANGE
-        f1 = self.env['lighting.product.flux'].create({
-            'value': 1000,
-        })
-
         t1 = self.env['lighting.product.source.type'].create({
             'code': 'code1',
             'is_integrated': True,
@@ -315,7 +295,7 @@ class TestProduct(common.SavepointCase):
                     'type_id': t1.id,
                     'color_temperature_flux_ids': [(0, 0, {
                         'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
-                        'flux_id': f1.id,
+                        'nominal_flux': 1000.77,
                         'flux_magnitude': 'lm'})],
                 })],
             })],
@@ -335,10 +315,6 @@ class TestProduct(common.SavepointCase):
             color_temperature_flux_ids = [Have content] -> []
         """
         # ARRANGE
-        f1 = self.env['lighting.product.flux'].create({
-            'value': 1000,
-        })
-
         t1 = self.env['lighting.product.source.type'].create({
             'code': 'code1',
             'is_integrated': True,
@@ -358,7 +334,7 @@ class TestProduct(common.SavepointCase):
                     'type_id': t1.id,
                     'color_temperature_flux_ids': [(0, 0, {
                         'color_temperature_id': self.ref('lighting.product_color_temperature_3000'),
-                        'flux_id': f1.id,
+                        'nominal_flux': 1000.33,
                         'flux_magnitude': 'lm'})],
                 })],
             })],

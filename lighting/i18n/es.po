@@ -1761,7 +1761,7 @@ msgstr "Luminarie con luz de emergencia."
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_luminous_flux_display
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_nominal_flux
 msgid "Luminous flux"
 msgstr "Flujo nominal"
 
@@ -1769,11 +1769,6 @@ msgstr "Flujo nominal"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux_flux_magnitude
 msgid "Flux Magnitude"
 msgstr "Magnitud del flujo"
-
-#. module: lighting
-#: model:ir.ui.menu,name:lighting.product_flux_menu
-msgid "Luminous fluxes"
-msgstr "Flujos lumínicos"
 
 #. module: lighting
 #: selection:lighting.product.source,relevance:0
