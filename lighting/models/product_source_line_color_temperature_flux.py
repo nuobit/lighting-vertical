@@ -18,6 +18,8 @@ class LightingProductSourceLineColorTemperatureFlux(models.Model):
 
     nominal_flux = fields.Float(string='Nominal flux',
                                 required=True)
+    total_flux = fields.Float(string='Total flux',
+                              help='Luminaire total nominal flux')
     flux_magnitude = fields.Selection(
         string='Flux Magnitude',
         selection=[('lm', 'lm'), ('lmm', 'lm/m')],

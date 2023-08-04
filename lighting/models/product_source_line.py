@@ -99,6 +99,8 @@ class LightingProductSourceLine(models.Model):
                         f_l.append('%g%s' % (ctf.nominal_flux, flux_magnitude_options[ctf.flux_magnitude]))
                     else:
                         f_l.append('-')
+                    if not self.env.context.get('ignore_nulls') or ctf.total_flux:
+                        f_l.append('(%g%s)' % (ctf.total_flux, flux_magnitude_options[ctf.flux_magnitude]))
                     ctf_l.append(''.join(f_l))
                 rec.luminous_flux_display = separator.join(ctf_l)
                 # compute energy_efficiency_display

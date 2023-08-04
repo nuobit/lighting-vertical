@@ -634,8 +634,6 @@ class LightingProduct(models.Model):
     glow_wire_temperature = fields.Float(string='Glow wire temperature (ºC)', track_visibility='onchange')
 
     # light characteristics tab
-    total_nominal_flux = fields.Float(string='Total flux (lm)', help='Luminaire total nominal flux',
-                                      track_visibility='onchange')
     ugr_max = fields.Integer(string='UGR', help='Maximum unified glare rating', track_visibility='onchange')
 
     lifetime = fields.Integer(string='Lifetime (h)', track_visibility='onchange')

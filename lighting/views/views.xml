@@ -196,7 +196,6 @@
                         </page>
                         <page string="Lighting">
                             <group>
-                                <field name="total_nominal_flux"/>
                                 <field name="ugr_max"/>
                                 <field name="lifetime"/>
 
@@ -782,6 +781,7 @@
                         <field name="color_temperature_flux_ids" colspan="4">
                             <tree editable="bottom">
                                 <field name="color_temperature_id"/>
+                                <field name="total_flux"/>
                                 <field name="nominal_flux"/>
                                 <field name="flux_magnitude"/>
                                 <field name="efficiency_id"/>
