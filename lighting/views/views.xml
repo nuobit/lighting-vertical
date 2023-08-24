@@ -156,7 +156,10 @@
                                 <label for="total_wattage"/>
                                 <div>
                                     <field name="total_wattage" style="width:15%;"
-                                           attrs="{'readonly': [('total_wattage_auto', '=', True)]}"/>
+                                           attrs="{'invisible': [('total_wattage_auto', '=', True)]}"/>
+                                    <field name="total_wattage_sources" style="width:15%;"
+                                           force_save="1"
+                                           attrs="{'invisible': [('total_wattage_auto', '=', False)]}"/>
                                     <field name="total_wattage_auto" style="margin-left:10px;width:15px;"/>
                                     <label for="total_wattage_auto" style="font-weight:bold;"/>
                                 </div>
