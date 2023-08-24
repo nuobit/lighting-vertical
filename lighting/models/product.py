@@ -577,30 +577,34 @@ class LightingProduct(models.Model):
                                         ondelete='restrict', string='Output voltage', track_visibility='onchange')
     output_current = fields.Integer(string='Output current (mA)', track_visibility='onchange')
 
-    total_wattage = fields.Float(compute='_compute_total_wattage',
-                                 inverse='_inverse_total_wattage',
-                                 string='Total wattage (W)', help='Total power consumed by the luminaire',
-                                 store=True, track_visibility='onchange')
-    total_wattage_auto = fields.Boolean(string='Autocalculate',
-                                        help='Autocalculate total wattage', default=True, track_visibility='onchange')
+    # this should be replaces by only total_wattage computed with readonly=False
+    # when migrating to version >=13.0
+    total_wattage_sources = fields.Float(
+        compute='_compute_total_wattage_sources',
+        store=True,
+    )
 
     @api.depends('total_wattage_auto', 'source_ids.line_ids.wattage', 'source_ids.line_ids.type_id',
                  'source_ids.line_ids.type_id.is_integrated',
                  'source_ids.line_ids.is_lamp_included')
-    def _compute_total_wattage(self):
+    def _compute_total_wattage_sources(self):
         for rec in self:
-            if rec.total_wattage_auto:
-                rec.total_wattage = 0
-                line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.is_integrated or x.is_lamp_included)
-                for line in line_l:
-                    if line.wattage <= 0:
-                        raise ValidationError("%s: The source line %s has invalid wattage" % (rec.display_name,
-                                                                                              line.type_id.display_name))
-                    rec.total_wattage += line.source_id.num * line.wattage
+            total_wattage = 0
+            line_l = rec.source_ids.mapped('line_ids').filtered(lambda x: x.is_integrated or x.is_lamp_included)
+            for line in line_l:
+                if line.wattage <= 0:
+                    raise ValidationError("%s: The source line %s has invalid wattage" % (rec.display_name,
+                                                                                          line.type_id.display_name))
+                total_wattage += line.source_id.num * line.wattage
+            rec.total_wattage_sources = total_wattage
 
-    def _inverse_total_wattage(self):
-        ## dummy method. It allows to update calculated field
-        pass
+    total_wattage = fields.Float(string='Total wattage (W)',
+                                 help='Total power consumed by the luminaire',
+                                 track_visibility='onchange')
+
+    total_wattage_auto = fields.Boolean(string='Autocalculate',
+                                        help='Autocalculate total wattage',
+                                        default=True, track_visibility='onchange')
 
     power_factor_min = fields.Float(string='Minimum power factor', track_visibility='onchange')
     power_switches = fields.Integer(string='Power switches', help="Number of power switches",
@@ -1039,6 +1043,8 @@ class LightingProduct(models.Model):
             new_values = rec._check_state_marketing_stock(values)
             if new_values:
                 values.update(new_values)
+            if values.get('total_wattage_auto', rec.total_wattage_auto):
+                values['total_wattage'] = values.get('total_wattage_sources', rec.total_wattage_sources)
             original_description = rec.description
             result &= super(LightingProduct, rec).write(values)
             if rec.description != original_description:
