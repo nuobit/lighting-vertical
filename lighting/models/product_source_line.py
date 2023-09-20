@@ -157,23 +157,31 @@ class LightingProductSourceLine(models.Model):
     is_integrated = fields.Boolean(related='type_id.is_integrated', store=True)
     is_lamp_included = fields.Boolean(string='Lamp included?')
 
-    def _update_color_temperature_flux_values(self, values):
-        is_lamp_included = values.get('is_lamp_included', self.is_lamp_included)
-        is_integrated = values.get('is_integrated', self.is_integrated)
-        color_temperature_flux_ids = values.get('color_temperature_flux_ids', self.color_temperature_flux_ids)
-        if not (is_lamp_included or is_integrated):
-            if color_temperature_flux_ids:
-                values['color_temperature_flux_ids'] = [(5, 0, 0)]
-
     @api.multi
     def write(self, values):
         for rec in self:
-            rec._update_color_temperature_flux_values(values)
+            # deal with the color temperature fluxes if the source is or is not integrated/lamp included
+            color_temperature_flux_ids = values.get('color_temperature_flux_ids', rec.color_temperature_flux_ids)
+            if color_temperature_flux_ids:
+                is_integrated = values.get('is_integrated', rec.is_integrated)
+                is_lamp_included = values.get('is_lamp_included', rec.is_lamp_included)
+                if not (is_integrated or is_lamp_included):
+                    values['color_temperature_flux_ids'] = [(5, 0, 0)]
         return super().write(values)
 
     @api.model
     def create(self, values):
-        self._update_color_temperature_flux_values(values)
+        # deal with the color temperature fluxes if the source is or is not integrated/lamp included
+        if 'color_temperature_flux_ids' in values:
+            if 'is_integrated' not in values:
+                if 'type_id' not in values:
+                    raise ValidationError(_('The source type is not defined'))
+                source_type = self.env['lighting.product.source.type'].browse(values['type_id'])
+                values['is_integrated'] = source_type.is_integrated
+            is_integrated = values['is_integrated']
+            is_lamp_included = values.get('is_lamp_included', False)
+            if not (is_integrated or is_lamp_included):
+                del values['color_temperature_flux_ids']
         return super().create(values)
 
     ## computed fields
