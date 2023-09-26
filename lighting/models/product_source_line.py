@@ -154,7 +154,17 @@ class LightingProductSourceLine(models.Model):
                                       relation='lighting_product_source_energyefficiency_rel',
                                       string='Energy efficiency')
 
-    is_integrated = fields.Boolean(related='type_id.is_integrated', store=True)
+    # do not use a related here, keep it computed at least in v11
+    is_integrated = fields.Boolean(
+        compute='_compute_is_integrated',
+        store=True
+    )
+
+    @api.depends('type_id.is_integrated')
+    def _compute_is_integrated(self):
+        for rec in self:
+            rec.is_integrated = rec.type_id.is_integrated
+
     is_lamp_included = fields.Boolean(string='Lamp included?')
 
     @api.multi
