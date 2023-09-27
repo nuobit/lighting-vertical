@@ -14,7 +14,15 @@ class LightingProductSourceLineColorTemperatureFlux(models.Model):
                                            comodel_name='lighting.product.color.temperature',
                                            required=True,
                                            ondelete='restrict')
-    color_temperature_value = fields.Integer(related='color_temperature_id.value', store=True)
+    color_temperature_value = fields.Integer(
+        compute='_compute_color_temperature_value',
+        store=True
+    )
+
+    @api.depends('color_temperature_id.value')
+    def _compute_color_temperature_value(self):
+        for record in self:
+            record.color_temperature_value = record.color_temperature_id.value
 
     nominal_flux = fields.Float(string='Nominal flux',
                                 required=True)
