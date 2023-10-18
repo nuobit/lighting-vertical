@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
+     Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_special_spectrum_form_view" model="ir.ui.view">
+        <field name="name">product.special.spectrum.form.inherit</field>
+        <field name="model">lighting.product.special.spectrum</field>
+        <field name="inherit_id" ref="lighting.product_special_spectrum_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <group>
+                    <field name="use_as_cct" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
