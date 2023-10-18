@@ -536,7 +536,9 @@ class LightingProduct(models.Model):
     @api.depends(
         'source_ids.line_ids',
         'source_ids.line_ids.cri_min',
-        'source_ids.line_ids.special_spectrum',
+        'source_ids.line_ids.special_spectrum_id',
+        'source_ids.line_ids.special_spectrum_id.name',
+        'source_ids.line_ids.special_spectrum_id.use_as_cct',
         'source_ids.line_ids.color_temperature_flux_ids',
         'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
         'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value',
@@ -546,12 +548,9 @@ class LightingProduct(models.Model):
             critemps = []
             critemps_dup = set()
             lines = rec.source_ids.mapped('line_ids')
-            special_spectrum_option = dict(
-                lines.fields_get(['special_spectrum'], ['selection'])
-                    .get('special_spectrum').get('selection'))
             for line in lines.sorted('cri_min'):
-                if line.special_spectrum in ('tw', 'dtw'):
-                    critemps.append(special_spectrum_option[line.special_spectrum])
+                if line.special_spectrum_id and line.special_spectrum_id.use_as_cct:
+                    critemps.append(line.special_spectrum_id.name)
                 else:
                     ctemps = line.color_temperature_flux_ids.mapped('color_temperature_id') \
                         .sorted(lambda x: x.value)
