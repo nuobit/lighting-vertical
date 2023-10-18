@@ -136,16 +136,9 @@ class LightingProductSourceLine(models.Model):
 
     is_led = fields.Boolean(related='type_id.is_led')
     color_consistency = fields.Float(string='Color consistency (SDCM)')
-    special_spectrum = fields.Selection(selection=[
-        ('meat', 'Meat'), ('fashion', 'Fashion'),
-        ('multifood', 'Multi Food'), ('bread', 'Bread'),
-        ('fish', 'Fish'), ('vegetable', 'Vegetable'),
-        ('blue', _('Blue')), ('orange', _('Orange')),
-        ('green', _('Green')), ('red', _('Red')),
-        ('purple', _('Purple')), ('pink', _('Pink')),
-        ('sunlike', _('Sunlike')), ('dtw', _('DtW')),
-        ('tw', _('TW')),
-    ], string='Special spectrum')
+    special_spectrum_id = fields.Many2one(
+        'lighting.product.special.spectrum', string='Special spectrum'
+    )
     leds_m = fields.Integer(string="Leds/m", track_visibility='onchange')
     led_chip_ids = fields.One2many(comodel_name='lighting.product.ledchip',
                                    inverse_name='source_line_id', string='Chip', copy=True)
@@ -329,12 +322,9 @@ class LightingProductSourceLine(models.Model):
         return res
 
     def get_special_spectrum(self):
-        special_spectrum_option = dict(
-            self.fields_get(['special_spectrum'], ['selection'])
-                .get('special_spectrum').get('selection'))
-        res = [special_spectrum_option[x] for x in self.filtered(lambda x: x.special_spectrum) \
+        res = self.filtered(lambda x: x.special_spectrum_id) \
             .sorted(lambda x: x.sequence) \
-            .mapped('special_spectrum')]
+            .mapped('special_spectrum_id.name')
         if not res:
             return None
         return res

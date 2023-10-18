@@ -337,13 +337,6 @@ msgid "Blade material"
 msgstr "Material da lâmina"
 
 #. module: lighting
-#: code:addons/lighting/models/models.py:707
-#: selection:lighting.product.source.line,special_spectrum:0
-#, python-format
-msgid "Blue"
-msgstr "Azul"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_body_material_ids
 msgid "Body material"
 msgstr "Material do corpo"
@@ -358,11 +351,6 @@ msgstr "Material de abajur"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_brand_id
 msgid "Brand"
 msgstr "Marca"
-
-#. module: lighting
-#: selection:lighting.product.source.line,special_spectrum:0
-msgid "Bread"
-msgstr "Pão"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_cri_min
@@ -441,6 +429,7 @@ msgstr "Perto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_code
 #: model:ir.ui.view,arch_db:lighting.product_finish_form_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_code
 msgid "Code"
 msgstr "Código"
 
@@ -552,6 +541,11 @@ msgstr "Crie o primeiro tipo de dimensão"
 #: model:ir.actions.act_window,help:lighting.energyefficiency_list_action
 msgid "Create the first Energy efficiency"
 msgstr "Crie a primeira eficiência energética"
+
+#. module: lighting
+#: model:ir.actions.act_window,help:lighting.product_special_spectrum_list_action
+msgid "Create the first product special spectrum"
+msgstr "Crie o primeiro produto espectro especial"
 
 #. module: lighting
 #: model:ir.actions.act_window,help:lighting.product_ledbrand_list_action
@@ -729,6 +723,7 @@ msgstr "Crie a primeira voltagem do produto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_create_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_create_uid
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_create_uid
 msgid "Created by"
 msgstr "Criado por"
 
@@ -773,6 +768,7 @@ msgstr "Criado por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_create_date
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_create_date
 msgid "Created on"
 msgstr "Criado em"
 
@@ -972,6 +968,7 @@ msgstr "Descontinuado em breve"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_display_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_display_name
 msgid "Display Name"
 msgstr "Mostrar nome"
 
@@ -1067,6 +1064,16 @@ msgid "Energy efficiencies"
 msgstr "Eficiência energética"
 
 #. module: lighting
+#: model:ir.ui.menu,name:lighting.product_special_spectrum_menu
+msgid "Special spectrums"
+msgstr "Espectros especiais"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_special_spectrum_list_action
+msgid "Product Special Spectrum"
+msgstr "Espectro Especial do Produto"
+
+#. module: lighting
 #: model:ir.actions.act_window,name:lighting.energyefficiency_list_action
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_efficiency_ids
 msgid "Energy efficiency"
@@ -1137,11 +1144,6 @@ msgid "Fan wattages (W)"
 msgstr "Potências dos ventiladores (W)"
 
 #. module: lighting
-#: selection:lighting.product.source.line,special_spectrum:0
-msgid "Fashion"
-msgstr "moda"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas_fname
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas_fname
 msgid "Filename"
@@ -1161,11 +1163,6 @@ msgstr "Terminar 2"
 #: model:ir.ui.menu,name:lighting.product_finishes_menu
 msgid "Finishes"
 msgstr "Acabamentos"
-
-#. module: lighting
-#: selection:lighting.product.source.line,special_spectrum:0
-msgid "Fish"
-msgstr "Peixe"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_flammable_surfaces
@@ -1192,13 +1189,6 @@ msgstr "Freqüência (Hz)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_glow_wire_temperature
 msgid "Glow wire temperature (ºC)"
 msgstr "Temperatura do fio incandescente (ºC)"
-
-#. module: lighting
-#: code:addons/lighting/models/models.py:708
-#: selection:lighting.product.source.line,special_spectrum:0
-#, python-format
-msgid "Green"
-msgstr "Verde"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
@@ -1292,6 +1282,7 @@ msgstr "Largura do IBox (cm)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_id
 msgid "ID"
 msgstr "ID"
 
@@ -1512,6 +1503,7 @@ msgstr "línguas"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_type___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage___last_update
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier___last_update
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum___last_update
 msgid "Last Modified on"
 msgstr "Última modificação em"
 
@@ -1556,6 +1548,7 @@ msgstr "Última modificação em"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_write_uid
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_write_uid
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_write_uid
 msgid "Last Updated by"
 msgstr "Última atualização por"
 
@@ -1600,6 +1593,7 @@ msgstr "Última atualização por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_write_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_write_date
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_write_date
 msgid "Last Updated on"
 msgstr "Última atualização em"
 
@@ -1753,11 +1747,6 @@ msgid "Maximum unified glare rating"
 msgstr "Classificação máxima de reflexo unificado"
 
 #. module: lighting
-#: selection:lighting.product.source.line,special_spectrum:0
-msgid "Meat"
-msgstr "Carne"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_mechanical_screwdriver
 msgid "Electric screwdriver"
 msgstr "Chave de fenda elétrica"
@@ -1783,17 +1772,13 @@ msgid "Minimum power factor"
 msgstr "Fator de potência mínima"
 
 #. module: lighting
-#: selection:lighting.product.source.line,special_spectrum:0
-msgid "Multi Food"
-msgstr "Multi Food"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_name
 msgid "Name"
 msgstr "Nome"
 
@@ -1839,13 +1824,6 @@ msgid "On request"
 msgstr "A pedido"
 
 #. module: lighting
-#: code:addons/lighting/models/models.py:707
-#: selection:lighting.product.source.line,special_spectrum:0
-#, python-format
-msgid "Orange"
-msgstr "laranja"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_output_current
 msgid "Output current (mA)"
 msgstr "Corrente de saída (mA)"
@@ -1884,13 +1862,6 @@ msgstr "Distribuições fotométricas"
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Physical"
 msgstr "Fisica"
-
-#. module: lighting
-#: code:addons/lighting/models/models.py:709
-#: selection:lighting.product.source.line,special_spectrum:0
-#, python-format
-msgid "Pink"
-msgstr "Rosa"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_post_included
@@ -2356,13 +2327,6 @@ msgid "Historical"
 msgstr "Histórico"
 
 #. module: lighting
-#: code:addons/lighting/models/models.py:709
-#: selection:lighting.product.source.line,special_spectrum:0
-#, python-format
-msgid "Purple"
-msgstr "Roxa"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Quantity"
 msgstr "Quantidade"
@@ -2376,13 +2340,6 @@ msgstr "Dimensões de recesso"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessing_box_included
 msgid "Cut hole box included"
 msgstr "Caixa de recesso incluído"
-
-#. module: lighting
-#: code:addons/lighting/models/models.py:708
-#: selection:lighting.product.source.line,special_spectrum:0
-#, python-format
-msgid "Red"
-msgstr "Vermelho"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_reference
@@ -2490,7 +2447,17 @@ msgid "Sources"
 msgstr "Fontes"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_special_spectrum
+#: model:ir.model,name:lighting.model_lighting_product_special_spectrum
+msgid "Special Spectrum"
+msgstr "Espectro especial"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.product_special_spectrum_form_view
+msgid "Special Spectrum Form"
+msgstr "Formulário Espectro especial"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_special_spectrum_id
 msgid "Special spectrum"
 msgstr "Espectro especial"
 
@@ -2685,6 +2652,12 @@ msgstr "O código do material deve ser único!"
 #: sql_constraint:lighting.product.material:0
 msgid "The material name must be unique!"
 msgstr "O nome do material deve ser único!"
+
+#. module: lighting
+#: code:addons/lighting/models/product_special_spectrum.py:23
+#, python-format
+msgid "The name must be unique!"
+msgstr "O nome deve ser único!"
 
 #. module: lighting
 #: sql_constraint:lighting.catalog:0
@@ -2930,11 +2903,6 @@ msgstr "Com carregador"
 #: selection:lighting.product,rechargeable_type:0
 msgid "Solar/With charger"
 msgstr "Solar/Com carregador"
-
-#. module: lighting
-#: selection:lighting.product.source.line,special_spectrum:0
-msgid "Vegetable"
-msgstr "Vegetal"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_name
