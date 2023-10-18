@@ -29,6 +29,7 @@ from . import product_ral
 from . import product_voltage
 from . import product_color_temperature
 from . import product_source_line_color_temperature_flux
+from . import product_special_spectrum
 
 from . import product_note
 

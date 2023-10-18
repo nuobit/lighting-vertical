@@ -49,10 +49,8 @@ class LightingProductSource(models.Model):
                         line.append("CRI%i" % l.cri_min)
                     if l.is_led and l.leds_m:
                         line.append("%i Leds/m" % l.leds_m)
-                    if l.is_led and l.special_spectrum:
-                        special_spectrum_values = dict(
-                            l.fields_get('special_spectrum', 'selection')['special_spectrum']['selection'])
-                        line.append(special_spectrum_values[l.special_spectrum])
+                    if l.is_led and l.special_spectrum_id:
+                        line.append(l.special_spectrum_id.name)
 
                 if l.wattage_display:
                     line.append("(%s)" % l.wattage_display)

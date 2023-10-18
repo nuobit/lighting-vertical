@@ -106,7 +106,8 @@ class LightingProduct(models.Model):
                  'source_ids.line_ids.wattage',
                  'source_ids.line_ids.wattage_magnitude',
                  'source_ids.line_ids.cri_min',
-                 'source_ids.line_ids.special_spectrum',
+                 'source_ids.line_ids.special_spectrum_id',
+                 'source_ids.line_ids.special_spectrum_id.name',
                  'source_ids.line_ids.is_color_temperature_flux_tunable',
                  'source_ids.line_ids.color_temperature_flux_ids',
                  'source_ids.line_ids.color_temperature_flux_ids.color_temperature_id',
@@ -243,11 +244,8 @@ class LightingProduct(models.Model):
                                 data_line.append(color_temperature_display)
 
                         if not line.color_temperature_flux_ids:
-                            if line.is_led and line.special_spectrum:
-                                special_spectrum_option = dict(
-                                    line.fields_get(['special_spectrum'], ['selection']) \
-                                        .get('special_spectrum').get('selection'))
-                                data_line.append(special_spectrum_option.get(line.special_spectrum))
+                            if line.is_led and line.special_spectrum_id:
+                                data_line.append(line.special_spectrum_id.name)
 
                         if data_line:
                             data_lines.append(' '.join(data_line))
@@ -283,11 +281,8 @@ class LightingProduct(models.Model):
                                         data_line.append(line.color_temperature_display)
 
                                 if not line.color_temperature_flux_ids:
-                                    if line.is_led and line.special_spectrum:
-                                        special_spectrum_option = dict(
-                                            line.fields_get(['special_spectrum'], ['selection']) \
-                                                .get('special_spectrum').get('selection'))
-                                        data_line.append(special_spectrum_option.get(line.special_spectrum))
+                                    if line.is_led and line.special_spectrum_id:
+                                        data_line.append(line.special_spectrum_id.name)
 
                                 if data_line:
                                     data_lines.append(' '.join(data_line))

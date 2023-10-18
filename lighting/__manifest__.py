@@ -46,6 +46,7 @@
         'views/product_dimension_type_views.xml',
         'views/product_material_views.xml',
         'views/product_note_views.xml',
+        'views/product_special_spectrum_views.xml',
         'views/views.xml',
         'wizard/lighting_product_addattachment.xml',
         'wizard/product_define_substitute_views.xml',
