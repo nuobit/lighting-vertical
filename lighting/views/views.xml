@@ -797,7 +797,7 @@
                         <field name="is_led" invisible="1"/>
                         <field name="cri_min"/>
                         <field name="color_consistency"/>
-                        <field name="special_spectrum"/>
+                        <field name="special_spectrum_id"/>
                         <field name="leds_m"/>
                         <field name="led_chip_ids">
                             <tree editable="bottom">
@@ -1019,6 +1019,17 @@
         </field>
     </record>
 
+    <!-- window action product special spectrums class -->
+    <record model="ir.actions.act_window" id="product_special_spectrum_list_action">
+        <field name="name">Product Special Spectrum</field>
+        <field name="res_model">lighting.product.special.spectrum</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product special spectrum</p>
+        </field>
+    </record>
+
     <!-- ============= Electrical characteristics tab ============ -->
     <!-- window action dimmable -->
     <record id="product_dimmable_list_action" model="ir.actions.act_window">
@@ -1135,6 +1146,10 @@
     <!-- ============= common data ============ -->
     <menuitem id="energyefficiencies_menu" name="Energy efficiencies" parent="common_data_menu"
               action="energyefficiency_list_action"
+              sequence="1000"/>
+
+    <menuitem id="product_special_spectrum_menu" name="Special spectrums" parent="common_data_menu"
+              action="product_special_spectrum_list_action"
               sequence="1000"/>
 
     <!-- ============= Electrical characteristics tab ============ -->
