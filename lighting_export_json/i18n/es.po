@@ -127,3 +127,12 @@ msgstr "Products JSON report"
 msgid "Yes"
 msgstr "Sí"
 
+#. module: lighting_export_json
+#: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_special_spectrum_use_as_cct
+msgid "Use as CCT"
+msgstr "Usar como CCT"
+
+#. module: lighting_export_json
+#: model:ir.model.fields,help:lighting_export_json.field_lighting_product_special_spectrum_use_as_cct
+msgid "If checked, this special spectrum will be used as CCT (Correlated Color Temperature) value in json search."
+msgstr "Si está marcado, este espectro especial se utilizará como valor de CCT (Temperatura de Color Correlacionada) en la búsqueda de json."
