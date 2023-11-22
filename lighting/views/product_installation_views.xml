@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -10,7 +10,9 @@
         <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('installation_ids','=',active_id)]</field>
-        <field name="context">{'default_installation_ids': [(4, active_id, False)]}</field>
+        <field
+            name="context"
+        >{'default_installation_ids': [(4, active_id, False)]}</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Product</p>
         </field>
@@ -24,13 +26,21 @@
             <form string="Product installation Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_installation_action_product)d">
-                            <field string="Products" name="product_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(product_installation_action_product)d"
+                        >
+                            <field
+                                string="Products"
+                                name="product_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -42,11 +52,15 @@
         <field name="model">lighting.product.installation</field>
         <field name="arch" type="xml">
             <tree string="Product installation Tree">
-                <field name="name"/>
-                <field name="product_count"/>
-                <button name="%(product_installation_action_product)d" type="action"
-                        string="Products" icon="fa-external-link"
-                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="name" />
+                <field name="product_count" />
+                <button
+                    name="%(product_installation_action_product)d"
+                    type="action"
+                    string="Products"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('product_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>
@@ -63,7 +77,11 @@
         </field>
     </record>
 
-    <menuitem id="product_installations_menu" name="Installations" parent="common_data_menu"
-              action="product_installation_list_action"
-              sequence="35"/>
+    <menuitem
+        id="product_installations_menu"
+        name="Installations"
+        parent="common_data_menu"
+        action="product_installation_list_action"
+        sequence="35"
+    />
 </odoo>

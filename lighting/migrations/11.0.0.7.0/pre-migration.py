@@ -4,7 +4,8 @@
 
 from openupgradelib import openupgrade
 
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import ValidationError
+
 
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
@@ -21,9 +22,13 @@ def migrate(env, version):
 
     if nobrand != []:
         env.cr.execute(
-            "select reference from lighting_product where id in (%s) order by reference", nobrand
+            "select reference from lighting_product where id in (%s) order by reference",
+            nobrand,
         )
 
         prods = [row[0] for row in env.cr.fetchall()]
         if prods != []:
-            raise ValidationError("Upgrade aborted -> There are auxiliary equipment models without brand: %s" % prods)
+            raise ValidationError(
+                "Upgrade aborted -> There are auxiliary equipment models without brand: %s"
+                % prods
+            )

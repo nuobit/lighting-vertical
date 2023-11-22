@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -24,18 +24,26 @@
             <form string="RAL Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_ral_action_product)d">
-                            <field string="Products" name="product_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(product_ral_action_product)d"
+                        >
+                            <field
+                                string="Products"
+                                name="product_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <div class="oe_title">
                         <h1>
-                            <field name="code" placeholder="Code"/>
+                            <field name="code" placeholder="Code" />
                         </h1>
                     </div>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -47,12 +55,16 @@
         <field name="model">lighting.product.ral</field>
         <field name="arch" type="xml">
             <tree string="RAL Tree">
-                <field name="code"/>
-                <field name="name"/>
-                <field name="product_count"/>
-                <button name="%(product_ral_action_product)d" type="action"
-                        string="Products" icon="fa-external-link"
-                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="code" />
+                <field name="name" />
+                <field name="product_count" />
+                <button
+                    name="%(product_ral_action_product)d"
+                    type="action"
+                    string="Products"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('product_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>
@@ -63,10 +75,13 @@
         <field name="model">lighting.product.ral</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name" string="RAL"
-                       filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]"/>
-                <field name="name"/>
-                <field name="code"/>
+                <field
+                    name="name"
+                    string="RAL"
+                    filter_domain="['|', ('name','ilike',self), ('code','ilike',self)]"
+                />
+                <field name="name" />
+                <field name="code" />
             </search>
         </field>
     </record>
@@ -83,7 +98,11 @@
         </field>
     </record>
 
-    <menuitem id="product_rals_menu" name="RALs" parent="common_data_menu"
-              action="product_ral_list_action"
-              sequence="75"/>
+    <menuitem
+        id="product_rals_menu"
+        name="RALs"
+        parent="common_data_menu"
+        action="product_ral_list_action"
+        sequence="75"
+    />
 </odoo>

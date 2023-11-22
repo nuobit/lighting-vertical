@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -11,6 +12,7 @@ def migrate(env, version):
 
     openupgrade.drop_columns(
         env.cr,
-        [('lighting_product', 'color'),
-         ]
+        [
+            ("lighting_product", "color"),
+        ],
     )

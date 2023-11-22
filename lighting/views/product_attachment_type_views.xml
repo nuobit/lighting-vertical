@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -17,11 +17,13 @@
     </record>
 
     <!-- menu entry -->
-    <act_window id="attachment_type_list_action"
-                name="Attachment type"
-                res_model="lighting.attachment.type"
-                view_type="form"
-                view_mode="tree,form"/>
+    <act_window
+        id="attachment_type_list_action"
+        name="Attachment type"
+        res_model="lighting.attachment.type"
+        view_type="form"
+        view_mode="tree,form"
+    />
 
     <!-- ============= views ============= -->
     <record id="attachment_type_form_view" model="ir.ui.view">
@@ -31,15 +33,23 @@
             <form string="Attachment typ Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_attachment_type_action_product)d">
-                            <field string="Products" name="product_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(product_attachment_type_action_product)d"
+                        >
+                            <field
+                                string="Products"
+                                name="product_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                        <field name="is_image"/>
+                        <field name="code" />
+                        <field name="name" />
+                        <field name="is_image" />
                     </group>
                 </sheet>
             </form>
@@ -51,20 +61,28 @@
         <field name="model">lighting.attachment.type</field>
         <field name="arch" type="xml">
             <tree string="Attachment type Tree">
-                <field name="sequence" widget="handle"/>
-                <field name="code"/>
-                <field name="name"/>
-                <field name="is_image"/>
-                <field name="product_count"/>
-                <button name="%(product_attachment_type_action_product)d" type="action"
-                        string="Products" icon="fa-external-link"
-                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="sequence" widget="handle" />
+                <field name="code" />
+                <field name="name" />
+                <field name="is_image" />
+                <field name="product_count" />
+                <button
+                    name="%(product_attachment_type_action_product)d"
+                    type="action"
+                    string="Products"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('product_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>
 
     <!-- ============= menu items ============= -->
-    <menuitem id="attachment_types_menu" name="Attachment types" parent="common_data_menu"
-              action="attachment_type_list_action"
-              sequence="1000"/>
+    <menuitem
+        id="attachment_types_menu"
+        name="Attachment types"
+        parent="common_data_menu"
+        action="attachment_type_list_action"
+        sequence="1000"
+    />
 </odoo>

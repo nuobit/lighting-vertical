@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,19 +11,25 @@
             <form string="Category attachment Form">
                 <sheet>
                     <group>
-                        <field name="datas" filename="datas_fname"/>
-                        <field name="datas_fname" invisible="1"/>
-                        <field name="name"/>
+                        <field name="datas" filename="datas_fname" />
+                        <field name="datas_fname" invisible="1" />
+                        <field name="name" />
                     </group>
                     <group col="4">
-                        <field name="brand_default"/>
-                        <field name="brand_id" attrs="{'invisible': [('brand_default', '=', True)]}"/>
-                        <field name="location_default"/>
-                        <field name="location_id" attrs="{'invisible': [('location_default', '=', True)]}"/>
+                        <field name="brand_default" />
+                        <field
+                            name="brand_id"
+                            attrs="{'invisible': [('brand_default', '=', True)]}"
+                        />
+                        <field name="location_default" />
+                        <field
+                            name="location_id"
+                            attrs="{'invisible': [('location_default', '=', True)]}"
+                        />
                     </group>
                     <group>
-                        <field name="is_default"/>
-                        <field name="sequence"/>
+                        <field name="is_default" />
+                        <field name="sequence" />
                     </group>
                 </sheet>
             </form>
@@ -35,14 +41,14 @@
         <field name="model">lighting.product.category.attachment</field>
         <field name="arch" type="xml">
             <tree string="Category attachment Tree">
-                <field name="sequence" widget="handle"/>
-                <field name="datas_fname"/>
-                <field name="datas" filename="datas_fname" string="Size"/>
-                <field name="name"/>
-                <field name="brand_id"/>
-                <field name="brand_default"/>
-                <field name="location_id"/>
-                <field name="location_default"/>
+                <field name="sequence" widget="handle" />
+                <field name="datas_fname" />
+                <field name="datas" filename="datas_fname" string="Size" />
+                <field name="name" />
+                <field name="brand_id" />
+                <field name="brand_default" />
+                <field name="location_id" />
+                <field name="location_default" />
             </tree>
         </field>
     </record>

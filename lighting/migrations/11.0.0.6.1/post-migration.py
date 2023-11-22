@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -12,6 +13,7 @@ def migrate(env, version):
     # remove equipment brand field from product type
     openupgrade.drop_columns(
         env.cr,
-        [('lighting_product', 'auxiliary_equipment_brand_id'),
-        ]
+        [
+            ("lighting_product", "auxiliary_equipment_brand_id"),
+        ],
     )

@@ -12,6 +12,7 @@ def migrate(env, version):
 
     openupgrade.drop_columns(
         env.cr,
-        [('lighting_product_source_line', 'color_temperature'),
-         ]
+        [
+            ("lighting_product_source_line", "color_temperature"),
+        ],
     )

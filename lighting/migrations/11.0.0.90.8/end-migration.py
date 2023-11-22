@@ -11,11 +11,10 @@ def migrate(env, version):
         return
 
     fields = [
-        'input_current',
-        'output_current',
+        "input_current",
+        "output_current",
     ]
 
     openupgrade.drop_columns(
-        env.cr,
-        [('lighting_product', '%s_moved0' % f) for f in fields]
+        env.cr, [("lighting_product", "%s_moved0" % f) for f in fields]
     )

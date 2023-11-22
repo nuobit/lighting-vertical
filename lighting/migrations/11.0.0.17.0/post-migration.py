@@ -4,15 +4,14 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
         return
 
     env.cr.execute(
-        "UPDATE lighting_product p "
-        "SET state = 'draft' "
-        "WHERE p.in_progress"
+        "UPDATE lighting_product p " "SET state = 'draft' " "WHERE p.in_progress"
     )
 
     env.cr.execute(

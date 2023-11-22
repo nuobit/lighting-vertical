@@ -2,9 +2,9 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from openupgradelib import openupgrade
-
 import logging
+
+from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
 
@@ -24,6 +24,7 @@ def migrate(env, version):
                     from lighting_product_required_rel r
                     where r.product_id = p.id
                  )
-        """)
+        """
+    )
 
     _logger.info("'Is composite' field successfully populated from required_ids")

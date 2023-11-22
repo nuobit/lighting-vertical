@@ -12,7 +12,8 @@ def migrate(env, version):
 
     openupgrade.drop_columns(
         env.cr,
-        [('lighting_product', 'ip'),
-         ('lighting_product', 'ip2'),
-         ]
+        [
+            ("lighting_product", "ip"),
+            ("lighting_product", "ip2"),
+        ],
     )

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -24,24 +24,32 @@
             <form string="Product location Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_location_action_product)d">
-                            <field string="Products" name="product_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(product_location_action_product)d"
+                        >
+                            <field
+                                string="Products"
+                                name="product_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Location"/>
+                            <field name="name" placeholder="Location" />
                         </h1>
                     </div>
                     <group col="6">
                         <group colspan="2">
-                            <field name="code"/>
+                            <field name="code" />
                         </group>
                     </group>
                     <group>
                         <group>
-                            <field name="description_text"/>
+                            <field name="description_text" />
                         </group>
                     </group>
                 </sheet>
@@ -54,12 +62,16 @@
         <field name="model">lighting.product.location</field>
         <field name="arch" type="xml">
             <tree string="Product location Tree">
-                <field name="name"/>
-                <field name="code"/>
-                <field name="product_count"/>
-                <button name="%(product_location_action_product)d" type="action"
-                        string="Products" icon="fa-external-link"
-                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="name" />
+                <field name="code" />
+                <field name="product_count" />
+                <button
+                    name="%(product_location_action_product)d"
+                    type="action"
+                    string="Products"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('product_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>
@@ -76,7 +88,11 @@
         </field>
     </record>
 
-    <menuitem id="product_locations_menu" name="Locations" parent="common_data_menu"
-              action="product_location_list_action"
-              sequence="25"/>
+    <menuitem
+        id="product_locations_menu"
+        name="Locations"
+        parent="common_data_menu"
+        action="product_location_list_action"
+        sequence="25"
+    />
 </odoo>

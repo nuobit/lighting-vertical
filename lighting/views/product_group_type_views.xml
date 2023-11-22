@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -24,19 +24,27 @@
             <form string="Group type Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_group_type_action_group)d">
-                            <field string="Groups" name="group_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(product_group_type_action_group)d"
+                        >
+                            <field
+                                string="Groups"
+                                name="group_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Group type"/>
+                            <field name="name" placeholder="Group type" />
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="code"/>
+                            <field name="code" />
                         </group>
                     </group>
                 </sheet>
@@ -49,12 +57,16 @@
         <field name="model">lighting.product.group.type</field>
         <field name="arch" type="xml">
             <tree string="Group type Tree">
-                <field name="code"/>
-                <field name="name"/>
-                <field name="group_count"/>
-                <button name="%(product_group_type_action_group)d" type="action"
-                        string="Groups" icon="fa-external-link"
-                        attrs="{'invisible': [('group_count', '=', 0)]}"/>
+                <field name="code" />
+                <field name="name" />
+                <field name="group_count" />
+                <button
+                    name="%(product_group_type_action_group)d"
+                    type="action"
+                    string="Groups"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('group_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>
@@ -70,7 +82,11 @@
         </field>
     </record>
 
-    <menuitem id="product_group_types_menu" name="Group types" parent="common_data_menu"
-              action="product_group_type_list_action"
-              sequence="5"/>
+    <menuitem
+        id="product_group_types_menu"
+        name="Group types"
+        parent="common_data_menu"
+        action="product_group_type_list_action"
+        sequence="5"
+    />
 </odoo>
