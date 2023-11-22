@@ -2,37 +2,52 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
-from lxml import etree
-
-from collections import OrderedDict
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class LightingProductSource(models.Model):
-    _name = 'lighting.product.source'
-    _rec_name = 'relevance'
-    _order = 'sequence'
+    _name = "lighting.product.source"
+    _rec_name = "relevance"
+    _order = "sequence"
 
-    sequence = fields.Integer(required=True, default=1, help="The sequence field is used to define order")
+    sequence = fields.Integer(
+        required=True, default=1, help="The sequence field is used to define order"
+    )
 
-    relevance = fields.Selection([('main', 'Main'), ('aux', 'Auxiliary')], string='Relevance', required=True,
-                                 default='main')
-    num = fields.Integer(string='Number of sources', default=1)
-    lampholder_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
-                                    string='Lampholder')
-    lampholder_technical_id = fields.Many2one(comodel_name='lighting.product.source.lampholder', ondelete='restrict',
-                                              string='Technical lampholder')
+    relevance = fields.Selection(
+        [("main", "Main"), ("aux", "Auxiliary")],
+        string="Relevance",
+        required=True,
+        default="main",
+    )
+    num = fields.Integer(string="Number of sources", default=1)
+    lampholder_id = fields.Many2one(
+        comodel_name="lighting.product.source.lampholder",
+        ondelete="restrict",
+        string="Lampholder",
+    )
+    lampholder_technical_id = fields.Many2one(
+        comodel_name="lighting.product.source.lampholder",
+        ondelete="restrict",
+        string="Technical lampholder",
+    )
 
-    line_ids = fields.One2many(comodel_name='lighting.product.source.line', inverse_name='source_id', string='Lines',
-                               copy=True)
+    line_ids = fields.One2many(
+        comodel_name="lighting.product.source.line",
+        inverse_name="source_id",
+        string="Lines",
+        copy=True,
+    )
 
-    product_id = fields.Many2one(comodel_name='lighting.product', ondelete='cascade', string='Product')
+    product_id = fields.Many2one(
+        comodel_name="lighting.product", ondelete="cascade", string="Product"
+    )
 
     ## computed fields
-    line_display = fields.Char(compute='_compute_line_display', string='Description')
+    line_display = fields.Char(compute="_compute_line_display", string="Description")
 
-    @api.depends('line_ids')
+    @api.depends("line_ids")
     def _compute_line_display(self):
         for rec in self:
             res = []
@@ -55,21 +70,25 @@ class LightingProductSource(models.Model):
                 if l.wattage_display:
                     line.append("(%s)" % l.wattage_display)
 
-                res.append(' '.join(line))
+                res.append(" ".join(line))
 
             if res != []:
                 rec.line_display = " / ".join(res)
 
     @api.multi
-    @api.constrains('lampholder_id', 'lampholder_technical_id', 'line_ids')
+    @api.constrains("lampholder_id", "lampholder_technical_id", "line_ids")
     def _check_efficiency_lampholder(self):
         for rec in self:
-            if all([
-                rec.lampholder_id or rec.lampholder_technical_id,
-                rec.line_ids.mapped('efficiency_ids'),
-                not rec.product_id.is_accessory]
+            if all(
+                [
+                    rec.lampholder_id or rec.lampholder_technical_id,
+                    rec.line_ids.mapped("efficiency_ids"),
+                    not rec.product_id.is_accessory,
+                ]
             ):
-                raise ValidationError(_("A non accessory source with lampholder cannot have efficiency"))
+                raise ValidationError(
+                    _("A non accessory source with lampholder cannot have efficiency")
+                )
 
     ## aux display functions
     def get_source_type(self):
@@ -81,11 +100,11 @@ class LightingProductSource(models.Model):
 
             src_t = src.line_ids.get_source_type()
             if src_t:
-                s.append('/'.join(src_t))
+                s.append("/".join(src_t))
 
             s_l = None
             if s:
-                s_l = ' '.join(s)
+                s_l = " ".join(s)
             res.append(s_l)
 
         if not any(res):
@@ -98,7 +117,7 @@ class LightingProductSource(models.Model):
             src_k = src.line_ids.get_color_temperature()
             k_l = None
             if src_k:
-                k_l = ','.join(src_k)
+                k_l = ",".join(src_k)
             res.append(k_l)
 
         if not any(res):
@@ -113,9 +132,9 @@ class LightingProductSource(models.Model):
             if src_k:
                 kn_l = []
                 if src.num > 1:
-                    kn_l.append('%ix' % src.num)
-                kn_l.append(','.join(src_k))
-                k_l = ' '.join(kn_l)
+                    kn_l.append("%ix" % src.num)
+                kn_l.append(",".join(src_k))
+                k_l = " ".join(kn_l)
             res.append(k_l)
 
         if not any(res):
@@ -127,7 +146,7 @@ class LightingProductSource(models.Model):
         for src in self.sorted(lambda x: x.sequence):
             src_k = src.line_ids.get_cri()
             if src_k:
-                k_l = ','.join(['CRI%i' % x for x in src_k])
+                k_l = ",".join(["CRI%i" % x for x in src_k])
                 res.append(k_l)
 
         if not any(res):
@@ -139,8 +158,8 @@ class LightingProductSource(models.Model):
         for src in self.sorted(lambda x: x.sequence):
             src_k = src.line_ids.get_leds_m()
             if src_k:
-                k_l = ','.join([str(x) for x in src_k])
-                res.append('%s Leds/m' % (k_l,))
+                k_l = ",".join([str(x) for x in src_k])
+                res.append("%s Leds/m" % (k_l,))
 
         if not any(res):
             return None
@@ -151,7 +170,7 @@ class LightingProductSource(models.Model):
         for src in self.sorted(lambda x: x.sequence):
             src_k = src.line_ids.get_special_spectrum()
             if src_k:
-                k_l = ','.join(src_k)
+                k_l = ",".join(src_k)
                 res.append(k_l)
 
         if not any(res):
@@ -165,9 +184,9 @@ class LightingProductSource(models.Model):
             if src_k:
                 kn_l = []
                 if src.num > 1:
-                    kn_l.append('%ix' % src.num)
+                    kn_l.append("%ix" % src.num)
                 kn_l.append(src_k)
-                res.append(' '.join(kn_l))
+                res.append(" ".join(kn_l))
 
         if not any(res):
             return None

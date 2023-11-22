@@ -11,15 +11,17 @@ def migrate(env, version):
         return
 
     fields = [
-        ('novelty', 'N'),
-        ('cataloged', 'C'),
-        ('discontinued_by_supplier', 'DS'),
-        ('until_end_stock', 'ES'),
-        ('discontinued', 'D'),
+        ("novelty", "N"),
+        ("cataloged", "C"),
+        ("discontinued_by_supplier", "DS"),
+        ("until_end_stock", "ES"),
+        ("discontinued", "D"),
     ]
 
     for f, v in fields:
         env.cr.execute(
             "UPDATE lighting_product "
             "SET state_marketing=%%s "
-            "WHERE coalesce(%s, false)" % f, (v,))
+            "WHERE coalesce(%s, false)" % f,
+            (v,),
+        )

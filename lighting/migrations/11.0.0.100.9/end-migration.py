@@ -1,8 +1,9 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from openupgradelib import openupgrade
 import logging
+
+from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
 
@@ -14,10 +15,9 @@ def migrate(env, version):
 
     openupgrade.drop_columns(
         env.cr,
-        [('lighting_product_source_line', 'special_spectrum'),
-         ]
+        [
+            ("lighting_product_source_line", "special_spectrum"),
+        ],
     )
 
     _logger.info("End: Removed special spectrum from product source line")
-
-

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,12 +11,12 @@
             <form string="Family attachment Form">
                 <sheet>
                     <group>
-                        <field name="datas" filename="datas_fname"/>
-                        <field name="datas_fname" invisible="1"/>
-                        <field name="name"/>
-                        <field name="category_id"/>
-                        <field name="is_default"/>
-                        <field name="sequence"/>
+                        <field name="datas" filename="datas_fname" />
+                        <field name="datas_fname" invisible="1" />
+                        <field name="name" />
+                        <field name="category_id" />
+                        <field name="is_default" />
+                        <field name="sequence" />
                     </group>
                 </sheet>
             </form>
@@ -28,12 +28,12 @@
         <field name="model">lighting.product.family.attachment</field>
         <field name="arch" type="xml">
             <tree string="Family attachment Tree">
-                <field name="sequence" widget="handle"/>
-                <field name="datas_fname"/>
-                <field name="datas" filename="datas_fname" string="Size"/>
-                <field name="name"/>
-                <field name="category_id"/>
-                <field name="is_default"/>
+                <field name="sequence" widget="handle" />
+                <field name="datas_fname" />
+                <field name="datas" filename="datas_fname" string="Size" />
+                <field name="name" />
+                <field name="category_id" />
+                <field name="is_default" />
             </tree>
         </field>
     </record>

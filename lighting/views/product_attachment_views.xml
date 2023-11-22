@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -10,35 +10,56 @@
         <field name="arch" type="xml">
             <form string="Attachment Form">
                 <header>
-                    <button name="regenerate_preview" string="Regenerate preview"
-                            type="object" groups="base.group_no_one"/>
+                    <button
+                        name="regenerate_preview"
+                        string="Regenerate preview"
+                        type="object"
+                        groups="base.group_no_one"
+                    />
                 </header>
                 <sheet>
-                    <field name="image_medium" class="oe_avatar" widget="image" readonly="1"/>
-                    <field name="image_known"/>
+                    <field
+                        name="image_medium"
+                        class="oe_avatar"
+                        widget="image"
+                        readonly="1"
+                    />
+                    <field name="image_known" />
                     <group>
-                        <field name="type_id"/>
+                        <field name="type_id" />
                     </group>
                     <group>
-                        <field name="datas_location"/>
-                        <field name="datas_url" widget="url"
-                               attrs="{'invisible': [('datas_location', '!=', 'url')],'required': [('datas_location', '=', 'url')]}"/>
-                        <field name="datas" filename="datas_fname"
-                               attrs="{'invisible': [('datas_location', '!=', 'file')],'required': [('datas_location', '=', 'file')]}"/>
-                        <field name="datas_fname" invisible="1"
-                               attrs="{'required': [('datas_location', '=', 'file')]}"/>
+                        <field name="datas_location" />
+                        <field
+                            name="datas_url"
+                            widget="url"
+                            attrs="{'invisible': [('datas_location', '!=', 'url')],'required': [('datas_location', '=', 'url')]}"
+                        />
+                        <field
+                            name="datas"
+                            filename="datas_fname"
+                            attrs="{'invisible': [('datas_location', '!=', 'file')],'required': [('datas_location', '=', 'file')]}"
+                        />
+                        <field
+                            name="datas_fname"
+                            invisible="1"
+                            attrs="{'required': [('datas_location', '=', 'file')]}"
+                        />
                     </group>
                     <group>
-                        <field name="name"/>
-                        <field name="lang_id"/>
-                        <field name="write_date" readonly="1"/>
-                        <field name="is_default"/>
-                        <field name="sequence"/>
+                        <field name="name" />
+                        <field name="lang_id" />
+                        <field name="write_date" readonly="1" />
+                        <field name="is_default" />
+                        <field name="sequence" />
                     </group>
                     <group attrs="{'invisible': [('datas_location', '=', 'url')]}">
-                        <field name="public"/>
-                        <field name="url" widget="url"
-                               attrs="{'invisible': [('public', '!=', True)]}"/>
+                        <field name="public" />
+                        <field
+                            name="url"
+                            widget="url"
+                            attrs="{'invisible': [('public', '!=', True)]}"
+                        />
                     </group>
                 </sheet>
             </form>
@@ -50,17 +71,17 @@
         <field name="model">lighting.attachment</field>
         <field name="arch" type="xml">
             <tree string="Attachment Tree">
-                <field name="sequence" widget="handle"/>
-                <field name="type_id"/>
-                <field name="datas_location"/>
-                <field name="datas_fname"/>
-                <field name="datas_size" string="Size"/>
-                <field name="datas_url"/>
-                <field name="name"/>
-                <field name="lang_id"/>
-                <field name="write_date"/>
-                <field name="is_default"/>
-                <field name="public"/>
+                <field name="sequence" widget="handle" />
+                <field name="type_id" />
+                <field name="datas_location" />
+                <field name="datas_fname" />
+                <field name="datas_size" string="Size" />
+                <field name="datas_url" />
+                <field name="name" />
+                <field name="lang_id" />
+                <field name="write_date" />
+                <field name="is_default" />
+                <field name="public" />
             </tree>
         </field>
     </record>
@@ -70,37 +91,45 @@
         <field name="model">lighting.attachment</field>
         <field name="arch" type="xml">
             <kanban class="o_res_partner_kanban">
-                <field name="id"/>
-                <field name="datas_fname"/>
-                <field name="type_id"/>
-                <field name="image_medium"/>
+                <field name="id" />
+                <field name="datas_fname" />
+                <field name="type_id" />
+                <field name="image_medium" />
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="o_kanban_image">
                                 <t t-if="record.image_medium.raw_value">
-                                    <img t-att-src="kanban_image('lighting.attachment', 'image_medium', record.id.raw_value)"/>
+                                    <img
+                                        t-att-src="kanban_image('lighting.attachment', 'image_medium', record.id.raw_value)"
+                                    />
                                 </t>
                                 <t t-if="!record.image_medium.raw_value">
-                                    <img t-att-src='_s + "/web/static/src/img/placeholder.png"'/>
+                                    <img
+                                        t-att-src='_s + "/web/static/src/img/placeholder.png"'
+                                    />
                                 </t>
                             </div>
                             <div class="oe_kanban_details">
-                                <field name="datas_location" invisible="1"/>
+                                <field name="datas_location" invisible="1" />
                                 <strong>
-                                    <field name="datas_fname"
-                                           attrs="{'invisible': [('datas_location', '!=', 'file')]}"/>
-                                    <field name="datas_url"
-                                           attrs="{'invisible': [('datas_location', '!=', 'url')]}"/>
+                                    <field
+                                        name="datas_fname"
+                                        attrs="{'invisible': [('datas_location', '!=', 'file')]}"
+                                    />
+                                    <field
+                                        name="datas_url"
+                                        attrs="{'invisible': [('datas_location', '!=', 'url')]}"
+                                    />
                                 </strong>
                                 <div>
-                                    <field name="type_id"/>
+                                    <field name="type_id" />
                                 </div>
                                 <div>
-                                    <field name="lang_id"/>
+                                    <field name="lang_id" />
                                 </div>
                                 <div>
-                                    <field name="write_date"/>
+                                    <field name="write_date" />
                                 </div>
                             </div>
                         </div>

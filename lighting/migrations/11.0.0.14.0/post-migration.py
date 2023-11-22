@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -17,7 +18,7 @@ def migrate(env, version):
         "     lighting_product p "
         "WHERE l.source_id = s.id and "
         "      l.type_id = t.id and "
-	    "      s.product_id = p.id and "
-	    "      t.is_led and "
+        "      s.product_id = p.id and "
+        "      t.is_led and "
         "      p.color_consistency != 0"
     )

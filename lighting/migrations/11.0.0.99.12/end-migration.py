@@ -10,7 +10,4 @@ def migrate(env, version):
     if not version:
         return
 
-    openupgrade.drop_columns(
-        env.cr,
-        [('lighting_product', 'configurator_moved0')]
-    )
+    openupgrade.drop_columns(env.cr, [("lighting_product", "configurator_moved0")])

@@ -2,9 +2,9 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from openupgradelib import openupgrade
-
 import logging
+
+from openupgradelib import openupgrade
 
 _logger = logging.getLogger(__name__)
 

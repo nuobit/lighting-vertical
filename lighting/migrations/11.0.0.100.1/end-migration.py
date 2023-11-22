@@ -8,6 +8,4 @@ from openupgradelib import openupgrade
 def migrate(env, version):
     if not version:
         return
-    env.cr.execute(
-        "DROP TABLE lighting_product_source_lampenergyefficiency_rel"
-    )
+    env.cr.execute("DROP TABLE lighting_product_source_lampenergyefficiency_rel")

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -24,13 +24,21 @@
             <form string="Protection class Form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-filter"
-                                name="%(product_protectionclass_action_product)d">
-                            <field string="Products" name="product_count" widget="statinfo"/>
+                        <button
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="%(product_protectionclass_action_product)d"
+                        >
+                            <field
+                                string="Products"
+                                name="product_count"
+                                widget="statinfo"
+                            />
                         </button>
                     </div>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -42,11 +50,15 @@
         <field name="model">lighting.product.protectionclass</field>
         <field name="arch" type="xml">
             <tree string="Protection class">
-                <field name="name"/>
-                <field name="product_count"/>
-                <button name="%(product_protectionclass_action_product)d" type="action"
-                        string="Products" icon="fa-external-link"
-                        attrs="{'invisible': [('product_count', '=', 0)]}"/>
+                <field name="name" />
+                <field name="product_count" />
+                <button
+                    name="%(product_protectionclass_action_product)d"
+                    type="action"
+                    string="Products"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('product_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>
@@ -63,7 +75,11 @@
         </field>
     </record>
 
-    <menuitem id="product_protectionclasses_menu" name="Protection classes" parent="common_data_menu"
-              action="product_protectionclass_list_action"
-              sequence="1000"/>
+    <menuitem
+        id="product_protectionclasses_menu"
+        name="Protection classes"
+        parent="common_data_menu"
+        action="product_protectionclass_list_action"
+        sequence="1000"
+    />
 </odoo>

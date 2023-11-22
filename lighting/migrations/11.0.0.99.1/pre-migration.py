@@ -9,12 +9,15 @@ def migrate(env, version):
     if not version:
         return
     openupgrade.rename_fields(
-        env, [('lighting.product', 'lighting_product',
-               'odoo_id', 'odoop_id'),
-              ]
+        env,
+        [
+            ("lighting.product", "lighting_product", "odoo_id", "odoop_id"),
+        ],
     )
-    env.cr.execute("""
+    env.cr.execute(
+        """
         ALTER TABLE lighting_product
         RENAME CONSTRAINT lighting_product_odoo_id_fkey
         TO lighting_product_odoop_id_fkey
-    """)
+    """
+    )

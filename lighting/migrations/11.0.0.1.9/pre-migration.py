@@ -4,12 +4,10 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
         return
 
-    openupgrade.rename_columns(
-        env.cr,
-        {'lighting_product': [('application_id', None)]}
-    )
+    openupgrade.rename_columns(env.cr, {"lighting_product": [("application_id", None)]})

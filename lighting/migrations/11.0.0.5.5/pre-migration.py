@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -11,32 +12,66 @@ def migrate(env, version):
 
     ## rename field
     openupgrade.rename_fields(
-        env, [('lighting.product', 'lighting_product',
-               'auxiliary_equipment_model_id', 'auxiliary_equipment_brand_id'),
-        ]
+        env,
+        [
+            (
+                "lighting.product",
+                "lighting_product",
+                "auxiliary_equipment_model_id",
+                "auxiliary_equipment_brand_id",
+            ),
+        ],
     )
 
     ### rename model
     openupgrade.rename_models(
-        env.cr, [('lighting.product.auxiliaryequipmentmodel', 'lighting.product.auxiliaryequipmentbrand'),
-        ]
+        env.cr,
+        [
+            (
+                "lighting.product.auxiliaryequipmentmodel",
+                "lighting.product.auxiliaryequipmentbrand",
+            ),
+        ],
     )
 
     ### rename external ids
     openupgrade.rename_xmlids(
-        env.cr, [('lighting.product_auxiliaryequipmentmodel_elt', 'lighting.product_auxiliaryequipmentbrand_elt'),
-                 ('lighting.product_auxiliaryequipmentmodel_meanwell', 'lighting.product_auxiliaryequipmentbrand_meanwell'),
-                 ('lighting.product_auxiliaryequipmentmodel_tci', 'lighting.product_auxiliaryequipmentbrand_tci'),
-                 ('lighting.product_auxiliaryequipmentmodel_tecnotrafo', 'lighting.product_auxiliaryequipmentbrand_tecnotrafo'),
-                 ('lighting.product_auxiliaryequipmentmodel_tridonic', 'lighting.product_auxiliaryequipmentbrand_tridonic'),
-        ]
+        env.cr,
+        [
+            (
+                "lighting.product_auxiliaryequipmentmodel_elt",
+                "lighting.product_auxiliaryequipmentbrand_elt",
+            ),
+            (
+                "lighting.product_auxiliaryequipmentmodel_meanwell",
+                "lighting.product_auxiliaryequipmentbrand_meanwell",
+            ),
+            (
+                "lighting.product_auxiliaryequipmentmodel_tci",
+                "lighting.product_auxiliaryequipmentbrand_tci",
+            ),
+            (
+                "lighting.product_auxiliaryequipmentmodel_tecnotrafo",
+                "lighting.product_auxiliaryequipmentbrand_tecnotrafo",
+            ),
+            (
+                "lighting.product_auxiliaryequipmentmodel_tridonic",
+                "lighting.product_auxiliaryequipmentbrand_tridonic",
+            ),
+        ],
     )
 
     ### rename DB
     ## lighting_product_auxiliaryequipmentmodel
     # rename table and sequence
     openupgrade.rename_tables(
-        env.cr, [('lighting_product_auxiliaryequipmentmodel', 'lighting_product_auxiliaryequipmentbrand')]
+        env.cr,
+        [
+            (
+                "lighting_product_auxiliaryequipmentmodel",
+                "lighting_product_auxiliaryequipmentbrand",
+            )
+        ],
     )
 
     # rename comments

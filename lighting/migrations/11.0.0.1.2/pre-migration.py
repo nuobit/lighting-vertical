@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -11,9 +12,15 @@ def migrate(env, version):
 
     ### rename first lampholder
     openupgrade.rename_fields(
-        env, [('lighting.product.source', 'lighting_product_source',
-               'lampholder_id', 'lampholder_technical_id'),
-        ]
+        env,
+        [
+            (
+                "lighting.product.source",
+                "lighting_product_source",
+                "lampholder_id",
+                "lampholder_technical_id",
+            ),
+        ],
     )
 
     env.cr.execute(
@@ -29,14 +36,19 @@ def migrate(env, version):
 
     ### rename second lampholder
     openupgrade.rename_fields(
-        env, [('lighting.product.source', 'lighting_product_source',
-               'lampholder_marketing_id', 'lampholder_id'),
-        ]
+        env,
+        [
+            (
+                "lighting.product.source",
+                "lighting_product_source",
+                "lampholder_marketing_id",
+                "lampholder_id",
+            ),
+        ],
     )
 
     env.cr.execute(
-        "COMMENT ON COLUMN lighting_product_source.lampholder_id "
-        "IS 'Lampholder'"
+        "COMMENT ON COLUMN lighting_product_source.lampholder_id " "IS 'Lampholder'"
     )
 
     env.cr.execute(

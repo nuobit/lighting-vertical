@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -11,9 +12,15 @@ def migrate(env, version):
 
     ### rename manual description
     openupgrade.rename_fields(
-        env, [('lighting.product', 'lighting_product',
-               'description', 'description_manual'),
-        ]
+        env,
+        [
+            (
+                "lighting.product",
+                "lighting_product",
+                "description",
+                "description_manual",
+            ),
+        ],
     )
 
     env.cr.execute(

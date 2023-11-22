@@ -4,13 +4,16 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
         return
 
     # copy info from type to product
-    env['lighting.product'].search([]).filtered(lambda x: x.type_id.is_accessory).write({'is_accessory': True, 'type_id': False})
+    env["lighting.product"].search([]).filtered(lambda x: x.type_id.is_accessory).write(
+        {"is_accessory": True, "type_id": False}
+    )
 
     # delete types with accessory checked
-    env['lighting.product.type'].search([('is_accessory', '=', True)]).unlink()
+    env["lighting.product.type"].search([("is_accessory", "=", True)]).unlink()

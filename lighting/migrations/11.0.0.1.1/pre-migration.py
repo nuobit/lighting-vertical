@@ -2,6 +2,7 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
+
 def migrate(cr, version):
     if not version:
         return
@@ -10,20 +11,21 @@ def migrate(cr, version):
 
     ### rename model
     openupgrade.rename_models(
-        cr, [('lighting.product.leddriver', 'lighting.product.ledchip'),
-        ]
+        cr,
+        [
+            ("lighting.product.leddriver", "lighting.product.ledchip"),
+        ],
     )
 
     ### rename DB
     # rename table and sequence
     openupgrade.rename_tables(
-        cr, [('lighting_product_leddriver', 'lighting_product_ledchip')]
+        cr, [("lighting_product_leddriver", "lighting_product_ledchip")]
     )
 
     # rename constraints
     cr.execute(
-        "COMMENT ON TABLE lighting_product_ledchip "
-        "IS 'lighting.product.ledchip'"
+        "COMMENT ON TABLE lighting_product_ledchip " "IS 'lighting.product.ledchip'"
     )
 
     cr.execute(

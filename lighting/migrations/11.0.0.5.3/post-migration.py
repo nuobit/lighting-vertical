@@ -4,6 +4,7 @@
 
 from openupgradelib import openupgrade
 
+
 @openupgrade.migrate(use_env=True)
 def migrate(env, version):
     if not version:
@@ -11,8 +12,8 @@ def migrate(env, version):
 
     openupgrade.m2o_to_x2m(
         env.cr,
-        env['lighting.product'],
-        'lighting_product',
-        'auxiliary_equipment_ids',
-        openupgrade.get_legacy_name('auxiliary_equipment_id'),
+        env["lighting.product"],
+        "lighting_product",
+        "auxiliary_equipment_ids",
+        openupgrade.get_legacy_name("auxiliary_equipment_id"),
     )

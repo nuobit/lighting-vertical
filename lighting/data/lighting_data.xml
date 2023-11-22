@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -85,111 +85,216 @@
         </record>
 
         <!-- Photobiological risk group -->
-        <record id="product_photobiologicalriskgroup_gr0" model="lighting.product.photobiologicalriskgroup">
+        <record
+            id="product_photobiologicalriskgroup_gr0"
+            model="lighting.product.photobiologicalriskgroup"
+        >
             <field name="name">GR0</field>
         </record>
-        <record id="product_photobiologicalriskgroup_gr1" model="lighting.product.photobiologicalriskgroup">
+        <record
+            id="product_photobiologicalriskgroup_gr1"
+            model="lighting.product.photobiologicalriskgroup"
+        >
             <field name="name">GR1</field>
         </record>
-        <record id="product_photobiologicalriskgroup_gr2" model="lighting.product.photobiologicalriskgroup">
+        <record
+            id="product_photobiologicalriskgroup_gr2"
+            model="lighting.product.photobiologicalriskgroup"
+        >
             <field name="name">GR2</field>
         </record>
-        <record id="product_photobiologicalriskgroup_gr3" model="lighting.product.photobiologicalriskgroup">
+        <record
+            id="product_photobiologicalriskgroup_gr3"
+            model="lighting.product.photobiologicalriskgroup"
+        >
             <field name="name">GR3</field>
         </record>
 
         <!-- Lampholders -->
-        <record id="product_source_lampholder_2g10" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_2g10"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">2G10</field>
         </record>
-        <record id="product_source_lampholder_2g11" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_2g11"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">2G11</field>
         </record>
-        <record id="product_source_lampholder_2gx13" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_2gx13"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">2GX13</field>
         </record>
-        <record id="product_source_lampholder_e14" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_e14"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">E14</field>
         </record>
-        <record id="product_source_lampholder_e27" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_e27"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">E27</field>
         </record>
-        <record id="product_source_lampholder_e40" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_e40"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">E40</field>
         </record>
-        <record id="product_source_lampholder_g12" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g12"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G12</field>
         </record>
-        <record id="product_source_lampholder_g24-d1" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g24-d1"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G24-d1</field>
         </record>
-        <record id="product_source_lampholder_g24-d2" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g24-d2"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G24-d2</field>
         </record>
-        <record id="product_source_lampholder_g24-d3" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g24-d3"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G24-d3</field>
         </record>
-        <record id="product_source_lampholder_g24-q2" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g24-q2"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G24-q2</field>
         </record>
-        <record id="product_source_lampholder_g24-q3" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g24-q3"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G24-q3</field>
         </record>
-        <record id="product_source_lampholder_g5" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g5"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G5</field>
         </record>
-        <record id="product_source_lampholder_g53" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g53"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G53</field>
         </record>
-        <record id="product_source_lampholder_g8-5" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g8-5"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G8.5</field>
         </record>
-        <record id="product_source_lampholder_g9" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_g9"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">G9</field>
         </record>
-        <record id="product_source_lampholder_gu10" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gu10"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GU10</field>
         </record>
-        <record id="product_source_lampholder_gu4" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gu4"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GU4</field>
         </record>
-        <record id="product_source_lampholder_gu5-3" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gu5-3"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GU5.3</field>
         </record>
-        <record id="product_source_lampholder_gx12" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx12"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX12</field>
         </record>
-        <record id="product_source_lampholder_gx16d" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx16d"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX16d</field>
         </record>
-        <record id="product_source_lampholder_gx24-d3" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx24-d3"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX24-d3</field>
         </record>
-        <record id="product_source_lampholder_gx24-q2" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx24-q2"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX24-q2</field>
         </record>
-        <record id="product_source_lampholder_gx24-q4" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx24-q4"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX24-q4</field>
         </record>
-        <record id="product_source_lampholder_gx24-q5" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx24-q5"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX24-q5</field>
         </record>
-        <record id="product_source_lampholder_gx5-3" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx5-3"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX5.3</field>
         </record>
-        <record id="product_source_lampholder_gx53" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx53"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX53</field>
         </record>
-        <record id="product_source_lampholder_gx8-5" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gx8-5"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GX8.5</field>
         </record>
-        <record id="product_source_lampholder_gz10" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_gz10"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">GZ10</field>
         </record>
-        <record id="product_source_lampholder_r7s" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_r7s"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">R7s</field>
         </record>
-        <record id="product_source_lampholder_rx7s" model="lighting.product.source.lampholder">
+        <record
+            id="product_source_lampholder_rx7s"
+            model="lighting.product.source.lampholder"
+        >
             <field name="code">RX7s</field>
         </record>
 
@@ -257,43 +362,82 @@
         </record>
 
         <!-- Color temperature -->
-        <record id="product_color_temperature_1700" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_1700"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">1700</field>
         </record>
-        <record id="product_color_temperature_1850" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_1850"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">1850</field>
         </record>
-        <record id="product_color_temperature_2400" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_2400"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">2400</field>
         </record>
-        <record id="product_color_temperature_2550" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_2550"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">2550</field>
         </record>
-        <record id="product_color_temperature_2700" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_2700"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">2700</field>
         </record>
-        <record id="product_color_temperature_3000" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_3000"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">3000</field>
         </record>
-        <record id="product_color_temperature_3200" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_3200"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">3200</field>
         </record>
-        <record id="product_color_temperature_3350" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_3350"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">3350</field>
         </record>
-        <record id="product_color_temperature_5000" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_5000"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">5000</field>
         </record>
-        <record id="product_color_temperature_5500" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_5500"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">5500</field>
         </record>
-        <record id="product_color_temperature_6000" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_6000"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">6000</field>
         </record>
-        <record id="product_color_temperature_6200" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_6200"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">6200</field>
         </record>
-        <record id="product_color_temperature_6500" model="lighting.product.color.temperature">
+        <record
+            id="product_color_temperature_6500"
+            model="lighting.product.color.temperature"
+        >
             <field name="value">6500</field>
         </record>
     </data>
