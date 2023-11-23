@@ -7,18 +7,30 @@ from odoo.exceptions import UserError
 
 class LightingProductFamily(models.Model):
     _name = "lighting.product.family"
+    _description = "Product Family"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "sequence"
 
-    name = fields.Char(string="Family", required=True)
-    code = fields.Char(string="Code", required=False, size=4)
-    is_export = fields.Boolean(string="Is export")
-    description = fields.Text(string="Description", translate=True)
-    sequence = fields.Integer(
-        required=True, default=1, help="The sequence field is used to define order"
+    name = fields.Char(
+        string="Family",
+        required=True,
     )
-
+    # TODO: restrict len(code)=4
+    code = fields.Char(
+        required=False,
+    )
+    is_export = fields.Boolean()
+    description = fields.Text(
+        translate=True,
+    )
+    sequence = fields.Integer(
+        required=True,
+        default=1,
+        help="The sequence field is used to define order",
+    )
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -47,24 +59,22 @@ class LightingProductFamily(models.Model):
         inverse_name="family_id",
         string="Attachments",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
     attachment_count = fields.Integer(
-        compute="_compute_attachment_count", string="Attachment(s)"
+        string="Attachment(s)",
+        compute="_compute_attachment_count",
     )
 
     @api.depends("attachment_ids")
     def _compute_attachment_count(self):
-        for record in self:
-            record.attachment_count = self.env[
-                "lighting.product.family.attachment"
-            ].search_count([("family_id", "=", record.id)])
+        for rec in self:
+            rec.attachment_count = len(rec.attachment_ids)
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "The family must be unique!"),
     ]
 
-    @api.multi
     def unlink(self):
         records = self.env["lighting.product"].search([("family_ids", "in", self.ids)])
         if records:

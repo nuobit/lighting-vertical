@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action photobiologicalriskgroup2product smart button -->
@@ -10,7 +9,6 @@
     >
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('photobiological_risk_group_id','=',active_id)]</field>
         <field name="context">{'photobiological_risk_group_id': active_id}</field>
@@ -47,12 +45,11 @@
             </form>
         </field>
     </record>
-
     <record id="product_photobiologicalriskgroup_tree_view" model="ir.ui.view">
         <field name="name">product.photobiologicalriskgroup.tree</field>
         <field name="model">lighting.product.photobiologicalriskgroup</field>
         <field name="arch" type="xml">
-            <tree string="Product photobiological risk group Tree">
+            <tree>
                 <field name="name" />
                 <field name="product_count" />
                 <button
@@ -73,7 +70,6 @@
     >
         <field name="name">Product photobiological risk group</field>
         <field name="res_model">lighting.product.photobiologicalriskgroup</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p
@@ -81,12 +77,4 @@
             >Create the first Photobiological risk group</p>
         </field>
     </record>
-
-    <menuitem
-        id="product_photobiologicalriskgrous_menu"
-        name="Photobiological risk groups"
-        parent="common_data_menu"
-        action="product_photobiologicalriskgroup_list_action"
-        sequence="1000"
-    />
 </odoo>

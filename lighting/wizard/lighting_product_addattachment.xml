@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="lighting_product_addattachment_view" model="ir.ui.view">
@@ -73,16 +72,13 @@
             </form>
         </field>
     </record>
+<!--    TODO: Nobody calls this action-->
+    <record id="action_add_attachment" model="ir.actions.act_window">
+        <field name="name">Add Attachment</field>
+        <field name="res_model">lighting.product.addattachment</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="lighting.lighting_product_addattachment_view" />
+        <field name="target">new</field>
+    </record>
 
-    <act_window
-        id="add_attachment_action"
-        multi="True"
-        key2="client_action_multi"
-        name="Add attachment"
-        res_model="lighting.product.addattachment"
-        src_model="lighting.product"
-        view_mode="form"
-        target="new"
-        view_type="form"
-    />
 </odoo>

@@ -1,62 +1,74 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
 class LightingProductVoltage(models.Model):
     _name = "lighting.product.voltage"
+    _description = "Product Voltage"
     _order = "name"
 
-    name = fields.Char(compute="_compute_name", string="Voltage", required=True)
+    name = fields.Char(
+        compute="_compute_name",
+        string="Voltage",
+        required=True,
+    )
 
     @api.depends("voltage1", "voltage2", "voltage2_check", "current_type")
     def _compute_name(self):
-        for record in self:
+        for rec in self:
             voltage_l = []
-            if record.voltage1 != 0:
-                voltage_l.append("%g" % record.voltage1)
-
-            if record.voltage2_check and record.voltage2 != 0:
-                voltage_l.append("-%g" % record.voltage2)
-
+            if rec.voltage1 != 0:
+                voltage_l.append("%g" % rec.voltage1)
+            if rec.voltage2_check and rec.voltage2 != 0:
+                voltage_l.append("-%g" % rec.voltage2)
             if voltage_l:
                 voltage_l.append("V")
-
-            if record.current_type:
-                voltage_l.append(" %s" % record.current_type)
-
+            if rec.current_type:
+                voltage_l.append(" %s" % rec.current_type)
             if voltage_l:
-                record.name = "".join(voltage_l)
+                rec.name = "".join(voltage_l)
 
-    voltage1 = fields.Float(string="Voltage 1 (V)", required=True)
-    voltage2_check = fields.Boolean(string="Voltage 2 check")
-    voltage2 = fields.Float(string="Voltage 2 (V)", required=False, default=None)
+    voltage1 = fields.Float(
+        string="Voltage 1 (V)",
+        required=True,
+    )
+    voltage2_check = fields.Boolean(
+        string="Voltage 2 check",
+    )
+    voltage2 = fields.Float(
+        string="Voltage 2 (V)",
+        default=None,
+        compute="_compute_voltage2",
+        store=True,
+        readonly=False,
+    )
 
-    @api.onchange("voltage2_check")
-    def _onchange_voltage2_check(self):
-        if not self.voltage2_check:
-            self.voltage2 = False
+    @api.depends("voltage2_check")
+    def _compute_voltage2(self):
+        for rec in self:
+            if not rec.voltage2_check:
+                rec.voltage2 = False
 
     @api.constrains("voltage1", "voltage2", "voltage2_check")
     def _check_voltages(self):
-        self.ensure_one()
-        if self.voltage1 == 0:
-            raise ValidationError("Voltage 1 cannot be 0")
-
-        if self.voltage2_check and self.voltage2 == 0:
-            raise ValidationError("Voltage 2 cannot be 0")
+        for rec in self:
+            if rec.voltage1 == 0:
+                raise ValidationError(_("Voltage 1 cannot be 0"))
+            if rec.voltage2_check and rec.voltage2 == 0:
+                raise ValidationError(_("Voltage 2 cannot be 0"))
 
     current_type = fields.Selection(
         selection=[("AC", "Alternating"), ("DC", "Direct")],
         string="Current type",
         required=True,
     )
-
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):

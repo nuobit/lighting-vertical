@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action color_temperature2product smart button -->
     <record id="product_color_temperature_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field
             name="domain"
@@ -50,7 +48,7 @@
         <field name="name">product.color.temperature.tree</field>
         <field name="model">lighting.product.color.temperature</field>
         <field name="arch" type="xml">
-            <tree string="Color temperature Tree">
+            <tree>
                 <field name="value" />
                 <field name="product_count" />
                 <button
@@ -68,19 +66,10 @@
     <record id="product_color_temperature_list_action" model="ir.actions.act_window">
         <field name="name">Product color temperature</field>
         <field name="res_model">lighting.product.color.temperature</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first color temperature
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="product_color_temperatures_menu"
-        name="Color temperatures"
-        parent="common_data_menu"
-        action="product_color_temperature_list_action"
-        sequence="65"
-    />
 </odoo>

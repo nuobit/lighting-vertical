@@ -1,7 +1,12 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
-
+# TODO :Deleted from security:
+#  access_product_product_price_history_guest,product.product
+#  guest,product.model_product_price_history,lighting.group_lighting_guest,1,0,0,0
+#  access_product_product_price_history_user,product.product
+#  user,product.model_product_price_history,lighting.group_lighting_user,1,1,1,1
+# It's ok?
 import logging
 import re
 from collections import OrderedDict
@@ -30,21 +35,24 @@ STATES_MARKETING = [
 ES_MAP = {"ES": "D", "ESH": "H"}
 D_MAP = {v: k for k, v in ES_MAP.items()}
 C_STATES = {"O", "N", "C", False}
-STATE_NAME_MAP = lambda x: {
-    False: "",
-    **dict(
-        x.fields_get("state_marketing", "selection")["state_marketing"]["selection"]
-    ),
-}
+
+
+def _get_state_name_map(x):
+    return {
+        False: "",
+        **dict(
+            x.fields_get("state_marketing", "selection")["state_marketing"]["selection"]
+        ),
+    }
 
 
 class LightingProduct(models.Model):
     _name = "lighting.product"
+    _description = "Product"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _inherits = {"product.product": "odoop_id"}
     _rec_name = "reference"
     _order = "sequence,reference"
-    _description = "Product"
 
     # binding fields
     odoop_id = fields.Many2one(
@@ -54,17 +62,29 @@ class LightingProduct(models.Model):
         ondelete="cascade",
     )
 
+    # TODO: This reference can be a product.default_code?
     # Common data
     reference = fields.Char(
-        string="Reference", required=True, track_visibility="onchange"
+        required=True,
+        tracking=True,
     )
 
     # image: all image fields are base64 encoded and PIL-supported
-    image_small = fields.Binary(
-        "Small-sized image", attachment=True, compute="_compute_images", store=True
+    image_small = fields.Image(
+        string="Small-sized image",
+        attachment=True,
+        max_width=128,
+        max_height=128,
+        store=True,
+        compute="_compute_images",
     )
-    image_medium = fields.Binary(
-        "Medium-sized image", attachment=True, compute="_compute_images", store=True
+    image_medium = fields.Image(
+        string="Medium-sized image",
+        attachment=True,
+        max_width=512,
+        max_height=512,
+        store=True,
+        compute="_compute_images",
     )
 
     @api.depends(
@@ -79,20 +99,25 @@ class LightingProduct(models.Model):
     )
     def _compute_images(self):
         for rec in self:
-            resized_images = rec.attachment_ids.get_main_resized_image()
-            if resized_images:
-                rec.image_medium = resized_images["image_medium"]
-                rec.image_small = resized_images["image_small"]
+            if rec.attachment_ids:
+                resized_image = rec.attachment_ids.get_main_resized_image()
+                if resized_image:
+                    rec.image_medium = resized_image["image_medium"]
+                    rec.image_small = resized_image["image_small"]
+                else:
+                    rec.image_medium = False
+                    rec.image_small = False
+            else:
+                rec.image_medium = False
+                rec.image_small = False
 
-    description_updated = fields.Boolean(default=False)
     description = fields.Char(
         compute="_compute_description",
-        string="Description",
         readonly=True,
         help="Description dynamically generated from product data",
         translate=True,
         store=True,
-        track_visibility="onchange",
+        tracking=True,
     )
 
     @api.depends(
@@ -145,81 +170,26 @@ class LightingProduct(models.Model):
     )
     def _compute_description(self):
         for rec in self:
-            rec.description_updated = True
-            rec.description = rec._generate_description()
+            for lang in self.env["res.lang"].search([]):
+                # rec.with_context(lang_aux=lang.code)
+                rec.with_context(lang=lang.code).description = rec.with_context(
+                    lang=lang.code
+                )._generate_description()
 
-    @api.multi
-    def _update_computed_descriptions(self, exclude_lang=[]):
-        exclude_lang = list(map(lambda x: x or "en_US", exclude_lang))
-        for rec in self:
-            self.env.cr.execute(
-                "select description from lighting_product where id=%s", (rec.id,)
-            )
-            en_trl = self.env.cr.fetchone()[0]
-            if "en_US" not in exclude_lang:
-                en_trl1 = rec.with_context(lang=None)._generate_description()
-                if en_trl1 != en_trl:
-                    en_trl = en_trl1
-                    self.env.cr.execute(
-                        "update lighting_product set description=%s where id=%s",
-                        (
-                            en_trl,
-                            rec.id,
-                        ),
-                    )
-            for lang in self.env["res.lang"].search(
-                [("code", "not in", exclude_lang + ["en_US"])]
-            ):
-                non_en_trl = rec.with_context(lang=lang.code)._generate_description()
-                values = {
-                    "state": "translated",
-                    "value": non_en_trl,
-                }
-                trl = self.env["ir.translation"].search(
-                    [
-                        ("name", "=", "lighting.product,description"),
-                        ("lang", "=", lang.code),
-                        ("res_id", "=", rec.id),
-                    ]
-                )
-                if not trl:
-                    values.update(
-                        {
-                            "name": "lighting.product,description",
-                            "type": "model",
-                            "lang": lang.code,
-                            "res_id": rec.id,
-                            "src": en_trl,
-                        }
-                    )
-                    self.env["ir.translation"].create(values)
-                else:
-                    if (
-                        trl.state != "translated"
-                        or trl.src != en_trl
-                        or trl.value != non_en_trl
-                    ):
-                        if "en_US" not in exclude_lang:
-                            values.update(
-                                {
-                                    "src": en_trl,
-                                }
-                            )
-                        trl.with_context(lang=None).write(values)
-
-    def _generate_description(self, show_variant_data=True):
+    def _update_category(self, data):
         self.ensure_one()
-        _logger.info(
-            _("Generating %s description for %s")
-            % (self.env.lang or "en_US", self.reference)
-        )
-        data = []
         if self.category_id:
             data.append(self.category_id.description_text or self.category_id.name)
+        return data
 
+    def _update_inclination_angle_max(self, data):
+        self.ensure_one()
         if self.inclination_angle_max:
             data.append("tilt")
+        return data
 
+    def _update_family(self, data):
+        self.ensure_one()
         if self.family_ids:
             data.append(
                 ",".join(
@@ -231,9 +201,16 @@ class LightingProduct(models.Model):
                     )
                 )
             )
+        return data
+
+    def _update_model(self, data):
+        self.ensure_one()
         if self.model_id:
             data.append(self.model_id.name)
+        return data
 
+    def _update_sealing(self, data):
+        self.ensure_one()
         if self.sealing_id:
             sealing_id = self.sealing_id
             for catalog in self.catalog_ids:
@@ -253,71 +230,173 @@ class LightingProduct(models.Model):
                             )
                             if safe_eval(expr):
                                 break
-                        except ValueError:
-                            raise UserError(_("Incorrect format expression: %s") % expr)
+                        except ValueError as e:
+                            raise UserError(
+                                _("Incorrect format expression: %s") % expr,
+                            ) from e
             else:
                 sealing_id = None
             if sealing_id:
                 data.append(sealing_id.name)
+        return data
 
+    def _update_dimmable(self, data):
+        self.ensure_one()
         if self.dimmable_ids:
             data.append(
                 ",".join(self.dimmable_ids.sorted(lambda x: x.name).mapped("name"))
             )
+        return data
 
+    def _update_beams(self, data):
+        self.ensure_one()
+        if self.beam_ids:
+            beam_angle_display = self.beam_ids.get_beam_angle_display()
+            if beam_angle_display:
+                data.append(beam_angle_display)
+        return data
+
+    def _update_sensors(self, data):
+        self.ensure_one()
+        if self.sensor_ids:
+            data.append(
+                ",".join(self.sensor_ids.sorted(lambda x: x.name).mapped("name"))
+            )
+        return data
+
+    def _update_charger_connector_type(self, data):
+        self.ensure_one()
+        if self.charger_connector_type_id:
+            data.append(self.charger_connector_type_id.name)
+        return data
+
+    def _update_effective_description_dimensions(self, data):
+        self.ensure_one()
+        if self.category_id:
+            if self.category_id.effective_description_dimension_ids:
+                if self.dimension_ids:
+                    dimensions = self.dimension_ids.filtered(
+                        lambda x: x.type_id
+                        in self.category_id.effective_description_dimension_ids
+                    )
+                    if dimensions:
+                        data.append(dimensions.get_value_display(spaces=False))
+        return data
+
+    def _update_diffusor_material(self, data):
+        self.ensure_one()
+        if self.family_ids:
+            if set(self.family_ids.mapped("code")) & {"984", "GLOB", "129", "393"}:
+                diameter_dimension = self.dimension_ids.filtered(
+                    lambda x: x.type_id.code == "DIAMETERMM"
+                )
+                if diameter_dimension:
+                    data.append(
+                        "\u2300%s" % diameter_dimension.get_value_display(spaces=False)
+                    )
+            if set(self.family_ids.mapped("code")) & {"984", "264", "096"}:
+                glass_diffuser_material = self.diffusor_material_ids.filtered(
+                    lambda x: x.is_glass
+                )
+                if glass_diffuser_material:
+                    data.append(",".join(glass_diffuser_material.mapped("name")))
+        return data
+
+    def _update_multiple_beams(self, data):
+        self.ensure_one()
+        if self.beam_count == 2:
+            data.append("up-down")
+        return data
+
+    def _update_finish(self, data, show_variant_data):
+        self.ensure_one()
+        if show_variant_data and self.finish_id:
+            data.append(self.finish_id.name)
+        return data
+
+    def _update_finish2(self, data):
+        self.ensure_one()
+        if self.finish2_id:
+            data.append(self.finish2_id.name)
+        return data
+
+    def _get_line_data(self, data_lines, line, ignore_nulls=False):
+        data_line = []
+        data_line.append(line.type_id.description_text or line.type_id.code)
+
+        wattage_total_display = line.prepare_wattage_str(
+            mult=line.source_id.num or 1, is_max_wattage=False
+        )
+        if wattage_total_display:
+            data_line.append(wattage_total_display)
+
+        if line.color_temperature_flux_ids:
+            luminous_flux_display = line.with_context(
+                ignore_nulls=ignore_nulls
+            ).luminous_flux_display
+            if luminous_flux_display:
+                data_line.append(luminous_flux_display)
+
+        if line.cri_min:
+            data_line.append("CRI%i" % line.cri_min)
+
+        if line.color_temperature_flux_ids:
+            color_temperature_display = line.with_context(
+                ignore_nulls=ignore_nulls
+            ).color_temperature_display
+            if color_temperature_display:
+                data_line.append(color_temperature_display)
+
+        if not line.color_temperature_flux_ids:
+            if line.is_led and line.special_spectrum_id:
+                data_line.append(line.special_spectrum_id.name)
+
+        if data_line:
+            data_lines.append(" ".join(data_line))
+        return data_lines
+
+    # TODO:REVIEW:Test for this function
+    def _generate_description(self, show_variant_data=True):  # noqa: C901
+        self.ensure_one()
+        _logger.info(
+            _("Generating %(lang)s description for %(reference)s")
+            % {
+                "lang": self.env.context.get("lang") or "en_US",
+                "reference": self.reference,
+            }
+        )
+        data = []
+        # data = [
+        #     self._update_beams,
+        # ]
+        # data.append(self._update_beams)
+        data = self._update_category(data)
+        data = self._update_inclination_angle_max(data)
+        data = self._update_family(data)
+        data = self._update_model(data)
+        data = self._update_sealing(data)
+        data = self._update_dimmable(data)
+
+        # data = list(map(x(), data))
         data_sources = []
         for source in self.source_ids.sorted(lambda x: x.sequence):
             data_source = []
             if source.lampholder_id:
                 data_source.append(source.lampholder_id.code)
-
-            type_d = OrderedDict()
+            type_d = {}
             for line in source.line_ids.sorted(
                 lambda x: (x.type_id.is_integrated, x.sequence)
             ):
                 is_integrated = line.type_id.is_integrated
-                if is_integrated not in type_d:
-                    type_d[is_integrated] = []
-                type_d[is_integrated].append(line)
+                type_d.setdefault(is_integrated, []).append(line)
 
             data_lines = []
             for is_integrated, lines in type_d.items():
                 if is_integrated:
                     for line in lines:
-                        data_line = []
-                        data_line.append(
-                            line.type_id.description_text or line.type_id.code
+                        data_lines = self._get_line_data(
+                            data_lines, line, ignore_nulls=True
                         )
-
-                        wattage_total_display = line.prepare_wattage_str(
-                            mult=line.source_id.num or 1, is_max_wattage=False
-                        )
-                        if wattage_total_display:
-                            data_line.append(wattage_total_display)
-
-                        if line.color_temperature_flux_ids:
-                            luminous_flux_display = line.with_context(
-                                ignore_nulls=True
-                            ).luminous_flux_display
-                            if luminous_flux_display:
-                                data_line.append(luminous_flux_display)
-
-                        if line.cri_min:
-                            data_line.append("CRI%i" % line.cri_min)
-
-                        if line.color_temperature_flux_ids:
-                            color_temperature_display = line.with_context(
-                                ignore_nulls=True
-                            ).color_temperature_display
-                            if color_temperature_display:
-                                data_line.append(color_temperature_display)
-
-                        if not line.color_temperature_flux_ids:
-                            if line.is_led and line.special_spectrum_id:
-                                data_line.append(line.special_spectrum_id.name)
-
-                        if data_line:
-                            data_lines.append(" ".join(data_line))
                 else:
                     lamp_d = OrderedDict()
                     for line in lines:
@@ -330,34 +409,7 @@ class LightingProduct(models.Model):
                     for is_lamp_included, llines in lamp_d.items():
                         if is_lamp_included:
                             for line in llines:
-                                data_line = []
-                                data_line.append(
-                                    line.type_id.description_text or line.type_id.code
-                                )
-
-                                wattage_total_display = line.prepare_wattage_str(
-                                    mult=line.source_id.num or 1, is_max_wattage=False
-                                )
-                                if wattage_total_display:
-                                    data_line.append(wattage_total_display)
-
-                                if line.color_temperature_flux_ids:
-                                    if line.luminous_flux_display:
-                                        data_line.append(line.luminous_flux_display)
-
-                                if line.cri_min:
-                                    data_line.append("CRI%i" % line.cri_min)
-
-                                if line.color_temperature_flux_ids:
-                                    if line.color_temperature_display:
-                                        data_line.append(line.color_temperature_display)
-
-                                if not line.color_temperature_flux_ids:
-                                    if line.is_led and line.special_spectrum_id:
-                                        data_line.append(line.special_spectrum_id.name)
-
-                                if data_line:
-                                    data_lines.append(" ".join(data_line))
+                                self._get_line_data(data_lines, line)
                         else:
                             wattage_d = {}
                             for line in llines:
@@ -379,62 +431,19 @@ class LightingProduct(models.Model):
 
             if data_lines:
                 data_source.append(",".join(data_lines))
-
             if data_source:
                 data_sources.append(" ".join(data_source))
-
         if data_sources:
             data.append("+".join(data_sources))
 
-        if self.beam_ids:
-            beam_angle_display = self.beam_ids.get_beam_angle_display()
-            if beam_angle_display:
-                data.append(beam_angle_display)
-
-        if self.sensor_ids:
-            data.append(
-                ",".join(self.sensor_ids.sorted(lambda x: x.name).mapped("name"))
-            )
-
-        if self.charger_connector_type_id:
-            data.append(self.charger_connector_type_id.name)
-
-        if self.category_id:
-            if self.category_id.effective_description_dimension_ids:
-                if self.dimension_ids:
-                    dimensions = self.dimension_ids.filtered(
-                        lambda x: x.type_id
-                        in self.category_id.effective_description_dimension_ids
-                    )
-                    if dimensions:
-                        data.append(dimensions.get_value_display(spaces=False))
-
-        if self.family_ids:
-            if set(self.family_ids.mapped("code")) & {"984", "GLOB", "129", "393"}:
-                diameter_dimension = self.dimension_ids.filtered(
-                    lambda x: x.type_id.code == "DIAMETERMM"
-                )
-                if diameter_dimension:
-                    data.append(
-                        "\u2300%s" % diameter_dimension.get_value_display(spaces=False)
-                    )
-
-        if self.family_ids:
-            if set(self.family_ids.mapped("code")) & {"984", "264", "096"}:
-                glass_diffuser_material = self.diffusor_material_ids.filtered(
-                    lambda x: x.is_glass
-                )
-                if glass_diffuser_material:
-                    data.append(",".join(glass_diffuser_material.mapped("name")))
-
-        if self.beam_count == 2:
-            data.append("up-down")
-
-        if show_variant_data and self.finish_id:
-            data.append(self.finish_id.name)
-
-        if self.finish2_id:
-            data.append(self.finish2_id.name)
+        data = self._update_beams(data)
+        data = self._update_sensors(data)
+        data = self._update_charger_connector_type(data)
+        data = self._update_effective_description_dimensions(data)
+        data = self._update_diffusor_material(data)
+        data = self._update_multiple_beams(data)
+        data = self._update_finish(data, show_variant_data)
+        data = self._update_finish2(data)
 
         if data:
             return " ".join(data)
@@ -445,43 +454,40 @@ class LightingProduct(models.Model):
         string="Description (manual)",
         help="Manual description",
         translate=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     ean = fields.Char(
-        string="EAN", required=False, readonly=True, track_visibility="onchange"
+        string="EAN",
+        required=False,
+        readonly=True,
+        tracking=True,
     )
-
     product_group_id = fields.Many2one(
         comodel_name="lighting.product.group",
         string="Group",
         ondelete="restrict",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     family_ids = fields.Many2many(
         comodel_name="lighting.product.family",
         relation="lighting_product_family_rel",
         string="Families",
         required=False,
-        track_visibility="onchange",
+        tracking=True,
     )
     catalog_ids = fields.Many2many(
         comodel_name="lighting.catalog",
         relation="lighting_product_catalog_rel",
         string="Catalogs",
         required=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     category_id = fields.Many2one(
         comodel_name="lighting.product.category",
-        string="Category",
         required=False,
         ondelete="restrict",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     category_completename = fields.Char(
         string="Category (complete name)",
         compute="_compute_category_complete_name",
@@ -511,11 +517,9 @@ class LightingProduct(models.Model):
                 rec.category_id = False
 
     model_id = fields.Many2one(
-        string="Model",
         comodel_name="lighting.product.model",
     )
     is_accessory = fields.Boolean(
-        string="Is accessory",
         compute="_compute_is_accessory",
         search="_search_is_accessory",
         readonly=True,
@@ -526,6 +530,8 @@ class LightingProduct(models.Model):
         for rec in self:
             if rec.category_id:
                 rec.is_accessory = rec.category_id._get_is_accessory()
+            else:
+                rec.is_accessory = False
 
     def _search_is_accessory(self, operator, value):
         ids = []
@@ -542,23 +548,33 @@ class LightingProduct(models.Model):
                 if is_accessory != value:
                     ids.append(prod.id)
             else:
-                raise ValidationError("Operator '%s' not supported" % operator)
+                raise ValidationError(_("Operator '%s' not supported") % operator)
         return [("id", "in", ids)]
 
-    is_composite = fields.Boolean(string="Is composite", default=False)
+    is_composite = fields.Boolean(
+        default=False,
+    )
 
-    @api.onchange("is_composite")
-    def _onchange_is_composite(self):
-        if not self.is_composite and self.required_ids:
-            self.is_composite = True
-            return {
-                "warning": {
-                    "title": "Warning",
-                    "message": _(
-                        "You cannot change this while the product has necessary accessories assigned"
-                    ),
-                },
-            }
+    # TODO: REVIEW THIS CONSTRAIN INSTEAD OF ONCHANGE
+    @api.constrains("is_composite", "required_ids")
+    def _check_is_composite_required_ids(self):
+        for rec in self:
+            if not rec.is_composite and rec.required_ids:
+                raise ValidationError(_("It's not possible "))
+
+    # @api.onchange("is_composite")
+    # def _onchange_is_composite(self):
+    #     if not self.is_composite and self.required_ids:
+    #         self.is_composite = True
+    #         return {
+    #             "warning": {
+    #                 "title": "Warning",
+    #                 "message": _(
+    #                     "You cannot change this while the product "
+    #                     "has necessary accessories assigned"
+    #                 ),
+    #             },
+    #         }
 
     parents_brand_ids = fields.Many2many(
         comodel_name="lighting.catalog",
@@ -582,18 +598,23 @@ class LightingProduct(models.Model):
             if parents:
                 brand_ids = list(set(parents.mapped("catalog_ids.id")))
                 rec.parents_brand_ids = [(6, False, brand_ids)]
+            else:
+                rec.parents_brand_ids = False
 
-    last_update = fields.Date(string="Last modified on", track_visibility="onchange")
-
-    configurator = fields.Boolean(
-        string="Configurator", required=True, default=False, track_visibility="onchange"
+    last_update = fields.Date(
+        string="Last modified on",
+        tracking=True,
     )
-
+    configurator = fields.Boolean(
+        required=True,
+        default=False,
+        tracking=True,
+    )
     sequence = fields.Integer(
         required=True,
         default=1,
         help="The sequence field is used to define order",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     _sql_constraints = [
@@ -607,31 +628,28 @@ class LightingProduct(models.Model):
         relation="lighting_product_location_rel",
         string="Locations",
         required=False,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     installation_ids = fields.Many2many(
         comodel_name="lighting.product.installation",
         relation="lighting_product_installation_rel",
         string="Installations",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     application_ids = fields.Many2many(
         comodel_name="lighting.product.application",
         relation="lighting_product_application_rel",
         string="Applications",
-        track_visibility="onchange",
+        tracking=True,
     )
     finish_id = fields.Many2one(
         comodel_name="lighting.product.finish",
         ondelete="restrict",
-        string="Finish",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     finish_prefix = fields.Char(
-        string="Finish prefix", compute="_compute_finish_prefix"
+        compute="_compute_finish_prefix",
     )
 
     def _compute_finish_prefix(self):
@@ -646,160 +664,168 @@ class LightingProduct(models.Model):
                         ("id", "!=", rec.id),
                     ]
                 )
-                for p in product_siblings:
+                if product_siblings:
                     rec.finish_prefix = prefix
                     has_sibling = True
-                    break
-
-            if not has_sibling:
-                rec.finish_prefix = rec.reference
+            rec.finish_prefix = rec.reference if not has_sibling else False
 
     finish2_id = fields.Many2one(
         comodel_name="lighting.product.finish",
         ondelete="restrict",
         string="Finish 2",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     ral_id = fields.Many2one(
         comodel_name="lighting.product.ral",
         ondelete="restrict",
         string="RAL",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     body_material_ids = fields.Many2many(
         comodel_name="lighting.product.material",
         relation="lighting_product_body_material_rel",
-        string="Body material",
-        track_visibility="onchange",
+        tracking=True,
     )
     lampshade_material_ids = fields.Many2many(
         comodel_name="lighting.product.material",
         relation="lighting_product_lampshade_material_rel",
-        string="Lampshade material",
-        track_visibility="onchange",
+        tracking=True,
     )
+    # TODO: Migration Script. Diffusor is a typo. migrate to diffuser
     diffusor_material_ids = fields.Many2many(
         comodel_name="lighting.product.material",
         relation="lighting_product_diffusor_material_rel",
         string="Diffuser material",
-        track_visibility="onchange",
+        tracking=True,
     )
     frame_material_ids = fields.Many2many(
         comodel_name="lighting.product.material",
         relation="lighting_product_frame_material_rel",
-        string="Frame material",
-        track_visibility="onchange",
+        tracking=True,
     )
     reflector_material_ids = fields.Many2many(
         comodel_name="lighting.product.material",
         relation="lighting_product_reflector_material_rel",
-        string="Reflector material",
-        track_visibility="onchange",
+        tracking=True,
     )
     blade_material_ids = fields.Many2many(
         comodel_name="lighting.product.material",
         relation="lighting_product_blade_material_rel",
-        string="Blade material",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     sealing_id = fields.Many2one(
         comodel_name="lighting.product.sealing",
         ondelete="restrict",
-        string="Sealing",
-        track_visibility="onchange",
+        tracking=True,
     )
     sealing2_id = fields.Many2one(
         comodel_name="lighting.product.sealing",
         ondelete="restrict",
         string="Sealing 2",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     ik = fields.Selection(
         selection=[("%02d" % x, "%02d" % x) for x in range(11)],
         string="IK",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     static_pressure = fields.Float(
-        string="Static pressure (kg)", track_visibility="onchange"
+        string="Static pressure (kg)",
+        tracking=True,
     )
     dynamic_pressure = fields.Float(
-        string="Dynamic pressure (kg)", track_visibility="onchange"
+        string="Dynamic pressure (kg)",
+        tracking=True,
     )
     dynamic_pressure_velocity = fields.Float(
-        string="Dynamic pressure (km/h)", track_visibility="onchange"
+        string="Dynamic pressure (km/h)",
+        tracking=True,
     )
     corrosion_resistance = fields.Selection(
-        selection=YESNO, string="Corrosion resistance", track_visibility="onchange"
+        selection=YESNO,
+        string="Corrosion resistance",
+        tracking=True,
     )
     technical_comments = fields.Char(
-        string="Technical comments", track_visibility="onchange"
+        tracking=True,
     )
 
     # electrical characteristics tab
     protection_class_id = fields.Many2one(
         comodel_name="lighting.product.protectionclass",
         ondelete="restrict",
-        string="Protection class",
-        track_visibility="onchange",
+        tracking=True,
     )
     frequency_id = fields.Many2one(
         comodel_name="lighting.product.frequency",
         ondelete="restrict",
         string="Frequency (Hz)",
-        track_visibility="onchange",
+        tracking=True,
     )
     dimmable_ids = fields.Many2many(
         comodel_name="lighting.product.dimmable",
         relation="lighting_product_dimmable_rel",
         string="Dimmables",
-        track_visibility="onchange",
+        tracking=True,
     )
     auxiliary_equipment_ids = fields.Many2many(
         comodel_name="lighting.product.auxiliaryequipment",
         relation="lighting_product_auxiliary_equipment_rel",
         string="Auxiliary gear",
-        track_visibility="onchange",
+        tracking=True,
     )
     auxiliary_equipment_model_ids = fields.One2many(
         comodel_name="lighting.product.auxiliaryequipmentmodel",
         inverse_name="product_id",
         string="Auxiliary gear code",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
     auxiliary_equipment_model_alt = fields.Char(
-        string="Alternative auxiliary gear code", track_visibility="onchange"
+        string="Alternative auxiliary gear code",
+        tracking=True,
     )
     input_voltage_id = fields.Many2one(
         comodel_name="lighting.product.voltage",
         ondelete="restrict",
-        string="Input voltage",
-        track_visibility="onchange",
+        tracking=True,
     )
     input_current = fields.Integer(
-        string="Input current (mA)", track_visibility="onchange"
+        string="Input current (mA)",
+        tracking=True,
     )
     output_voltage_id = fields.Many2one(
         comodel_name="lighting.product.voltage",
         ondelete="restrict",
-        string="Output voltage",
-        track_visibility="onchange",
+        tracking=True,
     )
     output_current = fields.Integer(
-        string="Output current (mA)", track_visibility="onchange"
+        string="Output current (mA)",
+        tracking=True,
     )
 
-    # this should be replaces by only total_wattage computed with readonly=False
-    # when migrating to version >=13.0
-    total_wattage_sources = fields.Float(
-        compute="_compute_total_wattage_sources",
+    total_wattage = fields.Float(
+        string="Total wattage (W)",
+        help="Total power consumed by the luminaire",
+        tracking=True,
+        compute="_compute_total_wattage",
+        readonly=False,
         store=True,
     )
+    # TODO: mirar de fer una constrain per a que no es pugui escriure aquest camp si
+    #  el total_wattage_auto es True. Podriem fer una constrain simple??
+    #  saltaria al modificar el valor pel compute??
+
+    # TODO: this should be replaces by only total_wattage computed with readonly=False
+    #   when migrating to version >=13.0
+    # TODO: delete this field in migration script
+    # total_wattage_sources = fields.Float(
+    #     compute="_compute_total_wattage_sources",
+    #     store=True,
+    # )
 
     @api.depends(
         "total_wattage_auto",
@@ -808,69 +834,69 @@ class LightingProduct(models.Model):
         "source_ids.line_ids.type_id.is_integrated",
         "source_ids.line_ids.is_lamp_included",
     )
-    def _compute_total_wattage_sources(self):
+    def _compute_total_wattage(self):
         for rec in self:
-            total_wattage = 0
-            line_l = rec.source_ids.mapped("line_ids").filtered(
-                lambda x: x.is_integrated or x.is_lamp_included
-            )
-            for line in line_l:
-                if line.wattage <= 0:
-                    raise ValidationError(
-                        "%s: The source line %s has invalid wattage"
-                        % (rec.display_name, line.type_id.display_name)
-                    )
-                total_wattage += line.source_id.num * line.wattage
-            rec.total_wattage_sources = total_wattage
+            if rec.total_wattage_auto:
+                total_wattage = 0
+                line_l = rec.source_ids.mapped("line_ids").filtered(
+                    lambda x: x.is_integrated or x.is_lamp_included
+                )
+                for line in line_l:
+                    if line.wattage <= 0:
+                        raise ValidationError(
+                            _("%(name)s: The source line %(type)s has invalid wattage")
+                            % {
+                                "name": rec.display_name,
+                                "type": line.type_id.display_name,
+                            }
+                        )
+                    total_wattage += line.source_id.num * line.wattage
+                rec.total_wattage = total_wattage
 
-    total_wattage = fields.Float(
-        string="Total wattage (W)",
-        help="Total power consumed by the luminaire",
-        track_visibility="onchange",
-    )
-
+    # TODO: delete this field in migration script
+    # total_wattage = fields.Float(
+    #     string="Total wattage (W)",
+    #     help="Total power consumed by the luminaire",
+    #     tracking=True,
+    # )
     total_wattage_auto = fields.Boolean(
         string="Autocalculate",
         help="Autocalculate total wattage",
         default=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     power_factor_min = fields.Float(
-        string="Minimum power factor", track_visibility="onchange"
+        string="Minimum power factor",
+        tracking=True,
     )
     power_switches = fields.Integer(
-        string="Power switches",
         help="Number of power switches",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     usb_ports = fields.Integer(
         string="USB ports charging devices",
         help="Number of USB charging ports",
-        track_visibility="onchange",
+        tracking=True,
     )
     usb_voltage = fields.Float(
-        string="USB charging voltage (V)", track_visibility="onchange"
+        string="USB charging voltage (V)",
+        tracking=True,
     )
     usb_current = fields.Float(
-        string="USB charging current (mA)", track_visibility="onchange"
+        string="USB charging current (mA)",
+        tracking=True,
     )
-
     charger_connector_type_id = fields.Many2one(
         comodel_name="lighting.product.connectortype",
         ondelete="restrict",
-        string="Charger connector type",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     sensor_ids = fields.Many2many(
         comodel_name="lighting.product.sensor",
         relation="lighting_product_sensor_rel",
         string="Sensors",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     rechargeable_type = fields.Selection(
         selection=[
             ("solar", "Solar"),
@@ -878,161 +904,193 @@ class LightingProduct(models.Model):
             ("solarcharger", "Solar/With charger"),
         ],
         string="Rechargeable",
-        track_visibility="onchange",
+        tracking=True,
     )
     battery_autonomy = fields.Float(
-        string="Battery autonomy (h)", track_visibility="onchange"
+        string="Battery autonomy (h)",
+        tracking=True,
     )
     battery_charge_time = fields.Float(
-        string="Battery charge time (h)", track_visibility="onchange"
+        string="Battery charge time (h)",
+        tracking=True,
     )
     battery_charge_capacity = fields.Integer(
-        string="Battery charge capacity (mAH)", track_visibility="onchange"
+        string="Battery charge capacity (mAH)",
+        tracking=True,
     )
     battery_output_voltage = fields.Float(
-        string="Battery output voltage (V)", digits=(5, 1), track_visibility="onchange"
+        string="Battery output voltage (V)",
+        digits=(5, 1),
+        tracking=True,
     )
     surface_temperature = fields.Float(
-        string="Surface temperature (ºC)", track_visibility="onchange"
+        string="Surface temperature (ºC)",
+        tracking=True,
     )
     operating_temperature_min = fields.Float(
-        string="Minimum operating temperature (ºC)", track_visibility="onchange"
+        string="Minimum operating temperature (ºC)",
+        tracking=True,
     )
     operating_temperature_max = fields.Float(
-        string="Maximum operating temperature (ºC)", track_visibility="onchange"
+        string="Maximum operating temperature (ºC)",
+        tracking=True,
     )
-
     glow_wire_temperature = fields.Float(
-        string="Glow wire temperature (ºC)", track_visibility="onchange"
+        string="Glow wire temperature (ºC)",
+        tracking=True,
     )
 
     # light characteristics tab
     ugr_max = fields.Integer(
-        string="UGR", help="Maximum unified glare rating", track_visibility="onchange"
+        string="UGR",
+        help="Maximum unified glare rating",
+        tracking=True,
     )
-
-    lifetime = fields.Integer(string="Lifetime (h)", track_visibility="onchange")
-
+    lifetime = fields.Integer(
+        string="Lifetime (h)",
+        tracking=True,
+    )
     led_lifetime_l = fields.Integer(
-        string="LED lifetime L", track_visibility="onchange"
+        string="LED lifetime L",
+        tracking=True,
     )
     led_lifetime_b = fields.Integer(
-        string="LED lifetime B", track_visibility="onchange"
+        string="LED lifetime B",
+        tracking=True,
     )
 
     # Physical characteristics
-    weight = fields.Float(string="Weight (kg)", track_visibility="onchange")
+    weight = fields.Float(
+        string="Weight (kg)",
+        tracking=True,
+    )
     dimension_ids = fields.One2many(
         comodel_name="lighting.product.dimension",
         inverse_name="product_id",
         string="Dimensions",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     cutting_length = fields.Float(
-        string="Cutting length (mm)", track_visibility="onchange"
+        string="Cutting length (mm)",
+        tracking=True,
     )
     cable_outlets = fields.Integer(
-        string="Cable outlets",
         help="Number of cable outlets",
-        track_visibility="onchange",
+        tracking=True,
     )
     lead_wire_length = fields.Float(
-        string="Length of the lead wire supplied (mm)", track_visibility="onchange"
+        string="Length of the lead wire supplied (mm)",
+        tracking=True,
     )
     inclination_angle_max = fields.Float(
-        string="Maximum tilt angle (º)", track_visibility="onchange"
+        string="Maximum tilt angle (º)",
+        tracking=True,
     )
     rotation_angle_max = fields.Float(
-        string="Maximum rotation angle (º)", track_visibility="onchange"
+        string="Maximum rotation angle (º)",
+        tracking=True,
     )
     recessing_box_included = fields.Selection(
-        selection=YESNO, string="Cut hole box included", track_visibility="onchange"
+        selection=YESNO,
+        string="Cut hole box included",
+        tracking=True,
     )
     recess_dimension_ids = fields.One2many(
         comodel_name="lighting.product.recessdimension",
         inverse_name="product_id",
         string="Cut hole dimensions",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
     ecorrae_category_id = fields.Many2one(
         comodel_name="lighting.product.ecorraecategory",
         ondelete="restrict",
         string="ECORRAE I category",
-        track_visibility="onchange",
+        tracking=True,
     )
     ecorrae2_category_id = fields.Many2one(
         comodel_name="lighting.product.ecorraecategory",
         ondelete="restrict",
         string="ECORRAE II category",
-        track_visibility="onchange",
+        tracking=True,
     )
-    ecorrae = fields.Float(string="ECORRAE I", track_visibility="onchange")
-    ecorrae2 = fields.Float(string="ECORRAE II", track_visibility="onchange")
-
+    ecorrae = fields.Float(
+        string="ECORRAE I",
+        tracking=True,
+    )
+    ecorrae2 = fields.Float(
+        string="ECORRAE II",
+        tracking=True,
+    )
     periodic_maintenance = fields.Selection(
-        selection=YESNO, string="Periodic maintenance", track_visibility="onchange"
+        selection=YESNO,
+        string="Periodic maintenance",
+        tracking=True,
     )
     anchorage_included = fields.Selection(
-        selection=YESNO, string="Anchorage included", track_visibility="onchange"
+        selection=YESNO,
+        string="Anchorage included",
+        tracking=True,
     )
     post_included = fields.Selection(
-        selection=YESNO, string="Post included", track_visibility="onchange"
+        selection=YESNO,
+        string="Post included",
+        tracking=True,
     )
     post_with_inspection_chamber = fields.Selection(
         selection=YESNO,
         string="Post with inspection chamber",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     emergency_light = fields.Selection(
         selection=YESNO,
-        string="Emergency light",
         help="Luminarie with emergency light",
-        track_visibility="onchange",
+        tracking=True,
     )
     average_emergency_time = fields.Float(
-        string="Average emergency time (h)", track_visibility="onchange"
+        string="Average emergency time (h)",
+        tracking=True,
     )
-
     flammable_surfaces = fields.Selection(
-        selection=YESNO, string="Flammable surfaces", track_visibility="onchange"
+        selection=YESNO,
+        tracking=True,
     )
-
     photobiological_risk_group_id = fields.Many2one(
         comodel_name="lighting.product.photobiologicalriskgroup",
         ondelete="restrict",
-        string="Photobiological risk group",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     mechanical_screwdriver = fields.Selection(
-        selection=YESNO, string="Electric screwdriver", track_visibility="onchange"
+        selection=YESNO,
+        string="Electric screwdriver",
+        tracking=True,
     )
-
     fan_blades = fields.Integer(
-        string="Fan blades", help="Number of fan blades", track_visibility="onchange"
+        string="Fan blades",
+        help="Number of fan blades",
+        tracking=True,
     )
     fan_control = fields.Selection(
         selection=[("remote", "Remote control"), ("wall", "Wall control")],
         string="Fan control type",
-        track_visibility="onchange",
+        tracking=True,
     )
     fan_wattage_ids = fields.One2many(
         comodel_name="lighting.product.fanwattage",
         inverse_name="product_id",
         string="Fan wattages (W)",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     fan_noise_level = fields.Float(
-        string="Noise level (dB)", track_visibility="onchange"
+        string="Noise level (dB)",
+        tracking=True,
     )
     fan_reverse_direction = fields.Selection(
-        selection=YESNO, string="Reverse direction", track_visibility="onchange"
+        selection=YESNO,
+        string="Reverse direction",
+        tracking=True,
     )
 
     # Sources tab
@@ -1041,9 +1099,8 @@ class LightingProduct(models.Model):
         inverse_name="product_id",
         string="Sources",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     source_count = fields.Integer(
         compute="_compute_source_count", string="Total sources"
     )
@@ -1059,10 +1116,12 @@ class LightingProduct(models.Model):
         inverse_name="product_id",
         string="Beams",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
-    beam_count = fields.Integer(compute="_compute_beam_count", string="Total beams")
+    beam_count = fields.Integer(
+        compute="_compute_beam_count",
+        string="Total beams",
+    )
 
     @api.depends("beam_ids")
     def _compute_beam_count(self):
@@ -1075,7 +1134,7 @@ class LightingProduct(models.Model):
         inverse_name="product_id",
         string="Notes",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
 
     # Attachment tab
@@ -1084,7 +1143,7 @@ class LightingProduct(models.Model):
         inverse_name="product_id",
         string="Attachments",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
     attachment_count = fields.Integer(
         compute="_compute_attachment_count", string="Attachment(s)"
@@ -1104,19 +1163,18 @@ class LightingProduct(models.Model):
         column1="product_id",
         column2="optional_id",
         string="Recommended accessories",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     parent_optional_accessory_product_count = fields.Integer(
         compute="_compute_parent_optional_accessory_product_count"
     )
 
     @api.depends("optional_ids")
     def _compute_parent_optional_accessory_product_count(self):
-        for record in self:
-            record.parent_optional_accessory_product_count = self.env[
+        for rec in self:
+            rec.parent_optional_accessory_product_count = self.env[
                 "lighting.product"
-            ].search_count([("optional_ids", "=", record.id)])
+            ].search_count([("optional_ids", "=", rec.id)])
 
     is_optional_accessory = fields.Boolean(
         string="Is recommended accessory",
@@ -1127,11 +1185,9 @@ class LightingProduct(models.Model):
     @api.depends("optional_ids")
     def _compute_is_optional_accessory(self):
         for rec in self:
-            parent_ids = self.env["lighting.product"].search(
-                [("optional_ids", "=", rec.id)]
+            rec.is_optional_accessory = bool(
+                self.env["lighting.product"].search([("optional_ids", "=", rec.id)])
             )
-            if parent_ids:
-                rec.is_optional_accessory = True
 
     def _search_is_optional_accessory(self, operator, value):
         ids = (
@@ -1139,7 +1195,6 @@ class LightingProduct(models.Model):
             .search([("optional_ids", "!=", False)])
             .mapped("optional_ids.id")
         )
-
         return [("id", "in", ids)]
 
     # Required accessories tab
@@ -1149,9 +1204,8 @@ class LightingProduct(models.Model):
         column1="product_id",
         column2="required_id",
         string="Mandatory accessories",
-        track_visibility="onchange",
+        tracking=True,
     )
-
     parent_required_accessory_product_count = fields.Integer(
         compute="_compute_parent_required_accessory_product_count"
     )
@@ -1164,7 +1218,6 @@ class LightingProduct(models.Model):
             ].search_count([("required_ids", "=", record.id)])
 
     is_required_accessory = fields.Boolean(
-        string="Is required accessory",
         compute="_compute_is_required_accessory",
         search="_search_is_required_accessory",
     )
@@ -1172,11 +1225,9 @@ class LightingProduct(models.Model):
     @api.depends("required_ids")
     def _compute_is_required_accessory(self):
         for rec in self:
-            parent_ids = self.env["lighting.product"].search(
-                [("required_ids", "=", rec.id)]
+            rec.is_required_accessory = bool(
+                self.env["lighting.product"].search([("required_ids", "=", rec.id)])
             )
-            if parent_ids:
-                rec.is_required_accessory = True
 
     def _search_is_required_accessory(self, operator, value):
         ids = (
@@ -1194,101 +1245,150 @@ class LightingProduct(models.Model):
         column1="product_id",
         column2="substitute_id",
         string="Substitutes",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     # logistics tab
-    tariff_item = fields.Char(string="Tariff item", track_visibility="onchange")
+    tariff_item = fields.Char(
+        tracking=True,
+    )
     assembler_id = fields.Many2one(
         comodel_name="lighting.assembler",
         ondelete="restrict",
-        string="Assembler",
-        track_visibility="onchange",
+        tracking=True,
     )
     supplier_ids = fields.One2many(
         comodel_name="lighting.product.supplier",
         inverse_name="product_id",
         string="Suppliers",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
-    ibox_weight = fields.Float(string="IBox weight (Kg)", track_visibility="onchange")
-    ibox_volume = fields.Float(string="IBox volume (cm³)", track_visibility="onchange")
-    ibox_length = fields.Float(string="IBox length (cm)", track_visibility="onchange")
-    ibox_width = fields.Float(string="IBox width (cm)", track_visibility="onchange")
-    ibox_height = fields.Float(string="IBox height (cm)", track_visibility="onchange")
-
-    mbox_qty = fields.Integer(string="Masterbox quantity", track_visibility="onchange")
+    ibox_weight = fields.Float(
+        string="IBox weight (Kg)",
+        tracking=True,
+    )
+    ibox_volume = fields.Float(
+        string="IBox volume (cm³)",
+        tracking=True,
+    )
+    ibox_length = fields.Float(
+        string="IBox length (cm)",
+        tracking=True,
+    )
+    ibox_width = fields.Float(
+        string="IBox width (cm)",
+        tracking=True,
+    )
+    ibox_height = fields.Float(
+        string="IBox height (cm)",
+        tracking=True,
+    )
+    mbox_qty = fields.Integer(
+        string="Masterbox quantity",
+        tracking=True,
+    )
     mbox_weight = fields.Float(
-        string="Masterbox weight (kg)", track_visibility="onchange"
+        string="Masterbox weight (kg)",
+        tracking=True,
     )
     mbox_length = fields.Float(
-        string="Masterbox length (cm)", track_visibility="onchange"
+        string="Masterbox length (cm)",
+        tracking=True,
     )
     mbox_width = fields.Float(
-        string="Masterbox width (cm)", track_visibility="onchange"
+        string="Masterbox width (cm)",
+        tracking=True,
     )
     mbox_height = fields.Float(
-        string="Masterbox height (cm)", track_visibility="onchange"
+        string="Masterbox height (cm)",
+        tracking=True,
     )
 
     # inventory tab
     onhand_qty = fields.Float(
-        string="On hand", readonly=True, required=True, default=0, copy=False
+        string="On hand",
+        readonly=True,
+        required=True,
+        default=0,
+        copy=False,
     )
     commited_qty = fields.Float(
-        string="Commited", readonly=True, required=True, default=0, copy=False
+        string="Commited",
+        readonly=True,
+        required=True,
+        default=0,
+        copy=False,
     )
     available_qty = fields.Float(
-        string="Available", readonly=True, required=True, default=0, copy=False
+        string="Available",
+        readonly=True,
+        required=True,
+        default=0,
+        copy=False,
     )
-
     capacity_qty = fields.Float(
-        string="Capacity", readonly=True, required=True, default=0, copy=False
+        string="Capacity",
+        readonly=True,
+        required=True,
+        default=0,
+        copy=False,
     )
-
     onorder_qty = fields.Float(
-        string="On order", readonly=True, required=True, default=0, copy=False
+        string="On order",
+        readonly=True,
+        required=True,
+        default=0,
+        copy=False,
     )
-
     stock_future_qty = fields.Float(
-        string="Future stock", readonly=True, required=True, default=0, copy=False
+        string="Future stock",
+        readonly=True,
+        required=True,
+        default=0,
+        copy=False,
     )
     stock_future_date = fields.Date(
-        string="Future stock date", readonly=True, copy=False
+        readonly=True,
+        copy=False,
     )
     last_purchase_date = fields.Date(
-        string="Last purchase date", readonly=True, copy=False
+        readonly=True,
+        copy=False,
     )
 
     # marketing tab
     state_marketing = fields.Selection(
         selection=STATES_MARKETING,
         string="Marketing status",
-        track_visibility="onchange",
+        tracking=True,
     )
-
-    on_request = fields.Boolean(string="On request", track_visibility="onchange")
-
-    effective_date = fields.Date(string="Effective date", track_visibility="onchange")
-
-    price = fields.Float(string="Price", readonly=True)
+    on_request = fields.Boolean(
+        tracking=True,
+    )
+    effective_date = fields.Date(
+        tracking=True,
+    )
+    price = fields.Float(
+        readonly=True,
+    )
     price_currency_id = fields.Many2one(
-        string="Price currency", comodel_name="res.currency", readonly=True
+        comodel_name="res.currency",
+        readonly=True,
     )
-
     cost = fields.Float(
-        string="Cost", readonly=True, groups="lighting.group_lighting_user"
+        readonly=True,
+        groups="lighting.group_lighting_user",
     )
     cost_currency_id = fields.Many2one(
-        string="Cost currency",
         comodel_name="res.currency",
         readonly=True,
         groups="lighting.group_lighting_user",
     )
-
-    marketing_comments = fields.Char(string="Comments", track_visibility="onchange")
+    marketing_comments = fields.Char(
+        string="Comments",
+        tracking=True,
+    )
 
     state = fields.Selection(
         [
@@ -1301,38 +1401,37 @@ class LightingProduct(models.Model):
         readonly=False,
         required=True,
         copy=False,
-        track_visibility="onchange",
+        tracking=True,
     )
 
-    @api.multi
     @api.constrains("reference")
     def _check_reference_spaces(self):
         for rec in self:
             if rec.reference != rec.reference.strip():
                 raise ValidationError(
                     _(
-                        "The reference has trailing and/or leading spaces, plese remove them before saving."
+                        "The reference has trailing and/or leading spaces,"
+                        " please remove them before saving."
                     )
                 )
 
-    @api.multi
     @api.constrains("catalog_ids")
     def _check_catalog_ids(self):
-        # TODO remove this constrain and change the catalog_ids attribute to
+        # TODO Migration Script. remove this constrain and change the catalog_ids attribute to
         # many2one
         for rec in self:
             if len(rec.catalog_ids) != 1:
                 raise ValidationError(_("Only one catalog is allowed per product"))
 
-    @api.multi
     @api.constrains("is_composite", "required_ids")
     def _check_composite_product(self):
         for rec in self:
             if not rec.is_composite and rec.required_ids:
                 raise ValidationError(
                     _(
-                        "Only the composite products can have required accessories. Enable 'is_composite' "
-                        "field or remove the required accessories associated."
+                        "Only the composite products can have required accessories. "
+                        "Enable 'is_composite' field or "
+                        "remove the required accessories associated."
                     )
                 )
 
@@ -1343,13 +1442,29 @@ class LightingProduct(models.Model):
                     )
                 )
 
+    @api.constrains("optional_ids", "required_ids")
+    def _check_product_dependency(self):
+        for rec in self:
+            if rec in rec.required_ids:
+                raise ValidationError(
+                    _("The current reference cannot be defined as a required accessory")
+                )
+            if rec in rec.optional_ids:
+                raise ValidationError(
+                    _(
+                        "The current reference cannot be defined as a recomended accessory"
+                    )
+                )
+
+    # TODO: REVIEW: Self ensure
     @api.constrains("product_group_id")
     def _check_product_group(self):
         if self.product_group_id.child_ids:
             raise ValidationError(
                 _(
-                    "You cannot assign products to a grup with childs. "
-                    "The group must not have childs and be empty or already contain products"
+                    "You cannot assign products to a group with childs. "
+                    "The group must not have childs and be "
+                    "empty or already contain products"
                 )
             )
 
@@ -1360,33 +1475,16 @@ class LightingProduct(models.Model):
                 _("Products with configurator cannot belong to a group")
             )
 
-    @api.multi
-    @api.constrains("optional_ids", "required_ids")
-    def _check_composite_product(self):
-        for rec in self:
-            if rec in rec.required_ids:
-                raise ValidationError(
-                    _("The current reference cannot be defined as a required accessory")
-                )
-
-            if rec in rec.optional_ids:
-                raise ValidationError(
-                    _(
-                        "The current reference cannot be defined as a recomended accessory"
-                    )
-                )
-
-    @api.constrains("description")
-    def _check_description_updated(self):
-        self._update_computed_descriptions(exclude_lang=[self.env.lang])
-
     @api.constrains("state", "family_ids", "category_id")
     def _check_published_mandatory_fields(self):
         for rec in self:
             if rec.state == "published":
                 if not rec.family_ids or not rec.category_id or not rec.location_ids:
                     raise ValidationError(
-                        "The Family, Category and Locations are mandatory in Published state"
+                        _(
+                            "The Family, Category and Locations "
+                            "are mandatory in Published state"
+                        )
                     )
 
     def _update_with_check(self, values, key, value):
@@ -1396,114 +1494,199 @@ class LightingProduct(models.Model):
             if values[key] != value:
                 raise ValidationError(
                     _(
-                        "Inconsistency due to multi nature of the method, not all records have the "
-                        "same values"
+                        "Inconsistency due to multi nature of the method, "
+                        "not all records have the same values"
                     )
                 )
 
     def _check_state_marketing_stock(self, values):
-        new_values = {}
-        current_state, new_state = self.state_marketing, values.get(
-            "state_marketing", self.state_marketing
+        if self:
+            self.ensure_one()
+        current_state = self.state_marketing
+        new_state = values.get("state_marketing", current_state)
+        current_state_str, new_state_str = (
+            _get_state_name_map(self)[current_state],
+            _get_state_name_map(self)[new_state],
         )
-        current_state_str, new_state_str = [
-            STATE_NAME_MAP(self)[x] for x in [current_state, new_state]
-        ]
         new_stock = sum(
-            [
-                values[f] if f in values else self[f]
-                for f in ("available_qty", "stock_future_qty")
-            ]
+            values.get(f, self[f]) for f in ("available_qty", "stock_future_qty")
         )
-        if current_state in C_STATES:
-            if new_state in ES_MAP:
-                if new_stock == 0:
-                    raise ValidationError(
-                        _(
-                            "You cannot change the state from '%s' to '%s' if the product has no stock"
-                        )
-                        % (current_state_str, new_state_str)
-                    )
-            elif new_state in D_MAP:
-                if new_stock != 0:
-                    raise ValidationError(
-                        _(
-                            "You cannot change the state from '%s' to '%s' if the product has stock (%g)"
-                        )
-                        % (current_state_str, new_state_str, new_stock)
-                    )
-            elif new_state in C_STATES:
-                pass
-            else:
-                raise ValidationError(
-                    _("Transition from '%s' to '%s' not allowed")
-                    % (current_state_str, new_state_str)
-                )
-        elif current_state in ES_MAP:
-            if new_state in C_STATES:
-                if new_state and new_stock == 0:
-                    raise ValidationError(
-                        _(
-                            "You cannot change the state from '%s' to '%s' if the product has no stock"
-                        )
-                        % (current_state_str, new_state_str)
-                    )
-            elif new_state == ES_MAP[current_state]:
-                if new_stock != 0:
-                    raise ValidationError(
-                        _(
-                            "You cannot change the state from '%s' to '%s' if the product has stock (%g)"
-                        )
-                        % (current_state_str, new_state_str, new_stock)
-                    )
-            elif new_state == current_state:
-                if new_stock == 0:
-                    self._update_with_check(
-                        new_values, "state_marketing", ES_MAP[current_state]
-                    )
-            elif new_state in ES_MAP:
-                pass
-            elif not new_state:
-                pass
-            else:
-                raise ValidationError(
-                    _("Transition from '%s' to '%s' not allowed")
-                    % (current_state_str, new_state_str)
-                )
-        elif current_state in D_MAP:
-            if new_state in C_STATES:
-                pass
-            elif new_state == D_MAP[current_state]:
-                if new_stock == 0:
-                    raise ValidationError(
-                        _(
-                            "You cannot change the state from '%s' to '%s' if the product has no stock"
-                        )
-                        % (current_state_str, new_state_str)
-                    )
-            elif new_state == current_state:
-                if new_stock != 0:
-                    self._update_with_check(
-                        new_values, "state_marketing", D_MAP[current_state]
-                    )
-            elif new_state in D_MAP:
-                pass
-            elif not new_state:
-                pass
-            else:
-                raise ValidationError(
-                    _("Transition from '%s' to '%s' not allowed")
-                    % (current_state_str, new_state_str)
-                )
-        else:
-            raise ValidationError(_("State '%s' not exists") % (current_state_str,))
+        if current_state not in _get_state_name_map(self):
+            raise ValidationError(_("State '%s' does not exist") % current_state_str)
+        new_values = self._validate_stock_change(
+            current_state, new_state, new_stock, current_state_str, new_state_str
+        )
         return new_values
 
-    @api.multi
+    def _validate_stock_change(
+        self, current_state, new_state, new_stock, current_state_str, new_state_str
+    ):
+        new_values = {}
+
+        if current_state in C_STATES:
+            self._c_states_check(new_state, new_stock, current_state_str, new_state_str)
+
+        elif current_state in ES_MAP:
+            new_values = self._es_map_check(
+                new_state,
+                new_stock,
+                current_state,
+                current_state_str,
+                new_state_str,
+                new_values,
+            )
+
+        elif current_state in D_MAP:
+            new_values = self._d_map_check(
+                new_state,
+                new_stock,
+                current_state,
+                current_state_str,
+                new_state_str,
+                new_values,
+            )
+
+        return new_values
+
+    def _c_states_check(self, new_state, new_stock, current_state_str, new_state_str):
+        if new_state in ES_MAP:
+            if new_stock == 0:
+                raise ValidationError(
+                    _(
+                        "You cannot change the state from '%(current_state)s' to "
+                        "'%(new_state)s' if the product has no stock"
+                    )
+                    % {
+                        "current_state": current_state_str,
+                        "new_state": new_state_str,
+                    }
+                )
+        elif new_state in D_MAP:
+            if new_stock != 0:
+                raise ValidationError(
+                    _(
+                        "You cannot change the state from '%(current_state)s' to "
+                        "'%(new_state)s' if the product has stock (%(stock)g)"
+                    )
+                    % {
+                        "current_state": current_state_str,
+                        "new_state": new_state_str,
+                        "stock": new_stock,
+                    }
+                )
+        elif new_state in C_STATES:
+            pass
+        else:
+            raise ValidationError(
+                _("Transition from '%(current_state)s' to '%(new_state)s' not allowed")
+                % {
+                    "current_state": current_state_str,
+                    "new_state": new_state_str,
+                }
+            )
+
+    def _es_map_check(
+        self,
+        new_state,
+        new_stock,
+        current_state,
+        current_state_str,
+        new_state_str,
+        new_values,
+    ):
+        if new_state in C_STATES:
+            if new_state and new_stock == 0:
+                raise ValidationError(
+                    _(
+                        "You cannot change the state from '%(current_state)s' to "
+                        "'%(new_state)s' if the product has no stock"
+                    )
+                    % {
+                        "current_state": current_state_str,
+                        "new_state": new_state_str,
+                    }
+                )
+        elif new_state == ES_MAP[current_state]:
+            if new_stock != 0:
+                raise ValidationError(
+                    _(
+                        "You cannot change the state from '%(current_state)s' to "
+                        "'%(new_state)s' if the product has stock (%(stock)g)"
+                    )
+                    % {
+                        "current_state": current_state_str,
+                        "new_state": new_state_str,
+                        "stock": new_stock,
+                    }
+                )
+        elif new_state == current_state:
+            if new_stock == 0:
+                self._update_with_check(
+                    new_values, "state_marketing", ES_MAP[current_state]
+                )
+        elif new_state in ES_MAP:
+            pass
+        elif not new_state:
+            pass
+        else:
+            raise ValidationError(
+                _("Transition from '%(current_state)s' to '%(new_state)s' not allowed")
+                % {
+                    "current_state": current_state_str,
+                    "new_state": new_state_str,
+                }
+            )
+        return new_values
+
+    def _d_map_check(
+        self,
+        new_state,
+        new_stock,
+        current_state,
+        current_state_str,
+        new_state_str,
+        new_values,
+    ):
+        if new_state in C_STATES:
+            pass
+        elif new_state == D_MAP[current_state]:
+            if new_stock == 0:
+                raise ValidationError(
+                    _(
+                        "You cannot change the state from '%(current_state)s' to "
+                        "'%(new_state)s' if the product has no stock"
+                    )
+                    % {
+                        "current_state": current_state_str,
+                        "new_state": new_state_str,
+                    }
+                )
+        elif new_state == current_state:
+            if new_stock != 0:
+                self._update_with_check(
+                    new_values, "state_marketing", D_MAP[current_state]
+                )
+        elif new_state in D_MAP:
+            pass
+        elif not new_state:
+            pass
+        else:
+            raise ValidationError(
+                _(
+                    "Transition from '%(current_state)s' to "
+                    "'%(new_state)s' not allowed"
+                )
+                % {
+                    "current_state": current_state_str,
+                    "new_state": new_state_str,
+                }
+            )
+        return new_values
+
     def copy(self, default=None):
         self.ensure_one()
 
-        ## generate non duplicated new reference
+        # generate non duplicated new reference
         reference_tmp = self.reference
         while True:
             product_ids = self.env[self._name].search(
@@ -1519,9 +1702,8 @@ class LightingProduct(models.Model):
             ean=False,
         )
 
-        return super(LightingProduct, self).copy(default)
+        return super().copy(default)
 
-    @api.multi
     def write(self, values):
         if "reference" in values and "default_code" not in values:
             values["default_code"] = values["reference"]
@@ -1532,10 +1714,6 @@ class LightingProduct(models.Model):
             new_values = rec._check_state_marketing_stock(values)
             if new_values:
                 values.update(new_values)
-            if values.get("total_wattage_auto", rec.total_wattage_auto):
-                values["total_wattage"] = values.get(
-                    "total_wattage_sources", rec.total_wattage_sources
-                )
             original_description = rec.description
             result &= super(LightingProduct, rec).write(values)
             if rec.description != original_description:
@@ -1546,26 +1724,31 @@ class LightingProduct(models.Model):
                     )
         return result
 
-    @api.model
-    def create(self, values):
-        product_tmp = self.env["lighting.product"].new(values)
-        values.update(
-            {
-                "name": product_tmp.description
-                or product_tmp.description_manual
-                or values["reference"],
-                "default_code": values["reference"],
-                "lst_price": 0,
-            }
-        )
-        new_values = self._check_state_marketing_stock(values)
-        if new_values:
-            values.update(new_values)
-        return super(LightingProduct, self).create(values)
+    # TODO: remove comented code if it works
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            vals.update(
+                {
+                    "name": vals["reference"],
+                    "default_code": vals["reference"],
+                    "lst_price": 0,
+                }
+            )
+            new_values = self._check_state_marketing_stock(vals)
+            if new_values:
+                vals.update(new_values)
+        res = super().create(vals_list)
+        for rec in res:
+            # TODO: Change name for all languages
+            description = res.description or res.description_manual
+            if description:
+                if rec.name != description:
+                    rec.name = description
+        return res
 
-    @api.multi
     def unlink(self):
         product_tmpl = self.mapped("odoop_id.product_tmpl_id")
-        res = super(LightingProduct, self).unlink()
+        res = super().unlink()
         res &= product_tmpl.unlink()
         return res

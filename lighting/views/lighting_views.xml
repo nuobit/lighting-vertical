@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="lighting_menu"
+        name="Lighting"
+        groups="group_lighting_guest,group_lighting_user,group_lighting_manager"
+        web_icon="lighting,static/description/app.png"
+        sequence="0"
+    >
+        <!-- A first level in the left side menu is needed
+             before using action= attribute -->
+        <menuitem id="lighting_product_menu" name="Products" sequence="0">
+            <!--Products-->
+            <menuitem
+                id="products_menu"
+                name="Products"
+                action="product_list_action"
+                sequence="5"
+            />
+            <!--Product groups-->
+            <menuitem
+                id="product_groups_menu"
+                name="Product groups"
+                action="product_group_action"
+                sequence="10"
+            />
+            <menuitem id="common_data_menu" name="Common data" sequence="20">
+                <!--Group Types-->
+                <menuitem
+                    id="product_group_types_menu"
+                    name="Group types"
+                    action="product_group_type_list_action"
+                    sequence="5"
+                />
+                <!--Catalogs-->
+                <menuitem
+                    id="catalogs_menu"
+                    name="Catalogs"
+                    action="catalog_list_action"
+                    sequence="10"
+                />
+                <!--Families-->
+                <menuitem
+                    id="product_families_menu"
+                    name="Families"
+                    action="product_family_list_action"
+                    sequence="20"
+                />
+                <!--Locations-->
+                <menuitem
+                    id="product_locations_menu"
+                    name="Locations"
+                    action="product_location_list_action"
+                    sequence="25"
+                />
+                <!--Models-->
+                <menuitem
+                    id="product_models_menu"
+                    name="Models"
+                    action="product_model_list_action"
+                    sequence="25"
+                />
+                <!--Categories-->
+                <menuitem
+                    id="product_categories_menu"
+                    name="Categories"
+                    action="product_category_list_action"
+                    sequence="30"
+                />
+                <!--Installations-->
+                <menuitem
+                    id="product_installations_menu"
+                    name="Installations"
+                    action="product_installation_list_action"
+                    sequence="35"
+                />
+                <!--Applications-->
+                <menuitem
+                    id="product_applications_menu"
+                    name="Applications"
+                    action="product_application_list_action"
+                    sequence="40"
+                />
+                <!--Sealings-->
+                <menuitem
+                    id="product_sealing_menu"
+                    name="Sealings"
+                    action="product_sealing_list_action"
+                    sequence="45"
+                />
+                <!--Lampholders-->
+                <menuitem
+                    id="product_source_lampholders_menu"
+                    name="Lampholders"
+                    action="product_source_lampholder_list_action"
+                    sequence="50"
+                />
+                <!--Source types-->
+                <menuitem
+                    id="product_source_types_menu"
+                    name="Source types"
+                    action="product_source_type_list_action"
+                    sequence="60"
+                />
+                <!--Color Temperatures-->
+                <menuitem
+                    id="product_color_temperatures_menu"
+                    name="Color temperatures"
+                    action="product_color_temperature_list_action"
+                    sequence="65"
+                />
+                <!--Finishes-->
+                <menuitem
+                    id="product_finishes_menu"
+                    name="Finishes"
+                    action="product_finish_list_action"
+                    sequence="70"
+                />
+                <!--RALs-->
+                <menuitem
+                    id="product_rals_menu"
+                    name="RALs"
+                    action="product_ral_list_action"
+                    sequence="75"
+                />
+                <!--Voltages-->
+                <menuitem
+                    id="product_voltages_menu"
+                    name="Voltages"
+                    action="product_voltage_list_action"
+                    sequence="80"
+                />
+                <!--Assemblers-->
+                <menuitem
+                    id="assemblers_menu"
+                    name="Assemblers"
+                    action="assembler_list_action"
+                    sequence="1000"
+                />
+                <!--Attachment types-->
+                <menuitem
+                    id="attachment_types_menu"
+                    name="Attachment types"
+                    action="attachment_type_list_action"
+                    sequence="1000"
+                />
+                <!--Auxiliary equipments-->
+                <menuitem
+                    id="product_auxiliaryequipments_menu"
+                    name="Auxiliary equipments"
+                    action="product_auxiliaryequipment_list_action"
+                    sequence="1000"
+                />
+                <!--Auxiliary gear codes-->
+                <menuitem
+                    id="product_auxiliaryequipmentbrands_menu"
+                    name="Auxiliary gear codes"
+                    action="product_auxiliaryequipmentbrand_list_action"
+                    sequence="1000"
+                />
+                <!--Connector types-->
+                <menuitem
+                    id="product_connectortypes_menu"
+                    name="Connector types"
+                    action="product_connectortype_list_action"
+                    sequence="1000"
+                />
+                <!--Dimension types-->
+                <menuitem
+                    id="dimension_types_menu"
+                    name="Dimension types"
+                    action="dimension_type_list_action"
+                    sequence="1000"
+                />
+                <!--Ecorrae categories-->
+                <menuitem
+                    id="product_ecorraecategories_menu"
+                    name="Ecorrae categories"
+                    action="product_ecorraecategory_list_action"
+                    sequence="1000"
+                />
+                <!--Energy efficiencies-->
+                <menuitem
+                    id="energyefficiencies_menu"
+                    name="Energy efficiencies"
+                    action="energyefficiency_list_action"
+                    sequence="1000"
+                />
+                <!--Frequencies-->
+                <menuitem
+                    id="product_frequencies_menu"
+                    name="Frequencies"
+                    action="product_frequency_list_action"
+                    sequence="1000"
+                />
+                <!--Languages-->
+                <menuitem
+                    id="languages_menu"
+                    name="Languages"
+                    action="language_list_action"
+                    sequence="1000"
+                />
+                <!--LED brands-->
+                <menuitem
+                    id="product_ledbrands_menu"
+                    name="LED brands"
+                    action="product_ledbrand_list_action"
+                    sequence="1000"
+                />
+                <!--Materials-->
+                <menuitem
+                    id="product_materials_menu"
+                    name="Materials"
+                    action="product_material_list_action"
+                    sequence="1000"
+                />
+                <!--Notes-->
+                <menuitem
+                    id="product_notes_menu"
+                    name="Notes"
+                    action="product_note_list_action"
+                    sequence="1000"
+                />
+                <!--Photobiological risk groups-->
+                <menuitem
+                    id="product_photobiologicalriskgrous_menu"
+                    name="Photobiological risk groups"
+                    action="product_photobiologicalriskgroup_list_action"
+                    sequence="1000"
+                />
+                <!--Beam photometric distributions-->
+                <menuitem
+                    id="product_beam_photodistributions_menu"
+                    name="Beam photometric distributions"
+                    action="product_beam_photodistribution_list_action"
+                    sequence="1000"
+                />
+                <!--Protection classes-->
+                <menuitem
+                    id="product_protectionclasses_menu"
+                    name="Protection classes"
+                    action="product_protectionclass_list_action"
+                    sequence="1000"
+                />
+                <!--Sensors-->
+                <menuitem
+                    id="product_sensors_menu"
+                    name="Sensors"
+                    action="product_sensor_list_action"
+                    sequence="1000"
+                />
+                <!--Special spectrums-->
+                <menuitem
+                    id="product_special_spectrum_menu"
+                    name="Special spectrums"
+                    action="product_special_spectrum_list_action"
+                    sequence="1000"
+                />
+                <!--Suppliers-->
+                <menuitem
+                    id="suppliers_menu"
+                    name="Suppliers"
+                    action="supplier_list_action"
+                    sequence="1000"
+                />
+            </menuitem>
+        </menuitem>
+    </menuitem>
+</odoo>

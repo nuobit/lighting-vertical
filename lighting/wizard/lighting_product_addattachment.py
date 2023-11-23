@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -13,8 +12,12 @@ class LightingProductAddAttachment(models.TransientModel):
 
     _name = "lighting.product.addattachment"
     _description = "Attach multiple files at once"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    name = fields.Char(string="Description", translate=True)
+    name = fields.Char(
+        string="Description",
+        translate=True,
+    )
     type_id = fields.Many2one(
         comodel_name="lighting.attachment.type",
         ondelete="cascade",
@@ -28,20 +31,27 @@ class LightingProductAddAttachment(models.TransientModel):
         default="file",
         required=True,
     )
-
-    datas_url = fields.Char(string="Url")
-
-    datas = fields.Binary(string="Document", attachment=True)
-    datas_fname = fields.Char(string="Filename")
-
-    lang_id = fields.Many2one(
-        comodel_name="lighting.language", ondelete="cascade", string="Language"
+    datas_url = fields.Char(
+        string="Url",
     )
-
-    overwrite = fields.Boolean(string="Overwrite", default=False)
-
-    result = fields.Char(string="Result", readonly=True)
-
+    datas = fields.Binary(
+        string="Document",
+        attachment=True,
+    )
+    datas_fname = fields.Char(
+        string="Filename",
+    )
+    lang_id = fields.Many2one(
+        string="Language",
+        comodel_name="lighting.language",
+        ondelete="cascade",
+    )
+    overwrite = fields.Boolean(
+        default=False,
+    )
+    result = fields.Char(
+        readonly=True,
+    )
     state = fields.Selection(
         [
             ("pending", "Pending"),
@@ -53,10 +63,9 @@ class LightingProductAddAttachment(models.TransientModel):
         readonly=True,
         required=True,
         copy=False,
-        track_visibility="onchange",
+        tracking=True,
     )
 
-    @api.multi
     def name_get(self):
         vals = []
         for record in self:
@@ -90,7 +99,7 @@ class LightingProductAddAttachment(models.TransientModel):
                     % rec.datas_location
                 )
 
-    @api.multi
+    # TODO: This function is too complex
     def add_attachment(self):
         # get products
         context = dict(self._context or {})
@@ -98,22 +107,8 @@ class LightingProductAddAttachment(models.TransientModel):
         products = self.env["lighting.product"].browse(active_ids)
 
         # construct the values
-        values = {
-            "type_id": self.type_id.id,
-            "datas_location": self.datas_location,
-        }
-        if self.name:
-            values["name"] = self.name
-        if self.lang_id:
-            values["lang_id"] = self.lang_id.id
-
+        values = self._create_values()
         if self.datas_location == "file":
-            values.update(
-                {
-                    "datas": self.datas,
-                    "datas_fname": self.datas_fname,
-                }
-            )
             reset_default_domain = [
                 "|",
                 ("res_field", "=", False),
@@ -126,13 +121,6 @@ class LightingProductAddAttachment(models.TransientModel):
                     ("res_id", "=", self.id),
                 ]
             )
-        elif self.datas_location == "url":
-            values.update(
-                {
-                    "datas_url": self.datas_url,
-                }
-            )
-
         errors = {}
         for product in products:
             # check if attach already exists
@@ -156,9 +144,8 @@ class LightingProductAddAttachment(models.TransientModel):
                     ir_attach = ir_attach[0]
                     if ir_attach.checksum == addattach.checksum:
                         attach_grouped.setdefault("bydatas", []).append(attach)
-                    else:
-                        if attach.datas_fname.lower() == self.datas_fname.lower():
-                            attach_grouped.setdefault("byfname", []).append(attach)
+                    elif attach.datas_fname.lower() == self.datas_fname.lower():
+                        attach_grouped.setdefault("byfname", []).append(attach)
                 elif attach.datas_location == "url":
                     if ir_attach.datas_url.lower() == addattach.datas_url.lower():
                         attach_grouped.setdefault("bydatas", []).append(attach)
@@ -169,12 +156,12 @@ class LightingProductAddAttachment(models.TransientModel):
                         errors.setdefault(product.id, {"product": product})[
                             "same_checksum_match"
                         ] = attachs
-                    elif gtype == "byfname":
+                    elif gtype == "byfname" and attachs:
                         if len(attachs) > 1:
                             errors.setdefault(product.id, {"product": product})[
                                 "more_than_one_fname_match"
                             ] = attachs
-                        elif len(attachs) == 1:
+                        else:
                             if self.overwrite:
                                 product.attachment_ids = [(1, attachs[0].id, values)]
                             else:
@@ -182,6 +169,34 @@ class LightingProductAddAttachment(models.TransientModel):
             else:
                 product.attachment_ids = [(0, False, values)]
 
+        self._manage_errors(errors)
+        return {"type": "ir.actions.do_nothing"}
+
+    def _create_values(self):
+        values = {
+            "type_id": self.type_id.id,
+            "datas_location": self.datas_location,
+        }
+        if self.name:
+            values["name"] = self.name
+        if self.lang_id:
+            values["lang_id"] = self.lang_id.id
+
+        if self.datas_location == "file":
+            values.update(
+                {
+                    "datas": self.datas,
+                    "datas_fname": self.datas_fname,
+                }
+            )
+        elif self.datas_location == "url":
+            values.update(
+                {
+                    "datas_url": self.datas_url,
+                }
+            )
+
+    def _manage_errors(self, errors):
         msg = []
         for data in errors.values():
             msg0 = []
@@ -208,5 +223,3 @@ class LightingProductAddAttachment(models.TransientModel):
         else:
             self.result = _("Completed without errors")
             self.state = "done"
-
-        return {"type": "ir.actions.do_nothing"}

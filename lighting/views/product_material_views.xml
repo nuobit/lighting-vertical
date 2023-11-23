@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action material2product smart button -->
     <record id="product_material_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field
             name="domain"
@@ -64,7 +62,7 @@
         <field name="name">product.material.tree</field>
         <field name="model">lighting.product.material</field>
         <field name="arch" type="xml">
-            <tree string="Product material Tree">
+            <tree>
                 <field name="code" />
                 <field name="name" />
                 <field name="is_glass" />
@@ -84,19 +82,10 @@
     <record model="ir.actions.act_window" id="product_material_list_action">
         <field name="name">Product material</field>
         <field name="res_model">lighting.product.material</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first material
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="product_materials_menu"
-        name="Materials"
-        parent="common_data_menu"
-        action="product_material_list_action"
-        sequence="1000"
-    />
 </odoo>

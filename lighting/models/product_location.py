@@ -1,25 +1,31 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
 class LightingProductLocation(models.Model):
     _name = "lighting.product.location"
+    _description = "Product Location"
     _order = "name"
 
-    name = fields.Char(string="Name", required=True, translate=True)
-
-    code = fields.Char(string="Code", size=5, required=True)
-
-    description_text = fields.Char(
-        string="Description text", help="Text to show", translate=True
+    name = fields.Char(
+        required=True,
+        translate=True,
     )
-
+    # TODO: restrict len(code)=5
+    code = fields.Char(
+        required=True,
+    )
+    description_text = fields.Char(
+        help="Text to show",
+        translate=True,
+    )
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -28,13 +34,14 @@ class LightingProductLocation(models.Model):
                 [("location_ids", "=", record.id)]
             )
 
-    color = fields.Integer(string="Color Index")
+    color = fields.Integer(
+        string="Color Index",
+    )
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "The location must be unique!"),
     ]
 
-    @api.multi
     def unlink(self):
         records = self.env["lighting.product"].search(
             [("location_ids", "in", self.ids)]

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action installation2product smart button -->
     <record id="product_installation_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
+
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('installation_ids','=',active_id)]</field>
         <field
@@ -51,7 +50,7 @@
         <field name="name">product.installation.tree</field>
         <field name="model">lighting.product.installation</field>
         <field name="arch" type="xml">
-            <tree string="Product installation Tree">
+            <tree>
                 <field name="name" />
                 <field name="product_count" />
                 <button
@@ -69,19 +68,11 @@
     <record id="product_installation_list_action" model="ir.actions.act_window">
         <field name="name">Product installation</field>
         <field name="res_model">lighting.product.installation</field>
-        <field name="view_type">form</field>
+
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product installation
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="product_installations_menu"
-        name="Installations"
-        parent="common_data_menu"
-        action="product_installation_list_action"
-        sequence="35"
-    />
 </odoo>

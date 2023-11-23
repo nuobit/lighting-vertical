@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -8,74 +8,78 @@ from odoo.exceptions import ValidationError
 
 class LightingProductSource(models.Model):
     _name = "lighting.product.source"
+    _description = "Product Source"
     _rec_name = "relevance"
     _order = "sequence"
 
     sequence = fields.Integer(
-        required=True, default=1, help="The sequence field is used to define order"
+        required=True,
+        default=1,
+        help="The sequence field is used to define order",
     )
-
     relevance = fields.Selection(
-        [("main", "Main"), ("aux", "Auxiliary")],
-        string="Relevance",
+        selection=[("main", "Main"), ("aux", "Auxiliary")],
         required=True,
         default="main",
     )
-    num = fields.Integer(string="Number of sources", default=1)
+    num = fields.Integer(
+        string="Number of sources",
+        default=1,
+    )
     lampholder_id = fields.Many2one(
         comodel_name="lighting.product.source.lampholder",
         ondelete="restrict",
-        string="Lampholder",
     )
     lampholder_technical_id = fields.Many2one(
         comodel_name="lighting.product.source.lampholder",
         ondelete="restrict",
         string="Technical lampholder",
     )
-
     line_ids = fields.One2many(
         comodel_name="lighting.product.source.line",
         inverse_name="source_id",
         string="Lines",
         copy=True,
     )
-
     product_id = fields.Many2one(
-        comodel_name="lighting.product", ondelete="cascade", string="Product"
+        comodel_name="lighting.product",
+        ondelete="cascade",
     )
 
-    ## computed fields
-    line_display = fields.Char(compute="_compute_line_display", string="Description")
+    # computed fields
+    line_display = fields.Char(
+        compute="_compute_line_display",
+        string="Description",
+    )
 
     @api.depends("line_ids")
     def _compute_line_display(self):
         for rec in self:
             res = []
-            for l in rec.line_ids.sorted(lambda x: x.sequence):
-                line = [l.type_id.code]
+            for line in rec.line_ids.sorted(lambda x: x.sequence):
+                name = [line.type_id.code]
 
-                if l.is_integrated or l.is_lamp_included:
-                    if l.color_temperature_flux_ids:
-                        if l.color_temperature_display:
-                            line.append(l.color_temperature_display)
-                        if l.luminous_flux_display:
-                            line.append(l.luminous_flux_display)
-                    if l.is_led and l.cri_min:
-                        line.append("CRI%i" % l.cri_min)
-                    if l.is_led and l.leds_m:
-                        line.append("%i Leds/m" % l.leds_m)
-                    if l.is_led and l.special_spectrum_id:
-                        line.append(l.special_spectrum_id.name)
+                if line.is_integrated or line.is_lamp_included:
+                    if line.color_temperature_flux_ids:
+                        if line.color_temperature_display:
+                            name.append(line.color_temperature_display)
+                        if line.luminous_flux_display:
+                            name.append(line.luminous_flux_display)
+                    if line.is_led and line.cri_min:
+                        name.append("CRI%i" % line.cri_min)
+                    if line.is_led and line.leds_m:
+                        name.append("%i Leds/m" % line.leds_m)
+                    if line.is_led and line.special_spectrum_id:
+                        name.append(line.special_spectrum_id.name)
 
-                if l.wattage_display:
-                    line.append("(%s)" % l.wattage_display)
-
-                res.append(" ".join(line))
-
+                if line.wattage_display:
+                    name.append("(%s)" % line.wattage_display)
+                res.append(" ".join(name))
             if res != []:
                 rec.line_display = " / ".join(res)
+            else:
+                rec.line_display = False
 
-    @api.multi
     @api.constrains("lampholder_id", "lampholder_technical_id", "line_ids")
     def _check_efficiency_lampholder(self):
         for rec in self:
@@ -90,7 +94,8 @@ class LightingProductSource(models.Model):
                     _("A non accessory source with lampholder cannot have efficiency")
                 )
 
-    ## aux display functions
+    # TODO: The follow functions has a lot of code duplicated, can we do a generic function?
+    # aux display functions
     def get_source_type(self):
         res = []
         for src in self.sorted(lambda x: x.sequence):
@@ -136,7 +141,6 @@ class LightingProductSource(models.Model):
                 kn_l.append(",".join(src_k))
                 k_l = " ".join(kn_l)
             res.append(k_l)
-
         if not any(res):
             return None
         return res
@@ -148,7 +152,6 @@ class LightingProductSource(models.Model):
             if src_k:
                 k_l = ",".join(["CRI%i" % x for x in src_k])
                 res.append(k_l)
-
         if not any(res):
             return None
         return res
@@ -160,7 +163,6 @@ class LightingProductSource(models.Model):
             if src_k:
                 k_l = ",".join([str(x) for x in src_k])
                 res.append("%s Leds/m" % (k_l,))
-
         if not any(res):
             return None
         return res
@@ -172,7 +174,6 @@ class LightingProductSource(models.Model):
             if src_k:
                 k_l = ",".join(src_k)
                 res.append(k_l)
-
         if not any(res):
             return None
         return res
@@ -187,7 +188,6 @@ class LightingProductSource(models.Model):
                     kn_l.append("%ix" % src.num)
                 kn_l.append(src_k)
                 res.append(" ".join(kn_l))
-
         if not any(res):
             return None
         return res
