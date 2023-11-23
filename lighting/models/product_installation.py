@@ -1,20 +1,24 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
 class LightingProductInstallation(models.Model):
     _name = "lighting.product.installation"
+    _description = "Product Installation"
     _order = "name"
 
-    name = fields.Char(string="Name", required=True, translate=True)
-
+    name = fields.Char(
+        required=True,
+        translate=True,
+    )
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -27,7 +31,6 @@ class LightingProductInstallation(models.Model):
         ("name_uniq", "unique (name)", "The installation must be unique!"),
     ]
 
-    @api.multi
     def unlink(self):
         records = self.env["lighting.product"].search(
             [("installation_ids", "in", self.ids)]

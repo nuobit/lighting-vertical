@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- view product group -->
     <record id="product_group_form_view" model="ir.ui.view">
         <field name="name">product.group.form</field>
         <field name="model">lighting.product.group</field>
@@ -154,16 +152,13 @@
             </form>
         </field>
     </record>
-
     <record id="product_group_tree_view" model="ir.ui.view">
         <field name="name">product.group.tree</field>
         <field name="model">lighting.product.group</field>
         <field name="arch" type="xml">
-            <tree
-                string="Product group Tree"
-                decoration-danger="len(flat_category_ids) > 1"
-            >
+            <tree decoration-danger="multiple_categories==True">
                 <field name="sequence" widget="handle" />
+                <field name="multiple_categories" invisible="1" />
                 <field name="name" />
                 <field name="level" />
                 <field name="parent_id" />
@@ -217,8 +212,6 @@
             </tree>
         </field>
     </record>
-
-    <!-- Group search view -->
     <record id="product_group_search_view" model="ir.ui.view">
         <field name="name">product.group.search</field>
         <field name="model">lighting.product.group</field>
@@ -269,24 +262,13 @@
             </search>
         </field>
     </record>
-
-    <!-- window action product group -->
     <record id="product_group_action" model="ir.actions.act_window">
         <field name="name">Product group</field>
         <field name="res_model">lighting.product.group</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product group
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="product_groups_menu"
-        name="Product groups"
-        parent="lighting_product_menu"
-        action="product_group_action"
-        sequence="10"
-    />
 </odoo>

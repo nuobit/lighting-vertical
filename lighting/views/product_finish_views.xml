@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action finish2product smart button -->
     <record id="product_finish_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field
             name="domain"
@@ -54,12 +52,11 @@
             </form>
         </field>
     </record>
-
     <record id="product_finish_tree_view" model="ir.ui.view">
         <field name="name">product.finish.tree</field>
         <field name="model">lighting.product.finish</field>
         <field name="arch" type="xml">
-            <tree string="Product finish Tree">
+            <tree>
                 <field name="code" />
                 <field name="name" />
                 <field name="html_color" />
@@ -79,19 +76,10 @@
     <record id="product_finish_list_action" model="ir.actions.act_window">
         <field name="name">product finish</field>
         <field name="res_model">lighting.product.finish</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product finish
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="product_finishes_menu"
-        name="Finishes"
-        parent="common_data_menu"
-        action="product_finish_list_action"
-        sequence="70"
-    />
 </odoo>

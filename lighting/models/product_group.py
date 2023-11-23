@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -19,15 +19,22 @@ class LightingProductGroup(models.Model):
         model_id = self.env.ref("lighting.model_lighting_product").id
         return [("model_id", "=", model_id)]
 
-    name = fields.Char(required=True, track_visibility="onchange")
-
-    alt_name = fields.Char("Alternate name", track_visibility="onchange")
-
-    complete_name = fields.Char(
-        "Complete Name", compute="_compute_complete_name", store=True
+    name = fields.Char(
+        required=True,
+        tracking=True,
     )
-
-    description = fields.Text(string="Description", translate=True)
+    alt_name = fields.Char(
+        string="Alternate name",
+        tracking=True,
+    )
+    complete_name = fields.Char(
+        compute="_compute_complete_name",
+        store=True,
+        recursive=True,
+    )
+    description = fields.Text(
+        translate=True,
+    )
 
     @api.depends("name", "parent_id.complete_name")
     def _compute_complete_name(self):
@@ -44,17 +51,16 @@ class LightingProductGroup(models.Model):
         column2="type_id",
         string="Types",
     )
-
     sequence = fields.Integer(
         required=True,
         default=1,
         help="The sequence field is used to define order",
-        track_visibility="onchange",
+        tracking=True,
     )
 
-    ## attributes
+    # attributes
     use_category_attributes = fields.Boolean(
-        string="Use category attributes", track_visibility="onchange"
+        tracking=True,
     )
     group_attribute_ids = fields.Many2many(
         comodel_name="ir.model.fields",
@@ -62,10 +68,9 @@ class LightingProductGroup(models.Model):
         column1="group_id",
         column2="field_id",
         domain=_get_domain,
-        string="Attributes",
-        track_visibility="onchange",
+        string="Group Attributes",
+        tracking=True,
     )
-
     attribute_ids = fields.Many2many(
         comodel_name="ir.model.fields",
         string="Attributes",
@@ -91,9 +96,10 @@ class LightingProductGroup(models.Model):
                     )
                 ]
 
-    ## common fields
+    # common fields
     use_category_fields = fields.Boolean(
-        string="Use category fields", track_visibility="onchange"
+        string="Use category fields",
+        tracking=True,
     )
     group_field_ids = fields.Many2many(
         comodel_name="ir.model.fields",
@@ -101,10 +107,9 @@ class LightingProductGroup(models.Model):
         column1="group_id",
         column2="field_id",
         domain=_get_domain,
-        string="Fields",
-        track_visibility="onchange",
+        string="Group Fields",
+        tracking=True,
     )
-
     field_ids = fields.Many2many(
         comodel_name="ir.model.fields",
         string="Fields",
@@ -135,8 +140,10 @@ class LightingProductGroup(models.Model):
         inverse_name="product_group_id",
         string="Products",
     )
-
-    product_count = fields.Integer(compute="_compute_product_count", string="Products")
+    product_count = fields.Integer(
+        compute="_compute_product_count",
+        string="Product(s)",
+    )
 
     def _compute_product_count(self):
         for rec in self:
@@ -147,22 +154,27 @@ class LightingProductGroup(models.Model):
         string="Parent",
         index=True,
         ondelete="cascade",
-        track_visibility="onchange",
+        tracking=True,
     )
     child_ids = fields.One2many(
         comodel_name="lighting.product.group",
         inverse_name="parent_id",
         string="Child Groups",
-        track_visibility="onchange",
+        tracking=True,
     )
-
-    child_count = fields.Integer(compute="_compute_child_count", string="Childs")
+    child_count = fields.Integer(
+        compute="_compute_child_count",
+        string="Childs",
+    )
 
     def _compute_child_count(self):
         for rec in self:
             rec.child_count = len(rec.child_ids)
 
-    level = fields.Integer(string="Level", readonly=True, compute="_compute_level")
+    level = fields.Integer(
+        readonly=True,
+        compute="_compute_level",
+    )
 
     def _get_level(self):
         self.ensure_one()
@@ -176,7 +188,8 @@ class LightingProductGroup(models.Model):
             rec.level = rec._get_level()
 
     flat_product_ids = fields.Many2many(
-        comodel_name="lighting.product", compute="_compute_flat_products"
+        comodel_name="lighting.product",
+        compute="_compute_flat_products",
     )
 
     def _get_flat_products(self):
@@ -194,7 +207,8 @@ class LightingProductGroup(models.Model):
             rec.flat_product_ids = rec._get_flat_products()
 
     flat_product_count = fields.Integer(
-        compute="_compute_flat_product_count", string="Products (flat)"
+        compute="_compute_flat_product_count",
+        string="Products (flat)",
     )
 
     def _compute_flat_product_count(self):
@@ -211,6 +225,13 @@ class LightingProductGroup(models.Model):
     def _compute_flat_categories(self):
         for rec in self:
             rec.flat_category_ids = rec.flat_product_ids.mapped("category_id")
+
+    multiple_categories = fields.Boolean(compute="_compute_multiple_categories")
+
+    @api.depends("flat_category_ids")
+    def _compute_multiple_categories(self):
+        for rec in self:
+            rec.multiple_categories = True if len(rec.flat_category_ids) > 1 else False
 
     unique_category = fields.Boolean(
         string="Unique category",
@@ -241,7 +262,8 @@ class LightingProductGroup(models.Model):
         return []
 
     grouped_product_ids = fields.Many2many(
-        comodel_name="lighting.product", compute="_compute_grouped_products"
+        comodel_name="lighting.product",
+        compute="_compute_grouped_products",
     )
 
     def _get_grouped_products(self):
@@ -261,7 +283,8 @@ class LightingProductGroup(models.Model):
             rec.grouped_product_ids = rec._get_grouped_products()
 
     grouped_product_count = fields.Integer(
-        compute="_compute_grouped_product_count", string="Products (grpd.)"
+        compute="_compute_grouped_product_count",
+        string="Products (grpd.)",
     )
 
     def _compute_grouped_product_count(self):
@@ -280,6 +303,8 @@ class LightingProductGroup(models.Model):
                 rec.common_product_id = rec.grouped_product_ids.sorted(
                     lambda x: x.sequence
                 )[0]
+            else:
+                rec.common_product_id = False
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "The name must be unique!"),
@@ -292,14 +317,12 @@ class LightingProductGroup(models.Model):
         else:
             if self.parent_id:
                 return self.parent_id.get_parent_group_by_type_aux(typ)
-
         return self.env[self._name]
 
     def get_parent_group_by_type(self, typ):
         groups = self.env["lighting.product.group"]
         for rec in self:
             groups |= rec.get_parent_group_by_type_aux(typ)
-
         return groups
 
     def get_default_group_image(self):
@@ -313,12 +336,11 @@ class LightingProductGroup(models.Model):
             )
             .sorted(lambda x: (x.sequence, x.id))
         )
-
         if attachments:
             return attachments[0]
-
         return self.env["lighting.attachment"]
 
+    # TODO: Review: this onchanges should be computed?
     @api.onchange("use_category_attributes")
     def onchange_use_category_attributes(self):
         if self.use_category_attributes:
@@ -362,8 +384,9 @@ class LightingProductGroup(models.Model):
             elif len(unique_categories) > 1:
                 raise ValidationError(
                     _(
-                        'To use the options "Use category attributes" or "Use category fields", '
-                        "all the products must have the same category"
+                        "To use the options 'Use category attributes' or "
+                        "'Use category fields', all the products "
+                        "must have the same category"
                     )
                 )
 
@@ -381,7 +404,8 @@ class LightingProductGroup(models.Model):
             if self.parent_id.product_ids:
                 raise ValidationError(
                     _(
-                        "Error ! The parent contains products and a parent with products cannot also have childs"
+                        "Error ! The parent contains products and a "
+                        "parent with products cannot also have childs"
                     )
                 )
         return True
@@ -432,7 +456,6 @@ class LightingProductGroup(models.Model):
             "type": "ir.actions.act_window",
             "res_model": "lighting.product",
             "views": [(False, "form")],
-            "view_type": "form",
             "res_id": self.common_product_id.id,
             "context": {"default_product_group_id": self.id},
         }
@@ -440,15 +463,17 @@ class LightingProductGroup(models.Model):
     test_output = fields.Text(readonly=True)
 
     def run_test(self):
-        a = []
-        for p in self.grouped_product_ids:
+        reference_attributes = []
+        for product in self.grouped_product_ids:
             p_d = {}
             for attr in self.attribute_ids:
-                p_d[attr.name] = getattr(p, attr.name)
-            a.append({p.reference: p_d})
+                p_d[attr.name] = getattr(product, attr.name)
+            reference_attributes.append({product.reference: p_d})
 
-        t = {self.name: a}
+        group_reference_attributes = {self.name: reference_attributes}
         import json
 
         kwargs = dict(indent=4, sort_keys=True)
-        self.test_output = json.dumps(t, ensure_ascii=False, **kwargs)
+        self.test_output = json.dumps(
+            group_reference_attributes, ensure_ascii=False, **kwargs
+        )

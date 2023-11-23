@@ -1,10 +1,10 @@
 from odoo import http
 from odoo.http import request
 
-import odoo.addons.web.controllers.main as main
+import odoo.addons.web.controllers.binary as binary
 
 
-class Binary(main.Binary):
+class Binary(binary.Binary):
     @http.route(
         [
             "/web/image",
@@ -15,7 +15,8 @@ class Binary(main.Binary):
             "/web/image/<string:model>/<int:id>/<string:field>",
             "/web/image/<string:model>/<int:id>/<string:field>/<string:filename>",
             "/web/image/<string:model>/<int:id>/<string:field>/<int:width>x<int:height>",
-            "/web/image/<string:model>/<int:id>/<string:field>/<int:width>x<int:height>/<string:filename>",
+            "/web/image/<string:model>/<int:id>/<string:field>"
+            "/<int:width>x<int:height>/<string:filename>",
             "/web/image/<int:id>",
             "/web/image/<int:id>/<string:filename>",
             "/web/image/<int:id>/<int:width>x<int:height>",
@@ -32,10 +33,10 @@ class Binary(main.Binary):
     )
     def content_image(
         self,
-        hash=None,
+        hash=None,  # pylint: disable=W0622
         xmlid=None,
         model="ir.attachment",
-        id=None,
+        id=None,  # pylint: disable=W0622
         field="datas",
         filename_field="datas_fname",
         unique=None,

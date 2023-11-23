@@ -7,11 +7,11 @@ from odoo.exceptions import ValidationError
 
 class LightingProductCategory(models.Model):
     _name = "lighting.product.category"
-    _inherit = "lighting.tree.mixin"
+    _description = "Product Category"
+    _inherit = ["lighting.tree.mixin", "mail.thread", "mail.activity.mixin"]
     _parent_name = "parent_id"
     _order = "sequence,name"
 
-    @api.multi
     def name_get(self):
         vals = []
         for record in self:
@@ -23,28 +23,31 @@ class LightingProductCategory(models.Model):
         model_id = self.env.ref("lighting.model_lighting_product").id
         return [("model_id", "=", model_id)]
 
-    code = fields.Char(string="Code", size=5, required=True)
-
-    name = fields.Char(required=True, translate=True)
+    code = fields.Char(
+        size=5,
+        required=True,
+    )
+    name = fields.Char(
+        required=True,
+        translate=True,
+    )
 
     parent_id = fields.Many2one(
         comodel_name="lighting.product.category",
-        string="Parent",
         index=True,
         ondelete="cascade",
-        track_visibility="onchange",
+        tracking=True,
     )
     child_ids = fields.One2many(
         comodel_name="lighting.product.category",
         inverse_name="parent_id",
         string="Child Categories",
-        track_visibility="onchange",
+        tracking=True,
     )
 
     root_id = fields.Many2one(
         comodel_name="lighting.product.category",
         readonly=True,
-        string="Root",
         compute="_compute_root",
     )
 
@@ -52,19 +55,18 @@ class LightingProductCategory(models.Model):
         for rec in self:
             rec.root_id = rec._get_root()
 
-    is_accessory = fields.Boolean(string="Is accessory")
-
+    is_accessory = fields.Boolean()
     sequence = fields.Integer(
-        required=True, default=1, help="The sequence field is used to define order"
+        required=True,
+        default=1,
+        help="The sequence field is used to define order",
     )
 
-    #### description
+    # description
     description_text = fields.Char(
-        string="Description text",
         help="Text to show on a generated product description",
         translate=True,
     )
-
     description_dimension_ids = fields.Many2many(
         string="Description Dimensions",
         comodel_name="lighting.dimension.type",
@@ -72,9 +74,7 @@ class LightingProductCategory(models.Model):
         column1="category_id",
         column2="dimension_type_id",
     )
-    inherit_description_dimensions = fields.Boolean(
-        string="Inherit Description Dimensions",
-    )
+    inherit_description_dimensions = fields.Boolean()
     effective_description_dimension_ids = fields.Many2many(
         comodel_name="lighting.dimension.type",
         string="Effective Description Dimensions",
@@ -104,7 +104,7 @@ class LightingProductCategory(models.Model):
                 rec._get_parents_description_dimensions()
             )
 
-    #### attributes
+    # attributes
     attribute_ids = fields.Many2many(
         comodel_name="ir.model.fields",
         relation="lighting_product_category_field_attribute_rel",
@@ -114,7 +114,7 @@ class LightingProductCategory(models.Model):
         string="Attributes",
     )
 
-    inherit_attributes = fields.Boolean(string="Inherit attributes")
+    inherit_attributes = fields.Boolean()
     effective_attribute_ids = fields.Many2many(
         comodel_name="ir.model.fields",
         string="Effective attributes",
@@ -136,12 +136,14 @@ class LightingProductCategory(models.Model):
         for rec in self:
             rec.effective_attribute_ids = rec._get_parents_attributes()
 
+    # TODO: Modificar el onchange, deberia calcularse
+    #  solo si inherit attributes es True? modificar el compute
     @api.onchange("inherit_attributes", "attribute_ids")
     def onchange_attribute_ids(self):
         if self.inherit_attributes:
             self._compute_effective_attributes()
 
-    #### fields
+    # fields
     field_ids = fields.Many2many(
         comodel_name="ir.model.fields",
         relation="lighting_product_category_field_field_rel",
@@ -151,7 +153,7 @@ class LightingProductCategory(models.Model):
         string="Fields",
     )
 
-    inherit_fields = fields.Boolean(string="Inherit fields")
+    inherit_fields = fields.Boolean()
     effective_field_ids = fields.Many2many(
         comodel_name="ir.model.fields",
         string="Effective fields",
@@ -173,18 +175,23 @@ class LightingProductCategory(models.Model):
         for rec in self:
             rec.effective_field_ids = rec._get_parents_fields()
 
+    # TODO: Modificar el onchange, deberia calcularse
+    #  solo si inherit fields es True? modificar el compute
     @api.onchange("inherit_fields", "field_ids")
     def onchange_field_ids(self):
         if self.inherit_fields:
             self._compute_effective_fields()
 
-    #### products
+    # products
     product_ids = fields.One2many(
-        comodel_name="lighting.product", inverse_name="category_id", string="Products"
+        comodel_name="lighting.product",
+        inverse_name="category_id",
+        string="Products",
     )
 
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -192,7 +199,8 @@ class LightingProductCategory(models.Model):
             rec.product_count = len(rec.product_ids)
 
     flat_product_ids = fields.Many2many(
-        comodel_name="lighting.product", compute="_compute_flat_products"
+        comodel_name="lighting.product",
+        compute="_compute_flat_products",
     )
 
     def _get_flat_products(self):
@@ -210,7 +218,8 @@ class LightingProductCategory(models.Model):
             rec.flat_product_ids = rec._get_flat_products()
 
     flat_product_count = fields.Integer(
-        compute="_compute_flat_product_count", string="Products (flat)"
+        compute="_compute_flat_product_count",
+        string="Products (flat)",
     )
 
     def _compute_flat_product_count(self):
@@ -222,25 +231,23 @@ class LightingProductCategory(models.Model):
         inverse_name="category_id",
         string="Attachments",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
     attachment_count = fields.Integer(
-        compute="_compute_attachment_count", string="Attachment(s)"
+        compute="_compute_attachment_count",
+        string="Attachment(s)",
     )
 
     @api.depends("attachment_ids")
     def _compute_attachment_count(self):
-        for record in self:
-            record.attachment_count = self.env[
-                "lighting.product.category.attachment"
-            ].search_count([("category_id", "=", record.id)])
+        for rec in self:
+            rec.attachment_count = len(rec.attachment_ids)
 
     _sql_constraints = [
         ("name_uniq", "unique (parent_id,name)", "The type must be unique by parent!"),
         ("code_uniq", "unique (code)", "The code must be unique!"),
     ]
 
-    @api.multi
     @api.constrains("is_accessory")
     def _check_efficiency_lampholder(self):
         for rec in self:

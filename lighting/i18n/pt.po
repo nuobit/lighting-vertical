@@ -261,8 +261,8 @@ msgid "Auxiliary gear"
 msgstr "Engrenagem auxiliar"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentbrand_name_19610
-msgid "Auxiliary gear code"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentbrand_name
+msgid "Auxiliary equipment brand"
 msgstr "Código de equipamento auxiliar"
 
 #. module: lighting
@@ -430,6 +430,7 @@ msgstr "Perto"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_code
 #: model:ir.ui.view,arch_db:lighting.product_finish_form_view
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
 msgid "Code"
 msgstr "Código"
 
@@ -511,11 +512,6 @@ msgstr "Crie o primeiro modelo de produto"
 #: model:ir.ui.view,arch_db:lighting.product_model_form_view
 msgid "Model name"
 msgstr "Nome do modelo"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_model_id
-msgid "Model"
-msgstr "Modelo"
 
 #. module: lighting
 #: model:ir.ui.menu,name:lighting.product_models_menu
@@ -763,9 +759,7 @@ msgstr "Criado por"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_create_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_state_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_create_date
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_type_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_create_date
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_create_date
@@ -819,6 +813,7 @@ msgstr "Definir substitutos"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_photobiologicalriskgroup_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Description"
 msgstr "Descrição"
@@ -839,7 +834,7 @@ msgid "Description show IP"
 msgstr "Descrição show IP"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_catalog_description_show_ip_domain
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog_description_show_ip_condition
 msgid "Show IP condition"
 msgstr "Show IP condition"
 
@@ -905,22 +900,9 @@ msgstr "Disco. produtos"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued
-#: selection:lighting.product,state:0
+#: selection:lighting.product,state_marketing:0
 msgid "Discontinued"
 msgstr "Interrompido"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_cataloged
-msgid "Cataloged"
-msgstr "Cataloged"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_new
-msgid "New"
-msgstr "New"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_discontinued_soon
@@ -938,7 +920,7 @@ msgstr "Descontinuado em breve"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipment_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentbrand_display_name_19612
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentbrandl_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_display_name
@@ -963,9 +945,7 @@ msgstr "Descontinuado em breve"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_state_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_display_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_type_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_voltage_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier_display_name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_display_name
@@ -1263,7 +1243,7 @@ msgstr "Largura do IBox (cm)"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_id_19095
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_frequency_id_19120
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledbrand_id
@@ -1368,11 +1348,6 @@ msgid "Is export"
 msgstr "É exportação"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
-msgid "Code"
-msgstr "Code"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_is_integrated
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_is_integrated
 msgid "Is integrated?"
@@ -1458,7 +1433,7 @@ msgid "Language Tree"
 msgstr "Árvore de Idiomas"
 
 #. module: lighting
-#: model:ir.ui.menu,name:lighting.lenguages_menu
+#: model:ir.ui.menu,name:lighting.languages_menu
 msgid "Languages"
 msgstr "línguas"
 
@@ -1783,11 +1758,6 @@ msgid "Name"
 msgstr "Nome"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_value
-msgid "Value"
-msgstr "Valor"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_num
 msgid "Number of beams"
 msgstr "Número de vigas"
@@ -1811,12 +1781,6 @@ msgstr "Número de interruptores"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_num
 msgid "Number of sources"
 msgstr "Número de fontes"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_qty_onorder
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "On order quantity"
-msgstr "On order quantity"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_on_request
@@ -2279,12 +2243,6 @@ msgid "Published"
 msgstr "Publicados"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_stock_onhand
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "On hand stock"
-msgstr "On hand stock"
-
-#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
 msgid "Online"
@@ -2304,6 +2262,7 @@ msgstr "Catalogado"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_until_end_stock
 #: selection:lighting.product,state_marketing:0
 msgid "Until end of stock"
 msgstr "Até o final do estoque"
@@ -2313,12 +2272,6 @@ msgstr "Até o final do estoque"
 #: selection:lighting.product,state_marketing:0
 msgid "Until end of stock (historical)"
 msgstr "Até o final do estoque (histórico)"
-
-#. module: lighting
-#: model:ir.ui.view,arch_db:lighting.lighting_product_view
-#: selection:lighting.product,state_marketing:0
-msgid "Discontinued"
-msgstr "Interrompido"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
@@ -2818,11 +2771,6 @@ msgid "Composite products"
 msgstr "Produtos compostos"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
-msgid "Description"
-msgstr "Descrição"
-
-#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ugr_max
 msgid "UGR"
 msgstr "UGR"
@@ -2864,13 +2812,8 @@ msgstr "Tipos de conectores"
 
 #. module: lighting
 #: model:ir.model.fields,help:lighting.field_lighting_dimension_type_uom
-msgid "Unit of mesure"
+msgid "Unit of measure"
 msgstr "Unidade de medida"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_until_end_stock
-msgid "Until end of stock"
-msgstr "Até o final do estoque"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_uom
@@ -2886,6 +2829,7 @@ msgstr "Do utilizador"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_value
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_value
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_value
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_color_temperature_value
 msgid "Value"
 msgstr "Valor"
 

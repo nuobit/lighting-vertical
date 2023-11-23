@@ -1,22 +1,24 @@
-# Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
     "name": "Lighting vertical",
-    "description": "Lighting vertical",
-    "version": "11.0.0.100.9",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "summary": "Lighting vertical",
+    "version": "16.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
-    "category": "Custom",
+    "category": "Lighting",
     "website": "https://github.com/NuoBiT/lighting-vertical",
     "depends": [
         "mail",
         "product",
+        "sale",
     ],
     "data": [
         "security/lighting_security.xml",
         "security/ir.model.access.csv",
-        "views/product_menuitems.xml",
+        "views/product_beam_views.xml",
+        "views/product_beam_photodistribution_views.xml",
         "views/product_catalog_views.xml",
         "views/product_family_attachment_views.xml",
         "views/product_family_views.xml",
@@ -29,6 +31,7 @@
         "views/product_color_temperature_views.xml",
         "views/product_sealing_views.xml",
         "views/product_finish_views.xml",
+        "views/product_language_views.xml",
         "views/product_model_views.xml",
         "views/product_ral_views.xml",
         "views/product_voltage_views.xml",
@@ -46,12 +49,14 @@
         "views/product_dimension_type_views.xml",
         "views/product_material_views.xml",
         "views/product_note_views.xml",
+        "views/product_views.xml",
+        "views/product_energyefficiency_views.xml",
         "views/product_special_spectrum_views.xml",
         "views/views.xml",
+        "views/lighting_views.xml",
         "wizard/lighting_product_addattachment.xml",
         "wizard/product_define_substitute_views.xml",
         "data/lighting_data.xml",
         "data/lighting_product_ral_data.xml",
     ],
-    "installable": True,
 }

@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action catalog2product smart button -->
     <record id="product_catalog_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('catalog_ids','=',active_id)]</field>
         <field name="context">{'default_catalog_ids': [(4, active_id, False)]}</field>
@@ -37,7 +35,7 @@
                             />
                         </button>
                     </div>
-                    <field name="image_medium" widget="image" class="oe_avatar" />
+                    <field name="image_1920" widget="image" class="oe_avatar" />
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Catalog" />
@@ -65,7 +63,7 @@
         <field name="name">catalog.tree</field>
         <field name="model">lighting.catalog</field>
         <field name="arch" type="xml">
-            <tree string="Catalog Tree">
+            <tree>
                 <field name="name" />
                 <field name="description_show_ip" />
                 <field name="product_count" />
@@ -86,7 +84,7 @@
         <field name="arch" type="xml">
             <kanban>
                 <field name="id" />
-                <field name="image_small" />
+                <field name="image_128" />
                 <field name="name" />
                 <field name="product_count" />
                 <templates>
@@ -94,7 +92,8 @@
                         <div class="oe_kanban_global_click">
                             <div class="o_kanban_image">
                                 <img
-                                    t-att-src="kanban_image('lighting.catalog', 'image_small', record.id.raw_value)"
+                                    t-att-src="kanban_image('lighting.catalog', 'image_128', record.id.raw_value)"
+                                    t-att-alt="record.id.value"
                                 />
                             </div>
                             <div class="oe_kanban_details">
@@ -107,14 +106,14 @@
                                         type="action"
                                     >
                                         <span>
-                                            <t t-esc="record.product_count.value" />
+                                            <t t-out="record.product_count.value" />
                                             Products
                                         </span>
                                     </a>
                                 </div>
                                 <div t-if="record.product_count.value == 0">
                                     <span>
-                                        <t t-esc="record.product_count.value" />
+                                        <t t-out="record.product_count.value" />
                                         Products
                                     </span>
                                 </div>
@@ -130,19 +129,10 @@
     <record id="catalog_list_action" model="ir.actions.act_window">
         <field name="name">Catalogs</field>
         <field name="res_model">lighting.catalog</field>
-        <field name="view_type">form</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first catalog
             </p>
         </field>
     </record>
-
-    <menuitem
-        id="catalogs_menu"
-        name="Catalogs"
-        parent="common_data_menu"
-        action="catalog_list_action"
-        sequence="10"
-    />
 </odoo>

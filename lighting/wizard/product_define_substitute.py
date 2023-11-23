@@ -1,8 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models
+from odoo import models
 
 
 class LightingProductDefineSubstitute(models.TransientModel):
@@ -13,7 +12,6 @@ class LightingProductDefineSubstitute(models.TransientModel):
     _name = "lighting.product.define.substitute"
     _description = "Define substitutes"
 
-    @api.multi
     def define_substitute(self):
         context = dict(self._context or {})
         active_ids = context.get("active_ids", []) or []

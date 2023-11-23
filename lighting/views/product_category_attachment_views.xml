@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window view category attachment class -->
@@ -40,7 +39,7 @@
         <field name="name">product.category.attachment.tree</field>
         <field name="model">lighting.product.category.attachment</field>
         <field name="arch" type="xml">
-            <tree string="Category attachment Tree">
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="datas_fname" />
                 <field name="datas" filename="datas_fname" string="Size" />
@@ -57,7 +56,7 @@
     <record id="product_category_attachment_action" model="ir.actions.act_window">
         <field name="name">Category attachments</field>
         <field name="res_model">lighting.product.category.attachment</field>
-        <field name="view_type">form</field>
+
         <field name="view_mode">tree,form</field>
         <field name="domain">[('category_id','=',active_id)]</field>
         <field name="context">{'default_category_id': active_id}</field>

@@ -1,12 +1,15 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
+# TODO: Name inconsistencies. Lighting_attachment_type is product_attachment?
+#  It should be lighting.product.attachment.type
 class LightingAttachmentType(models.Model):
     _name = "lighting.attachment.type"
+    _description = "Product Attachment Type"
     _order = "sequence,code"
 
     def _sequence_default(self):
@@ -23,13 +26,19 @@ class LightingAttachmentType(models.Model):
         default=_sequence_default,
         help="The sequence field is used to define order",
     )
-
-    code = fields.Char(string="Code", required=True)
-    name = fields.Char(string="Description", translate=True)
-    is_image = fields.Boolean(string="Is image", default=False)
-
+    code = fields.Char(
+        required=True,
+    )
+    name = fields.Char(
+        string="Description",
+        translate=True,
+    )
+    is_image = fields.Boolean(
+        default=False,
+    )
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -46,15 +55,12 @@ class LightingAttachmentType(models.Model):
         ),
     ]
 
-    @api.multi
     def name_get(self):
         vals = []
-        for record in self:
-            if record.name:
-                name = "%s (%s)" % (record.name, record.code)
+        for rec in self:
+            if rec.name:
+                name = "%s (%s)" % (rec.name, rec.code)
             else:
-                name = record.code
-
-            vals.append((record.id, name))
-
+                name = rec.code
+            vals.append((rec.id, name))
         return vals

@@ -1,22 +1,36 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
 class LightingProductAuxiliaryEquipment(models.Model):
     _name = "lighting.product.auxiliaryequipment"
+    _description = "Product Auxiliary Equipment"
     _order = "name"
 
-    name = fields.Char(string="Auxiliary equipment", required=True, translate=True)
+    name = fields.Char(
+        string="Auxiliary equipment",
+        required=True,
+        translate=True,
+    )
+    product_count = fields.Integer(
+        compute="_compute_product_count",
+        string="Product(s)",
+    )
+
+    def _compute_product_count(self):
+        for record in self:
+            record.product_count = self.env["lighting.product"].search_count(
+                [("auxiliary_equipment_ids", "=", record.id)]
+            )
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "The auxiliary equipment must be unique!"),
     ]
 
-    @api.multi
     def unlink(self):
         records = self.env["lighting.product"].search(
             [("auxiliary_equipment_ids", "in", self.ids)]

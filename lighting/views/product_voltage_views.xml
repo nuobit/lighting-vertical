@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action voltage2product smart button -->
     <record id="product_voltage_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">['|',
             ('input_voltage_id', '=', active_id),
@@ -70,7 +68,7 @@
         <field name="name">product.voltage.tree</field>
         <field name="model">lighting.product.voltage</field>
         <field name="arch" type="xml">
-            <tree string="Product voltage Tree">
+            <tree>
                 <field name="name" />
                 <field name="product_count" />
                 <button
@@ -88,18 +86,9 @@
     <record id="product_voltage_list_action" model="ir.actions.act_window">
         <field name="name">Product voltage</field>
         <field name="res_model">lighting.product.voltage</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first product voltage</p>
         </field>
     </record>
-
-    <menuitem
-        id="product_voltages_menu"
-        name="Voltages"
-        parent="common_data_menu"
-        action="product_voltage_list_action"
-        sequence="80"
-    />
 </odoo>

@@ -1,22 +1,31 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
 class LightingProductMaterial(models.Model):
     _name = "lighting.product.material"
+    _description = "Product Material"
     _order = "code"
 
-    code = fields.Char(string="Code", required=True)
-    name = fields.Char(string="Description", required=True, translate=True)
-    is_glass = fields.Boolean(string="Glass")
-
+    code = fields.Char(
+        required=True,
+    )
+    name = fields.Char(
+        string="Description",
+        required=True,
+        translate=True,
+    )
+    is_glass = fields.Boolean(
+        string="Glass",
+    )
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -42,7 +51,6 @@ class LightingProductMaterial(models.Model):
         ("code_uniq", "unique (code)", "The material code must be unique!"),
     ]
 
-    @api.multi
     def unlink(self):
         fields = [
             "body_material_ids",

@@ -1,24 +1,33 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
 class LightingEnergyEfficiency(models.Model):
     _name = "lighting.energyefficiency"
+    _description = "Product Energy Efficiency"
     _order = "sequence"
 
     sequence = fields.Integer(
-        required=True, default=1, help="The sequence field is used to define order"
+        required=True,
+        default=1,
+        help="The sequence field is used to define order",
     )
-    name = fields.Char(string="Description", required=True)
+    name = fields.Char(
+        string="Description",
+        required=True,
+    )
 
-    color = fields.Integer(string="Color Index")
+    color = fields.Integer(
+        string="Color Index",
+    )
 
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -33,7 +42,6 @@ class LightingEnergyEfficiency(models.Model):
         ("name_uniq", "unique (name)", "The energy efficiency must be unique!"),
     ]
 
-    @api.multi
     def unlink(self):
         records = self.env["lighting.product.source.line"].search(
             [
@@ -47,4 +55,4 @@ class LightingEnergyEfficiency(models.Model):
                 )
                 % records.mapped("source_id.product_id.reference")
             )
-        return super(LightingEnergyEfficiency, self).unlink()
+        return super().unlink()

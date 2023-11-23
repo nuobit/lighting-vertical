@@ -1,21 +1,31 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class LightingDimensionType(models.Model):
     _name = "lighting.dimension.type"
+    _description = "Product Dimension Type"
     _order = "name"
 
-    name = fields.Char(string="Name", required=True, translate=True)
-    code = fields.Char(string="Code", help="Code used to identify the dimension type")
-    uom = fields.Char(string="Uom", help="Unit of mesure")
-    description = fields.Char(string="Internal description")
-
+    name = fields.Char(
+        required=True,
+        translate=True,
+    )
+    code = fields.Char(
+        help="Code used to identify the dimension type",
+    )
+    uom = fields.Char(
+        help="Unit of measure",
+    )
+    description = fields.Char(
+        string="Internal description",
+    )
     product_count = fields.Integer(
-        compute="_compute_product_count", string="Product(s)"
+        compute="_compute_product_count",
+        string="Product(s)",
     )
 
     def _compute_product_count(self):
@@ -35,13 +45,12 @@ class LightingDimensionType(models.Model):
         ("code_uniq", "unique (code)", "The dimension code must be unique!"),
     ]
 
-    @api.multi
     def name_get(self):
         vals = []
-        for record in self:
-            name_l = [record.name]
-            if record.uom:
-                name_l.append("(%s)" % record.uom)
-            vals.append((record.id, " ".join(name_l)))
+        for rec in self:
+            name_l = [rec.name]
+            if rec.uom:
+                name_l.append("(%s)" % rec.uom)
+            vals.append((rec.id, " ".join(name_l)))
 
         return vals

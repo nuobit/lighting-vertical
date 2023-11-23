@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -8,16 +8,15 @@ from odoo.exceptions import UserError, ValidationError
 
 class LightingTreeMixin(models.AbstractModel):
     _name = "lighting.tree.mixin"
+    _description = "Lighting Tree Mixin"
 
     # complete_name
     complete_name = fields.Char(
-        "Complete Name",
         compute="_compute_complete_name",
         search="_search_complete_name",
+        recursive=True,
     )
-
     complete_chain_ids = fields.Many2many(
-        string="Complete Chain",
         comodel_name="lighting.product.category",
         compute="_compute_complete_chain_ids",
     )
@@ -47,7 +46,8 @@ class LightingTreeMixin(models.AbstractModel):
             else:
                 rec.complete_name = rec.name
 
-    def _search_complete_name(self, operator, value):
+    # TODO: refactor this function
+    def _search_complete_name(self, operator, value):  # noqa: C901
         node_ids = []
         for node in self.env[self._name].search([]):
             complete_name = node.get_complete_name()
@@ -77,7 +77,6 @@ class LightingTreeMixin(models.AbstractModel):
                     node_ids.append(node.id)
             else:
                 raise UserError(_("Operator %s not implemented") % operator)
-
         return [("id", "in", node_ids)]
 
     @api.model
@@ -101,14 +100,20 @@ class LightingTreeMixin(models.AbstractModel):
         return complete_name_to_leaf(self.env[self._name], complete_name.split(" / "))
 
     # childs
-    child_count = fields.Integer(compute="_compute_child_count", string="Childs")
+    child_count = fields.Integer(
+        compute="_compute_child_count",
+        string="Childs",
+    )
 
     def _compute_child_count(self):
         for rec in self:
             rec.child_count = len(rec.child_ids)
 
     # level
-    level = fields.Integer(string="Level", readonly=True, compute="_compute_level")
+    level = fields.Integer(
+        readonly=True,
+        compute="_compute_level",
+    )
 
     def _get_level(self):
         self.ensure_one()

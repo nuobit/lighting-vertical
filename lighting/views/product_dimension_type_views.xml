@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- window action dimension_type2product smart button -->
     <record id="dimension_type_action_product" model="ir.actions.act_window">
         <field name="name">Product</field>
         <field name="res_model">lighting.product</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">['|', '|', ('dimension_ids.type_id', '=', active_id),
                               ('recess_dimension_ids.type_id', '=', active_id),
@@ -57,7 +55,7 @@
         <field name="name">dimension.type.tree</field>
         <field name="model">lighting.dimension.type</field>
         <field name="arch" type="xml">
-            <tree string="Dimension type Tree">
+            <tree>
                 <field name="display_name" />
                 <field name="code" />
                 <field name="product_count" />
@@ -76,18 +74,9 @@
     <record model="ir.actions.act_window" id="dimension_type_list_action">
         <field name="name">Dimension type</field>
         <field name="res_model">lighting.dimension.type</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Dimension type</p>
         </field>
     </record>
-
-    <menuitem
-        id="dimension_types_menu"
-        name="Dimension types"
-        parent="common_data_menu"
-        action="dimension_type_list_action"
-        sequence="1000"
-    />
 </odoo>

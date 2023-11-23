@@ -1,5 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -7,22 +7,20 @@ from odoo import fields, models
 
 class LightingProductLedChip(models.Model):
     _name = "lighting.product.ledchip"
+    _description = "Product LED chip"
     _rec_name = "reference"
     _order = "source_line_id,date desc"
 
-    reference = fields.Char(string="Reference")
+    reference = fields.Char()
     brand_id = fields.Many2one(
         comodel_name="lighting.product.ledbrand",
         ondelete="restrict",
-        string="Brand",
         required=True,
     )
-    date = fields.Date(string="Date")
-
+    date = fields.Date()
     source_line_id = fields.Many2one(
         comodel_name="lighting.product.source.line",
         ondelete="cascade",
-        string="Source line",
     )
 
     _sql_constraints = [
