@@ -1,11 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="group_lighting_ecommerce_manager" model="res.groups">
         <field name="name">e-Commerce Manager</field>
-        <field name="category_id" ref="lighting.module_category_lighting"/>
-        <field name="implied_ids" eval="[(6, False, [ref('lighting.group_lighting_manager')])]"/>
+        <field name="category_id" ref="lighting.module_category_lighting" />
+        <field
+            name="implied_ids"
+            eval="[(6, False, [ref('lighting.group_lighting_manager')])]"
+        />
     </record>
 </odoo>
