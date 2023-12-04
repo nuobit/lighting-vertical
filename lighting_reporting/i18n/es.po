@@ -227,11 +227,6 @@ msgstr "Recargable"
 
 #. module: lighting_reporting
 #: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
-msgid "Rechargeable"
-msgstr "Recargable"
-
-#. module: lighting_reporting
-#: model:ir.ui.view,arch_db:lighting_reporting.report_product_document
 msgid "Battery charge time"
 msgstr "Ciclo de carga"
 

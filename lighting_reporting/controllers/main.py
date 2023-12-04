@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -20,7 +19,7 @@ class ProductDatasheetController(http.Controller):
         }
         pdf, _ = http.request.env.ref(
             "lighting_reporting.action_report_product"
-        ).render_qweb_pdf(data=data)
+        )._render_qweb_pdf("lighting_reporting.action_report_product", data=data)
         pdfhttpheaders = [
             ("Content-Type", "application/pdf"),
             ("Content-Length", len(pdf)),

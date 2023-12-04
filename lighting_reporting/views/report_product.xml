@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <template
-        id="report_assets_common_lighting_reporting_fonts"
-        name="Lighting reporting QWeb fonts"
-        inherit_id="web.report_assets_common"
-    >
-        <xpath expr="." position="inside">
-            <link
-                href="/lighting_reporting/static/src/less/styles.less"
-                rel="stylesheet"
-                type="text/less"
-            />
-        </xpath>
-    </template>
-
     <template id="external_layout_lighting">
         <!-- Multicompany -->
         <t t-if="not o and doc">
@@ -35,14 +20,24 @@
                     <div class="nl-brand-header-brand">
                         <a t-att-href="company.website">
                             <t t-if="len(doc.catalog_ids) != 1">
-                                <img
-                                    t-att-src="'data:image/*;base64,%s' % to_text(company.logo)"
+                               <img
+                                    t-if="company.logo"
+                                    t-att-src="image_data_uri(company.logo)"
+                                    alt="Logo"
                                 />
+<!--                                <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % to_text(company.logo)" class="pull-left"/>-->
+<!--                                <img-->
+<!--                                    t-att-src="'data:image/*;base64,%s' % to_text(company.logo)"-->
+<!--                                />-->
                             </t>
                             <t t-if="len(doc.catalog_ids) == 1">
                                 <img
-                                    t-attf-src="data:image/*;base64,{{doc.catalog_ids[0].image}}"
+                                    t-att-src="image_data_uri(doc.catalog_ids[0].image_128)"
+                                    alt="Logo"
                                 />
+<!--                                <img-->
+<!--                                    t-attf-src="data:image/*;base64,{{doc.catalog_ids[0].image}}"-->
+<!--                                />-->
                             </t>
                         </a>
                     </div>
@@ -60,7 +55,7 @@
                 <div class="nl-reference-header">
                     <div
                         class="nl-family"
-                        t-esc="', '.join([x.name.upper() for x in doc.family_ids])"
+                        t-out="', '.join([x.name.upper() for x in doc.family_ids])"
                     />
                     <div class="nl-reference" t-field="doc.reference" />
                     <div class="nl-description" t-field="doc.description" />
@@ -69,8 +64,8 @@
         </div>
 
         <div class="article o_report_layout_standard">
-            <h1 t-esc="doc.reference" class="nl-outline" />
-            <t t-raw="0" />
+            <h1 t-out="doc.reference" class="nl-outline" />
+            <t t-out="0" />
         </div>
 
         <!-- FOOTER -->
@@ -80,8 +75,14 @@
                     <div class="nl-footer-company-logo">
                         <a t-att-href="company.website">
                             <img
-                                t-att-src="'data:image/*;base64,%s' % to_text(company.logo)"
+                                t-if="company.logo"
+                                t-att-src="image_data_uri(company.logo)"
+                                alt="Logo"
                             />
+<!--                            <img t-att-src="image_data_uri(company.logo)" alt="Logo"/>-->
+<!--                            <img-->
+<!--                                t-att-src="'data:image/*;base64,%s' % to_text(company.logo)"-->
+<!--                            />-->
                         </a>
                     </div>
                     <div class="nl-footer-company-address">
@@ -90,12 +91,12 @@
                                 <strong t-field="company.name" />
                                 <a
                                     t-att-href="company.website"
-                                    t-esc="company.website.replace('https://', '').replace('http://', '')"
+                                    t-out="company.website.replace('https://', '').replace('http://', '')"
                                 />
                             </li>
                             <li t-if="company.street or company.street2">
                                 <span
-                                    t-esc="' '.join(filter(lambda x: x, [company.street,company.street2 and '({})'.format(company.street2) or None]))"
+                                    t-out="' '.join(filter(lambda x: x, [company.street,company.street2 and '({})'.format(company.street2) or None]))"
                                 />
                             </li>
                             <t
@@ -103,7 +104,7 @@
                                 t-value="' '.join(filter(lambda x: x, [company.zip, ', '.join(filter(lambda x: x, [company.city,company.state_id.name, company.country_id.name]))]))"
                             />
                             <li t-if="postal_data">
-                                <span t-esc="postal_data" />
+                                <span t-out="postal_data" />
                             </li>
                             <t t-foreach="company.partner_id.child_ids" t-as="p">
                                 <li>
@@ -121,10 +122,6 @@
                             <li>
                                 <span t-field="doc.datasheet_generation_date" />
                             </li>
-                            <!--li>
-                                <a t-att-href="doc.get_datasheet_url()" target="_blank"
-                                   t-esc="doc.get_datasheet_url()"/>
-                            </li-->
                         </ul>
                     </div>
                 </div>
@@ -167,6 +164,7 @@
                             t-set="faimages"
                             t-value="doc.get_attachments_by_type('FA')"
                         />
+
                         <t t-if="faimages">
                             <t t-foreach="faimages[:2]" t-as="fai">
                                 <div class="mb32">
@@ -185,24 +183,27 @@
 
                     <div class="nl-layout-data">
                         <!-- long description -->
-                        <t t-if="doc.seo_description">
-                            <div class="nl-family-description">
-                                <p t-field="doc.seo_description" />
-                            </div>
-                        </t>
-                        <t t-if="not doc.seo_description">
-                            <t
-                                t-set="family_descriptions"
-                                t-value="filter(lambda x: x and x.strip() or None, doc.family_ids.mapped('description'))"
-                            />
-                            <t t-if="family_descriptions">
-                                <div class="nl-family-description">
-                                    <t t-foreach="family_descriptions" t-as="fdesc">
-                                        <p t-esc="fdesc" />
-                                    </t>
-                                </div>
-                            </t>
-                        </t>
+<!--                        TODO: Move this to another module (ligting_reporting_seo)
+                                This module inherit from lighting_reporting and lighting_seo
+-->
+<!--                        <t t-if="doc.seo_description">-->
+<!--                            <div class="nl-family-description">-->
+<!--                                <p t-field="doc.seo_description" />-->
+<!--                            </div>-->
+<!--                        </t>-->
+<!--                        <t t-if="not doc.seo_description">-->
+<!--                            <t-->
+<!--                                t-set="family_descriptions"-->
+<!--                                t-value="filter(lambda x: x and x.strip() or None, doc.family_ids.mapped('description'))"-->
+<!--                            />-->
+<!--                            <t t-if="family_descriptions">-->
+<!--                                <div class="nl-family-description">-->
+<!--                                    <t t-foreach="family_descriptions" t-as="fdesc">-->
+<!--                                        <p t-out="fdesc" />-->
+<!--                                    </t>-->
+<!--                                </div>-->
+<!--                            </t>-->
+<!--                        </t>-->
 
                         <!-- general data -->
                         <div class="nl-section-title">GENERAL DATA</div>
@@ -222,7 +223,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.family_ids])"
+                                            t-out="', '.join([x.name for x in doc.family_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -232,7 +233,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="' / '.join(filter(None, [doc.finish_id.display_name, doc.finish2_id.display_name]))"
+                                            t-out="' / '.join(filter(None, [doc.finish_id.display_name, doc.finish2_id.display_name]))"
                                         />
                                     </td>
                                 </tr>
@@ -242,7 +243,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.location_ids])"
+                                            t-out="', '.join([x.name for x in doc.location_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -252,7 +253,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.installation_ids])"
+                                            t-out="', '.join([x.name for x in doc.installation_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -262,7 +263,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.body_material_ids])"
+                                            t-out="', '.join([x.name for x in doc.body_material_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -272,7 +273,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.lampshade_material_ids])"
+                                            t-out="', '.join([x.name for x in doc.lampshade_material_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -282,7 +283,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.diffusor_material_ids])"
+                                            t-out="', '.join([x.name for x in doc.diffusor_material_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -292,7 +293,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.frame_material_ids])"
+                                            t-out="', '.join([x.name for x in doc.frame_material_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -302,7 +303,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.reflector_material_ids])"
+                                            t-out="', '.join([x.name for x in doc.reflector_material_ids])"
                                         />
                                     </td>
                                 </tr>
@@ -312,18 +313,21 @@
                                     </td>
                                     <td>
                                         <span
-                                            t-esc="', '.join([x.name for x in doc.blade_material_ids])"
+                                            t-out="', '.join([x.name for x in doc.blade_material_ids])"
                                         />
                                     </td>
                                 </tr>
-                                <tr t-if="doc.class_id">
-                                    <td>
-                                        ETIM class
-                                    </td>
-                                    <td>
-                                        <span t-field="doc.class_id.code" />
-                                    </td>
-                                </tr>
+<!--                                TODO: move this to another module (lighting_reporting_etim)
+                                        This module inherit from lighting_reporting and lighting_etim
+-->
+<!--                                <tr t-if="doc.class_id">-->
+<!--                                    <td>-->
+<!--                                        ETIM class-->
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <span t-field="doc.class_id.code" />-->
+<!--                                    </td>-->
+<!--                                </tr>-->
                                 <tr t-if="doc.ean">
                                     <td>
                                         EAN
@@ -345,7 +349,7 @@
                                 <td>
                                     <ul class="list-unstyled mb0">
                                         <t t-foreach="doc.get_sheet_sources()" t-as="s">
-                                            <li t-esc="s" />
+                                            <li t-out="s" />
                                         </t>
                                     </ul>
                                 </td>
@@ -366,7 +370,7 @@
                                             />
                                             <t t-if="ef">
                                                 <li
-                                                    t-esc="s.energy_efficiency_display(ef)"
+                                                    t-out="s.energy_efficiency_display(ef)"
                                                 />
                                             </t>
                                         </t>
@@ -400,7 +404,7 @@
                                 <td>
                                     <ul class="list-unstyled mb0">
                                         <t t-foreach="doc.get_sheet_beams()" t-as="b">
-                                            <li t-esc="b" />
+                                            <li t-out="b" />
                                         </t>
                                     </ul>
                                 </td>
@@ -416,7 +420,7 @@
                                     Dimensions
                                 </td>
                                 <td>
-                                    <span t-esc="doc.dimension_ids.get_display()" />
+                                    <span t-out="doc.dimension_ids.get_display()" />
                                 </td>
                             </tr>
                             <tr t-if="doc.sealing_id">
@@ -506,7 +510,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        t-esc="', '.join([x.name for x in doc.dimmable_ids])"
+                                        t-out="', '.join([x.name for x in doc.dimmable_ids])"
                                     />
                                 </td>
                             </tr>
@@ -524,7 +528,7 @@
                                     Total wattage
                                 </td>
                                 <td>
-                                    <span t-esc="int(doc.total_wattage)" />
+                                    <span t-out="int(doc.total_wattage)" />
                                     <span>W</span>
                                 </td>
                             </tr>
@@ -560,7 +564,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        t-esc="', '.join([x.name for x in doc.auxiliary_equipment_ids])"
+                                        t-out="', '.join([x.name for x in doc.auxiliary_equipment_ids])"
                                     />
                                 </td>
                             </tr>
@@ -573,7 +577,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        t-esc="', '.join(doc.auxiliary_equipment_model_ids.sorted(lambda x: x.date, reverse=True).mapped('brand_id.name'))"
+                                        t-out="', '.join(doc.auxiliary_equipment_model_ids.sorted(lambda x: x.date, reverse=True).mapped('brand_id.name'))"
                                     />
                                 </td>
                             </tr>
@@ -591,7 +595,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        t-esc="', '.join([x.name for x in doc.sensor_ids])"
+                                        t-out="', '.join([x.name for x in doc.sensor_ids])"
                                     />
                                 </td>
                             </tr>
@@ -616,7 +620,7 @@
                                     USB ports charging devices
                                 </td>
                                 <td>
-                                    <span t-esc="doc.get_usb()" />
+                                    <span t-out="doc.get_usb()" />
                                 </td>
                             </tr>
                             <tr t-if="doc.battery_charge_time">
@@ -664,7 +668,7 @@
                                     Operating temperature range
                                 </td>
                                 <td>
-                                    <span t-esc="operating_temperature_range" />
+                                    <span t-out="operating_temperature_range" />
                                 </td>
                             </tr>
                             <tr t-if="doc.glow_wire_temperature">
@@ -786,7 +790,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        t-esc="doc.recess_dimension_ids.get_display()"
+                                        t-out="doc.recess_dimension_ids.get_display()"
                                     />
                                 </td>
                             </tr>
@@ -934,7 +938,7 @@
                                 </td>
                                 <td>
                                     <span
-                                        t-esc="', '.join(['%gW' % x.wattage for x in doc.fan_wattage_ids])"
+                                        t-out="', '.join(['%gW' % x.wattage for x in doc.fan_wattage_ids])"
                                     />
                                 </td>
                             </tr>
@@ -1021,7 +1025,7 @@
                         >
                             <t t-if="accessory_data[1]">
                                 <div
-                                    t-esc="accessory_data[0]"
+                                    t-out="accessory_data[0]"
                                     class="nl-section-title"
                                 />
                                 <t t-foreach="accessory_data[1]" t-as="acc">
@@ -1085,7 +1089,7 @@
                                                         </td>
                                                         <td>
                                                             <span
-                                                                t-esc="', '.join([x.name for x in acc.body_material_ids])"
+                                                                t-out="', '.join([x.name for x in acc.body_material_ids])"
                                                             />
                                                         </td>
                                                     </tr>
@@ -1177,7 +1181,7 @@
                                                         </td>
                                                         <td>
                                                             <span
-                                                                t-esc="', '.join([x.name for x in acc.dimmable_ids])"
+                                                                t-out="', '.join([x.name for x in acc.dimmable_ids])"
                                                             />
                                                         </td>
                                                     </tr>
@@ -1252,7 +1256,7 @@
                                                     />
                                                     <div
                                                         class="nl-group-name"
-                                                        t-esc="sfgrp.alt_name or sfgrp.name"
+                                                        t-out="sfgrp.alt_name or sfgrp.name"
                                                     />
                                                 </td>
                                             </t>
@@ -1273,5 +1277,7 @@
                 <t t-call="lighting_reporting.report_product_document" t-lang="lang" />
             </t>
         </t>
+        <t t-call-assets="web.assets_frontend" />
+
     </template>
 </odoo>

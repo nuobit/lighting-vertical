@@ -1,71 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-import base64
-import io
-
-from PIL import Image, ImageChops
-
-from odoo import api, fields, models
-
-
-def autocrop(im, bgcolor):
-    if im.mode != "RGB":
-        if im.mode in ("P"):
-            im = im.convert("RGBA")
-            im2 = Image.new("RGB", im.size, bgcolor)
-            im2.paste(im, (0, 0), im)
-            im = im2
-        im = im.convert("RGB")
-
-    bg = Image.new("RGB", im.size, bgcolor)
-
-    diff = ImageChops.difference(im, bg)
-    bbox = diff.getbbox()
-    if bbox:
-        return im.crop(bbox)
-    return None  # no contents
-
-
-def expand2square(im, bgcolor):
-    width, height = im.size
-    if width == height:
-        return im
-    elif width > height:
-        result = Image.new(im.mode, (width, width), bgcolor)
-        result.paste(im, (0, (width - height) // 2))
-        return result
-    else:
-        result = Image.new(im.mode, (height, height), bgcolor)
-        result.paste(im, ((height - width) // 2, 0))
-        return result
-
-
-def resize(im, asked_size, by_side_long=False, allow_scale=True):
-    if asked_size and asked_size != (None, None):
-        im_size = im.size
-        if by_side_long and im.size[0] < im.size[1]:
-            im_size = (im_size[1], im_size[0])
-
-        hw_ratio = im_size[1] / im_size[0]
-        asked_width, asked_height = asked_size
-        if asked_height is None:
-            asked_height = int(float(asked_width) * hw_ratio)
-        if asked_width is None:
-            asked_width = int(float(asked_height) * 1 / hw_ratio)
-
-        asked_size = asked_width, asked_height
-        if im_size != asked_size:
-            if by_side_long and im.size[0] < im.size[1]:
-                asked_size = (asked_size[1], asked_size[0])
-            if not allow_scale and (
-                asked_size[0] > im.size[0] or asked_size[1] > im.size[1]
-            ):
-                return im
-            return im.resize(asked_size, Image.ANTIALIAS)
-
-    return im
+from odoo import fields, models
 
 
 def chunks(li, n):
@@ -94,56 +30,45 @@ class LightingProduct(models.Model):
 
     def get_sheet_sources(self):
         res = []
-        for s in self.source_ids.sorted(lambda x: x.sequence):
-            s_res = []
-            s_type = s.get_source_type()
-            if s_type:
-                s_res.append(s_type[0])
-
-            s_wattage = s.get_wattage()
-            if s_wattage:
-                s_res.append(s_wattage[0])
-
-            s_flux = s.get_luminous_flux()
-            if s_flux:
-                s_res.append(s_flux[0])
-
-            s_temp = s.get_color_temperature()
-            if s_temp:
-                s_res.append(s_temp[0])
-
-            s_cri = s.get_cri()
-            if s_cri:
-                s_res.append(s_cri[0])
-
-            s_leds_m = s.get_leds_m()
-            if s_leds_m:
-                s_res.append(s_leds_m[0])
-
-            s_spectrum = s.get_special_spectrum()
-            if s_spectrum:
-                s_res.append(s_spectrum[0].upper())
-
-            if s_res:
-                res.append(" ".join(s_res))
-
+        for source in self.source_ids.sorted(lambda x: x.sequence):
+            source_res = []
+            source_type = source.get_source_type()
+            if source_type:
+                source_res.append(source_type[0])
+            source_wattage = source.get_wattage()
+            if source_wattage:
+                source_res.append(source_wattage[0])
+            source_flux = source.get_luminous_flux()
+            if source_flux:
+                source_res.append(source_flux[0])
+            source_temp = source.get_color_temperature()
+            if source_temp:
+                source_res.append(source_temp[0])
+            source_cri = source.get_cri()
+            if source_cri:
+                source_res.append(source_cri[0])
+            source_leds_m = source.get_leds_m()
+            if source_leds_m:
+                source_res.append(source_leds_m[0])
+            source_spectrum = source.get_special_spectrum()
+            if source_spectrum:
+                source_res.append(source_spectrum[0].upper())
+            if source_res:
+                res.append(" ".join(source_res))
         return res
 
     def get_sheet_beams(self):
         res = []
-        for b in self.beam_ids:
-            b_res = []
-            s_angle = b.get_beam_angle()
+        for beam in self.beam_ids:
+            beam_res = []
+            s_angle = beam.get_beam_angle()
             if s_angle:
-                b_res.append(s_angle[0])
-
-            s_phm = b.get_beam_photometric_distribution()
+                beam_res.append(s_angle[0])
+            s_phm = beam.get_beam_photometric_distribution()
             if s_phm:
-                b_res.append(s_phm[0])
-
-            if b_res:
-                res.append(" - ".join(b_res))
-
+                beam_res.append(s_phm[0])
+            if beam_res:
+                res.append(" - ".join(beam_res))
         return res
 
     def get_is_lamp_included(self):
@@ -157,21 +82,19 @@ class LightingProduct(models.Model):
         else:
             return any(lamp_included_line_ids)
 
-    @api.multi
     def filter_by_catalogued(self):
         return self.filtered(lambda x: x.state_marketing in ("N", "C", "ES"))
 
     def get_usb(self):
+        self.ensure_one()
         res = []
         if self.usb_ports:
             res.append("(%g)" % self.usb_ports)
-
         res_usbv = []
         if self.usb_voltage:
             res_usbv.append("%gV" % self.usb_voltage)
         if self.usb_current:
             res_usbv.append("%gmA" % self.usb_current)
-
         if res_usbv:
             res.append(" ".join(res_usbv))
 
@@ -250,33 +173,3 @@ class LightingProduct(models.Model):
             groupsof = len(groups)
 
         return list(chunks(groups, groupsof))
-
-
-class LightingAttachment(models.Model):
-    _inherit = "lighting.attachment"
-
-    def get_optimized_image(self, enabled=True):
-        datas = self.get_datas()
-        if not enabled or not datas:
-            return datas
-
-        datas_bin = base64.decodebytes(datas)
-        im = Image.open(io.BytesIO(datas_bin))
-
-        im99 = resize(im, (500, None), by_side_long=True, allow_scale=False)
-
-        # sharpener = ImageEnhance.Sharpness(im7)
-        # im99 = sharpener.enhance(2.0)
-
-        # im9 = autocrop(im7, (255, 255, 255))
-        # if not im9:
-        #     return self.datas
-        #
-        # im99 = expand2square(im9, (255, 255, 255))
-
-        in_mem_file = io.BytesIO()
-        im99.save(in_mem_file, format=im.format)
-
-        datas_cropped = base64.b64encode(in_mem_file.getvalue())
-
-        return datas_cropped

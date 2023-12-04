@@ -1,28 +1,30 @@
 @font-face {
     font-family: "Raleway Light";
     src: local("Raleway Light"), local("Raleway-Black"),
-        url(/lighting_reporting/static/src/fonts/Raleway-Light.ttf) format("truetype");
+        url("/lighting_reporting/static/src/fonts/Raleway-Light.ttf") format("truetype");
     //font-weight: 300;
 }
 
 @font-face {
     font-family: "Raleway";
     src: local("Raleway"), local("Raleway"),
-        url(/lighting_reporting/static/src/fonts/Raleway-Regular.ttf) format("truetype");
+        url("/lighting_reporting/static/src/fonts/Raleway-Regular.ttf")
+            format("truetype");
     //font-weight: 400;
 }
 
 @font-face {
     font-family: "Raleway Medium";
     src: local("Raleway Medium"), local("Raleway-Medium"),
-        url(/lighting_reporting/static/src/fonts/Raleway-Medium.ttf) format("truetype");
+        url("/lighting_reporting/static/src/fonts/Raleway-Medium.ttf")
+            format("truetype");
     //font-weight: 500;
 }
 
 @font-face {
     font-family: "Raleway SemiBold";
     src: local("Raleway SemiBold"), local("Raleway-SemiBold"),
-        url(/lighting_reporting/static/src/fonts/Raleway-SemiBold.ttf)
+        url("/lighting_reporting/static/src/fonts/Raleway-SemiBold.ttf")
             format("truetype");
     //font-weight: 600;
 }
@@ -30,21 +32,22 @@
 @font-face {
     font-family: "Raleway Black";
     src: local("Raleway Black"), local("Raleway-Black"),
-        url(/lighting_reporting/static/src/fonts/Raleway-Black.ttf) format("truetype");
+        url("/lighting_reporting/static/src/fonts/Raleway-Black.ttf") format("truetype");
     //font-weight: 900;
 }
 
 @font-face {
     font-family: "Helvetica Light";
     src: local("Helvetica Light"), local("Helvetica-Light"),
-        url(/lighting_reporting/static/src/fonts/Helvetica-Light.ttf) format("truetype");
+        url("/lighting_reporting/static/src/fonts/Helvetica-Light.ttf")
+            format("truetype");
     //font-weight: 300;
 }
 
 @font-face {
     font-family: "Helvetica";
     src: local("Helvetica"), local("Helvetica"),
-        url(/lighting_reporting/static/src/fonts/Helvetica-Regular.ttf)
+        url("/lighting_reporting/static/src/fonts/Helvetica-Regular.ttf")
             format("truetype");
     //font-weight: 900;
 }
@@ -84,11 +87,12 @@ div.footer {
 }
 
 .nl-external-wrap-header {
-    .nl-external-wrap;
+    //.nl-external-wrap;
+    margin-left: 80px;
     width: 753px;
 }
 
-////////// COMMON ///////////////
+//////////// COMMON ///////////////
 .nl-outline {
     position: absolute !important;
     margin: 0;
@@ -216,6 +220,7 @@ div.footer {
     //border: 1px solid red;
     width: 221px;
     float: left;
+
     img {
         width: 100%;
     }
@@ -231,6 +236,7 @@ div.footer {
 // family description
 .nl-family-description {
     margin-bottom: 36px;
+
     p {
         font-family: "Raleway";
         font-size: 10px; // 7pt
@@ -358,6 +364,7 @@ div.footer {
 .nl-complementary-images .nl-complementary-row-images > div {
     float: left;
     width: 221px;
+
     img {
         width: 100%;
     }
@@ -382,12 +389,14 @@ div.footer {
 
 .nl-groups-same-family-table > tbody td {
     padding-top: 13px;
+
     img {
         width: 110px;
     }
+
     .nl-group-name {
         margin-top: 9px;
-        margin-bottom: 0px;
+        //margin-bottom: 0px;
         font-family: "Helvetica Light";
         font-weight: 300;
         font-size: 18px; // 10pt
@@ -400,13 +409,11 @@ div.footer {
 
 ////////// FOOTER ///////////////
 .nl-footer {
-    //border: 1px solid blue;
     margin-top: 8px;
     font-size: 10px; // 6pt
 }
 
 .nl-footer > div {
-    //border: 1px solid firebrick;
     float: left;
     font-size: 9px; // 5.1pt
 }
@@ -434,11 +441,6 @@ div.footer {
 .nl-footer-misc li:nth-child(n + 2) {
     margin-top: 7px;
 }
-
-//// debug
-//img {
-//  border: 1px dashed black;
-//}
 
 .fake-link {
     display: inline-block;
