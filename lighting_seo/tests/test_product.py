@@ -5,7 +5,6 @@
 import logging
 
 from odoo.tests import common
-from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -23,40 +22,47 @@ class TestProduct(common.SavepointCase):
         POST:   - website published keeps disabled
         """
         # ARRANGE
-        c1 = self.env['lighting.product.category'].create({
-            'name': 'Category 1',
-            'code': 'CAT1'
-        })
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-            'state_marketing': 'D',
-            'website_published': False,
-        })
-        p2 = self.env['lighting.product'].create({
-            'reference': 'REF2',
-            'category_id': c1.id,
-            'state_marketing': 'H',
-            'website_published': False,
-        })
+        c1 = self.env["lighting.product.category"].create(
+            {"name": "Category 1", "code": "CAT1"}
+        )
+        p1 = self.env["lighting.product"].create(
+            {
+                "reference": "REF1",
+                "category_id": c1.id,
+                "state_marketing": "D",
+                "website_published": False,
+            }
+        )
+        p2 = self.env["lighting.product"].create(
+            {
+                "reference": "REF2",
+                "category_id": c1.id,
+                "state_marketing": "H",
+                "website_published": False,
+            }
+        )
 
         # ACT 1
         p1.website_published = True
 
         # ASSERT 1
-        p1.invalidate_cache(['website_published'], [p1.id])
+        p1.invalidate_cache(["website_published"], [p1.id])
         with self.subTest():
-            self.assertFalse(p1.website_published,
-                             "The website published should be kept disabled if state marketing is discontinued (D)")
+            self.assertFalse(
+                p1.website_published,
+                "The website published should be kept disabled if state marketing is discontinued (D)",
+            )
 
         # ACT 2
         p2.website_published = True
 
         # ASSERT 2
-        p2.invalidate_cache(['website_published'], [p2.id])
+        p2.invalidate_cache(["website_published"], [p2.id])
         with self.subTest():
-            self.assertFalse(p2.website_published,
-                             "The website published should be kept disabled if state marketing is historical (H)")
+            self.assertFalse(
+                p2.website_published,
+                "The website published should be kept disabled if state marketing is historical (H)",
+            )
 
     def test_state_marketing_website_02(self):
         """
@@ -66,22 +72,25 @@ class TestProduct(common.SavepointCase):
         POST:   - website published is disabled
         """
         # ARRANGE
-        c1 = self.env['lighting.product.category'].create({
-            'name': 'Category 1',
-            'code': 'CAT1'
-        })
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-            'state_marketing': 'C',
-            'website_published': True,
-        })
+        c1 = self.env["lighting.product.category"].create(
+            {"name": "Category 1", "code": "CAT1"}
+        )
+        p1 = self.env["lighting.product"].create(
+            {
+                "reference": "REF1",
+                "category_id": c1.id,
+                "state_marketing": "C",
+                "website_published": True,
+            }
+        )
 
         # ACT
-        p1.state_marketing = 'D'
+        p1.state_marketing = "D"
 
         # ASSERT
-        self.assertFalse(p1.website_published, "The website published should be disabled")
+        self.assertFalse(
+            p1.website_published, "The website published should be disabled"
+        )
 
     def test_state_marketing_website_03(self):
         """
@@ -91,22 +100,25 @@ class TestProduct(common.SavepointCase):
         POST:   - website published is disabled
         """
         # ARRANGE
-        c1 = self.env['lighting.product.category'].create({
-            'name': 'Category 1',
-            'code': 'CAT1'
-        })
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-            'state_marketing': 'C',
-            'website_published': True,
-        })
+        c1 = self.env["lighting.product.category"].create(
+            {"name": "Category 1", "code": "CAT1"}
+        )
+        p1 = self.env["lighting.product"].create(
+            {
+                "reference": "REF1",
+                "category_id": c1.id,
+                "state_marketing": "C",
+                "website_published": True,
+            }
+        )
 
         # ACT
-        p1.state_marketing = 'H'
+        p1.state_marketing = "H"
 
         # ASSERT
-        self.assertFalse(p1.website_published, "The website published should be disabled")
+        self.assertFalse(
+            p1.website_published, "The website published should be disabled"
+        )
 
     def test_state_marketing_website_04(self):
         """
@@ -116,16 +128,17 @@ class TestProduct(common.SavepointCase):
         POST:   - website published is still enabled
         """
         # ARRANGE
-        c1 = self.env['lighting.product.category'].create({
-            'name': 'Category 1',
-            'code': 'CAT1'
-        })
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-            'state_marketing': 'C',
-            'website_published': False,
-        })
+        c1 = self.env["lighting.product.category"].create(
+            {"name": "Category 1", "code": "CAT1"}
+        )
+        p1 = self.env["lighting.product"].create(
+            {
+                "reference": "REF1",
+                "category_id": c1.id,
+                "state_marketing": "C",
+                "website_published": False,
+            }
+        )
 
         # ACT
         p1.website_published = True
@@ -143,21 +156,24 @@ class TestProduct(common.SavepointCase):
                 - website published is disabled
         """
         # ARRANGE
-        c1 = self.env['lighting.product.category'].create({
-            'name': 'Category 1',
-            'code': 'CAT1'
-        })
+        c1 = self.env["lighting.product.category"].create(
+            {"name": "Category 1", "code": "CAT1"}
+        )
 
         # ACT
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-            'state_marketing': 'D',
-            'website_published': True,
-        })
+        p1 = self.env["lighting.product"].create(
+            {
+                "reference": "REF1",
+                "category_id": c1.id,
+                "state_marketing": "D",
+                "website_published": True,
+            }
+        )
 
         # ASSERT
-        self.assertFalse(p1.website_published, "The website published should be disabled")
+        self.assertFalse(
+            p1.website_published, "The website published should be disabled"
+        )
 
     def test_state_marketing_website_06(self):
         """
@@ -169,18 +185,21 @@ class TestProduct(common.SavepointCase):
                 - website published is disabled
         """
         # ARRANGE
-        c1 = self.env['lighting.product.category'].create({
-            'name': 'Category 1',
-            'code': 'CAT1'
-        })
+        c1 = self.env["lighting.product.category"].create(
+            {"name": "Category 1", "code": "CAT1"}
+        )
 
         # ACT
-        p1 = self.env['lighting.product'].create({
-            'reference': 'REF1',
-            'category_id': c1.id,
-            'state_marketing': 'H',
-            'website_published': True,
-        })
+        p1 = self.env["lighting.product"].create(
+            {
+                "reference": "REF1",
+                "category_id": c1.id,
+                "state_marketing": "H",
+                "website_published": True,
+            }
+        )
 
         # ASSERT
-        self.assertFalse(p1.website_published, "The website published should be disabled")
+        self.assertFalse(
+            p1.website_published, "The website published should be disabled"
+        )
