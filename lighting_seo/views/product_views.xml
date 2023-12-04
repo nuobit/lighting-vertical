@@ -18,7 +18,7 @@
                 >
                     <field
                         name="website_published"
-                        widget="website_button"
+                        widget="boolean_toggle"
                         attrs="{'readonly':[('website_published_readonly','=',True)]}"
                     />
                 </button>
@@ -47,7 +47,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="lighting_product_view" model="ir.ui.view">
         <field name="name">lighting.product.search.inherit.seo</field>
         <field name="model">lighting.product</field>
@@ -55,7 +54,7 @@
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='is_composite']" position="before">
                 <filter
-                    string="Published On Website"
+                    string="Published on Website"
                     name="website_published"
                     domain="[('website_published', '=', True)]"
                 />
@@ -63,7 +62,6 @@
             </xpath>
         </field>
     </record>
-
     <record id="product_tree_view" model="ir.ui.view">
         <field name="name">product.tree.website</field>
         <field name="model">lighting.product</field>
@@ -74,108 +72,34 @@
             </field>
         </field>
     </record>
-
-    <record id="product_family_view_form_inherit_seo" model="ir.ui.view">
-        <field name="name">product_family_view.form.inherit.seo</field>
-        <field name="model">lighting.product.family</field>
-        <field name="inherit_id" ref="lighting.product_family_form_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group string="SEO/SEM" col="1">
-                    <group col="40">
-                        <field name="seo_title" colspan="38" />
-                        <field name="meta_title_length" nolabel="1" colspan="2" />
-                        <field name="seo_url" widget="url" colspan="38" />
-                        <newline />
-                        <field name="seo_description" colspan="38" />
-                        <field name="meta_description_length" nolabel="1" colspan="2" />
-                    </group>
-                    <group>
-                        <field name="seo_keyword_ids" widget="many2many_tags" />
-                    </group>
-                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
-                        <field name="meta_preview" widget="html" />
-                    </group>
-                </group>
-            </xpath>
+    <record id="seo_keyword_action_all_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">['|', '|', '|', '|',
+                              ('seo_keyword_ids', '=', active_id),
+                              ('family_ids.seo_keyword_ids', '=', active_id),
+                              ('category_id.seo_keyword_ids', '=', active_id),
+                              ('application_ids.seo_keyword_ids', '=', active_id),
+                              ('catalog_ids.seo_keyword_ids', '=', active_id)]
+        </field>
+        <field
+            name="context"
+        >{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
         </field>
     </record>
-
-    <record id="product_category_view_form_inherit_seo" model="ir.ui.view">
-        <field name="name">product_category_view.form.inherit.seo</field>
-        <field name="model">lighting.product.category</field>
-        <field name="inherit_id" ref="lighting.product_category_form_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group string="SEO/SEM" col="1">
-                    <group col="40">
-                        <field name="seo_title" colspan="38" />
-                        <field name="meta_title_length" nolabel="1" colspan="2" />
-                        <field name="seo_url" widget="url" colspan="38" />
-                        <newline />
-                        <field name="seo_description" colspan="38" />
-                        <field name="meta_description_length" nolabel="1" colspan="2" />
-                    </group>
-                    <group>
-                        <field name="seo_keyword_ids" widget="many2many_tags" />
-                    </group>
-                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
-                        <field name="meta_preview" widget="html" />
-                    </group>
-                </group>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="product_application_view_form_inherit_seo" model="ir.ui.view">
-        <field name="name">product_application_view.form.inherit.seo</field>
-        <field name="model">lighting.product.application</field>
-        <field name="inherit_id" ref="lighting.product_application_form_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group string="SEO/SEM" col="1">
-                    <group col="40">
-                        <field name="seo_title" colspan="38" />
-                        <field name="meta_title_length" nolabel="1" colspan="2" />
-                        <field name="seo_url" widget="url" colspan="38" />
-                        <newline />
-                        <field name="seo_description" colspan="38" />
-                        <field name="meta_description_length" nolabel="1" colspan="2" />
-                    </group>
-                    <group>
-                        <field name="seo_keyword_ids" widget="many2many_tags" />
-                    </group>
-                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
-                        <field name="meta_preview" widget="html" />
-                    </group>
-                </group>
-            </xpath>
-        </field>
-    </record>
-
-    <record id="catalog_view_form_inherit_seo" model="ir.ui.view">
-        <field name="name">catalog_view.form.inherit.seo</field>
-        <field name="model">lighting.catalog</field>
-        <field name="inherit_id" ref="lighting.catalog_form_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//sheet" position="inside">
-                <group string="SEO/SEM" col="1">
-                    <group col="40">
-                        <field name="seo_title" colspan="38" />
-                        <field name="meta_title_length" nolabel="1" colspan="2" />
-                        <field name="seo_url" widget="url" colspan="38" />
-                        <newline />
-                        <field name="seo_description" colspan="38" />
-                        <field name="meta_description_length" nolabel="1" colspan="2" />
-                    </group>
-                    <group>
-                        <field name="seo_keyword_ids" widget="many2many_tags" />
-                    </group>
-                    <group attrs="{'invisible': [('meta_preview', '=', False )]}">
-                        <field name="meta_preview" widget="html" />
-                    </group>
-                </group>
-            </xpath>
+    <record id="seo_keyword_action_product" model="ir.actions.act_window">
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('seo_keyword_ids','=',active_id)]</field>
+        <field
+            name="context"
+        >{'default_seo_keyword_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
         </field>
     </record>
 </odoo>
