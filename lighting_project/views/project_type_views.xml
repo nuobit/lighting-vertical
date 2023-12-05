@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -12,7 +12,7 @@
             <form string="Project type Form">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -24,7 +24,7 @@
         <field name="model">lighting.project.type</field>
         <field name="arch" type="xml">
             <tree string="Project type Tree">
-                <field name="name"/>
+                <field name="name" />
             </tree>
         </field>
     </record>
@@ -43,6 +43,10 @@
 
     <!-- ================================ MENUS =========================== -->
     <!-- menu project.type -->
-    <menuitem id="project_types_menu" name="Types" parent="common_data_menu"
-              action="project_type_action"/>
+    <menuitem
+        id="project_types_menu"
+        name="Types"
+        parent="common_data_menu"
+        action="project_type_action"
+    />
 </odoo>
