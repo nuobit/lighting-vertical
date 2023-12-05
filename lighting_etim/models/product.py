@@ -6,8 +6,14 @@ from odoo import fields, models
 
 
 class LightingProduct(models.Model):
-    _inherit = 'lighting.product'
+    _inherit = "lighting.product"
 
-    class_id = fields.Many2one(comodel_name='lighting.etim.class', ondelete='restrict', string='Class')
-    feature_ids = fields.One2many(comodel_name='lighting.etim.product.feature',
-                                  inverse_name='product_id', string='Features', copy=True)
+    class_id = fields.Many2one(
+        comodel_name="lighting.etim.class", ondelete="restrict", string="Class"
+    )
+    feature_ids = fields.One2many(
+        comodel_name="lighting.etim.product.feature",
+        inverse_name="product_id",
+        string="Features",
+        copy=True,
+    )

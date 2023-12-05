@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,27 +11,27 @@
             <form string="Etim Class form">
                 <sheet>
                     <group>
-                        <field name="code"/>
-                        <field name="name"/>
-                        <field name="version"/>
-                        <field name="group_id"/>
-                        <field name="status"/>
-                        <field name="change_code"/>
+                        <field name="code" />
+                        <field name="name" />
+                        <field name="version" />
+                        <field name="group_id" />
+                        <field name="status" />
+                        <field name="change_code" />
                     </group>
                     <notebook>
                         <page string="Features">
                             <field name="feature_ids" nolabel="1">
                                 <tree>
-                                    <field name="feature_id"/>
-                                    <field name="unit_id"/>
-                                    <field name="change_code"/>
+                                    <field name="feature_id" />
+                                    <field name="unit_id" />
+                                    <field name="change_code" />
                                 </tree>
                             </field>
                         </page>
                         <page string="Synonyms">
                             <field name="synonim_ids" nolabel="1">
                                 <tree editable="bottom">
-                                    <field name="name"/>
+                                    <field name="name" />
                                 </tree>
                             </field>
                         </page>
@@ -46,12 +46,12 @@
         <field name="model">lighting.etim.class</field>
         <field name="arch" type="xml">
             <tree string="ETIM Class tree">
-                <field name="code"/>
-                <field name="name"/>
-                <field name="group_id"/>
-                <field name="version"/>
-                <field name="status"/>
-                <field name="change_code"/>
+                <field name="code" />
+                <field name="name" />
+                <field name="group_id" />
+                <field name="version" />
+                <field name="status" />
+                <field name="change_code" />
             </tree>
         </field>
     </record>
@@ -61,24 +61,47 @@
         <field name="model">lighting.etim.class</field>
         <field name="arch" type="xml">
             <search>
-                <field name="code" string="Class"
-                       filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"/>
-                <field name="code"/>
-                <field name="name" string="Description"/>
-                <field name="group_id" string="Group"
-                       filter_domain="[('group_id.code','ilike',self)]"/>
-                <separator/>
-                <filter string="Changed" name="changed"
-                        domain="[('change_code', '=', 'Changed')]"/>
-                <filter string="Deleted" name="deleted"
-                        domain="[('change_code', '=', 'Deleted')]"/>
-                <filter string="New" name="new"
-                        domain="[('change_code', '=', 'New')]"/>
+                <field
+                    name="code"
+                    string="Class"
+                    filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"
+                />
+                <field name="code" />
+                <field name="name" string="Description" />
+                <field
+                    name="group_id"
+                    string="Group"
+                    filter_domain="[('group_id.code','ilike',self)]"
+                />
+                <separator />
+                <filter
+                    string="Changed"
+                    name="changed"
+                    domain="[('change_code', '=', 'Changed')]"
+                />
+                <filter
+                    string="Deleted"
+                    name="deleted"
+                    domain="[('change_code', '=', 'Deleted')]"
+                />
+                <filter
+                    string="New"
+                    name="new"
+                    domain="[('change_code', '=', 'New')]"
+                />
                 <group expand="0" string="Group By">
-                    <filter string="Group" name="groupby_group" domain="[]"
-                            context="{'group_by': 'group_id'}"/>
-                    <filter string="Change code" name="groupby_change_code" domain="[]"
-                            context="{'group_by': 'change_code'}"/>
+                    <filter
+                        string="Group"
+                        name="groupby_group"
+                        domain="[]"
+                        context="{'group_by': 'group_id'}"
+                    />
+                    <filter
+                        string="Change code"
+                        name="groupby_change_code"
+                        domain="[]"
+                        context="{'group_by': 'change_code'}"
+                    />
                 </group>
             </search>
         </field>
@@ -96,9 +119,11 @@
     </record>
 
     <!-- menu etim.class -->
-    <menuitem id="etim_class_menu"
-              parent="menu_lighting_etim"
-              action="etim_class_list_action"
-              name="Classes"
-              sequence="20"/>
+    <menuitem
+        id="etim_class_menu"
+        parent="menu_lighting_etim"
+        action="etim_class_list_action"
+        name="Classes"
+        sequence="20"
+    />
 </odoo>
