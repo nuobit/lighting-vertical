@@ -1,8 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 
 OP_SEL = [("and", _("And")), ("or", _("Or"))]
 
@@ -43,7 +42,9 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="type_id",
     )
     attachment_type_in_op = fields.Selection(
-        string="Operator", selection=OP_SEL, default="and"
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
     )
     attachment_type_not_in_ids = fields.Many2many(
         string="Types",
@@ -53,7 +54,9 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="type_id",
     )
     attachment_type_not_in_op = fields.Selection(
-        string="Operator", selection=OP_SEL, default="and"
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
     )
 
     # application search
@@ -65,7 +68,9 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="application_id",
     )
     application_in_op = fields.Selection(
-        string="Operator", selection=OP_SEL, default="and"
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
     )
 
     # finish search
@@ -86,7 +91,9 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="lampholder_id",
     )
     lampholder_in_op = fields.Selection(
-        string="Operator", selection=OP_SEL, default="and"
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
     )
 
     # source type search
@@ -98,7 +105,9 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="source_type_id",
     )
     source_type_in_op = fields.Selection(
-        string="Operator", selection=OP_SEL, default="and"
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
     )
 
     # body material search
@@ -110,7 +119,9 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="body_material_id",
     )
     body_material_in_op = fields.Selection(
-        string="Operator", selection=OP_SEL, default="and"
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
     )
 
     # input/output voltage
@@ -121,7 +132,11 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column1="advanced_search_id",
         column2="voltage_id",
     )
-    voltage_in_op = fields.Selection(string="Operator", selection=OP_SEL, default="and")
+    voltage_in_op = fields.Selection(
+        string="Operator",
+        selection=OP_SEL,
+        default="and",
+    )
 
     # IP search
     sealing_in_ids = fields.Many2many(
@@ -140,13 +155,20 @@ class LightingProductAdvancedSearch(models.TransientModel):
         column2="color_temperature_id",
     )
     # Luminous flux search
-    nominal_flux_from_in = fields.Float(string="From")
-    nominal_flux_to_in = fields.Float(string="To")
+    nominal_flux_from_in = fields.Float(
+        string="From",
+    )
+    nominal_flux_to_in = fields.Float(
+        string="To",
+    )
     # wattage
-    wattage_from_in = fields.Float(string="From")
-    wattage_to_in = fields.Float(string="To")
+    wattage_from_in = fields.Float(
+        string="From",
+    )
+    wattage_to_in = fields.Float(
+        string="To",
+    )
 
-    @api.multi
     def advanced_search(self):
         domain = []
 
@@ -252,7 +274,6 @@ class LightingProductAdvancedSearch(models.TransientModel):
         return {
             "name": _("Advanced Search"),
             "view_mode": "tree,form",
-            "view_type": "form",
             "res_model": "lighting.product",
             "type": "ir.actions.act_window",
             "domain": domain,

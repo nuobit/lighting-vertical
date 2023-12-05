@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_advanced_search_view_form" model="ir.ui.view">
@@ -10,92 +9,103 @@
             <form string="Advanced product search">
                 <group>
                     <group col="4" colspan="2">
-                        <group string="Application" col="1" colspan="1">
+                        <group string="Application">
                             <field
                                 name="application_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
-                                colspan="1"
+                                colspan="2"
                             />
                             <field
                                 name="application_in_op"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
-                                colspan="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Finish" col="1" colspan="1">
+                        <group string="Finish">
                             <field
                                 name="finish_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Lampholder" col="1" colspan="1">
+                        <group string="Lampholder">
                             <field
                                 name="lampholder_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                             <field
                                 name="lampholder_in_op"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Source type" col="1" colspan="1">
+                        <group string="Source type">
                             <field
                                 name="source_type_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                             <field
                                 name="source_type_in_op"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Body material" col="1" colspan="1">
+                        <group string="Body material">
                             <field
                                 name="body_material_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                             <field
                                 name="body_material_in_op"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Voltage" col="1" colspan="1">
+                        <group string="Voltage">
                             <field
                                 name="voltage_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                             <field
                                 name="voltage_in_op"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Sealing (IP)" col="1" colspan="1">
+                        <group string="Sealing (IP)">
                             <field
                                 name="sealing_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
-                        <group string="Color temperature (K)" col="1" colspan="1">
+                        <group string="Color temperature (K)">
                             <field
                                 name="color_temperature_in_ids"
                                 widget="many2many_tags"
                                 nolabel="1"
+                                colspan="2"
                             />
                         </group>
                     </group>
@@ -144,21 +154,11 @@
             </form>
         </field>
     </record>
-
-    <act_window
-        id="product_advanced_search_action"
-        name="Advanced search"
-        res_model="lighting.product.advanced.search"
-        view_mode="form"
-        target="new"
-        view_type="form"
-    />
-
-    <menuitem
-        id="product_advanced_search_menu"
-        name="Advanced search"
-        parent="lighting.lighting_product_menu"
-        action="product_advanced_search_action"
-        sequence="15"
-    />
+    <record id="product_advanced_search_action" model="ir.actions.act_window">
+        <field name="name">Advanced search</field>
+        <field name="res_model">lighting.product.advanced.search</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_advanced_search_view_form" />
+        <field name="target">new</field>
+    </record>
 </odoo>
