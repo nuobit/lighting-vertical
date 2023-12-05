@@ -8,4 +8,4 @@ from .product_export_dimension import LightingExportDimension
 
 
 class LightingProductRecessDimension(models.Model, LightingExportDimension):
-    _inherit = 'lighting.product.recessdimension'
+    _inherit = "lighting.product.recessdimension"

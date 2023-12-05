@@ -5,8 +5,7 @@
 from odoo import api
 
 
-class LightingExportDimension():
-
+class LightingExportDimension:
     @api.multi
     def export_xlsx(self, template_id=None):
         if not self:
