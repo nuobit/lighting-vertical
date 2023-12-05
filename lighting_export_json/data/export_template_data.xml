@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding='UTF-8'?>
+<?xml version="1.0" encoding='UTF-8' ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      Frank Cespedes <fcespedes@nuobit.com>
@@ -6,17 +6,17 @@
 <odoo noupdate="1">
     <record id="lighting_export_template_channel" model="queue.job.channel">
         <field name="name">lighting_export_json</field>
-        <field name="parent_id" ref="queue_job.channel_root"/>
+        <field name="parent_id" ref="queue_job.channel_root" />
     </record>
 
     <record id="export_template_auto_execute" model="ir.cron">
         <field name="name">Export Json template auto execute</field>
-        <field name="model_id" ref="model_lighting_export_template"/>
+        <field name="model_id" ref="model_lighting_export_template" />
         <field name="state">code</field>
         <field name="code">model.autoexecute()</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
-        <field name="doall" eval="False"/>
+        <field name="doall" eval="False" />
     </record>
 </odoo>
