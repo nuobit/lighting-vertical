@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,8 +11,8 @@
             <form string="Etim Value form">
                 <sheet>
                     <group>
-                        <field name="code"/>
-                        <field name="name"/>
+                        <field name="code" />
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>
@@ -24,8 +24,8 @@
         <field name="model">lighting.etim.value</field>
         <field name="arch" type="xml">
             <tree string="ETIM Value tree">
-                <field name="code"/>
-                <field name="name"/>
+                <field name="code" />
+                <field name="name" />
             </tree>
         </field>
     </record>
@@ -35,10 +35,13 @@
         <field name="model">lighting.etim.value</field>
         <field name="arch" type="xml">
             <search>
-                <field name="code" string="Value"
-                       filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"/>
-                <field name="code"/>
-                <field name="name" string="Description"/>
+                <field
+                    name="code"
+                    string="Value"
+                    filter_domain="['|', ('code','ilike',self), ('name','ilike',self)]"
+                />
+                <field name="code" />
+                <field name="name" string="Description" />
             </search>
         </field>
     </record>
@@ -55,9 +58,11 @@
     </record>
 
     <!-- menu etim.value -->
-    <menuitem id="etim_value_menu"
-              parent="menu_lighting_etim"
-              action="etim_value_list_action"
-              name="Values"
-              sequence="40"/>
+    <menuitem
+        id="etim_value_menu"
+        parent="menu_lighting_etim"
+        action="etim_value_list_action"
+        name="Values"
+        sequence="40"
+    />
 </odoo>
