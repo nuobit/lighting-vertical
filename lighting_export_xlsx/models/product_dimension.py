@@ -8,4 +8,4 @@ from .product_export_dimension import LightingExportDimension
 
 
 class LightingProductDimension(models.Model, LightingExportDimension):
-    _inherit = 'lighting.product.dimension'
+    _inherit = "lighting.product.dimension"
