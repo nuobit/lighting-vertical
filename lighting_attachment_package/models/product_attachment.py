@@ -6,10 +6,10 @@ from odoo import fields, models
 
 
 class LightingAttachmentType(models.Model):
-    _inherit = 'lighting.attachment.type'
+    _inherit = "lighting.attachment.type"
 
     package_ids = fields.One2many(
         string="Packages",
-        comodel_name='lighting.attachment.package',
-        inverse_name='type_id',
+        comodel_name="lighting.attachment.package",
+        inverse_name="type_id",
     )
