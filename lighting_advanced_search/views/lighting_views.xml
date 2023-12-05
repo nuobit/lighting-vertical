@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="product_advanced_search_menu"
+        name="Advanced search"
+        parent="lighting.lighting_product_menu"
+        action="product_advanced_search_action"
+        sequence="15"
+    />
+</odoo>

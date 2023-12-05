@@ -1,13 +1,14 @@
+# Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* lighting_advanced_search
+# 	* lighting_advanced_search
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 11.0\n"
+"Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-10 17:26+0000\n"
-"PO-Revision-Date: 2018-07-10 17:26+0000\n"
-"Last-Translator: <>\n"
+"POT-Creation-Date: 2023-12-07 10:49+0000\n"
+"PO-Revision-Date: 2023-12-07 10:49+0000\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,121 +16,231 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: lighting_advanced_search
-#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:61
+#. odoo-python
+#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:0
 #, python-format
 msgid "Advanced Search"
-msgstr "Advanced Search"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "Advanced product search"
-msgstr "Advanced product search"
+msgstr ""
 
 #. module: lighting_advanced_search
 #: model:ir.actions.act_window,name:lighting_advanced_search.product_advanced_search_action
 #: model:ir.ui.menu,name:lighting_advanced_search.product_advanced_search_menu
 msgid "Advanced search"
-msgstr "Advanced search"
+msgstr ""
 
 #. module: lighting_advanced_search
 #: model:ir.model,name:lighting_advanced_search.model_lighting_product_advanced_search
 msgid "Advanced search for products"
-msgstr "Advanced search for products"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:8
-#: selection:lighting.product.advanced.search,type_in_op:0
-#: selection:lighting.product.advanced.search,type_not_in_op:0
+#. odoo-python
+#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:0
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__application_in_op__and
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__attachment_type_in_op__and
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__attachment_type_not_in_op__and
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__body_material_in_op__and
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__lampholder_in_op__and
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__source_type_in_op__and
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__voltage_in_op__and
 #, python-format
 msgid "And"
-msgstr "And"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
-msgid "By attachment type"
-msgstr "By attachment type"
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Application"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__application_in_ids
+msgid "Applications"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Attachment type"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Body material"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__body_material_in_ids
+msgid "Body materials"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "Cancel"
 msgstr "Cancel·la"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_create_uid
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__color_temperature_in_ids
+msgid "Color temperature"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Color temperature (K)"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__create_uid
 msgid "Created by"
 msgstr "Creat per"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_create_date
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__create_date
 msgid "Created on"
 msgstr "Creat el"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_display_name
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__display_name
 msgid "Display Name"
 msgstr "Mostra Nom"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_id
-msgid "ID"
-msgstr "ID"
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Finish"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search___last_update
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__finish_in_ids
+msgid "Finishes"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__nominal_flux_from_in
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__wattage_from_in
+msgid "From"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__id
+msgid "ID"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Lampholder"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__lampholder_in_ids
+msgid "Lampholders"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search____last_update
 msgid "Last Modified on"
 msgstr "Darrera modificació feta el"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_write_uid
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__write_uid
 msgid "Last Updated by"
 msgstr "Actualitzat per última vegada per"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_write_date
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__write_date
 msgid "Last Updated on"
 msgstr "Actualitzat per última vegada el dia"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_in_op
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_not_in_op
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Luminous flux (Lm)"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__application_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__attachment_type_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__attachment_type_not_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__body_material_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__lampholder_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__source_type_in_op
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__voltage_in_op
 msgid "Operator"
 msgstr "Operador"
 
 #. module: lighting_advanced_search
-#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:8
-#: selection:lighting.product.advanced.search,type_in_op:0
-#: selection:lighting.product.advanced.search,type_not_in_op:0
+#. odoo-python
+#: code:addons/lighting_advanced_search/wizard/product_advanced_search.py:0
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__application_in_op__or
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__attachment_type_in_op__or
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__attachment_type_not_in_op__or
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__body_material_in_op__or
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__lampholder_in_op__or
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__source_type_in_op__or
+#: model:ir.model.fields.selection,name:lighting_advanced_search.selection__lighting_product_advanced_search__voltage_in_op__or
 #, python-format
 msgid "Or"
-msgstr "Or"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__sealing_in_ids
+msgid "Sealing"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Sealing (IP)"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "Search"
 msgstr "Cercar"
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_in_ids
-msgid "Type In"
-msgstr "Type In"
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Source type"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search_type_not_in_ids
-msgid "Type Not In"
-msgstr "Type Not In"
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__source_type_in_ids
+msgid "Source types"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__nominal_flux_to_in
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__wattage_to_in
+msgid "To"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__attachment_type_in_ids
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__attachment_type_not_in_ids
 msgid "Types"
-msgstr "Types"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Voltage"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__voltage_in_ids
+msgid "Voltages"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Wattage (W)"
+msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "With types"
-msgstr "With types"
+msgstr ""
 
 #. module: lighting_advanced_search
-#: model:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "Without types"
-msgstr "Without types"
-
+msgstr ""
