@@ -2,12 +2,14 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, models, fields, _
+from odoo import fields, models
 
 
 class LightingProductFamily(models.Model):
-    _inherit = 'lighting.product.family'
+    _inherit = "lighting.product.family"
 
-    no_templates = fields.Boolean(string='No templates',
-                                  help="Enabled if this family is NOT allowed to "
-                                       "contain templates (products with variants)")
+    no_templates = fields.Boolean(
+        string="No templates",
+        help="Enabled if this family is NOT allowed to "
+        "contain templates (products with variants)",
+    )

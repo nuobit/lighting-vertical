@@ -6,10 +6,10 @@ from odoo import fields, models
 
 
 class LightingProductSpecialSpectrum(models.Model):
-    _inherit = 'lighting.product.special.spectrum'
+    _inherit = "lighting.product.special.spectrum"
 
     use_as_cct = fields.Boolean(
-        string='Use as CCT',
-        help='If checked, this special spectrum will be used as CCT'
-             ' (Correlated Color Temperature) value in json search.'
+        string="Use as CCT",
+        help="If checked, this special spectrum will be used as CCT"
+        " (Correlated Color Temperature) value in json search.",
     )
