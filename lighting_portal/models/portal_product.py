@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -7,15 +6,19 @@ from odoo import fields, models
 
 class LightingPortalProduct(models.Model):
     _name = "lighting.portal.product"
+    _description = "Lighting Portal Product"
     _rec_name = "reference"
     _order = "reference"
 
-    reference = fields.Char(string="Reference", required=True)
-    barcode = fields.Char(string="Barcode")
-    description = fields.Char(string="Description")
-    catalog = fields.Char(string="Catalog")
-    qty_available = fields.Integer(string="Quantity available")
-
+    reference = fields.Char(
+        required=True,
+    )
+    barcode = fields.Char()
+    description = fields.Char()
+    catalog = fields.Char()
+    qty_available = fields.Integer(
+        string="Quantity available",
+    )
     product_id = fields.Many2one(
         comodel_name="lighting.product",
         ondelete="set null",

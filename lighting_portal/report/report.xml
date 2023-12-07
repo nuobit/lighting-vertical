@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <report
-        id="action_report_product_xml"
-        model="lighting.portal.product"
-        string="Product xml"
-        report_type="qweb-xml"
-        name="lighting_portal.report_product_xml"
-    />
+    <record id="action_report_product_xml" model="ir.actions.report">
+        <field name="name">Product xml</field>
+        <field name="model">lighting.portal.product</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lighting_portal.report_product_xml</field>
+        <field name="report_file">lighting_portal.report_product_xml</field>
+    </record>
 </odoo>

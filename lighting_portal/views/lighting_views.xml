@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+<!-- TODO: REVIEW: Modify this logo?
+        https://stock.adobe.com/nl/search?k=web+portal+icon&asset_id=313653751
+-->
+    <menuitem
+        id="portal_menu_root"
+        name="Portal"
+        sequence="0"
+        web_icon="lighting_portal,static/description/app.png"
+    >
+        <menuitem id="portal_menu" name="Products">
+            <menuitem
+                id="portal_product_menu"
+                name="Products"
+                action="portal_product_action_list"
+            />
+        </menuitem>
+    </menuitem>
+</odoo>
