@@ -35,9 +35,9 @@ class ProductDatasheetController(http.Controller):
             .sorted(lambda x: x.reference)
             .mapped("id")
         )
-        xml_products = report.with_context(lang=lang).render_qweb_xml(product_ids, {})[
-            0
-        ]
+        xml_products = report.with_context(lang=lang)._render_qweb_xml(
+            "lighting_portal.action_report_product_xml", product_ids, {}
+        )[0]
 
         # return report
         xmlhttpheaders = [
@@ -57,7 +57,8 @@ class ProductDatasheetController(http.Controller):
     def download_products_xml(self, lang=None):
         # Check for Odoo session authentication
         if http.request.session.uid:
-            http.request.uid = http.request.session.uid
+            http.request.update_env(http.request.session.uid)
+            # http.request.uid = http.request.session.uid
             return self.get_products_xml(lang)
 
         # Check for HTTP Basic Authentication
@@ -76,7 +77,7 @@ class ProductDatasheetController(http.Controller):
             except Exception as e:
                 msg = "Error processing authentication"
                 _logger.error(msg + f": {e}")
-                raise werkzeug.exceptions.BadRequest(msg)
+                raise werkzeug.exceptions.BadRequest(msg) from e
             uid = http.request.session.authenticate(
                 http.request.session.db, username, password
             )
