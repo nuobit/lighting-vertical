@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <report
-        id="project_sheet_report_action"
-        string="Project sheet"
-        model="lighting.project"
-        report_type="qweb-pdf"
-        file="lighting_project.project_sheet_report"
-        name="lighting_project.project_sheet_report"
-        print_report_name="'Project - %s' % (object.name, )"
-    />
+    <record id="project_sheet_report_action" model="ir.actions.report">
+        <field name="name">Project sheet</field>
+        <field name="model">lighting.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">lighting_project.project_sheet_report</field>
+        <field name="report_file">lighting_project.project_sheet_report</field>
+        <field name="print_report_name">'Project - %s' % (object.name)</field>
+    </record>
 </odoo>

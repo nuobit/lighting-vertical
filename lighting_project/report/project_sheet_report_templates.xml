@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+<!--    TODO: Report don't print table correctly-->
     <template id="project_sheet_report_document">
         <t t-call="web.external_layout">
-            <!--t t-set="doc" t-value="doc.with_context({'lang':doc.partner_id.lang})"/-->
             <div class="page">
                 <div class="oe_structure" />
                 <div class="row">
                     <div class="col-xs-7">
                         <h1 t-field="doc.name" />
 
-                        <table class="table">
+                        <table class="table table-sm">
                             <tbody>
                                 <tr>
                                     <td class="text-right">
@@ -86,11 +85,6 @@
                             />
                         </strong>
                         <p t-field="doc.with_context(dict(lang='en_US')).description" />
-
-                        <!--h4 t-attf-class="{{'text-danger' if doc.qty_available == 0 else 'text-success'}}">
-                            <strong>Stock:</strong>
-                            <span t-field="doc.qty_available"/>
-                        </h4-->
                     </div>
                     <div class="col-xs-5">
                         <t
@@ -105,11 +99,6 @@
                         </t>
                     </div>
                 </div>
-                <!--div class="row">
-                    <div class="col-xs-12">
-                        <p t-field="doc.catalog"/>
-                    </div>
-                </div-->
                 <div class="oe_structure" />
             </div>
         </t>
@@ -118,7 +107,6 @@
     <template id="project_sheet_report">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <!--t t-call="lighting_portal_product_report.report_portalproduct" t-lang="doc.partner_id.lang"/-->
                 <t t-call="lighting_project.project_sheet_report_document" />
             </t>
         </t>

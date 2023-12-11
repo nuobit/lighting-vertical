@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="catalog_view_form_inherit_project" model="ir.ui.view">
+        <field name="name">catalog_view.form.inherit.project</field>
+        <field name="model">lighting.catalog</field>
+        <field name="inherit_id" ref="lighting.catalog_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-filter"
+                    name="get_catalog_projects"
+                >
+                    <field string="Projects" name="project_count" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+    <record id="catalog_view_tree_inherit_project" model="ir.ui.view">
+        <field name="name">catalog_view.tree.inherit.project</field>
+        <field name="model">lighting.catalog</field>
+        <field name="inherit_id" ref="lighting.catalog_tree_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <field name="project_count" />
+                <button
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-external-link"
+                    name="get_catalog_projects"
+                    string="Projects"
+                >
+                    <field string="Projects" name="project_count" widget="statinfo" />
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

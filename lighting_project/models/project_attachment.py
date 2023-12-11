@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -9,12 +8,23 @@ class LightingProjectAttachment(models.Model):
     _name = "lighting.project.attachment"
     _order = "name"
 
-    name = fields.Text(string="Description", translate=True)
-
-    datas = fields.Binary(string="Document", attachment=True, required=True)
-    datas_fname = fields.Char(string="Filename", required=True)
+    name = fields.Text(
+        string="Description",
+        translate=True,
+    )
+    datas = fields.Binary(
+        string="Document",
+        attachment=True,
+        required=True,
+    )
+    datas_fname = fields.Char(
+        string="Filename",
+        required=True,
+    )
     attachment_id = fields.Many2one(
-        comodel_name="ir.attachment", compute="_compute_ir_attachment", readonly=True
+        comodel_name="ir.attachment",
+        compute="_compute_ir_attachment",
+        readonly=True,
     )
 
     @api.depends("datas")
@@ -32,8 +42,8 @@ class LightingProjectAttachment(models.Model):
             else:
                 rec.attachment_id = False
 
-    is_default = fields.Boolean(string="Default")
-
+    is_default = fields.Boolean()
     project_id = fields.Many2one(
-        comodel_name="lighting.project", ondelete="cascade", string="Project"
+        comodel_name="lighting.project",
+        ondelete="cascade",
     )
