@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="portal_connector_menu"
+        name="Connector"
+        parent="lighting_portal.portal_menu_root"
+        groups="portal_connector_group_manager"
+    >
+        <menuitem
+            id="portal_connector_settings_menu"
+            action="portal_connector_settings_action_list"
+            sequence="1"
+        />
+        <menuitem
+            id="portal_connector_sync_menu"
+            name="Synchronize"
+            action="portal_connector_action_sync"
+        />
+    </menuitem>
+</odoo>

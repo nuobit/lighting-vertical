@@ -1,12 +1,12 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class LightingPortalConnectorSettings(models.Model):
     _name = "lighting.portal.connector.settings"
+    _description = "Lighting Portal Connector Settings"
     _order = "sequence"
 
     sequence = fields.Integer(
@@ -14,11 +14,21 @@ class LightingPortalConnectorSettings(models.Model):
         default=1,
         help="The sequence field is used to define the priority of settngs",
     )
-    host = fields.Char(string="Host", required=True)
-    port = fields.Integer(string="Port", required=True)
-    schema = fields.Char(string="Schema", required=True)
-    username = fields.Char(string="Username", required=True)
-    password = fields.Char(string="Password", required=True)
+    host = fields.Char(
+        required=True,
+    )
+    port = fields.Integer(
+        required=True,
+    )
+    schema = fields.Char(
+        required=True,
+    )
+    username = fields.Char(
+        required=True,
+    )
+    password = fields.Char(
+        required=True,
+    )
 
     _sql_constraints = [
         (
@@ -28,16 +38,13 @@ class LightingPortalConnectorSettings(models.Model):
         ),
     ]
 
-    @api.multi
     def name_get(self):
         vals = []
-        for record in self:
+        for rec in self:
             name = "%s@%s:%i" % (
-                record.username,
-                record.host,
-                record.port,
+                rec.username,
+                rec.host,
+                rec.port,
             )
-
-            vals.append((record.id, name))
-
+            vals.append((rec.id, name))
         return vals
