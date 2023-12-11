@@ -1,32 +1,7 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
-from odoo.exceptions import UserError
-
-
-class LightingProductFamily(models.Model):
-    _inherit = "lighting.product.family"
-
-    project_count = fields.Integer(
-        compute="_compute_project_count", string="Projects(s)"
-    )
-
-    def _compute_project_count(self):
-        for record in self:
-            record.project_count = self.env["lighting.project"].search_count(
-                [("family_ids", "=", record.id)]
-            )
-
-    @api.multi
-    def unlink(self):
-        records = self.env["lighting.project"].search([("family_ids", "in", self.ids)])
-        if records:
-            raise UserError(
-                _("You are trying to delete a record that is still referenced!")
-            )
-        return super(LightingProductFamily, self).unlink()
+from odoo import fields, models
 
 
 class LightingCatalog(models.Model):
@@ -51,19 +26,18 @@ class LightingCatalog(models.Model):
             )
 
     project_count = fields.Integer(
-        compute="_compute_project_count", string="Projects(s)"
+        compute="_compute_project_count",
+        string="Projects(s)",
     )
 
     def _compute_project_count(self):
-        for record in self:
-            record.project_count = len(record.project_ids)
+        for rec in self:
+            rec.project_count = len(rec.project_ids)
 
     def get_catalog_projects(self):
         self.ensure_one()
-
         action = self.env.ref("lighting_project.product_catalog_action_project").read()[
             0
         ]
         action.update({"domain": [("id", "in", self.project_ids.mapped("id"))]})
-
         return action

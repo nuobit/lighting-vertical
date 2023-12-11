@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- ================================ VIEWS =========================== -->
-    <!-- view project -->
+    <record id="product_family_action_project" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="res_model">lighting.project</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('family_ids', '=', active_id)]</field>
+        <field name="context">{'default_family_ids': [(4, active_id, False)]}</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project</p>
+        </field>
+    </record>
     <record id="project_form_view" model="ir.ui.view">
         <field name="name">project.form</field>
         <field name="model">lighting.project</field>
@@ -15,7 +22,7 @@
                         name="print_project_sheet"
                         string="Project sheet"
                         type="object"
-                        class="o_sale_print"
+                        class="oe_highlight"
                     />
                 </header>
                 <sheet>
@@ -70,19 +77,18 @@
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">
-                    <field name="message_follower_ids" widget="mail_followers" />
-                    <field name="activity_ids" widget="mail_activity" />
-                    <field name="message_ids" widget="mail_thread" />
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
                 </div>
             </form>
         </field>
     </record>
-
     <record id="project_tree_view" model="ir.ui.view">
         <field name="name">project.tree</field>
         <field name="model">lighting.project</field>
         <field name="arch" type="xml">
-            <tree string="Project Tree">
+            <tree>
                 <field name="name" />
                 <field name="city" />
                 <field name="country_id" />
@@ -94,42 +100,22 @@
             </tree>
         </field>
     </record>
-
-    <!-- ================================ WINDOWS =========================== -->
-    <!-- window action project class -->
+    <record id="product_catalog_action_project" model="ir.actions.act_window">
+        <field name="name">Project</field>
+        <field name="res_model">lighting.project</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain" />
+        <field name="context" />
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Project</p>
+        </field>
+    </record>
     <record id="project_action" model="ir.actions.act_window">
         <field name="name">Projects</field>
         <field name="res_model">lighting.project</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="oe_view_nocontent_create">Create the first Project</p>
         </field>
     </record>
-
-    <!-- ================================ MENUS =========================== -->
-    <!-- A first level in the left side menu is needed
-         before using action= attribute -->
-    <menuitem
-        id="lighting_project_menu"
-        name="Projects"
-        parent="lighting.lighting_menu"
-        sequence="30"
-    />
-
-    <!-- menu projects -->
-    <menuitem
-        id="projects_menu"
-        name="Projects"
-        parent="lighting_project_menu"
-        action="project_action"
-        sequence="10"
-    />
-
-    <menuitem
-        id="common_data_menu"
-        name="Common data"
-        parent="lighting_project_menu"
-        sequence="20"
-    />
 </odoo>
