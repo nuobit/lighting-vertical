@@ -1,6 +1,5 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
-# Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import ast
@@ -10,10 +9,8 @@ import logging
 import os
 
 from odoo import _, api, fields, models, tools
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.safe_eval import safe_eval
-
-from odoo.addons.queue_job.job import job
 
 _logger = logging.getLogger(__name__)
 
@@ -33,55 +30,88 @@ class LightingExportTemplate(models.Model):
         "templates",
     ]
 
-    lang_field_format = fields.Selection(selection_add=[("json", "Json")])
-
-    export_labels = fields.Boolean(string="Labels")
-    export_products = fields.Boolean(string="Products")
-    export_categories = fields.Boolean(string="Categories")
-    export_families = fields.Boolean(string="Families")
-    export_templates = fields.Boolean(string="Templates")
-    export_groups = fields.Boolean(string="Groups")
-    export_bundles = fields.Boolean(string="Bundles")
-
-    output_type = fields.Selection(
-        selection_add=[("export_product_json", _("Json file (.json)"))]
+    lang_field_format = fields.Selection(
+        selection_add=[("json", "Json")],
+        ondelete={"json": "cascade"},
     )
-
-    pretty_print = fields.Boolean(string="Pretty print", default=True)
+    export_labels = fields.Boolean(
+        string="Labels",
+    )
+    export_products = fields.Boolean(
+        string="Products",
+    )
+    export_categories = fields.Boolean(
+        string="Categories",
+    )
+    export_families = fields.Boolean(
+        string="Families",
+    )
+    export_templates = fields.Boolean(
+        string="Templates",
+    )
+    export_groups = fields.Boolean(
+        string="Groups",
+    )
+    export_bundles = fields.Boolean(
+        string="Bundles",
+    )
+    output_type = fields.Selection(
+        selection_add=[("export_product_json", _("Json file (.json)"))],
+        ondelete={"json": "cascade"},
+    )
+    pretty_print = fields.Boolean(
+        default=True,
+    )
     sort_keys = fields.Boolean(
-        string="Sort keys",
         help="If sort_keys is true (default: False), then the "
         "output of dictionaries will be sorted by key.",
         default=True,
     )
+    output_base_directory = fields.Char(
+        string="Base directory",
+        compute="_compute_output_base_directory",
+        store=True,
+        readonly=False,
+    )
 
-    output_base_directory = fields.Char(string="Base directory")
-    db_filestore = fields.Boolean(string="Database filestore")
-    output_directory = fields.Char(string="Directory")
-    output_filename_prefix = fields.Char(string="Filename prefix")
+    @api.depends("db_filestore")
+    def _compute_output_base_directory(self):
+        for rec in self:
+            if rec.db_filestore:
+                rec.output_base_directory = tools.config.filestore(rec._cr.dbname)
+            else:
+                rec.output_base_directory = False
 
-    auto_execute = fields.Boolean("Auto execute")
+    db_filestore = fields.Boolean(
+        string="Database filestore",
+    )
+    output_directory = fields.Char(
+        string="Directory",
+    )
+    output_filename_prefix = fields.Char(
+        string="Filename prefix",
+    )
+    auto_execute = fields.Boolean()
+    link_enabled = fields.Boolean(
+        string="Enabled",
+    )
+    link_auth_enabled = fields.Boolean(
+        string="Authentication enabled",
+        default=True,
+    )
+    link_username = fields.Char(
+        string="Username",
+    )
+    link_password = fields.Char(
+        string="Password",
+    )
 
-    link_enabled = fields.Boolean(string="Enabled")
-    link_auth_enabled = fields.Boolean(string="Authentication enabled", default=True)
-    link_username = fields.Char(string="Username")
-    link_password = fields.Char(string="Password")
-
-    @api.onchange("db_filestore")
-    def onchange_db_filestore(self):
-        if self.db_filestore:
-            self.output_base_directory = tools.config.filestore(self._cr.dbname)
-        else:
-            self.output_base_directory = False
-
-    @api.multi
     def copy(self, default=None):
         self.ensure_one()
         default = dict(
             default or {},
             name="%s (copy)" % self.name,
         )
-
         return super().copy(default)
 
     @api.model
@@ -89,11 +119,11 @@ class LightingExportTemplate(models.Model):
         for t in self.env[self._name].search([("auto_execute", "=", True)]):
             t.with_delay().action_json_export()
 
-    def get_full_filepath(self, object, lang=None):
+    def get_full_filepath(self, obj, lang=None):
         today_str = fields.Date.from_string(fields.Date.context_today(self)).strftime(
             "%Y%m%d"
         )
-        d = dict(object=object, date=today_str)
+        d = dict(object=obj, date=today_str)
         if lang:
             d["lang"] = lang
         base_filename = self.output_filename_prefix % d
@@ -106,8 +136,8 @@ class LightingExportTemplate(models.Model):
         path = os.path.join(*parts)
         return path
 
-    @api.multi
-    @job(default_channel="root.lighting_export_json")
+    # TODO: define in data
+    # @job(default_channel="root.lighting_export_json")
     def action_json_export(self):
         def default(o):
             if isinstance(o, datetime.date):
@@ -118,7 +148,7 @@ class LightingExportTemplate(models.Model):
                 return sorted(list(o))
 
         if not self.field_ids:
-            raise UserError("You need to define at least one field")
+            raise UserError(_("You need to define at least one field"))
 
         kwargs = {}
         if self.pretty_print:
@@ -138,8 +168,8 @@ class LightingExportTemplate(models.Model):
             res = self.with_context(lang=lang.code).generate_data(
                 object_ids, hide_empty_fields=self.hide_empty_fields
             )
-            for object, data in res.items():
-                path = self.get_full_filepath(object, lang=lang.code)
+            for obj, data in res.items():
+                path = self.get_full_filepath(obj, lang=lang.code)
                 with open(path, "w") as f:
                     json.dump(data, f, ensure_ascii=False, default=default, **kwargs)
 
@@ -147,14 +177,14 @@ class LightingExportTemplate(models.Model):
         field = self.field_ids.filtered(lambda x: x.field_name == field_name)
         if not field:
             raise UserError(
-                "Unexpected, the field %s is not defined on template" % field_name
+                _("Unexpected, the field %s is not defined on template" % field_name)
             )
         if field.effective_field_name:
             return field.effective_field_name
 
         return field_name
 
-    def generate_dict(self, obj, header, hide_empty_fields=True):
+    def generate_dict(self, obj, header, hide_empty_fields=True):  # noqa: C901
         def slug(s):
             char_map = {
                 "à": "a",
@@ -210,9 +240,11 @@ class LightingExportTemplate(models.Model):
                     value_l = datum.mapped(subfield)
                     if value_l:
                         if len(value_l) > 1:
-                            raise Exception(
-                                "The subfield %s value must return a singleton"
-                                % subfield
+                            raise ValidationError(
+                                _(
+                                    "The subfield %s value must return a singleton"
+                                    % subfield
+                                )
                             )
                         datum = conv_func(value_l[0])
                 elif meta["type"] in ("one2many", "many2many"):
@@ -225,9 +257,11 @@ class LightingExportTemplate(models.Model):
                         subfield_l = x.mapped(subfield)
                         if subfield_l:
                             if len(subfield_l) > 1:
-                                raise Exception(
-                                    "The subfield %s value must return a singleton"
-                                    % subfield
+                                raise ValidationError(
+                                    _(
+                                        "The subfield %s value must return a singleton"
+                                        % subfield
+                                    )
                                 )
                             datum1.append(conv_func(subfield_l[0]))
                             if key_field_name:
@@ -236,9 +270,12 @@ class LightingExportTemplate(models.Model):
                                 )
                                 if key_fields_l:
                                     if len(key_fields_l) > 1:
-                                        raise Exception(
-                                            "The key subfield %s value must return a singleton"
-                                            % key_field_name
+                                        raise ValidationError(
+                                            _(
+                                                "The key subfield %s value "
+                                                "must return a singleton"
+                                                % key_field_name
+                                            )
                                         )
                                     key_fields.append(slug(key_fields_l[0]))
                     if datum1:
@@ -252,7 +289,7 @@ class LightingExportTemplate(models.Model):
                 if datum is not None:
                     has_value = True
 
-                ## acumulem els valors
+                # acumulem els valors
                 if not meta["translate"]:
                     field_d = datum
                     break
@@ -263,7 +300,10 @@ class LightingExportTemplate(models.Model):
                         field_d[lang.iso_code] = datum
                     else:
                         raise UserError(
-                            "Language field format %s not supported on json templates"
+                            _(
+                                "Language field format %s "
+                                "not supported on json templates"
+                            )
                             % (self.lang_field_format)
                         )
 
@@ -276,9 +316,11 @@ class LightingExportTemplate(models.Model):
                     if multivalue_method == "by_field":
                         if not meta["translate"]:
                             if not isinstance(field_d, (list, dict)):
-                                raise Exception(
-                                    "Type %s no supported on Serialized fields with multivalue separator"
-                                    % (type(field_d),)
+                                raise ValidationError(
+                                    _(
+                                        "Type %s no supported on Serialized fields "
+                                        "with multivalue separator" % (type(field_d),)
+                                    )
                                 )
                             if isinstance(field_d, list):
                                 field_d = {None: field_d}
@@ -293,9 +335,12 @@ class LightingExportTemplate(models.Model):
                             field1_d = {}
                             for lang, datum in field_d.items():
                                 if not isinstance(datum, (list, dict)):
-                                    raise Exception(
-                                        "Type %s no supported on Serialized fields with multivalue separator"
-                                        % (type(field_d),)
+                                    raise ValidationError(
+                                        _(
+                                            "Type %s no supported on Serialized "
+                                            "fields with multivalue separator"
+                                            % (type(field_d),)
+                                        )
                                     )
                                 if isinstance(datum, list):
                                     datum = {None: datum}
@@ -325,9 +370,11 @@ class LightingExportTemplate(models.Model):
                                     for i, langelem in prefixelem.items():
                                         obj_d["%s_%s" % (base_key, i)] = dict(langelem)
                             else:
-                                raise Exception(
-                                    "Language field format %s not supported"
-                                    % self.lang_field_format
+                                raise ValidationError(
+                                    _(
+                                        "Language field format %s not supported"
+                                        % self.lang_field_format
+                                    )
                                 )
                     elif multivalue_method == "by_separator":
                         separator = meta["multivalue_separator"]
@@ -342,13 +389,18 @@ class LightingExportTemplate(models.Model):
                             elif self.lang_field_format == "json":
                                 obj_d[field] = field_d
                             else:
-                                raise Exception(
-                                    "Language field format %s not supported"
-                                    % self.lang_field_format
+                                raise ValidationError(
+                                    _(
+                                        "Language field format %s not supported"
+                                        % self.lang_field_format
+                                    )
                                 )
                     else:
-                        raise Exception(
-                            "Multivalue Method '%s' does not exist" % multivalue_method
+                        raise ValidationError(
+                            _(
+                                "Multivalue Method '%s' does not exist"
+                                % multivalue_method
+                            )
                         )
                 else:
                     if meta["translate"]:
@@ -358,9 +410,11 @@ class LightingExportTemplate(models.Model):
                         elif self.lang_field_format == "json":
                             obj_d[field] = field_d
                         else:
-                            raise Exception(
-                                "Language field format %s not supported"
-                                % self.lang_field_format
+                            raise ValidationError(
+                                _(
+                                    "Language field format %s not supported"
+                                    % self.lang_field_format
+                                )
                             )
                     else:
                         obj_d[field] = field_d
@@ -379,7 +433,7 @@ class LightingExportTemplate(models.Model):
                     label_d["%s_%s" % (field, lang.iso_code)] = label
             else:
                 raise UserError(
-                    "Language field format %s not supported on json templates"
+                    _("Language field format %s not supported on json templates")
                     % (self.lang_field_format)
                 )
         _logger.info("%s Template: Product labels successfully generated." % self.name)
@@ -442,7 +496,7 @@ class LightingExportTemplate(models.Model):
                     domain += ast.literal_eval(self.domain)
                 products_required = self.env["lighting.product"].search(domain)
                 if products_required:
-                    ## components
+                    # components
                     bundle_d[template_name].update(
                         {
                             "templates": sorted(
@@ -451,7 +505,7 @@ class LightingExportTemplate(models.Model):
                         }
                     )
 
-                    ## default attach
+                    # default attach
                     attachment_order_d = {
                         x.type_id: x.sequence for x in self.attachment_ids
                     }
@@ -511,12 +565,12 @@ class LightingExportTemplate(models.Model):
             if len(v) > 1:
                 products = self.env["lighting.product"].browse([p.id for p in v])
 
-                ## state
+                # state
                 template_clean_d[k] = {
                     "enabled": any(products.mapped("website_published")),
                 }
 
-                ## description
+                # description
                 template_desc_d = {}
                 for lang in self.lang_ids:
                     lang_description = (
@@ -531,7 +585,7 @@ class LightingExportTemplate(models.Model):
                         template_clean_d[k] = {}
                     template_clean_d[k].update({"description": template_desc_d})
 
-                ## default attach
+                # default attach
                 attachment_order_d = {
                     x.type_id: x.sequence for x in self.attachment_ids
                 }
@@ -557,10 +611,10 @@ class LightingExportTemplate(models.Model):
                         }
                     )
 
-                ### common attributes
+                # common attributes
                 field_ids = products.mapped("product_group_id.field_ids")
 
-                ## merge common fields with attributes from the category
+                # merge common fields with attributes from the category
                 field_ids |= products.mapped("category_id.effective_attribute_ids")
 
                 product_data = {}
@@ -595,7 +649,7 @@ class LightingExportTemplate(models.Model):
             ):
                 group_d = {}
 
-                ## products
+                # products
                 group_d.update(
                     {
                         "product": sorted(
@@ -604,7 +658,7 @@ class LightingExportTemplate(models.Model):
                     }
                 )
 
-                ## catalog
+                # catalog
                 catalog_ids = products.mapped("catalog_ids")
                 if catalog_ids:
                     group_d.update(
@@ -613,7 +667,7 @@ class LightingExportTemplate(models.Model):
                         }
                     )
 
-                ## attributes
+                # attributes
                 if group.attribute_ids:
                     attributes = [
                         self.get_efective_field_name(x.name)
@@ -625,7 +679,7 @@ class LightingExportTemplate(models.Model):
                         }
                     )
 
-                ## common fields
+                # common fields
                 product_data = {}
                 fields = [self.get_efective_field_name(x.name) for x in group.field_ids]
                 for f in fields:
@@ -673,7 +727,7 @@ class LightingExportTemplate(models.Model):
         return groups_d
 
     def _generate_families(self, object_ids):
-        ## generm la informacio de les families
+        # generm la informacio de les families
         _logger.info("%s Template: Generating family data..." % self.name)
         # obtenim els ids de es fmailie sel sobjectes seleccionats
         objects = self.env["lighting.product"].browse(object_ids)
@@ -724,8 +778,8 @@ class LightingExportTemplate(models.Model):
             )
             return family_ld
 
-    def _generate_categories(self, categories):
-        ## generem la informacio de les categories
+    def _generate_categories(self, categories):  # noqa: C901
+        # Generate the category data
         _logger.info("%s Template: Generating category data..." % self.name)
         category_ld = []
         for category in categories.sorted(lambda x: x.sequence):
@@ -849,7 +903,7 @@ class LightingExportTemplate(models.Model):
                         }
                     )
 
-            # nom de la categoria
+            # Category name
             name_lang_d = {}
             for lang in self.lang_ids:
                 lang_name = category.with_context(lang=lang.code).name
@@ -868,7 +922,7 @@ class LightingExportTemplate(models.Model):
         return category_ld
 
     def _generate_product_header(self):
-        ## base headers with labels replaced and subset acoridng to template
+        # base headers with labels replaced and subset acording to template
         _logger.info("%s Template: Generating product headers..." % self.name)
         header = {}
         for line in self.field_ids.sorted(lambda x: x.sequence):
@@ -917,9 +971,9 @@ class LightingExportTemplate(models.Model):
         _logger.info("%s Template: Product headers successfully generated." % self.name)
         return header
 
-    ############ AUXILIARS  #####
+    # AUXILIARS
     def _groups_by_finish(self, object_ids):
-        ## auxiliar per agrupar referneeicas amb el mateix finish
+        # auxiliary to group references with the same finish
         _logger.info(
             "%s Template: Generating dictionary of groups by finish..." % self.name
         )
@@ -938,7 +992,7 @@ class LightingExportTemplate(models.Model):
         return template_d
 
     def _groups_by_photo(self, object_ids):
-        ## auxiliar per agrupar referneeicas amb el mateixa photo
+        # auxiliary to group referencies with the same photo
         _logger.info(
             "%s Template: Generating dictionary of groups by photo..." % self.name
         )
@@ -957,42 +1011,42 @@ class LightingExportTemplate(models.Model):
         return photo_group_d
 
     def _products_by_reference(self, objects_ld):
-        ### per poder indexat els prodductes i brenir les dades directament
+        # to index products and obtain data directly
         _logger.info("%s Template: Generating dictionary of products..." % self.name)
         objects_d = {}
         for obj in objects_ld:
             key = obj["reference"]
             if key in objects_d:
-                raise Exception("Unexpected!! The key %s is duplicated!" % key)
+                raise ValidationError(_("Unexpected!! The key %s is duplicated!" % key))
             objects_d[key] = obj
         _logger.info(
             "%s Template: Dictionary of products successfully generated." % self.name
         )
         return objects_d
 
-    ###### MAIN method
+    # MAIN method
     def generate_data(self, object_ids, hide_empty_fields=True):
         _logger.info("%s Template: Export data started..." % self.name)
 
-        ####### HEADER ########
+        # HEADER
         header = self._generate_product_header()
 
         res = {}
-        ############## LABELS ################
+        # LABELS
         if self.export_labels:
             res.update({"labels": self._generate_labels(header)})
 
-        ############## PRODUCTS ################
+        # PRODUCTS
         objects_ld = self._generate_products(header, object_ids, hide_empty_fields)
         if self.export_products:
             res.update({"products": objects_ld})
 
-        ############## FAMILIES ###############
+        # FAMILIES
         if self.export_families:
             if objects_ld:
                 res.update({"families": self._generate_families(object_ids)})
 
-        ############## CATEGORIES ################
+        # CATEGORIES
         if self.export_categories:
             if objects_ld:
                 objects = self.env["lighting.product"].browse(object_ids)
@@ -1001,19 +1055,19 @@ class LightingExportTemplate(models.Model):
                     res.update({"categories": self._generate_categories(categories)})
 
         objects_d = None
-        ############## GROUPS ################
+        # GROUPS
         if self.export_groups:
             photo_group_d = self._groups_by_photo(object_ids)
             objects_d = self._products_by_reference(objects_ld)
             res.update({"groups": self._generate_groups(photo_group_d, objects_d)})
 
         template_d = None
-        ############## BUNDLES (by finish) ################
+        # BUNDLES (by finish)
         if self.export_bundles:
             template_d = self._groups_by_finish(object_ids)
             res.update({"bundles": self._generate_bundles(template_d)})
 
-        ############## CONFIGURABLES (by finish) ################
+        # CONFIGURABLES (by finish)
         if self.export_templates:
             if template_d is None:
                 template_d = self._groups_by_finish(object_ids)

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding='UTF-8' ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
-     Frank Cespedes <fcespedes@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo noupdate="1">
     <record id="lighting_export_template_channel" model="queue.job.channel">
         <field name="name">lighting_export_json</field>
         <field name="parent_id" ref="queue_job.channel_root" />
     </record>
-
     <record id="export_template_auto_execute" model="ir.cron">
         <field name="name">Export Json template auto execute</field>
         <field name="model_id" ref="model_lighting_export_template" />
