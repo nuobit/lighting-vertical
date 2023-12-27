@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -9,11 +8,21 @@ class LightingETIMFeature(models.Model):
     _name = "lighting.etim.feature"
     _order = "code"
 
-    code = fields.Char("Code", required=True)
-    name = fields.Char("Description", required=True, translate=True)
+    code = fields.Char(
+        required=True,
+    )
+    name = fields.Char(
+        string="Description",
+        required=True,
+        translate=True,
+    )
     type = fields.Selection(
-        [("N", "Numeric"), ("L", "Logical"), ("R", "Range"), ("A", "Alphanumeric")],
-        "Type",
+        selection=[
+            ("N", "Numeric"),
+            ("L", "Logical"),
+            ("R", "Range"),
+            ("A", "Alphanumeric"),
+        ],
         required=True,
     )
 
@@ -21,7 +30,6 @@ class LightingETIMFeature(models.Model):
         ("code", "unique (code)", "The code must be unique!"),
     ]
 
-    @api.multi
     def name_get(self):
         vals = []
         for record in self:

@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!--========== etim root menu ================-->
     <menuitem
         id="menu_lighting_etim"
         name="ETIM"
         parent="lighting.lighting_menu"
         sequence="30"
-    />
+    >
+        <menuitem
+            id="etim_group_menu"
+            action="etim_group_list_action"
+            name="Groups"
+            sequence="10"
+        />
+        <menuitem
+            id="etim_class_menu"
+            action="etim_class_list_action"
+            name="Classes"
+            sequence="20"
+        />
+        <menuitem
+            id="etim_feature_menu"
+            action="etim_feature_list_action"
+            name="Features"
+            sequence="30"
+        />
+        <menuitem
+            id="etim_value_menu"
+            action="etim_value_list_action"
+            name="Values"
+            sequence="40"
+        />
+        <menuitem
+            id="etim_unit_menu"
+            action="etim_unit_list_action"
+            name="Units"
+            sequence="50"
+        />
+    </menuitem>
 </odoo>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_view_form_inherit_etim" model="ir.ui.view">
@@ -14,7 +13,7 @@
                         <field name="class_id" />
                     </group>
                     <group string="Features">
-                        <field name="feature_ids" nolabel="1" />
+                        <field name="feature_ids" nolabel="1" colspan="2" />
                     </group>
                 </page>
             </xpath>
