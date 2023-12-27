@@ -7,31 +7,31 @@ import json
 from odoo import _, api, fields, models
 
 
-def _values2range(values, range, magnitude=None):
+def _values2range(values, _range, magnitude=None):
     ranges = []
     for w in values:
-        for r in range:
-            min, max = r
-            if min <= w and w < max:
+        for r in _range:
+            _min, _max = r
+            if _min <= w and w < _max:
                 if r not in ranges:
                     ranges.append(r)
                     break
 
     ranges_str = []
-    for min, max in sorted(ranges):
-        if min != float("-inf") and max != float("inf"):
-            range = "%i - %i" % (min, max)
-        elif min != float("-inf") and max == float("inf"):
-            range = "> %i" % min
-        elif min == float("-inf") and max != float("inf"):
-            range = "< %i" % max
+    for _min, _max in sorted(ranges):
+        if _min != float("-inf") and _max != float("inf"):
+            _range = "%i - %i" % (_min, _max)
+        elif _min != float("-inf") and _max == float("inf"):
+            _range = "> %i" % _min
+        elif _min == float("-inf") and _max != float("inf"):
+            _range = "< %i" % _max
         else:
-            range = "-\u221E - \u221E"
+            _range = "-\u221E - \u221E"
 
         if magnitude:
-            range = "%s%s" % (range, magnitude)
+            _range = "%s%s" % (_range, magnitude)
 
-        ranges_str.append(range)
+        ranges_str.append(_range)
 
     return ranges_str
 
@@ -49,13 +49,13 @@ def get_group_type(group, typ):
 class LightingProduct(models.Model):
     _inherit = "lighting.product"
 
-    #### auxiliary function to get non db translations
+    # auxiliary function to get non db translations
     def _(self, string):
         return _(string)
 
-    ############### Auxiliar fields ###############################
+    # Auxiliar fields
     finish_group_name = fields.Char(
-        string="Finish group name", compute="_compute_finish_group_name"
+        compute="_compute_finish_group_name",
     )
 
     def _compute_finish_group_name(self):
@@ -67,7 +67,6 @@ class LightingProduct(models.Model):
 
     photo_group_id = fields.Many2one(
         comodel_name="lighting.product.group",
-        string="Photo group",
         compute="_compute_foto_group",
     )
 
@@ -75,9 +74,11 @@ class LightingProduct(models.Model):
         for rec in self:
             if rec.product_group_id:
                 rec.photo_group_id = get_group_type(rec.product_group_id, "PHOTO")
+            else:
+                rec.photo_group_id = False
 
     group_description = fields.Char(
-        string="Group description", compute="_compute_group_description"
+        compute="_compute_group_description",
     )
 
     def _compute_group_description(self):
@@ -100,6 +101,8 @@ class LightingProduct(models.Model):
                 description = " ".join(description_l)
                 if description:
                     rec.group_description = description
+                else:
+                    rec.group_description = False
 
     category_complete_ids = fields.Many2many(
         string="Export Category Complete",
@@ -111,7 +114,7 @@ class LightingProduct(models.Model):
         for rec in self:
             rec.category_complete_ids = rec.category_id.complete_chain_ids
 
-    ############### Display fields ################################
+    # Display fields
 
     json_display_finish_group_name = fields.Char(
         string="Finish group name JSON Display",
@@ -122,8 +125,10 @@ class LightingProduct(models.Model):
         for rec in self:
             if rec.finish_group_name != rec.reference:
                 rec.json_display_finish_group_name = rec.finish_group_name
+            else:
+                rec.json_display_finish_group_name = False
 
-    ### Display finishes
+    # Display finishes
     def _get_finish_json(self, template_id, finish):
         finish_d = {}
         finish_lang_d = {}
@@ -136,9 +141,10 @@ class LightingProduct(models.Model):
         if finish_d:
             return json.dumps(finish_d)
 
-    ## Display Finish
+    # Display Finish
     json_display_finish = fields.Serialized(
-        string="Finish JSON Display", compute="_compute_json_display_finish"
+        string="Finish JSON Display",
+        compute="_compute_json_display_finish",
     )
 
     @api.depends(
@@ -152,10 +158,17 @@ class LightingProduct(models.Model):
                     finish_d = self._get_finish_json(template_id, rec.finish_id)
                     if finish_d:
                         rec.json_display_finish = finish_d
+                    else:
+                        rec.json_display_finish = False
+                else:
+                    rec.json_display_finish = False
+        else:
+            self.json_display_finish = False
 
-    ## Display Finish2
+    # Display Finish2
     json_display_finish2 = fields.Serialized(
-        string="Finish2 JSON Display", compute="_compute_json_display_finish2"
+        string="Finish2 JSON Display",
+        compute="_compute_json_display_finish2",
     )
 
     @api.depends(
@@ -169,10 +182,17 @@ class LightingProduct(models.Model):
                     finish_d = self._get_finish_json(template_id, rec.finish2_id)
                     if finish_d:
                         rec.json_display_finish2 = finish_d
+                    else:
+                        rec.json_display_finish2 = False
+                else:
+                    rec.json_display_finish2 = False
+        else:
+            self.json_display_finish2 = False
 
-    ## Display Attachments
+    # Display Attachments
     json_display_attachment = fields.Serialized(
-        string="Attachments JSON Display", compute="_compute_json_display_attachment"
+        string="Attachments JSON Display",
+        compute="_compute_json_display_attachment",
     )
 
     @api.depends(
@@ -244,10 +264,16 @@ class LightingProduct(models.Model):
 
                     if attachment_l:
                         rec.json_display_attachment = json.dumps(attachment_l)
+                    else:
+                        rec.json_display_attachment = False
+                else:
+                    rec.json_display_attachment = False
+        else:
+            self.json_display_attachment = False
 
-    ## Export Url Attachments
+    # Export Url Attachments
     export_url_attachments = fields.Serialized(
-        string="Export Url Attachments", compute="_compute_export_url_attachments"
+        compute="_compute_export_url_attachments",
     )
 
     @api.depends(
@@ -313,10 +339,17 @@ class LightingProduct(models.Model):
 
                     if attachment_d:
                         rec.export_url_attachments = json.dumps(attachment_d)
+                    else:
+                        rec.export_url_attachments = False
+                else:
+                    rec.export_url_attachments = False
+        else:
+            self.export_url_attachments = False
 
-    ## Display Model
+    # Display Model
     json_display_model = fields.Serialized(
-        string="Model JSON Display", compute="_compute_json_display_model"
+        string="Model JSON Display",
+        compute="_compute_json_display_model",
     )
 
     @api.depends("model_id", "model_id.name")
@@ -326,10 +359,15 @@ class LightingProduct(models.Model):
             for rec in self:
                 if rec.model_id:
                     rec.json_display_model = json.dumps(rec.model_id.mapped("name"))
+                else:
+                    rec.json_display_model = False
+        else:
+            self.json_display_model = False
 
-    ## Display Sources
+    # Display Sources
     json_display_source_type = fields.Serialized(
-        string="Source type JSON Display", compute="_compute_json_display_source_type"
+        string="Source type JSON Display",
+        compute="_compute_json_display_source_type",
     )
 
     @api.depends(
@@ -346,8 +384,10 @@ class LightingProduct(models.Model):
                 rec.json_display_source_type = json.dumps(
                     rec.source_ids.get_source_type()
                 )
+        else:
+            self.json_display_source_type = False
 
-    ## Display Color temperature
+    # Display Color temperature
     json_display_color_temperature = fields.Serialized(
         string="Color temperature JSON Display",
         compute="_compute_json_display_color_temperature",
@@ -368,8 +408,10 @@ class LightingProduct(models.Model):
                 rec.json_display_color_temperature = json.dumps(
                     rec.source_ids.get_color_temperature()
                 )
+        else:
+            self.json_display_color_temperature = False
 
-    ## Display Luminous flux
+    # Display Luminous flux
     json_display_luminous_flux = fields.Serialized(
         string="Luminous flux JSON Display",
         compute="_compute_json_display_luminous_flux",
@@ -391,10 +433,13 @@ class LightingProduct(models.Model):
                 rec.json_display_luminous_flux = json.dumps(
                     rec.source_ids.get_luminous_flux()
                 )
+        else:
+            self.json_display_luminous_flux = False
 
-    ## Display Wattage
+    # Display Wattage
     json_display_wattage = fields.Serialized(
-        string="Wattage JSON Display", compute="_compute_json_display_wattage"
+        string="Wattage JSON Display",
+        compute="_compute_json_display_wattage",
     )
 
     @api.depends(
@@ -409,8 +454,10 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 rec.json_display_wattage = json.dumps(rec.source_ids.get_wattage())
+        else:
+            self.json_display_wattage = False
 
-    ## Display Beams
+    # Display Beams
     json_display_beam = fields.Serialized(
         string="Beam JSON Display", compute="_compute_json_display_beam"
     )
@@ -428,12 +475,14 @@ class LightingProduct(models.Model):
         template_id = self.env.context.get("template_id")
         if template_id:
             for rec in self:
-                for rec in self:
-                    rec.json_display_beam = json.dumps(rec.beam_ids.get_beam())
+                rec.json_display_beam = json.dumps(rec.beam_ids.get_beam())
+        else:
+            self.json_display_beam = False
 
-    ## Display Beam Angle
+    # Display Beam Angle
     json_display_beam_angle = fields.Serialized(
-        string="Beam angle JSON Display", compute="_compute_json_display_beam_angle"
+        string="Beam angle JSON Display",
+        compute="_compute_json_display_beam_angle",
     )
 
     @api.depends(
@@ -448,8 +497,10 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 rec.json_display_beam_angle = json.dumps(rec.beam_ids.get_beam_angle())
+        else:
+            self.json_display_beam_angle = False
 
-    ## Display Cut hole dimension
+    # Display Cut hole dimension
     json_display_cut_hole_dimension = fields.Char(
         string="Cut hole dimension JSON Display",
         compute="_compute_json_display_cut_hole_dimension",
@@ -468,10 +519,13 @@ class LightingProduct(models.Model):
                 rec.json_display_cut_hole_dimension = (
                     rec.recess_dimension_ids.get_display()
                 )
+        else:
+            self.json_display_cut_hole_dimension = False
 
-    ## Display Dimension
+    # Display Dimension
     json_display_dimension = fields.Char(
-        string="Dimension JSON Display", compute="_compute_json_display_dimension"
+        string="Dimension JSON Display",
+        compute="_compute_json_display_dimension",
     )
 
     @api.depends(
@@ -485,10 +539,13 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 rec.json_display_dimension = rec.dimension_ids.get_display()
+        else:
+            self.json_display_dimension = False
 
-    ## Display Dimmable
+    # Display Dimmable
     json_display_dimmable = fields.Serialized(
-        string="Dimmable JSON Display", compute="_compute_json_display_dimmable"
+        string="Dimmable JSON Display",
+        compute="_compute_json_display_dimmable",
     )
 
     @api.depends("dimmable_ids", "dimmable_ids.name")
@@ -504,10 +561,15 @@ class LightingProduct(models.Model):
                         dimmables = ["ON-OFF"]
                 if dimmables:
                     rec.json_display_dimmable = json.dumps(dimmables)
+                else:
+                    rec.json_display_dimmable = False
+        else:
+            self.json_display_dimmable = False
 
-    ## Display Optional products
+    # Display Optional products
     json_display_optional = fields.Serialized(
-        string="Optional JSON Display", compute="_compute_json_display_optional"
+        string="Optional JSON Display",
+        compute="_compute_json_display_optional",
     )
 
     @api.depends("optional_ids")
@@ -526,10 +588,17 @@ class LightingProduct(models.Model):
                         rec.json_display_optional = json.dumps(
                             sorted(template_optional_l)
                         )
+                    else:
+                        rec.json_display_optional = False
+                else:
+                    rec.json_display_optional = False
+        else:
+            self.json_display_optional = False
 
-    ## Display Subtitutes
+    # Display Subtitutes
     json_display_substitute = fields.Serialized(
-        string="Substitute JSON Display", compute="_compute_json_display_substitute"
+        string="Substitute JSON Display",
+        compute="_compute_json_display_substitute",
     )
 
     @api.depends("substitute_ids")
@@ -547,10 +616,15 @@ class LightingProduct(models.Model):
                     rec.json_display_substitute = json.dumps(
                         sorted(template_substitute_l)
                     )
+                else:
+                    rec.json_display_substitute = False
+        else:
+            self.json_display_substitute = False
 
-    ## Display First Product Photo
+    # Display First Product Photo
     json_display_photo = fields.Serialized(
-        string="Photo JSON Display", compute="_compute_json_display_photo"
+        string="Photo JSON Display",
+        compute="_compute_json_display_photo",
     )
 
     def _compute_json_display_photo(self):
@@ -588,10 +662,15 @@ class LightingProduct(models.Model):
                         "store_fname": images[0].attachment_id.store_fname,
                     }
                     rec.json_display_photo = json.dumps(attachment_d)
+                else:
+                    rec.json_display_photo = False
+        else:
+            self.json_display_photo = False
 
-    ## Display Product Video url
+    # Display Product Video url
     json_display_video = fields.Char(
-        string="Video JSON Display", compute="_compute_json_display_video"
+        string="Video JSON Display",
+        compute="_compute_json_display_video",
     )
 
     def _compute_json_display_video(self):
@@ -616,10 +695,13 @@ class LightingProduct(models.Model):
                         )
                     )
                     rec.json_display_video = urls[0].datas_url
+                else:
+                    rec.json_display_video = False
+        else:
+            self.json_display_video = False
 
-    ##################### Search fields ##################################
-
-    ## Search Materials
+    # Search fields
+    # Search Materials
     json_search_material_ids = fields.Many2many(
         string="Material JSON Search",
         comodel_name="lighting.product.material",
@@ -641,10 +723,13 @@ class LightingProduct(models.Model):
                 rec.json_search_material_ids = [
                     (4, x.id, False) for x in objs.sorted(lambda x: x.display_name)
                 ]
+            else:
+                rec.json_search_material_ids = False
 
-    ## Search CRI
+    # Search CRI
     json_search_cri = fields.Serialized(
-        string="CRI JSON Search", compute="_compute_json_search_cri"
+        string="CRI JSON Search",
+        compute="_compute_json_search_cri",
     )
 
     @api.depends("source_ids.line_ids.cri_min")
@@ -662,7 +747,7 @@ class LightingProduct(models.Model):
 
             rec.json_search_cri = json.dumps(sorted(list(set(cris))))
 
-    ## Search CRI - Temp
+    # Search CRI - Temp
     json_search_cri_color_temperature = fields.Serialized(
         string="CRI - Color Temperature JSON Search",
         compute="_compute_json_search_cri_color_temperature",
@@ -699,10 +784,13 @@ class LightingProduct(models.Model):
                                     critemps.append("CRI%i - %s" % critemp)
             if critemps:
                 rec.json_search_cri_color_temperature = json.dumps(critemps)
+            else:
+                rec.json_search_cri_color_temperature = False
 
-    ## Search Input Voltage
+    # Search Input Voltage
     json_search_input_voltage = fields.Serialized(
-        string="Input Voltage JSON Search", compute="_compute_json_search_input_voltage"
+        string="Input Voltage JSON Search",
+        compute="_compute_json_search_input_voltage",
     )
 
     @api.depends("input_voltage_id")
@@ -712,10 +800,13 @@ class LightingProduct(models.Model):
                 rec.json_search_input_voltage = json.dumps(
                     rec.input_voltage_id.mapped("name")
                 )
+            else:
+                rec.json_search_input_voltage = False
 
-    ## Search Beam
+    # Search Beam
     json_search_beam_angle = fields.Serialized(
-        string="Beam angle JSON Search", compute="_compute_json_search_beam_angle"
+        string="Beam angle JSON Search",
+        compute="_compute_json_search_beam_angle",
     )
 
     @api.depends(
@@ -742,10 +833,15 @@ class LightingProduct(models.Model):
                     a_ranges = _values2range(angles, arange, magnitude="\u00B0")
                 if a_ranges:
                     rec.json_search_beam_angle = json.dumps(a_ranges)
+                else:
+                    rec.json_search_beam_angle = False
+            else:
+                rec.json_search_beam_angle = False
 
-    ## Search Wattage
+    # Search Wattage
     json_search_wattage = fields.Serialized(
-        string="Wattage JSON Search", compute="_compute_json_search_wattage"
+        string="Wattage JSON Search",
+        compute="_compute_json_search_wattage",
     )
 
     @api.depends("source_ids.line_ids.wattage")
@@ -770,10 +866,15 @@ class LightingProduct(models.Model):
                 wattage_ranges = _values2range(wattages_s2, wrange, magnitude="W")
                 if wattage_ranges:
                     rec.json_search_wattage = json.dumps(wattage_ranges)
+                else:
+                    rec.json_search_wattage = False
+            else:
+                rec.json_search_wattage = False
 
-    ## Search Wattage 2
+    # Search Wattage 2
     json_search_wattage2 = fields.Serialized(
-        string="Wattage2 JSON Search", compute="_compute_json_search_wattage2"
+        string="Wattage2 JSON Search",
+        compute="_compute_json_search_wattage2",
     )
 
     @api.depends(
@@ -788,8 +889,10 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 rec.json_search_wattage2 = json.dumps(rec.source_ids.get_wattage())
+        else:
+            self.json_search_wattage2 = False
 
-    ## Search Color temperature
+    # Search Color temperature
     json_search_color_temperature = fields.Serialized(
         string="Color temperature JSON Search",
         compute="_compute_json_search_color_temperature",
@@ -840,10 +943,15 @@ class LightingProduct(models.Model):
                 k_ranges = _values2range(colork_s, krange, magnitude="K")
                 if k_ranges:
                     rec.json_search_color_temperature = json.dumps(k_ranges)
+                else:
+                    rec.json_search_color_temperature = False
+            else:
+                rec.json_search_color_temperature = False
 
-    ## Search Luminoux flux
+    # Search Luminoux flux
     json_search_luminous_flux = fields.Serialized(
-        string="Luminous flux JSON Search", compute="_compute_json_search_luminous_flux"
+        string="Luminous flux JSON Search",
+        compute="_compute_json_search_luminous_flux",
     )
 
     @api.depends(
@@ -895,10 +1003,15 @@ class LightingProduct(models.Model):
                 flux_ranges = _values2range(fluxes_s, fxrange, magnitude="Lm")
                 if flux_ranges:
                     rec.json_search_luminous_flux = json.dumps(flux_ranges)
+                else:
+                    rec.json_search_luminous_flux = False
+            else:
+                rec.json_search_luminous_flux = False
 
-    ## Search Source type flux
+    # Search Source type flux
     json_search_source_type = fields.Serialized(
-        string="Source type JSON Search", compute="_compute_json_search_source_type"
+        string="Source type JSON Search",
+        compute="_compute_json_search_source_type",
     )
 
     @api.depends(
@@ -920,6 +1033,8 @@ class LightingProduct(models.Model):
 
                 if source_type_d:
                     rec.json_search_source_type = json.dumps(source_type_d)
+                else:
+                    rec.json_search_source_type = False
 
     marketplace_description_html = fields.Html(
         string="Marketplace description html",
@@ -932,6 +1047,8 @@ class LightingProduct(models.Model):
     def _compute_marketplace_description_html(self):
         for rec in self:
             if rec.marketplace_description:
-                self.marketplace_description_html = (
-                    self.marketplace_description.replace("\n", "<br>")
+                rec.marketplace_description_html = rec.marketplace_description.replace(
+                    "\n", "<br>"
                 )
+            else:
+                rec.marketplace_description_html = False

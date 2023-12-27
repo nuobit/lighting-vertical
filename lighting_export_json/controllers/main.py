@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
@@ -19,7 +18,7 @@ class LightingExportJsonController(http.Controller):
         type="http",
         auth="public",
     )
-    def export_template(self, code=None, object=None, lang=None):
+    def export_template(self, code=None, obj=None, lang=None):
         # get language
         lang_id = None
         if lang is not None:
@@ -61,13 +60,16 @@ class LightingExportJsonController(http.Controller):
             )
         if len(tmpl) > 1:
             return werkzeug.exceptions.InternalServerError(
-                "More than one template found with code %s and language"
-                % (code, lang_id.code)
+                "More than one template found with code %(code)s and language %(lang)s"
+                % {
+                    "code": code,
+                    "lang": lang_id.code,
+                }
             )
 
         # check objects
-        if object not in tmpl._VALID_OBJECTS:
-            return werkzeug.exceptions.NotFound("Resource %s not valid" % (object,))
+        if obj not in tmpl._VALID_OBJECTS:
+            return werkzeug.exceptions.NotFound("Resource %s not valid" % (obj,))
 
         # check authentication
         if tmpl.link_auth_enabled:

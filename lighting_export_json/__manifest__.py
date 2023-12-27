@@ -3,11 +3,10 @@
 
 {
     "name": "Lighting JSON Export",
-    "description": "Lighting export data JSON",
-    "version": "11.0.0.49.11",
-    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "version": "16.0.1.0.0",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
-    "category": "Custom",
+    "category": "Lighting",
     "website": "https://github.com/NuoBiT/lighting-vertical",
     "depends": ["lighting_seo", "lighting_export", "report_json", "queue_job"],
     "data": [
@@ -18,5 +17,4 @@
         "views/product_special_spectrum_views.xml",
         "wizard/export_views.xml",
     ],
-    "installable": True,
 }
