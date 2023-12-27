@@ -36,17 +36,11 @@
             </form>
         </field>
     </record>
-
-    <act_window
-        id="export_product_action"
-        groups="export_group_user"
-        multi="True"
-        key2="client_action_multi"
-        name="Export products"
-        res_model="lighting.export"
-        src_model="lighting.product"
-        view_mode="form"
-        target="new"
-        view_type="form"
-    />
+    <record id="export_product_action" model="ir.actions.act_window">
+        <field name="name">Export products</field>
+        <field name="res_model">lighting.export</field>
+        <field name="groups_id" eval="[(4,ref('lighting_export.export_group_user'))]" />
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 </odoo>
