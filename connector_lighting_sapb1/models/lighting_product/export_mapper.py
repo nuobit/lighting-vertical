@@ -47,7 +47,10 @@ class LigthingProductExportMapper(Component):
 
     @mapping
     def family(self, record):
-        return {"U_U_familia": ", ".join(sorted(record.family_ids.mapped("name")))}
+        family = ", ".join(sorted(record.family_ids.mapped("name")))
+        if len(family) > 30:
+            family = family[:30]
+        return {"U_U_familia": family}
 
     @mapping
     def category(self, record):
