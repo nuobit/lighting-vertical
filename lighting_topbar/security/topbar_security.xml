@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -11,11 +11,11 @@
 
     <record id="topbar_group_hide" model="res.groups">
         <field name="name">Hide non-lighting top bar menus</field>
-        <field name="category_id" ref="topbar_security"/>
+        <field name="category_id" ref="topbar_security" />
     </record>
 
     <record id="topbar_icons_group_hide" model="res.groups">
         <field name="name">Hide non-lighting top bar icons</field>
-        <field name="category_id" ref="topbar_security"/>
+        <field name="category_id" ref="topbar_security" />
     </record>
 </odoo>
