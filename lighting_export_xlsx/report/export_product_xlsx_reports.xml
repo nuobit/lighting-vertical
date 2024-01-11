@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <report
-        id="export_product_xlsx"
-        name="lighting_export_xlsx.export_product_xlsx"
-        string="Products XLSX report"
-        report_type="xlsx"
-        print_report_name="'Products XLSX report'"
-        file="export_product"
-        model="lighting.product"
-        attachment_use="False"
-        menu="False"
-    />
+    <record id="export_product_xlsx" model="ir.actions.report">
+        <field name="name">lighting_export_xlsx.export_product_xlsx</field>
+        <field name="model">lighting.product</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">lighting_export_xlsx.export_product_xlsx</field>
+        <field name="report_file">export_product</field>
+        <field name="print_report_name">'Products XLSX report'</field>
+        <field name="attachment_use">False</field>
+        <field name="binding_type">report</field>
+    </record>
 </odoo>

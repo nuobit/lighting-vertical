@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 class ExportProductXlsx(models.AbstractModel):
     _name = "report.lighting_export_xlsx.export_product_xlsx"
     _inherit = "report.report_xlsx.abstract"
+    _description = "Export Product XLSX"
 
     def get_workbook_options(self):
         return {"strings_to_urls": False}
@@ -34,7 +35,7 @@ class ExportProductXlsx(models.AbstractModel):
         if data.get("exclude_configurator"):
             objects = objects.filtered(lambda x: not x.configurator)
 
-        ## base headers with labels replaced and subset acoridng to template
+        # base headers with labels replaced and subset acoridng to template
         header = []
         for line in template_id.field_ids.sorted(lambda x: x.sequence):
             item = objects.fields_get(
@@ -47,12 +48,12 @@ class ExportProductXlsx(models.AbstractModel):
                 meta.update(dict(num=0, subfields=None))
                 header.append((field, meta))
 
-        ## generate data and gather header data
+        # generate data and gather header data
         objects_ld = self._generate_products(header, objects.ids, template_id)
 
-        ## generate xlsx headers according to data
+        # generate xlsx headers according to data
         xlsx_header = []
-        for field, meta in header:
+        for _field, meta in header:
             if not meta["num"] and data.get("hide_empty_fields"):
                 continue
             if not meta["subfields"]:
@@ -61,7 +62,7 @@ class ExportProductXlsx(models.AbstractModel):
                 for sf in meta["subfields"]:
                     xlsx_header.append(sf)
 
-        ## write to xlsx
+        # write to xlsx
         sheet = workbook.add_worksheet(template_id.display_name)
         row = col = 0
 
@@ -75,7 +76,7 @@ class ExportProductXlsx(models.AbstractModel):
         row = 1
         for obj in objects_ld:
             col = 0
-            for field, meta in header:
+            for _field, meta in header:
                 if not meta["num"] and data.get("hide_empty_fields"):
                     continue
 
@@ -87,6 +88,31 @@ class ExportProductXlsx(models.AbstractModel):
                         sheet.write(row, col, obj.get(k))
                         col += 1
             row += 1
+
+    def _get_meta_num(self, meta, datum, obj_d):
+        subfields = []
+        for j, sf in enumerate(datum, 1):
+            # update x in headers
+            sf1 = list(sf.keys())
+            if subfields:
+                if set(subfields) != set(sf1):
+                    raise Exception("Unexpected Error")
+            else:
+                subfields = sf1
+
+            fnam = "%s%i" % (meta["string"], j)
+            for k, v in sf.items():
+                sfkey = "%s/%s" % (fnam, k)
+                if sfkey in obj_d:
+                    raise Exception("The subfield '%s' is duplicated" % sfkey)
+                obj_d[sfkey] = v
+
+                if not meta["subfields"]:
+                    meta["subfields"] = []
+                if sfkey not in meta["subfields"]:
+                    meta["subfields"].append(sfkey)
+
+        return max(meta["num"], len(datum)), obj_d
 
     def _generate_products(self, header, object_ids, template_id):
         n = len(object_ids)
@@ -116,32 +142,9 @@ class ExportProductXlsx(models.AbstractModel):
                     datum = None
 
                 if isinstance(datum, (tuple, list)):
-                    subfields = []
-                    for j, sf in enumerate(datum, 1):
-                        ## update x als headers
-                        sf1 = list(sf.keys())
-                        if subfields:
-                            if set(subfields) != set(sf1):
-                                raise Exception("Unexpected Error")
-                        else:
-                            subfields = sf1
 
-                        ## afegim dades
-                        fnam = "%s%i" % (meta["string"], j)
-                        for k, v in sf.items():
-                            sfkey = "%s/%s" % (fnam, k)
-                            if sfkey in obj_d:
-                                raise Exception(
-                                    "The subfield '%s' is duplicated" % sfkey
-                                )
-                            obj_d[sfkey] = v
+                    meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
 
-                            if not meta["subfields"]:
-                                meta["subfields"] = []
-                            if sfkey not in meta["subfields"]:
-                                meta["subfields"].append(sfkey)
-
-                    meta["num"] = max(meta["num"], len(datum))
                 else:
                     fkey = meta["string"]
                     if fkey in obj_d:

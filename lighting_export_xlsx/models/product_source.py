@@ -1,10 +1,10 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from collections import OrderedDict
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
+from odoo.exceptions import ValidationError
 
 
 class LightingProductSource(models.Model):
@@ -53,7 +53,6 @@ class LightingProductSource(models.Model):
         datum = self.line_ids.get_energy_efficiency()
         return {_("Energy Efficiency"): datum and ", ".join(datum) or None}
 
-    @api.multi
     def export_xlsx(self, template_id=None):
         valid_field = [
             "relevance",
@@ -81,8 +80,14 @@ class LightingProductSource(models.Model):
                             "type": None,
                             "string": list(datum.keys())[0],
                         }
-                    except:
-                        raise
+                    except Exception as e:
+                        raise ValidationError(
+                            _("Error in field %s(field): %(error)s")
+                            % {
+                                "field": field,
+                                "error": e,
+                            }
+                        ) from e
                     datum = list(datum.values())[0]
                 if field_meta["type"] == "selection":
                     datum = dict(field_meta["selection"]).get(datum)
