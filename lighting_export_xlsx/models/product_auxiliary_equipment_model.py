@@ -1,16 +1,14 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from collections import OrderedDict
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class LightingProductAuxiliaryEquipmentModel(models.Model):
     _inherit = "lighting.product.auxiliaryequipmentmodel"
 
-    @api.multi
     def export_xlsx(self, template_id=None):
         valid_field = ["reference", "brand_id", "date"]
         res = []

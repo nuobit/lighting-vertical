@@ -2,17 +2,17 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
+from odoo import _, fields, models
 
 
 class LightingExport(models.TransientModel):
     _inherit = "lighting.export"
 
     output_type = fields.Selection(
-        selection_add=[("export_product_xlsx", _("Excel file (.xlsx)"))]
+        selection_add=[("export_product_xlsx", _("Excel file (.xlsx)"))],
+        ondelete={"export_product_xlsx": "cascade"},
     )
 
-    @api.multi
     def export_product_xlsx(self):
         self.ensure_one()
         return {
