@@ -2,51 +2,75 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, models, _, tools
-from odoo.exceptions import UserError
-
 import datetime
+
+from odoo import _, api, fields, models
 
 
 class LightingProductReview(models.Model):
-    _name = 'lighting.review.package'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _name = "lighting.review.package"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
-    _order = 'name'
+    _order = "name"
 
-    name = fields.Char(required=True, track_visibility='onchange')
-    description = fields.Text(track_visibility='onchange')
-    start_date = fields.Date(string='Start date', required=True, track_visibility='onchange')
-    due_date = fields.Date(string='Due date', required=True, help='Maximum completion date',
-                           track_visibility='onchange')
-    end_date = fields.Date(string='End date', help='Actual completion date', track_visibility='onchange')
+    name = fields.Char(required=True, track_visibility="onchange")
+    description = fields.Text(track_visibility="onchange")
+    start_date = fields.Date(
+        string="Start date", required=True, track_visibility="onchange"
+    )
+    due_date = fields.Date(
+        string="Due date",
+        required=True,
+        help="Maximum completion date",
+        track_visibility="onchange",
+    )
+    end_date = fields.Date(
+        string="End date", help="Actual completion date", track_visibility="onchange"
+    )
 
-    responsible_ids = fields.Many2many(comodel_name='res.users',
-                                       relation='lighting_review_package_user_rel',
-                                       string='Responsibles', required=True, track_visibility='onchange')
+    responsible_ids = fields.Many2many(
+        comodel_name="res.users",
+        relation="lighting_review_package_user_rel",
+        string="Responsibles",
+        required=True,
+        track_visibility="onchange",
+    )
 
-    review_ids = fields.One2many(comodel_name='lighting.product.review',
-                                 inverse_name='package_id',
-                                 string='Reviews', copy=True, track_visibility='onchange')
+    review_ids = fields.One2many(
+        comodel_name="lighting.product.review",
+        inverse_name="package_id",
+        string="Reviews",
+        copy=True,
+        track_visibility="onchange",
+    )
 
-    _sql_constraints = [('name_uniq', 'unique (name)', 'The review package name must be unique!'),
-                        ]
+    _sql_constraints = [
+        ("name_uniq", "unique (name)", "The review package name must be unique!"),
+    ]
 
-    product_count = fields.Integer(string='Product(s)', compute='_compute_product_count')
+    product_count = fields.Integer(
+        string="Product(s)", compute="_compute_product_count"
+    )
 
     def _compute_product_count(self):
         for rec in self:
             rec.product_count = len(rec.review_ids)
 
-    reviewed_count = fields.Integer(string='Reviewed product(s)', compute='_compute_reviewed_count')
-    pending_count = fields.Integer(string='Pending product(s)', compute='_compute_reviewed_count')
+    reviewed_count = fields.Integer(
+        string="Reviewed product(s)", compute="_compute_reviewed_count"
+    )
+    pending_count = fields.Integer(
+        string="Pending product(s)", compute="_compute_reviewed_count"
+    )
 
     def _compute_reviewed_count(self):
         for rec in self:
             rec.reviewed_count = len(rec.review_ids.filtered(lambda x: x.reviewed))
             rec.pending_count = len(rec.review_ids.filtered(lambda x: not x.reviewed))
 
-    completed_percent = fields.Float(compute='_compute_completed_percent', string='% Completed')
+    completed_percent = fields.Float(
+        compute="_compute_completed_percent", string="% Completed"
+    )
 
     def _compute_completed_percent(self):
         for rec in self:
@@ -54,28 +78,47 @@ class LightingProductReview(models.Model):
             if product_count != 0:
                 rec.completed_percent = rec.reviewed_count / product_count * 100
 
-    days = fields.Integer(string='Days', help='Days from the begining',
-                          readonly=True, compute='_compute_revision_stats')
+    days = fields.Integer(
+        string="Days",
+        help="Days from the begining",
+        readonly=True,
+        compute="_compute_revision_stats",
+    )
 
-    velocity = fields.Float(string='Velocity (rev/day)', help='Revision velocity (revisions/day)',
-                            readonly=True,
-                            compute='_compute_revision_stats')
+    velocity = fields.Float(
+        string="Velocity (rev/day)",
+        help="Revision velocity (revisions/day)",
+        readonly=True,
+        compute="_compute_revision_stats",
+    )
 
-    estimated_total_days = fields.Integer(string='Total days (est.)',
-                                          help='Total estimated days of completion at current velocity',
-                                          readonly=True, compute='_compute_revision_stats')
+    estimated_total_days = fields.Integer(
+        string="Total days (est.)",
+        help="Total estimated days of completion at current velocity",
+        readonly=True,
+        compute="_compute_revision_stats",
+    )
 
-    estimated_date = fields.Date(string='Date (est.)',
-                                 help='Estimated date of completion at current velocity (excluding weekends)',
-                                 readonly=True, compute='_compute_revision_stats')
+    estimated_date = fields.Date(
+        string="Date (est.)",
+        help="Estimated date of completion at current velocity (excluding weekends)",
+        readonly=True,
+        compute="_compute_revision_stats",
+    )
 
-    estimated_remaining_days = fields.Integer(string='Remaining days (est.)',
-                                              help='Remaining days at current velocity (excluding weekends)',
-                                              readonly=True, compute='_compute_revision_stats')
+    estimated_remaining_days = fields.Integer(
+        string="Remaining days (est.)",
+        help="Remaining days at current velocity (excluding weekends)",
+        readonly=True,
+        compute="_compute_revision_stats",
+    )
 
-    estimated_days_late = fields.Integer(string='Days late (est.)',
-                                         help='Days late at current velocity (excluding weekends)',
-                                         readonly=True, compute='_compute_revision_stats')
+    estimated_days_late = fields.Integer(
+        string="Days late (est.)",
+        help="Days late at current velocity (excluding weekends)",
+        readonly=True,
+        compute="_compute_revision_stats",
+    )
 
     def _compute_revision_stats(self):
         today = fields.date.today()
@@ -128,39 +171,64 @@ class LightingProductReview(models.Model):
 
     def action_products(self):
         return {
-            'name': _('Pack products'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'lighting.product',
-            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
-            'domain': [('id', 'in', self.review_ids.mapped('product_id.id'))],
-            'context': {'default_review_ids': [(0, False, {'package_id': self.id})]},
+            "name": _("Pack products"),
+            "type": "ir.actions.act_window",
+            "res_model": "lighting.product",
+            "views": [(False, "kanban"), (False, "tree"), (False, "form")],
+            "domain": [("id", "in", self.review_ids.mapped("product_id.id"))],
+            "context": {"default_review_ids": [(0, False, {"package_id": self.id})]},
         }
 
     def action_product_reviewed(self):
         return {
-            'name': _('Reviewed products'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'lighting.product',
-            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
-            'domain': [('id', 'in', self.review_ids.filtered(lambda x: x.reviewed).mapped('product_id.id'))],
-            'context': {'default_review_ids': [(0, False, {'package_id': self.id, 'reviewed': True})]},
+            "name": _("Reviewed products"),
+            "type": "ir.actions.act_window",
+            "res_model": "lighting.product",
+            "views": [(False, "kanban"), (False, "tree"), (False, "form")],
+            "domain": [
+                (
+                    "id",
+                    "in",
+                    self.review_ids.filtered(lambda x: x.reviewed).mapped(
+                        "product_id.id"
+                    ),
+                )
+            ],
+            "context": {
+                "default_review_ids": [
+                    (0, False, {"package_id": self.id, "reviewed": True})
+                ]
+            },
         }
 
     def action_product_pending(self):
         return {
-            'name': _('Pending products'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'lighting.product',
-            'views': [(False, 'kanban'), (False, 'tree'), (False, 'form')],
-            'domain': [('id', 'in', self.review_ids.filtered(lambda x: not x.reviewed).mapped('product_id.id'))],
-            'context': {'default_review_ids': [(0, False, {'package_id': self.id, 'reviewed': False})]},
+            "name": _("Pending products"),
+            "type": "ir.actions.act_window",
+            "res_model": "lighting.product",
+            "views": [(False, "kanban"), (False, "tree"), (False, "form")],
+            "domain": [
+                (
+                    "id",
+                    "in",
+                    self.review_ids.filtered(lambda x: not x.reviewed).mapped(
+                        "product_id.id"
+                    ),
+                )
+            ],
+            "context": {
+                "default_review_ids": [
+                    (0, False, {"package_id": self.id, "reviewed": False})
+                ]
+            },
         }
 
     @api.multi
     def copy(self, default=None):
         self.ensure_one()
-        default = dict(default or {},
-                       name=_('%s (copy)') % self.name,
-                       )
+        default = dict(
+            default or {},
+            name=_("%s (copy)") % self.name,
+        )
 
         return super().copy(default)

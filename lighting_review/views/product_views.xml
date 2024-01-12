@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -8,19 +8,25 @@
         <field name="name">product.view.form</field>
         <field name="model">lighting.product</field>
         <field name="priority">20</field>
-        <field name="inherit_id" ref="lighting.product_form_view"/>
-        <field name="groups_id" eval="[(6, 0, [ref('lighting_review.review_group_user')])]"/>
+        <field name="inherit_id" ref="lighting.product_form_view" />
+        <field
+            name="groups_id"
+            eval="[(6, 0, [ref('lighting_review.review_group_user')])]"
+        />
         <field name="arch" type="xml">
             <!-- review fields -->
             <xpath expr="//notebook" position="inside">
-                <page string="Review" attrs="{'invisible': [('review_mode', '=', False)]}">
+                <page
+                    string="Review"
+                    attrs="{'invisible': [('review_mode', '=', False)]}"
+                >
                     <group string="Packages">
                         <field name="review_ids" nolabel="1">
                             <tree editable="bottom">
-                                <field name="package_id" readonly="1"/>
-                                <field name="reviewed"/>
-                                <field name="date"/>
-                                <field name="comment"/>
+                                <field name="package_id" readonly="1" />
+                                <field name="reviewed" />
+                                <field name="date" />
+                                <field name="comment" />
                             </tree>
                         </field>
                     </group>
@@ -29,71 +35,101 @@
 
             <!-- to review layout -->
             <xpath expr="//header" position="inside">
-                <button name="toggle_review_mode" string="Enable review mode"
-                        type="object" attrs="{'invisible': [('review_mode', '=', True)]}"/>
-                <button name="toggle_review_mode" string="Disable review mode"
-                        class="btn-danger"
-                        type="object" attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                <button
+                    name="toggle_review_mode"
+                    string="Enable review mode"
+                    type="object"
+                    attrs="{'invisible': [('review_mode', '=', True)]}"
+                />
+                <button
+                    name="toggle_review_mode"
+                    string="Disable review mode"
+                    class="btn-danger"
+                    type="object"
+                    attrs="{'invisible': [('review_mode', '=', False)]}"
+                />
             </xpath>
 
             <xpath expr="//sheet" position="inside">
-                <field name="review_mode" invisible="1"/>
-                <field name="toreview_count" invisible="1"/>
+                <field name="review_mode" invisible="1" />
+                <field name="toreview_count" invisible="1" />
             </xpath>
 
             <div name="button_box" position="inside">
                 <div>
-                    <button type="object" class="oe_stat_button" icon="fa-check-square-o"
-                            name="show_fields_toreview"
-                            attrs="{'invisible': [('review_mode', '=', False)]}">
-                        <field string="To review" name="toreview_fields_count" widget="statinfo"/>
+                    <button
+                        type="object"
+                        class="oe_stat_button"
+                        icon="fa-check-square-o"
+                        name="show_fields_toreview"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    >
+                        <field
+                            string="To review"
+                            name="toreview_fields_count"
+                            widget="statinfo"
+                        />
                     </button>
                 </div>
             </div>
 
             <!-- to review fields -->
             <field name="lifetime" position="replace">
-                <label for="lifetime"/>
+                <label for="lifetime" />
                 <div>
-                    <field name="lifetime" class="oe_inline"/>
-                    <field name="toreview_lifetime"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field name="lifetime" class="oe_inline" />
+                    <field
+                        name="toreview_lifetime"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
 
             <field name="led_lifetime_l" position="replace">
-                <label for="led_lifetime_l"/>
+                <label for="led_lifetime_l" />
                 <div>
-                    <field name="led_lifetime_l" class="oe_inline"/>
-                    <field name="toreview_led_lifetime_l"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field name="led_lifetime_l" class="oe_inline" />
+                    <field
+                        name="toreview_led_lifetime_l"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
 
             <field name="led_lifetime_b" position="replace">
-                <label for="led_lifetime_b"/>
+                <label for="led_lifetime_b" />
                 <div>
-                    <field name="led_lifetime_b" class="oe_inline"/>
-                    <field name="toreview_led_lifetime_b"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field name="led_lifetime_b" class="oe_inline" />
+                    <field
+                        name="toreview_led_lifetime_b"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
 
             <field name="dimmable_ids" position="replace">
-                <label for="dimmable_ids"/>
+                <label for="dimmable_ids" />
                 <div>
-                    <field name="dimmable_ids" widget="many2many_tags" class="oe_inline"/>
-                    <field name="toreview_dimmable_ids"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field
+                        name="dimmable_ids"
+                        widget="many2many_tags"
+                        class="oe_inline"
+                    />
+                    <field
+                        name="toreview_dimmable_ids"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
 
             <field name="input_voltage_id" position="replace">
-                <label for="input_voltage_id"/>
+                <label for="input_voltage_id" />
                 <div>
-                    <field name="input_voltage_id" class="oe_inline"/>
-                    <field name="toreview_input_voltage_id"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field name="input_voltage_id" class="oe_inline" />
+                    <field
+                        name="toreview_input_voltage_id"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
         </field>
@@ -102,9 +138,12 @@
     <record id="product_form_view_manager" model="ir.ui.view">
         <field name="name">product.view.form.manager</field>
         <field name="model">lighting.product</field>
-        <field name="inherit_id" ref="lighting.product_form_view"/>
-        <field name="groups_id" eval="[(6, 0, [ref('lighting_review.review_group_manager')])]"/>
-        <field eval="30" name="priority"/>
+        <field name="inherit_id" ref="lighting.product_form_view" />
+        <field
+            name="groups_id"
+            eval="[(6, 0, [ref('lighting_review.review_group_manager')])]"
+        />
+        <field eval="30" name="priority" />
         <field name="arch" type="xml">
             <field name="package_id" position="attributes">
                 <attribute name="readonly">0</attribute>
@@ -128,17 +167,23 @@
     <record model="ir.ui.view" id="lighting_product_view">
         <field name="name">lighting.product.search</field>
         <field name="model">lighting.product</field>
-        <field name="inherit_id" ref="lighting.lighting_product_view"/>
+        <field name="inherit_id" ref="lighting.lighting_product_view" />
         <field name="arch" type="xml">
             <field name="body_material_ids" position="after">
-                <field name="review_ids" string="Review package"
-                       filter_domain="[('review_ids.package_id.name','ilike',self)]"/>
+                <field
+                    name="review_ids"
+                    string="Review package"
+                    filter_domain="[('review_ids.package_id.name','ilike',self)]"
+                />
             </field>
             <filter name="mandatory_accessories" position="after">
-                <separator/>
-                <filter string="To review" name="to_review"
-                        domain="['|','&amp;',('review_ids', '!=', False),('review_ids.reviewed', '=', False),
-                                     ('toreview_fields_count', '!=', 0)]"/>
+                <separator />
+                <filter
+                    string="To review"
+                    name="to_review"
+                    domain="['|','&amp;',('review_ids', '!=', False),('review_ids.reviewed', '=', False),
+                                     ('toreview_fields_count', '!=', 0)]"
+                />
             </filter>
         </field>
     </record>
