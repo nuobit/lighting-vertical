@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -7,29 +6,36 @@ from odoo import api, fields, models
 
 class LightingProductReview(models.Model):
     _name = "lighting.product.review"
-
     _inherit = ["mail.thread", "mail.activity.mixin"]
-
     _order = "package_id,product_id"
 
     package_id = fields.Many2one(
         comodel_name="lighting.review.package",
         ondelete="restrict",
         required=True,
-        track_visibility="onchange",
+        tracking=True,
     )
+    reviewed = fields.Boolean(
+        tracking=True,
+    )
+    date = fields.Datetime(readonly=True, tracking=True, compute="_compute_date")
 
-    reviewed = fields.Boolean(string="Reviewed", track_visibility="onchange")
+    @api.depends("reviewed")
+    def _compute_date(self):
+        for rec in self:
+            if not rec.reviewed:
+                rec.date = False
+            else:
+                rec.date = fields.Datetime.now()
 
-    date = fields.Datetime(string="Date", readonly=True, track_visibility="onchange")
-
-    comment = fields.Text(string="Comment", track_visibility="onchange")
-
+    comment = fields.Text(
+        tracking=True,
+    )
     product_id = fields.Many2one(
         comodel_name="lighting.product",
         ondelete="cascade",
         required=True,
-        track_visibility="onchange",
+        tracking=True,
     )
 
     _sql_constraints = [
@@ -40,17 +46,11 @@ class LightingProductReview(models.Model):
         ),
     ]
 
-    @api.onchange("reviewed")
-    def onchange_reviewed(self):
-        if not self.reviewed:
-            self.date = False
-
-    @api.multi
-    def write(self, values):
-        if "reviewed" in values:
-            if values["reviewed"]:
-                values.update({"date": fields.Datetime.now()})
-            else:
-                values.update({"date": None})
-        res = super().write(values)
-        return res
+    # def write(self, values):
+    #     if "reviewed" in values:
+    #         if values["reviewed"]:
+    #             values.update({"date": fields.Datetime.now()})
+    #         else:
+    #             values.update({"date": None})
+    #     res = super().write(values)
+    #     return res

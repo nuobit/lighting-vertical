@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- ================================ MENUS =========================== -->
-    <!-- A first level in the left side menu is needed
-         before using action= attribute -->
     <menuitem
         id="lighting_review_menu"
         name="Review"
         parent="lighting.lighting_menu"
         sequence="50"
-    />
+    >
+        <menuitem
+            id="review_packages_menu"
+            name="Packages"
+            action="review_package_action"
+        />
+        <menuitem
+            id="product_reviews_menu"
+            name="Reviews"
+            action="product_review_action"
+            groups="lighting_review.review_group_manager"
+        />
+    </menuitem>
 </odoo>

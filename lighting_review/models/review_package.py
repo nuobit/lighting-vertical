@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import datetime
@@ -13,63 +12,67 @@ class LightingProductReview(models.Model):
 
     _order = "name"
 
-    name = fields.Char(required=True, track_visibility="onchange")
-    description = fields.Text(track_visibility="onchange")
+    name = fields.Char(
+        required=True,
+        tracking=True,
+    )
+    description = fields.Text(
+        tracking=True,
+    )
     start_date = fields.Date(
-        string="Start date", required=True, track_visibility="onchange"
+        required=True,
+        tracking=True,
     )
     due_date = fields.Date(
-        string="Due date",
         required=True,
         help="Maximum completion date",
-        track_visibility="onchange",
+        tracking=True,
     )
     end_date = fields.Date(
-        string="End date", help="Actual completion date", track_visibility="onchange"
+        help="Actual completion date",
+        tracking=True,
     )
-
     responsible_ids = fields.Many2many(
         comodel_name="res.users",
         relation="lighting_review_package_user_rel",
         string="Responsibles",
         required=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
     review_ids = fields.One2many(
         comodel_name="lighting.product.review",
         inverse_name="package_id",
         string="Reviews",
         copy=True,
-        track_visibility="onchange",
+        tracking=True,
     )
-
-    _sql_constraints = [
-        ("name_uniq", "unique (name)", "The review package name must be unique!"),
-    ]
-
     product_count = fields.Integer(
-        string="Product(s)", compute="_compute_product_count"
+        string="Product(s)",
+        compute="_compute_product_count",
     )
 
+    @api.depends("review_ids")
     def _compute_product_count(self):
         for rec in self:
             rec.product_count = len(rec.review_ids)
 
     reviewed_count = fields.Integer(
-        string="Reviewed product(s)", compute="_compute_reviewed_count"
+        string="Reviewed product(s)",
+        compute="_compute_reviewed_count",
     )
     pending_count = fields.Integer(
         string="Pending product(s)", compute="_compute_reviewed_count"
     )
 
+    @api.depends("review_ids", "review_ids.reviewed")
     def _compute_reviewed_count(self):
         for rec in self:
             rec.reviewed_count = len(rec.review_ids.filtered(lambda x: x.reviewed))
             rec.pending_count = len(rec.review_ids.filtered(lambda x: not x.reviewed))
 
     completed_percent = fields.Float(
-        compute="_compute_completed_percent", string="% Completed"
+        string="% Completed",
+        compute="_compute_completed_percent",
     )
 
     def _compute_completed_percent(self):
@@ -77,42 +80,38 @@ class LightingProductReview(models.Model):
             product_count = len(rec.review_ids)
             if product_count != 0:
                 rec.completed_percent = rec.reviewed_count / product_count * 100
+            else:
+                rec.completed_percent = False
 
     days = fields.Integer(
-        string="Days",
         help="Days from the begining",
         readonly=True,
         compute="_compute_revision_stats",
     )
-
     velocity = fields.Float(
         string="Velocity (rev/day)",
         help="Revision velocity (revisions/day)",
         readonly=True,
         compute="_compute_revision_stats",
     )
-
     estimated_total_days = fields.Integer(
         string="Total days (est.)",
         help="Total estimated days of completion at current velocity",
         readonly=True,
         compute="_compute_revision_stats",
     )
-
     estimated_date = fields.Date(
         string="Date (est.)",
         help="Estimated date of completion at current velocity (excluding weekends)",
         readonly=True,
         compute="_compute_revision_stats",
     )
-
     estimated_remaining_days = fields.Integer(
         string="Remaining days (est.)",
         help="Remaining days at current velocity (excluding weekends)",
         readonly=True,
         compute="_compute_revision_stats",
     )
-
     estimated_days_late = fields.Integer(
         string="Days late (est.)",
         help="Days late at current velocity (excluding weekends)",
@@ -157,17 +156,26 @@ class LightingProductReview(models.Model):
                     days_late = 0
                     date0 = from_string(rec.due_date)
                     date1 = from_string(rec.estimated_date)
-                    abs = 1
+                    sign = 1
                     if date0 > date1:
                         date0, date1 = date1, date0
-                        abs = -1
+                        sign = -1
 
                     while date0 <= date1:
                         if date0.isoweekday() not in (6, 7):
                             days_late += 1
                         date0 += datetime.timedelta(days=1)
 
-                    rec.estimated_days_late = days_late * abs
+                    rec.estimated_days_late = days_late * sign
+            else:
+                rec.estimated_date = False
+                rec.estimated_days_late = False
+                rec.estimated_total_days = False
+                rec.estimated_remaining_days = False
+
+    _sql_constraints = [
+        ("name_uniq", "unique (name)", "The review package name must be unique!"),
+    ]
 
     def action_products(self):
         return {
@@ -223,7 +231,6 @@ class LightingProductReview(models.Model):
             },
         }
 
-    @api.multi
     def copy(self, default=None):
         self.ensure_one()
         default = dict(
