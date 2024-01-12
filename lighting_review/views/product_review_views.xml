@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-    <!-- view product review -->
     <record id="product_review_form_view" model="ir.ui.view">
         <field name="name">lighting.product.review.form</field>
         <field name="model">lighting.product.review</field>
@@ -31,30 +29,30 @@
             </form>
         </field>
     </record>
-
     <record id="product_review_form_view_manager" model="ir.ui.view">
         <field name="name">lighting.product.review.form.manager</field>
         <field name="model">lighting.product.review</field>
         <field name="inherit_id" ref="product_review_form_view" />
-        <field
-            name="groups_id"
-            eval="[(6, 0, [ref('lighting_review.review_group_manager')])]"
-        />
         <field name="arch" type="xml">
             <field name="package_id" position="attributes">
-                <attribute name="readonly">0</attribute>
+                <attribute
+                    name="readonly"
+                    groups="lighting_review.review_group_manager"
+                >0</attribute>
             </field>
             <field name="product_id" position="attributes">
-                <attribute name="readonly">0</attribute>
+                <attribute
+                    name="readonly"
+                    groups="lighting_review.review_group_manager"
+                >0</attribute>
             </field>
         </field>
     </record>
-
     <record id="product_review_tree_view" model="ir.ui.view">
         <field name="name">product.review.tree</field>
         <field name="model">lighting.product.review</field>
         <field name="arch" type="xml">
-            <tree string="Product review">
+            <tree>
                 <field name="package_id" />
                 <field name="product_id" />
                 <field name="reviewed" />
@@ -63,8 +61,6 @@
             </tree>
         </field>
     </record>
-
-    <!-- search product review -->
     <record id="product_review_search_view" model="ir.ui.view">
         <field name="name">lighting.product.review.search</field>
         <field name="model">lighting.product.review</field>
@@ -119,23 +115,10 @@
             </search>
         </field>
     </record>
-
-    <!-- ================================ WINDOWS =========================== -->
-    <!-- window action product review class -->
     <record id="product_review_action" model="ir.actions.act_window">
         <field name="name">Product review</field>
         <field name="res_model">lighting.product.review</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{'search_default_pending': 1}</field>
     </record>
-
-    <!-- menu product review -->
-    <menuitem
-        id="product_reviews_menu"
-        name="Reviews"
-        parent="lighting_review_menu"
-        action="product_review_action"
-        groups="lighting_review.review_group_manager"
-    />
 </odoo>
