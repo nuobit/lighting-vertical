@@ -2,10 +2,10 @@
 # Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import api, fields, _
+from odoo import _, api, fields
 
-TOREVIEW_STRING = _('%s (to review)')
-TOREVIEW_HELP = _('Enabled if the field value has not been validated yet')
+TOREVIEW_STRING = _("%s (to review)")
+TOREVIEW_HELP = _("Enabled if the field value has not been validated yet")
 
 
 def get_string(field_name):
@@ -19,8 +19,9 @@ class LightingReviewMixin:
         for rec in self:
             rec.review_mode = self.env.user.review_mode
 
-    review_mode = fields.Boolean(string="Review mode", compute="_compute_review_mode",
-                                 default=False, store=False)
+    review_mode = fields.Boolean(
+        string="Review mode", compute="_compute_review_mode", default=False, store=False
+    )
 
     def toggle_review_mode(self):
         self.ensure_one()
@@ -29,10 +30,13 @@ class LightingReviewMixin:
     # to review count
     @api.model
     def _get_toreview_fields(self):
-        return {x for x, _ in filter(
-            lambda x: x[1].type == 'boolean' and x[0].startswith('toreview_'),
-            self._fields.items()
-        )}
+        return {
+            x
+            for x, _ in filter(
+                lambda x: x[1].type == "boolean" and x[0].startswith("toreview_"),
+                self._fields.items(),
+            )
+        }
 
     @api.depends(_get_toreview_fields)
     def _compute_toreview_count(self):

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
@@ -6,31 +6,38 @@
     <record id="product_source_line_form_view" model="ir.ui.view">
         <field name="name">product.source.line.form</field>
         <field name="model">lighting.product.source.line</field>
-        <field name="inherit_id" ref="lighting.product_source_line_form_view"/>
-        <field name="groups_id" eval="[(6, 0, [ref('lighting_review.review_group_user')])]"/>
+        <field name="inherit_id" ref="lighting.product_source_line_form_view" />
+        <field
+            name="groups_id"
+            eval="[(6, 0, [ref('lighting_review.review_group_user')])]"
+        />
         <field name="arch" type="xml">
             <!-- to review layout -->
             <xpath expr="//sheet" position="inside">
-                <field name="review_mode" invisible="1"/>
-                <field name="toreview_count" invisible="1"/>
+                <field name="review_mode" invisible="1" />
+                <field name="toreview_count" invisible="1" />
             </xpath>
 
             <!-- to review fields -->
             <field name="cri_min" position="replace">
-                <label for="cri_min"/>
+                <label for="cri_min" />
                 <div>
-                    <field name="cri_min" class="oe_inline"/>
-                    <field name="toreview_cri_min"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field name="cri_min" class="oe_inline" />
+                    <field
+                        name="toreview_cri_min"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
 
             <field name="color_consistency" position="replace">
-                <label for="color_consistency"/>
+                <label for="color_consistency" />
                 <div>
-                    <field name="color_consistency" class="oe_inline"/>
-                    <field name="toreview_color_consistency"
-                           attrs="{'invisible': [('review_mode', '=', False)]}"/>
+                    <field name="color_consistency" class="oe_inline" />
+                    <field
+                        name="toreview_color_consistency"
+                        attrs="{'invisible': [('review_mode', '=', False)]}"
+                    />
                 </div>
             </field>
         </field>
