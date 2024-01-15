@@ -182,29 +182,6 @@
                     </div>
 
                     <div class="nl-layout-data">
-                        <!-- long description -->
-<!--                        TODO: Move this to another module (ligting_reporting_seo)
-                                This module inherit from lighting_reporting and lighting_seo
--->
-<!--                        <t t-if="doc.seo_description">-->
-<!--                            <div class="nl-family-description">-->
-<!--                                <p t-field="doc.seo_description" />-->
-<!--                            </div>-->
-<!--                        </t>-->
-<!--                        <t t-if="not doc.seo_description">-->
-<!--                            <t-->
-<!--                                t-set="family_descriptions"-->
-<!--                                t-value="filter(lambda x: x and x.strip() or None, doc.family_ids.mapped('description'))"-->
-<!--                            />-->
-<!--                            <t t-if="family_descriptions">-->
-<!--                                <div class="nl-family-description">-->
-<!--                                    <t t-foreach="family_descriptions" t-as="fdesc">-->
-<!--                                        <p t-out="fdesc" />-->
-<!--                                    </t>-->
-<!--                                </div>-->
-<!--                            </t>-->
-<!--                        </t>-->
-
                         <!-- general data -->
                         <div class="nl-section-title">GENERAL DATA</div>
                         <table class="nl-table-data nl-main-data">
@@ -317,17 +294,6 @@
                                         />
                                     </td>
                                 </tr>
-<!--                                TODO: move this to another module (lighting_reporting_etim)
-                                        This module inherit from lighting_reporting and lighting_etim
--->
-<!--                                <tr t-if="doc.class_id">-->
-<!--                                    <td>-->
-<!--                                        ETIM class-->
-<!--                                    </td>-->
-<!--                                    <td>-->
-<!--                                        <span t-field="doc.class_id.code" />-->
-<!--                                    </td>-->
-<!--                                </tr>-->
                                 <tr t-if="doc.ean">
                                     <td>
                                         EAN
