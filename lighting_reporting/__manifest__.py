@@ -4,9 +4,9 @@
 {
     "name": "Lighting Reporting",
     "version": "16.0.1.0.0",
-    "author": "NuoBiT Solutions S.L.",
+    "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
-    "category": "Custom",
+    "category": "Lighting",
     "website": "https://github.com/NuoBiT/lighting-vertical",
     "external_dependencies": {
         "python": [
@@ -15,8 +15,6 @@
     },
     "depends": [
         "lighting",
-        # "lighting_seo",
-        # "web",
     ],
     "data": [
         "security/ir.model.access.csv",
@@ -31,5 +29,4 @@
             "lighting_reporting/static/src/scss/styles.scss",
         ],
     },
-    "installable": True,
 }
