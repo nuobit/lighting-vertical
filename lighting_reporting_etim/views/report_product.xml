@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="report_product_document_etim"
+        inherit_id="lighting_reporting.report_product_document"
+    >
+
+        <xpath expr="//tr[@t-if='doc.ean']" position="before">
+            <tr t-if="doc.class_id">
+                <td>
+                    ETIM class
+                </td>
+                <td>
+                    <span t-field="doc.class_id.code" />
+                </td>
+            </tr>
+        </xpath>
+    </template>
+</odoo>
