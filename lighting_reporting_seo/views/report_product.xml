@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - kilian Niubo <kniubo@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="report_product_document_seo"
+        inherit_id="lighting_reporting.report_product_document"
+    >
+
+        <xpath expr="//t/div/div/div/div[@class='nl-section-title']" position="before">
+            <!-- long description -->
+            <t t-if="doc.seo_description">
+                <div class="nl-family-description">
+                    <p t-field="doc.seo_description" />
+                </div>
+            </t>
+            <t t-if="not doc.seo_description">
+                <t
+                    t-set="family_descriptions"
+                    t-value="filter(lambda x: x and x.strip() or None, doc.family_ids.mapped('description'))"
+                />
+                <t t-if="family_descriptions">
+                    <div class="nl-family-description">
+                        <t t-foreach="family_descriptions" t-as="fdesc">
+                            <p t-out="fdesc" />
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>
