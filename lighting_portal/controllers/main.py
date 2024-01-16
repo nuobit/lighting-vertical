@@ -1,6 +1,4 @@
-import re
-import datetime
-import time
+import base64
 
 from odoo import http
 
@@ -12,10 +10,7 @@ _logger = logging.getLogger(__name__)
 
 
 class ProductDatasheetController(http.Controller):
-    @http.route(['/services/products',
-                 '/services/<string:lang>/products',
-                 ], type='http', auth="user")
-    def download_products_xml(self, lang=None):
+    def get_products_xml(self, lang=None):
         # lang check
         if not lang:
             lang = 'es_ES'
@@ -41,3 +36,33 @@ class ProductDatasheetController(http.Controller):
             ('Content-Length', len(xml_products)),
         ]
         return http.request.make_response(xml_products, headers=xmlhttpheaders)
+
+    @http.route(['/services/products',
+                 '/services/<string:lang>/products',
+                 ], type='http', auth="none")
+    def download_products_xml(self, lang=None):
+        # Check for Odoo session authentication
+        if http.request.session.uid:
+            http.request.uid = http.request.session.uid
+            return self.get_products_xml(lang)
+
+        # Check for HTTP Basic Authentication
+        headers = http.request.httprequest.headers
+        basic_auth_header = headers.get('Authorization')
+        if basic_auth_header:
+            try:
+                auth_type, encoded_credentials = basic_auth_header.split(None, 1)
+                if auth_type.lower() != 'basic':
+                    raise werkzeug.exceptions.Unauthorized('Unsupported authentication method')
+                username, password = base64.b64decode(encoded_credentials).decode().split(':', 1)
+            except Exception as e:
+                msg = "Error processing authentication"
+                _logger.error(msg + f": {e}")
+                raise werkzeug.exceptions.BadRequest(msg)
+            uid = http.request.session.authenticate(http.request.session.db, username, password)
+            if not uid:
+                raise werkzeug.exceptions.Unauthorized('Invalid credentials')
+            return self.get_products_xml(lang)
+
+        # No authentication
+        raise werkzeug.exceptions.Unauthorized('Invalid authentication')
