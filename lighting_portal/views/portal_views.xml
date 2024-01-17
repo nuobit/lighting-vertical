@@ -1,19 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
      Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- ================================ COMMON MENU =========================== -->
     <!-- Menu top level: no parent -->
-    <menuitem id="portal_menu_root"
-              name="Portal"
-              sequence="0"/>
+    <menuitem id="portal_menu_root" name="Portal" sequence="0" />
 
     <!-- Menu first level in the left side menu is needed
          before using action= attribute -->
-    <menuitem id="portal_menu"
-              name="Products"
-              parent="portal_menu_root"/>
+    <menuitem id="portal_menu" name="Products" parent="portal_menu_root" />
 
 
     <!-- ================================ PRODUCT =========================== -->
@@ -23,23 +19,23 @@
         <field name="model">lighting.portal.product</field>
         <field name="arch" type="xml">
             <form string="Portal Product Form">
-                <header/>
+                <header />
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="reference" placeholder="Reference"/>
+                            <field name="reference" placeholder="Reference" />
                         </h1>
                     </div>
                     <group>
-                        <field name="description"/>
-                        <field name="barcode"/>
-                        <field name="catalog"/>
+                        <field name="description" />
+                        <field name="barcode" />
+                        <field name="catalog" />
                     </group>
                     <group>
-                        <field name="qty_available"/>
+                        <field name="qty_available" />
                     </group>
                     <group>
-                        <field name="product_id"/>
+                        <field name="product_id" />
                     </group>
                 </sheet>
             </form>
@@ -51,13 +47,15 @@
         <field name="name">portal.product.tree</field>
         <field name="model">lighting.portal.product</field>
         <field name="arch" type="xml">
-            <tree string="Products"
-                  decoration-success="qty_available!=0"
-                  decoration-danger="qty_available==0">
-                <field name="reference"/>
-                <field name="description"/>
-                <field name="catalog"/>
-                <field name="qty_available"/>
+            <tree
+                string="Products"
+                decoration-success="qty_available!=0"
+                decoration-danger="qty_available==0"
+            >
+                <field name="reference" />
+                <field name="description" />
+                <field name="catalog" />
+                <field name="qty_available" />
             </tree>
         </field>
     </record>
@@ -68,17 +66,32 @@
         <field name="model">lighting.portal.product</field>
         <field name="arch" type="xml">
             <search string="Product">
-                <field name="reference" string="Product"
-                       filter_domain="['|', '|', ('reference','ilike',self), ('description','ilike',self), ('catalog','ilike',self)]"/>
-                <field name="reference"/>
-                <field name="description"/>
-                <field name="catalog"/>
-                <separator/>
-                <filter string="With stock" name="with_stock" domain="[('qty_available','!=', 0)]"/>
-                <filter string="Without stock" name="without_stock" domain="[('qty_available','=', 0)]"/>
+                <field
+                    name="reference"
+                    string="Product"
+                    filter_domain="['|', '|', ('reference','ilike',self), ('description','ilike',self), ('catalog','ilike',self)]"
+                />
+                <field name="reference" />
+                <field name="description" />
+                <field name="catalog" />
+                <separator />
+                <filter
+                    string="With stock"
+                    name="with_stock"
+                    domain="[('qty_available','!=', 0)]"
+                />
+                <filter
+                    string="Without stock"
+                    name="without_stock"
+                    domain="[('qty_available','=', 0)]"
+                />
                 <group expand="0" string="Group By">
-                    <filter string="Catalog" name="groupby_catalog" domain="[]"
-                            context="{'group_by': 'catalog'}"/>
+                    <filter
+                        string="Catalog"
+                        name="groupby_catalog"
+                        domain="[]"
+                        context="{'group_by': 'catalog'}"
+                    />
                 </group>
             </search>
         </field>
@@ -96,8 +109,10 @@
     </record>
 
     <!-- Menu portal.product -->
-    <menuitem id="portal_product_menu"
-              name="Products"
-              parent="portal_menu"
-              action="portal_product_action_list"/>
+    <menuitem
+        id="portal_product_menu"
+        name="Products"
+        parent="portal_menu"
+        action="portal_product_action_list"
+    />
 </odoo>
