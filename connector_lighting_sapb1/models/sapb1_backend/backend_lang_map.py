@@ -19,10 +19,10 @@ class SapB1LightingBackendLangMap(models.Model):
     )
 
     lang_id = fields.Many2one(
-        comodel_name='res.lang',
+        comodel_name="res.lang",
         string="Odoo Language",
         required=True,
-        ondelete='restrict',
+        ondelete="restrict",
     )
 
     sap_lang_id = fields.Integer(
@@ -30,7 +30,7 @@ class SapB1LightingBackendLangMap(models.Model):
         required=True,
     )
 
-    sap_main_lang = fields.Boolean('SAP Main Language')
+    sap_main_lang = fields.Boolean("SAP Main Language")
 
     _sql_constraints = [
         (

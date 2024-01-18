@@ -10,10 +10,10 @@ _logger = logging.getLogger(__name__)
 
 
 class LightingProductAdapter(Component):
-    _name = 'sapb1.lighting.product.adapter'
-    _inherit = 'sapb1.lighting.adapter'
+    _name = "sapb1.lighting.product.adapter"
+    _inherit = "sapb1.lighting.adapter"
 
-    _apply_on = 'sapb1.lighting.product'
+    _apply_on = "sapb1.lighting.product"
 
     _sql_search = r""""""
 
@@ -21,7 +21,7 @@ class LightingProductAdapter(Component):
                     oitm_base AS (
                         SELECT p.*
                         FROM %(schema)s.OITM p
-                        WHERE p."U_ACC_Obsmark" IN ('Online', 'Novedades', 'Catalogado', 'Fe Digital', 
+                        WHERE p."U_ACC_Obsmark" IN ('Online', 'Novedades', 'Catalogado', 'Fe Digital',
                                                     'Descatalogado', 'Fe Histórico','Histórico') and
                               p."ItmsGrpCod" IN (107, 108, 109, 110, 111) -- Cristher, Dopo, Exo, Indeluz, NX Lighting
                     ),
@@ -192,31 +192,31 @@ class LightingProductAdapter(Component):
                         %(where)s
                      """
 
-    _id = ('ItemCode',)
+    _id = ("ItemCode",)
 
-    _base_table = 'OITM'
-    _translatable_fields = ['ItemName', 'U_U_aplicacion']
+    _base_table = "OITM"
+    _translatable_fields = ["ItemName", "U_U_aplicacion"]
 
     def create(self, values_d):
-        """ Create a record on the external system """
+        """Create a record on the external system"""
         raise NotImplementedError("Create products to the Backend is not allowed")
 
     def search(self, filters=[]):
-        """ Search records according to some criterias
+        """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
         _logger.debug(
-            '%: method search, sql %s, filters %s',
-            self._name, self._sql_read, filters)
+            "%: method search, sql %s, filters %s", self._name, self._sql_read, filters
+        )
 
         # remove the 'not in' filters
         filters1 = []
         notinops = {}
         for f in filters:
             field, op, values = f
-            if op == 'not in':
+            if op == "not in":
                 notinops[field] = set(values)
             else:
                 filters1.append(f)
