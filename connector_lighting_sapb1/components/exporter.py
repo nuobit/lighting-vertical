@@ -4,22 +4,24 @@
 
 import logging
 
-from odoo.addons.queue_job.exception import NothingToDoJob
 from odoo import _
+
 from odoo.addons.component.core import AbstractComponent
+from odoo.addons.queue_job.exception import NothingToDoJob
 
 _logger = logging.getLogger(__name__)
 
 
 class SAPB1LightingExporter(AbstractComponent):
-    """ Base Exporter for SAP B1 Lighting"""
-    _name = 'sapb1.lighting.exporter'
-    _inherit = ['generic.exporter', 'base.sapb1.lighting.connector']
+    """Base Exporter for SAP B1 Lighting"""
 
-    _usage = 'record.exporter'
+    _name = "sapb1.lighting.exporter"
+    _inherit = ["generic.exporter", "base.sapb1.lighting.connector"]
+
+    _usage = "record.exporter"
 
     def run(self, relation, *args, **kwargs):
-        """ Run the synchronization
+        """Run the synchronization
 
         :param relation: record to export (normal or binding)
         """
@@ -34,9 +36,10 @@ class SAPB1LightingExporter(AbstractComponent):
         self._after_export()
         return result
 
-    def _import_dependency(self, external_id, binding_model,
-                           importer=None, always=False):
-        """ Import a dependency.
+    def _import_dependency(
+        self, external_id, binding_model, importer=None, always=False
+    ):
+        """Import a dependency.
 
         The importer class is a class or subclass of
         :class:`SageImporter`. A specific class can be defined.
@@ -59,25 +62,27 @@ class SAPB1LightingExporter(AbstractComponent):
         binder = self.binder_for(binding_model)
         if always or not binder.to_internal(external_id):
             if importer is None:
-                importer = self.component(usage='record.importer',
-                                          model_name=binding_model)
+                importer = self.component(
+                    usage="record.importer", model_name=binding_model
+                )
             try:
                 importer.run(external_id)
             except NothingToDoJob:
                 _logger.info(
-                    'Dependency import of %s(%s) has been ignored.',
-                    binding_model._name, external_id
+                    "Dependency import of %s(%s) has been ignored.",
+                    binding_model._name,
+                    external_id,
                 )
 
     def _run(self, fields=None):
-        """ Flow of the synchronization, implemented in inherited classes"""
+        """Flow of the synchronization, implemented in inherited classes"""
         assert self.binding
 
         if not self.external_id:
             fields = None  # should be created with all the fields
 
         if self._has_to_skip():
-            return _('Record skipped.')
+            return _("Record skipped.")
 
         # export the missing linked resources
         self._export_dependencies()
@@ -91,33 +96,34 @@ class SAPB1LightingExporter(AbstractComponent):
         if self.external_id:
             record = self._update_data(map_record, fields=fields)
             if not record:
-                return _('Nothing to export.')
+                return _("Nothing to export.")
             self._update(record)
         else:
             record = self._create_data(map_record, fields=fields)
             if not record:
-                return _('Nothing to export.')
+                return _("Nothing to export.")
             self.external_id = self._create(record)
 
-        return _('Record exported with ID %s on Backend.') % (self.external_id,)
+        return _("Record exported with ID %s on Backend.") % (self.external_id,)
 
 
 class SAPB1LightingBatchExporter(AbstractComponent):
-    """ The role of a BatchExporter is to search for a list of
+    """The role of a BatchExporter is to search for a list of
     items to export, then it can either export them directly or delay
     the export of each item separately.
     """
-    _name = 'sapb1.lighting.batch.exporter'
-    _inherit = ['base.exporter', 'base.sapb1.lighting.connector']
+
+    _name = "sapb1.lighting.batch.exporter"
+    _inherit = ["base.exporter", "base.sapb1.lighting.connector"]
 
     def run(self, domain=[]):
-        """ Run the batch synchronization """
+        """Run the batch synchronization"""
         relation_model = self.binder_for(self.model._name).unwrap_model()
         for relation in self.env[relation_model].search(domain):
             self._export_record(relation)
 
     def _export_record(self, external_id):
-        """ Export a record directly or delay the export of the record.
+        """Export a record directly or delay the export of the record.
 
         Method to implement in sub-classes.
         """
@@ -125,27 +131,27 @@ class SAPB1LightingBatchExporter(AbstractComponent):
 
 
 class SAPB1LightingDirectBatchExporter(AbstractComponent):
-    """ Export the records directly, without delaying the jobs. """
+    """Export the records directly, without delaying the jobs."""
 
-    _name = 'sapb1.lighting.direct.batch.exporter'
-    _inherit = 'sapb1.lighting.batch.exporter'
+    _name = "sapb1.lighting.direct.batch.exporter"
+    _inherit = "sapb1.lighting.batch.exporter"
 
-    _usage = 'direct.batch.exporter'
+    _usage = "direct.batch.exporter"
 
     def _export_record(self, relation):
-        """ export the record directly """
+        """export the record directly"""
         self.model.export_record(self.backend_record, relation)
 
 
 class SAPB1LightingDelayedBatchExporter(AbstractComponent):
-    """ Delay export of the records """
+    """Delay export of the records"""
 
-    _name = 'sapb1.lighting.delayed.batch.exporter'
-    _inherit = 'sapb1.lighting.batch.exporter'
+    _name = "sapb1.lighting.delayed.batch.exporter"
+    _inherit = "sapb1.lighting.batch.exporter"
 
-    _usage = 'delayed.batch.exporter'
+    _usage = "delayed.batch.exporter"
 
     def _export_record(self, relation, job_options=None):
-        """ Delay the export of the records"""
+        """Delay the export of the records"""
         delayable = self.model.with_delay(**job_options or {})
         delayable.export_record(self.backend_record, relation)
