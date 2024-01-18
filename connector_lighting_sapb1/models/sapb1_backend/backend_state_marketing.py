@@ -5,6 +5,7 @@
 import logging
 
 from odoo import fields, models
+
 from odoo.addons.lighting.models.product import STATES_MARKETING
 
 _logger = logging.getLogger(__name__)

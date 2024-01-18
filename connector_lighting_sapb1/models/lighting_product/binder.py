@@ -6,7 +6,7 @@ from odoo.addons.component.core import Component
 
 
 class LightingProductBinder(Component):
-    """ Bind records and give odoo/sapbb1 ids correspondence
+    """Bind records and give odoo/sapbb1 ids correspondence
 
     Binding models are models called ``sapb1.lighting.{normal_model}``,
     like ``sapb1.lighting.product``.
@@ -14,7 +14,8 @@ class LightingProductBinder(Component):
     the SAP B1 Lighting ID, the ID of the SAP B1 Lighting Backend and the additional
     fields belonging to the SAP B1 instance.
     """
-    _name = 'sapb1.lighting.product.binder'
-    _inherit = 'sapb1.lighting.binder'
 
-    _apply_on = 'sapb1.lighting.product'
+    _name = "sapb1.lighting.product.binder"
+    _inherit = "sapb1.lighting.binder"
+
+    _apply_on = "sapb1.lighting.product"

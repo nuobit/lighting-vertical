@@ -3,24 +3,28 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import logging
+
+from odoo import _
+
+from odoo.addons.component.core import AbstractComponent
 from odoo.addons.connector.exception import IDMissingInBackend
 from odoo.addons.queue_job.exception import NothingToDoJob
-from odoo import _
-from odoo.addons.component.core import AbstractComponent
 
 _logger = logging.getLogger(__name__)
 
 
 class SAPB1LightingImporter(AbstractComponent):
-    """ Base importer for SAP B1 Lighting """
-    _name = 'sapb1.lighting.importer'
-    _inherit = ['base.importer', 'base.sapb1.lighting.connector']
+    """Base importer for SAP B1 Lighting"""
 
-    _usage = 'record.importer'
+    _name = "sapb1.lighting.importer"
+    _inherit = ["base.importer", "base.sapb1.lighting.connector"]
 
-    def _import_dependency(self, external_id, binding_model,
-                           importer=None, always=False):
-        """ Import a dependency.
+    _usage = "record.importer"
+
+    def _import_dependency(
+        self, external_id, binding_model, importer=None, always=False
+    ):
+        """Import a dependency.
 
         The importer class is a class or subclass of
         :class:`SAPB1LightingImporter`. A specific class can be defined.
@@ -43,18 +47,20 @@ class SAPB1LightingImporter(AbstractComponent):
         binder = self.binder_for(binding_model)
         if always or not binder.to_internal(external_id):
             if importer is None:
-                importer = self.component(usage='record.importer',
-                                          model_name=binding_model)
+                importer = self.component(
+                    usage="record.importer", model_name=binding_model
+                )
             try:
                 importer.run(external_id)
             except NothingToDoJob:
                 _logger.info(
-                    'Dependency import of %s(%s) has been ignored.',
-                    binding_model._name, external_id
+                    "Dependency import of %s(%s) has been ignored.",
+                    binding_model._name,
+                    external_id,
                 )
 
     def _import_dependencies(self):
-        """ Import the dependencies for the record
+        """Import the dependencies for the record
 
         Import of dependencies can be done manually or by calling
         :meth:`_import_dependency` for each dependency.
@@ -65,7 +71,7 @@ class SAPB1LightingImporter(AbstractComponent):
         return
 
     def _must_skip(self, binding):
-        """ Hook called right after we read the data from the backend.
+        """Hook called right after we read the data from the backend.
 
         If the method returns a message giving a reason for the
         skipping, the import will be interrupted and the message
@@ -79,7 +85,7 @@ class SAPB1LightingImporter(AbstractComponent):
         return
 
     def _find_existing(self, external_id):
-        """ Find existing record by external_id
+        """Find existing record by external_id
 
         :returns: {} | id
         """
@@ -92,16 +98,16 @@ class SAPB1LightingImporter(AbstractComponent):
     def run(self, external_id):
         ## get_data
         # this one knows how to speak to sage
-        backend_adapter = self.component(usage='backend.adapter')
+        backend_adapter = self.component(usage="backend.adapter")
         # read external data from sage
         try:
             self.external_data = backend_adapter.read(external_id)
         except IDMissingInBackend:
-            return _('Record does no longer exist in SAP B1 Lighting')
+            return _("Record does no longer exist in SAP B1 Lighting")
 
         ## get_binding
         # this one knows how to link sage/odoo records
-        binder = self.component(usage='binder')
+        binder = self.component(usage="binder")
 
         # find if the sage id already exists in odoo
         binding = binder.to_internal(external_id)
@@ -115,7 +121,7 @@ class SAPB1LightingImporter(AbstractComponent):
 
         ## map_data
         # this one knows how to convert backend data to odoo data
-        mapper = self.component(usage='import.mapper')
+        mapper = self.component(usage="import.mapper")
         # convert to odoo data
         internal_data = mapper.map_record(self.external_data)
 
@@ -124,8 +130,10 @@ class SAPB1LightingImporter(AbstractComponent):
         # persist data
         if binding:
             # if yes, we update it
-            binding.with_context(connector_no_export=True).write(internal_data.values(**opts))
-            _logger.debug('%d updated from SAP B1 Lighting %s', binding, external_id)
+            binding.with_context(connector_no_export=True).write(
+                internal_data.values(**opts)
+            )
+            _logger.debug("%d updated from SAP B1 Lighting %s", binding, external_id)
         else:
             odoo_d = self._find_existing(external_id)
             if not odoo_d:
@@ -135,7 +143,7 @@ class SAPB1LightingImporter(AbstractComponent):
                 values.update(odoo_d)
 
             binding = self.model.with_context(connector_no_export=True).create(values)
-            _logger.debug('%d created from SAP B1 Lighting %s', binding, external_id)
+            _logger.debug("%d created from SAP B1 Lighting %s", binding, external_id)
 
         # finally, we bind both, so the next time we import
         # the record, we'll update the same record instead of
@@ -147,21 +155,22 @@ class SAPB1LightingImporter(AbstractComponent):
 
 
 class SAPB1LightingBatchImporter(AbstractComponent):
-    """ The role of a BatchImporter is to search for a list of
+    """The role of a BatchImporter is to search for a list of
     items to import, then it can either import them directly or delay
     the import of each item separately.
     """
-    _name = 'sapb1.lighting.batch.importer'
-    _inherit = ['base.importer', 'base.sapb1.lighting.connector']
+
+    _name = "sapb1.lighting.batch.importer"
+    _inherit = ["base.importer", "base.sapb1.lighting.connector"]
 
     def run(self, filters=[]):
-        """ Run the synchronization """
+        """Run the synchronization"""
         record_ids = self.backend_adapter.search(filters)
         for record_id in record_ids:
             self._import_record(record_id)
 
     def _import_record(self, external_id):
-        """ Import a record directly or delay the import of the record.
+        """Import a record directly or delay the import of the record.
 
         Method to implement in sub-classes.
         """
@@ -169,27 +178,27 @@ class SAPB1LightingBatchImporter(AbstractComponent):
 
 
 class SAPB1LightingDirectBatchImporter(AbstractComponent):
-    """ Import the records directly, without delaying the jobs. """
+    """Import the records directly, without delaying the jobs."""
 
-    _name = 'sapb1.lighting.direct.batch.importer'
-    _inherit = 'sapb1.lighting.batch.importer'
+    _name = "sapb1.lighting.direct.batch.importer"
+    _inherit = "sapb1.lighting.batch.importer"
 
-    _usage = 'direct.batch.importer'
+    _usage = "direct.batch.importer"
 
     def _import_record(self, external_id):
-        """ Import the record directly """
+        """Import the record directly"""
         self.model.import_record(self.backend_record, external_id)
 
 
 class SAPB1LightingDelayedBatchImporter(AbstractComponent):
-    """ Delay import of the records """
+    """Delay import of the records"""
 
-    _name = 'sapb1.lighting.delayed.batch.importer'
-    _inherit = 'sapb1.lighting.batch.importer'
+    _name = "sapb1.lighting.delayed.batch.importer"
+    _inherit = "sapb1.lighting.batch.importer"
 
-    _usage = 'delayed.batch.importer'
+    _usage = "delayed.batch.importer"
 
     def _import_record(self, external_id, job_options=None):
-        """ Delay the import of the records"""
+        """Delay the import of the records"""
         delayable = self.model.with_delay(**job_options or {})
         delayable.import_record(self.backend_record, external_id)

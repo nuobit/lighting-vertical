@@ -19,10 +19,10 @@ class SapB1BackendCatalogMap(models.Model):
     )
 
     catalog_id = fields.Many2one(
-        comodel_name='lighting.catalog',
+        comodel_name="lighting.catalog",
         string="Odoo Catalog",
         required=True,
-        ondelete='restrict',
+        ondelete="restrict",
     )
 
     sap_item_group_id = fields.Integer(

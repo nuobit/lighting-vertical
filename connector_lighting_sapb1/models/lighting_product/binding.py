@@ -2,18 +2,19 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import models, fields, api, _
-from odoo.addons.queue_job.job import job
+from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+
+from odoo.addons.queue_job.job import job
 
 
 class LightingProduct(models.Model):
-    _inherit = 'lighting.product'
+    _inherit = "lighting.product"
 
     sapb1_lighting_bind_ids = fields.One2many(
-        comodel_name='sapb1.lighting.product',
-        inverse_name='odoo_id',
-        string='SAP B1 Bindings',
+        comodel_name="sapb1.lighting.product",
+        inverse_name="odoo_id",
+        string="SAP B1 Bindings",
     )
     sapb1_write_date = fields.Datetime(
         compute="_compute_sapb1_write_date",
@@ -22,7 +23,9 @@ class LightingProduct(models.Model):
         default=fields.Datetime.now,
     )
 
-    @api.depends("category_id", "family_ids", "state_marketing", "catalog_ids", "configurator")
+    @api.depends(
+        "category_id", "family_ids", "state_marketing", "catalog_ids", "configurator"
+    )
     def _compute_sapb1_write_date(self):
         for rec in self:
             rec.sapb1_write_date = fields.Datetime.now()
@@ -31,7 +34,8 @@ class LightingProduct(models.Model):
     def _check_reference(self):
         for rec in self:
             if rec.sudo().sapb1_lighting_bind_ids.filtered(
-                    lambda x: not rec.company_id or x.backend_id.company_id == rec.company_id
+                lambda x: not rec.company_id
+                or x.backend_id.company_id == rec.company_id
             ):
                 raise ValidationError(
                     _(
@@ -42,43 +46,53 @@ class LightingProduct(models.Model):
 
 
 class SapLightingProductBinding(models.Model):
-    _name = 'sapb1.lighting.product'
-    _inherit = 'sapb1.lighting.binding'
-    _inherits = {'lighting.product': 'odoo_id'}
+    _name = "sapb1.lighting.product"
+    _inherit = "sapb1.lighting.binding"
+    _inherits = {"lighting.product": "odoo_id"}
 
-    odoo_id = fields.Many2one(comodel_name='lighting.product',
-                              string='Product',
-                              required=True,
-                              ondelete='cascade')
+    odoo_id = fields.Many2one(
+        comodel_name="lighting.product",
+        string="Product",
+        required=True,
+        ondelete="cascade",
+    )
 
-    @job(default_channel='root.sapb1.lighting')
+    @job(default_channel="root.sapb1.lighting")
     def import_products_since(self, backend_record=None):
-        """ Prepare the batch import of products modified on SAP B1 Lighting"""
+        """Prepare the batch import of products modified on SAP B1 Lighting"""
         filters = []
-        existing_hashes = self.env['sapb1.lighting.product'].search([
-            ('external_content_hash', '!=', False),
-        ]).mapped('external_content_hash')
+        existing_hashes = (
+            self.env["sapb1.lighting.product"]
+            .search(
+                [
+                    ("external_content_hash", "!=", False),
+                ]
+            )
+            .mapped("external_content_hash")
+        )
         if existing_hashes:
-            filters = [('Hash', 'not in', existing_hashes)]
+            filters = [("Hash", "not in", existing_hashes)]
         now_fmt = fields.Datetime.now()
-        self.env['sapb1.lighting.product'].import_batch(
-            backend=backend_record, filters=filters)
+        self.env["sapb1.lighting.product"].import_batch(
+            backend=backend_record, filters=filters
+        )
         backend_record.import_products_since_date = now_fmt
 
         return True
 
-    @job(default_channel='root.sapb1.lighting')
+    @job(default_channel="root.sapb1.lighting")
     def export_products_since(self, backend_record=None):
-        """ Prepare the batch export of products modified on Odoo """
+        """Prepare the batch export of products modified on Odoo"""
         domain = []
         if backend_record.export_products_since_date:
             domain += [
-                ('sapb1_write_date', '>', backend_record.export_products_since_date),
-                ('sapb1_lighting_bind_ids.backend_id', 'in', backend_record.ids),
+                ("sapb1_write_date", ">", backend_record.export_products_since_date),
+                ("sapb1_lighting_bind_ids.backend_id", "in", backend_record.ids),
             ]
         now_fmt = fields.Datetime.now()
-        self.env['sapb1.lighting.product'].export_batch(
-            backend=backend_record, domain=domain)
+        self.env["sapb1.lighting.product"].export_batch(
+            backend=backend_record, domain=domain
+        )
         backend_record.export_products_since_date = now_fmt
 
         return True
@@ -87,11 +101,11 @@ class SapLightingProductBinding(models.Model):
     def resync_import(self):
         for record in self:
             with record.backend_id.work_on(record._name) as work:
-                binder = work.component(usage='binder')
+                binder = work.component(usage="binder")
                 external_id = binder.to_external(self)
 
             func = record.import_record
-            if record.env.context.get('connector_delay'):
+            if record.env.context.get("connector_delay"):
                 func = record.import_record.delay
 
             func(record.backend_id, external_id)
