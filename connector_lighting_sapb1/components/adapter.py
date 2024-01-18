@@ -3,18 +3,16 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import json
 import logging
-from contextlib import contextmanager
 from functools import partial
 
 import requests
-from requests.exceptions import ConnectionError, HTTPError, RequestException
+from requests.exceptions import ConnectionError as req_ConnectionError
 from requests.packages import urllib3
 
-from odoo import _, exceptions
+from odoo import _
 from odoo.exceptions import ValidationError
 
 from odoo.addons.component.core import AbstractComponent
-from odoo.addons.connector.exception import NetworkRetryableError
 from odoo.addons.queue_job.exception import RetryableJobError
 
 try:
@@ -25,48 +23,12 @@ except ImportError:
 _logger = logging.getLogger(__name__)
 
 
-@contextmanager
-def api_handle_errors(message=""):
-    """Handle error when calling the API
-
-    It is meant to be used when a model does a direct
-    call to a job using the API (not using job.delay()).
-    Avoid to have unhandled errors raising on front of the user,
-    instead, they are presented as :class:`openerp.exceptions.UserError`.
-    """
-    if message:
-        message = message + "\n\n"
-    try:
-        yield
-    except NetworkRetryableError as err:
-        raise exceptions.UserError(_("{}Network Error:\n\n{}").format(message, err))
-    except (HTTPError, RequestException, ConnectionError) as err:
-        raise exceptions.UserError(
-            _("{}API / Network Error:\n\n{}").format(message, err)
-        )
-    except (dbapi.OperationalError,) as err:
-        raise exceptions.UserError(
-            _("{}DB operational Error:\n\n{}").format(message, err)
-        )
-    except (dbapi.IntegrityError,) as err:
-        raise exceptions.UserError(
-            _("{}DB integrity Error:\n\n{}").format(message, err)
-        )
-    except (dbapi.InternalError,) as err:
-        raise exceptions.UserError(_("{}DB internal Error:\n\n{}").format(message, err))
-    except (dbapi.InterfaceError,) as err:
-        raise exceptions.UserError(
-            _("{}DB interface Error:\n\n{}").format(message, err)
-        )
-
-
-class CRUDAdapter(AbstractComponent):
-    """External Records Adapter"""
-
-    _name = "sapb1.lighting.crud.adapter"
-    _inherit = ["base.backend.adapter", "base.sapb1.lighting.connector"]
-
-    _usage = "backend.adapter"
+# TODO: REVIEW: Can we unify common parts with connector_sapB1?
+#  we can share the backend and common functions.
+class LightingConnectorSAPB1Adapter(AbstractComponent):
+    _name = "connector.lighting.sapb1.adapter"
+    _inherit = ["connector.extension.adapter.crud", "base.lighting.sapb1.connector"]
+    _description = "Lighting SAP B1 Adapter (abstract)"
 
     def __init__(self, environment):
         """
@@ -83,43 +45,6 @@ class CRUDAdapter(AbstractComponent):
             self.backend_record.db_username,
             self.backend_record.db_password,
         )
-
-    def search(self, model, filters=[]):
-        """Search records according to some criterias
-        and returns a list of ids"""
-        raise NotImplementedError
-
-    def read(self, id, attributes=None):
-        """Returns the information of a record"""
-        raise NotImplementedError
-
-    def search_read(self, filters=[]):
-        """Search records according to some criterias
-        and returns their information"""
-        raise NotImplementedError
-
-    def create(self, data):
-        """Create a record on the external system"""
-        raise NotImplementedError
-
-    def write(self, id, data):
-        """Update records on the external system"""
-        raise NotImplementedError
-
-    def delete(self, id):
-        """Delete a record on the external system"""
-        raise NotImplementedError
-
-    def get_version(self):
-        """Check connection"""
-        raise NotImplementedError
-
-
-class GenericAdapter(AbstractComponent):
-    _name = "sapb1.lighting.adapter"
-    _inherit = "sapb1.lighting.crud.adapter"
-
-    ## private methods
 
     def _escape(self, s):
         return s.replace("'", "").replace('"', "")
@@ -143,6 +68,7 @@ class GenericAdapter(AbstractComponent):
         res = []
         for row in cr:
             res.append(dict(zip(headers, row)))
+        # Convertir a json i despres a dict (fer conversió dels decimal)
 
         if commit:
             conn.commit()
@@ -151,9 +77,12 @@ class GenericAdapter(AbstractComponent):
 
         return res
 
-    def _exec_query(self, filters=[], fields=None):
+    def _exec_query(self, domain=None, fields=None):
+        if not domain:
+            domain = []
         fields_l = fields or ["*"]
         if fields:
+            # TODO: this self._id should be the external_id
             if self._id:
                 for f in self._id:
                     if f not in fields_l:
@@ -162,8 +91,8 @@ class GenericAdapter(AbstractComponent):
         fields_str = ", ".join(fields_l)
 
         where_l, values_l = [], []
-        if filters:
-            for k, operator, v in filters:
+        if domain:
+            for k, operator, v in domain:
                 if v is None:
                     if operator == "=":
                         operator = "is"
@@ -195,28 +124,53 @@ class GenericAdapter(AbstractComponent):
         # execute
         res = self._exec_sql(sql, tuple(values_l))
 
-        filter_keys_s = {e[0] for e in filters}
-        if self._id and set(self._id).issubset(filter_keys_s):
-            self._check_uniq(res)
-
+        # TODO:What do it? can we remove it?
+        # filter_keys_s = {e[0] for e in domain}
+        # if self._id and set(self._id).issubset(filter_keys_s):
+        #     self._check_uniq(res)
+        self._prepare_data(res)
         return res
 
-    def _check_uniq(self, data):
-        uniq = set()
-        for rec in data:
-            id_t = tuple([rec[f] for f in self._id])
-            if id_t in uniq:
-                raise dbapi.IntegrityError(
-                    "Unexpected error: ID duplicated: %s - %s" % (self._id, id_t)
-                )
-            uniq.add(id_t)
+    def _format_lighting_product(self, data):
+        conv_mapper = {
+            "/SWeight1": lambda x: float(x) or float(0),
+            "/SVolume": lambda x: float(x) or float(0),
+            "/SLength1": lambda x: float(x) or float(0),
+            "/SWidth1": lambda x: float(x) or float(0),
+            "/SHeight1": lambda x: float(x) or float(0),
+            "/OnHand": lambda x: float(x) or float(0),
+            "/IsCommited": lambda x: float(x) or float(0),
+            "/OnOrder": lambda x: float(x) or float(0),
+            "/Capacity": lambda x: float(x) or float(0),
+            "/AvgPrice": lambda x: float(x) or float(0),
+            "/PurchasePrice": lambda x: float(x) or float(0),
+            "/Price": lambda x: float(x) or float(0),
+        }
+        for d in data:
+            self._convert_format(d, conv_mapper)
 
-    def id2dict(self, id):
-        return dict(zip(self._id, id))
+    def _prepare_data(self, data):
+        self._format_lighting_product(data)
+
+    # def _check_uniq(self, data):
+    #     uniq = set()
+    #     for rec in data:
+    #         id_t = tuple([rec[f] for f in self._id])
+    #         if id_t in uniq:
+    #             raise dbapi.IntegrityError(
+    #                 "Unexpected error: ID duplicated: %s - %s" % (self._id, id_t)
+    #             )
+    #         uniq.add(id_t)
+
+    # def id2dict(self, id):
+    #     return dict(zip(self._id, id))
 
     def _check_response_error(self, r):
         if not r.ok:
-            err_msg = _("Error trying to connect to %s: %s") % (r.url, r.text)
+            err_msg = _("Error trying to connect to %(url)s: %(text)s") % {
+                "url": r.url,
+                "text": r.text,
+            }
             if r.status_code in (500, 502, 503, 504):
                 raise RetryableJobError(
                     "%s\n%s" % (err_msg, _("The job will be retried later"))
@@ -230,7 +184,8 @@ class GenericAdapter(AbstractComponent):
                     if err["message"]["lang"] != "en-us":
                         raise ValidationError(
                             _(
-                                "Only supported english (en-us) dealing with error messages from the server\n%s"
+                                "Only supported english (en-us) dealing "
+                                "with error messages from the server\n%s"
                             )
                             % err_json
                         )
@@ -242,14 +197,27 @@ class GenericAdapter(AbstractComponent):
                             )
                             % err_json
                         )
-            except json.decoder.JSONDecodeError:
-                pass
-            raise ConnectionError(err_msg)
+            except json.decoder.JSONDecodeError as e:
+                raise ValidationError(
+                    _(
+                        "Error decoding json SAPB1 response: "
+                        "%(error)s\nURL:%(url)s\nHeaders:%(headers)s\n"
+                        "Method:%(method)s\nBody:%(body)s"
+                    )
+                    % {
+                        "error": e,
+                        "url": r.url,
+                        "headers": r.request.headers,
+                        "method": r.request.method,
+                        "body": r.request.body,
+                    }
+                ) from e
+            raise req_ConnectionError(err_msg)
 
     def _login(self):
         # TODO: convert this login/logout to the contextmanager call
         if hasattr(self, "session") and self.session:
-            raise ConnectionError(
+            raise req_ConnectionError(
                 "The session should have been empty on  new transaction"
             )
         self.session = requests.session()
@@ -268,42 +236,42 @@ class GenericAdapter(AbstractComponent):
     def _logout(self):
         # TODO: convert this login/logout to the contextmanager call
         if not self.session:
-            raise ConnectionError(
+            raise req_ConnectionError(
                 "The session is not set, you cannot make a logout without being logged in"
             )
         r = self.session.post(self.backend_record.sl_url + "/Logout")  # , verify=False)
         self._check_response_error(r)
         return True
 
-    ########## exposed methods
+    # exposed methods
 
-    def search_read(self, filters=[]):
+    def search_read(self, domain=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
-        _logger.debug("method search_read, sql %s, filters %s", self._sql_read, filters)
+        _logger.debug("method search_read, sql %s, filters %s", self._sql_read, domain)
 
-        res = self._exec_query(filters=filters)
+        res = self._exec_query(domain=domain)
 
-        return res
+        return res, len(res)
 
-    def search(self, filters=[]):
+    def search(self, domain=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
-        _logger.debug("method search, sql %s, filters %s", self._sql_read, filters)
+        _logger.debug("method search, sql %s, filters %s", self._sql_read, domain)
 
-        res = self.search_read(filters=filters)
+        res = self.search_read(domain=domain)
 
         res = [tuple([x[f] for f in self._id]) for x in res]
 
         return res
 
-    def read(self, id, attributes=None):
+    def read(self, external_id, attributes=None):  # pylint: disable=W8106
         """Returns the information of a record
 
         :rtype: dict
@@ -311,26 +279,26 @@ class GenericAdapter(AbstractComponent):
         _logger.debug(
             "method read, sql %s id %s, attributes %s", self._sql_read, id, attributes
         )
-
-        filters = list(zip(self._id, ["="] * len(self._id), id))
-
-        res = self._exec_query(filters=filters)
-
+        domain = []
+        external_id_values = self.binder_for().id2dict(external_id, in_field=False)
+        for k, v in external_id_values.items():
+            domain.append((k, "=", v))
+        res = self._exec_query(domain=domain)
         if len(res) > 1:
             raise dbapi.IntegrityError(
                 "Unexpected error: Returned more the one rows:\n%s" % ("\n".join(res),)
             )
-
         return res and res[0] or []
 
-    def write(self, id, values):
+    def write(self, external_id, data):  # pylint: disable=W8106
         """Update records on the external system"""
         urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-        _logger.debug("method write, id %s, values %s", id, values)
+        _logger.debug("method write, id: %s, values: %s", external_id, data)
 
         self._login()
 
-        _id = self.id2dict(id)["ItemCode"]
+        # TODO: review this id2dict
+        external_id = self.binder_for().id2dict(external_id, in_field=False)
 
         sap_main_lang_id = self.backend_record.language_map.filtered(
             lambda x: x.sap_main_lang
@@ -345,7 +313,7 @@ class GenericAdapter(AbstractComponent):
 
         payload = {}
         add_lang = {}
-        for k, v in values.items():
+        for k, v in data.items():
             if k not in translate_fields or not isinstance(v, dict):
                 payload[k] = v
             else:
@@ -357,15 +325,18 @@ class GenericAdapter(AbstractComponent):
                         add_lang[k][lang] = value
 
         if payload:
-            r = self.session.patch(root_url + f"/Items(ItemCode='{_id}')", json=payload)
+            r = self.session.patch(
+                root_url + f"/Items(ItemCode='{external_id['ItemCode']}')", json=payload
+            )
             self._check_response_error(r)
 
         if add_lang:
             # update/create data
             for field, trls in add_lang.items():
                 qry = [
-                    f"$filter=TableName eq '{self._base_table}' and FieldAlias eq '{field}' and PrimaryKeyofobject eq '"
-                    f"{_id}'",
+                    f"$filter=TableName eq '{self._base_table}' and "
+                    f"FieldAlias eq '{field}' and PrimaryKeyofobject eq '"
+                    f"{external_id['ItemCode']}'",
                     "$select=TranslationsInUserLanguages,Numerator",
                 ]
                 r = self.session.get(
@@ -375,7 +346,7 @@ class GenericAdapter(AbstractComponent):
                 res = r.json()["value"]
                 if len(res) > 1:
                     raise ValidationError(
-                        "Unexpected more than one language register found"
+                        _("Unexpected more than one language register found")
                     )
                 elif len(res) == 1:
                     res = res[0]
@@ -408,7 +379,7 @@ class GenericAdapter(AbstractComponent):
                     payload = {
                         "TableName": self._base_table,
                         "FieldAlias": field,
-                        "PrimaryKeyofobject": f"{_id}",
+                        "PrimaryKeyofobject": f"{external_id['ItemCode']}",
                     }
                     new_trls = []
                     for lang_code, tr_text in trls.items():
@@ -425,21 +396,9 @@ class GenericAdapter(AbstractComponent):
                     self._check_response_error(r)
 
         self._logout()
-
         return True
 
+    # TODO: review this method
     def get_version(self):
         res = self._exec_query()
-
         return res[0][0]
-
-
-class SAPB1LightingNoModelAdapter(AbstractComponent):
-    """Used to test the connection"""
-
-    _name = "sapb1.lighting.adapter.test"
-    _inherit = "sapb1.lighting.adapter"
-    _apply_on = "sapb1connector_sapb1.lighting.backend"
-
-    _sql_read = "select @@version"
-    _id = None

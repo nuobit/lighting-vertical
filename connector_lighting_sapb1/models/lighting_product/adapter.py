@@ -9,11 +9,11 @@ from odoo.addons.component.core import Component
 _logger = logging.getLogger(__name__)
 
 
-class LightingProductAdapter(Component):
-    _name = "sapb1.lighting.product.adapter"
-    _inherit = "sapb1.lighting.adapter"
+class LightingSAPB1ProductAdapter(Component):
+    _name = "lighting.sapb1.product.adapter"
+    _inherit = "connector.lighting.sapb1.adapter"
 
-    _apply_on = "sapb1.lighting.product"
+    _apply_on = "lighting.sapb1.product"
 
     _sql_search = r""""""
 
@@ -21,19 +21,23 @@ class LightingProductAdapter(Component):
                     oitm_base AS (
                         SELECT p.*
                         FROM %(schema)s.OITM p
-                        WHERE p."U_ACC_Obsmark" IN ('Online', 'Novedades', 'Catalogado', 'Fe Digital',
-                                                    'Descatalogado', 'Fe Histórico','Histórico') and
-                              p."ItmsGrpCod" IN (107, 108, 109, 110, 111) -- Cristher, Dopo, Exo, Indeluz, NX Lighting
+                        WHERE p."U_ACC_Obsmark" IN
+                            ('Online', 'Novedades', 'Catalogado', 'Fe Digital',
+                             'Descatalogado', 'Fe Histórico','Histórico') and
+                              p."ItmsGrpCod" IN (107, 108, 109, 110, 111)
+                              -- Cristher, Dopo, Exo, Indeluz, NX Lighting
                     ),
                     -- purchase pricelist
                     purchase_price1 AS (
-                        SELECT pl."ItemCode", pl."PriceList", pl."Price", NULLIF(trim(pl."Currency"),'') AS "Currency"
+                        SELECT pl."ItemCode", pl."PriceList",
+                               pl."Price", NULLIF(trim(pl."Currency"),'') AS "Currency"
                         FROM %(schema)s.ITM1 pl
                         WHERE pl."PriceList" IN (12, 13) AND
                               pl."Price"!=0 AND NULLIF(trim(pl."Currency"),'') IS NOT NULL
                     ),
                     purchase_price AS (
-                        SELECT p."ItemCode", p."Price" AS "PurchasePrice", p."Currency" AS "PurchasePriceCurrency"
+                        SELECT p."ItemCode", p."Price" AS "PurchasePrice",
+                               p."Currency" AS "PurchasePriceCurrency"
                         FROM purchase_price1 p
                         WHERE NOT EXISTS (
                                 SELECT p0.*
@@ -140,16 +144,21 @@ class LightingProductAdapter(Component):
                     product_data as (
                         SELECT p."ItemCode", p."ItemName",
                                p."CodeBars",
-                               g."ItmsGrpCod", g."ItmsGrpNam", p."U_U_familia", p."U_U_aplicacion",
-                               p."U_ACC_Obsmark", p."U_U_Configurador", p."U_U_FECHACAT",
-                               p."SWeight1", p."SVolume", p."SLength1", p."SWidth1", p."SHeight1",
-                               s."OnHand",  s."IsCommited", s."OnOrder", s."ShipDate", s."Capacity",
-                               p."AvgPrice", p."LastPurDat",
-                               COALESCE(pp."PurchasePrice", 0) AS "PurchasePrice", pp."PurchasePriceCurrency",
-                               COALESCE(t."Price", 0) as "Price", NULLIF(trim(t."Currency"),'') AS "Currency"
+                               g."ItmsGrpCod", g."ItmsGrpNam", p."U_U_familia",
+                               p."U_U_aplicacion",p."U_ACC_Obsmark",
+                               p."U_U_Configurador", p."U_U_FECHACAT",
+                               p."SWeight1", p."SVolume", p."SLength1",
+                               p."SWidth1", p."SHeight1", s."OnHand",
+                               s."IsCommited", s."OnOrder", s."ShipDate",
+                               s."Capacity", p."AvgPrice", p."LastPurDat",
+                               COALESCE(pp."PurchasePrice", 0)
+                                        AS "PurchasePrice", pp."PurchasePriceCurrency",
+                               COALESCE(t."Price", 0) as "Price",
+                                        NULLIF(trim(t."Currency"),'') AS "Currency"
                         FROM product_virtual_stock_all s,
                              oitm_base p
-                                LEFT JOIN %(schema)s.ITM1 t ON t."PriceList" = 11 AND p."ItemCode" = t."ItemCode"
+                                LEFT JOIN %(schema)s.ITM1 t ON t."PriceList" = 11
+                                        AND p."ItemCode" = t."ItemCode"
                                 LEFT JOIN purchase_price pp ON p."ItemCode" = pp."ItemCode",
                             %(schema)s.OITB g
                         WHERE s."ItemCode" = p."ItemCode" AND
@@ -192,49 +201,52 @@ class LightingProductAdapter(Component):
                         %(where)s
                      """
 
-    _id = ("ItemCode",)
-
     _base_table = "OITM"
     _translatable_fields = ["ItemName", "U_U_aplicacion"]
 
-    def create(self, values_d):
+    def create(self, values_d):  # pylint: disable=W8106
         """Create a record on the external system"""
         raise NotImplementedError("Create products to the Backend is not allowed")
 
-    def search(self, filters=[]):
+    def search(self, domain=None):
         """Search records according to some criterias
         and returns a list of ids
 
         :rtype: list
         """
+        if not domain:
+            domain = []
         _logger.debug(
-            "%: method search, sql %s, filters %s", self._name, self._sql_read, filters
+            "%: method search, sql %s, filters %s", self._name, self._sql_read, domain
         )
-
         # remove the 'not in' filters
         filters1 = []
         notinops = {}
-        for f in filters:
-            field, op, values = f
+        for d in domain:
+            field, op, values = d
             if op == "not in":
                 notinops[field] = set(values)
             else:
-                filters1.append(f)
-
-        res = self.search_read(filters=filters1)
+                filters1.append(d)
+        res, res_len = self.search_read(domain=filters1)
 
         # apply the 'not in' filter removed before
         res1 = None
-        for f, v in notinops.items():
-            res_ids = {tuple([x[y] for y in self._id]) for x in res if x[f] not in v}
+        for d, v in notinops.items():
+            res_ids = {
+                tuple([x[y] for y in self.binder_for().get_id_fields(in_field=False)])
+                for x in res
+                if x[d] not in v
+            }
             if res1 is None:
                 res1 = res_ids
             else:
                 res1 &= res_ids
-
         if res1 is not None:
             res = list(res1)
         else:
-            res = [tuple([x[f] for f in self._id]) for x in res]
-
-        return res
+            res = [
+                tuple([x[d] for d in self.binder_for().get_id_fields(in_field=False)])
+                for x in res
+            ]
+        return res, res_len

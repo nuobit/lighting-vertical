@@ -10,21 +10,20 @@ _logger = logging.getLogger(__name__)
 
 
 class SapB1BackendCatalogMap(models.Model):
-    _name = "sapb1.lighting.backend.catalog.map"
+    _name = "lighting.sapb1.backend.catalog.map"
+    _description = "Lighting SAP B1 Backend Catalog Map"
 
     backend_id = fields.Many2one(
-        comodel_name="sapb1.lighting.backend",
+        comodel_name="lighting.sapb1.backend",
         required=True,
         ondelete="cascade",
     )
-
     catalog_id = fields.Many2one(
         comodel_name="lighting.catalog",
         string="Odoo Catalog",
         required=True,
         ondelete="restrict",
     )
-
     sap_item_group_id = fields.Integer(
         string="SAP Item Group ID",
         required=True,

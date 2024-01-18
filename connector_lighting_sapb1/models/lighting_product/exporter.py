@@ -5,36 +5,36 @@
 from odoo.addons.component.core import Component
 
 
-class LightingProductExporter(Component):
-    _name = "sapb1.lighting.product.exporter"
-    _inherit = "sapb1.lighting.exporter"
-
-    _apply_on = "sapb1.lighting.product"
-
-    def _has_to_skip(self):
-        """Return True if the export can be skipped"""
-        return self.binding.state != "published"
-
-
-class LightingProductDirectBatchExporter(Component):
-    """Export Odoo Products.
+class LightingSAPB1ProductBatchDirectExporter(Component):
+    """Export Lighting Products.
 
     For every product in the list, import it directly.
     """
 
-    _name = "sapb1.lighting.product.direct.batch.exporter"
-    _inherit = "sapb1.lighting.direct.batch.exporter"
+    _name = "lighting.sapb1.product.batch.direct.exporter"
+    _inherit = "connector.extension.generic.batch.direct.exporter"
 
-    _apply_on = "sapb1.lighting.product"
+    _apply_on = "lighting.sapb1.product"
 
 
-class LightingProductDelayedBatchExporter(Component):
-    """Export Odoo Products.
+class LightingSAPB1ProductBatchDelayedExporter(Component):
+    """Export Lighting Products.
 
     For every product in the list, a delayed job is created.
     """
 
-    _name = "sapb1.lighting.product.delayed.batch.exporter"
-    _inherit = "sapb1.lighting.delayed.batch.exporter"
+    _name = "lighting.sapb1.product.batch.delayed.exporter"
+    _inherit = "connector.extension.generic.batch.delayed.exporter"
 
-    _apply_on = "sapb1.lighting.product"
+    _apply_on = "lighting.sapb1.product"
+
+
+class LightingSAPB1ProductExporter(Component):
+    _name = "lighting.sapb1.product.record.direct.exporter"
+    _inherit = "lighting.sapb1.record.direct.exporter"
+
+    _apply_on = "lighting.sapb1.product"
+
+    def _has_to_skip(self, relation):
+        """Return True if the export can be skipped"""
+        return relation.state != "published"

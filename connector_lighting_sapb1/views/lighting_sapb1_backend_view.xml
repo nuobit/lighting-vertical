@@ -5,8 +5,8 @@
 <odoo>
     <!-- SAPB1 lighting backend -->
     <record id="sapb1_lighting_backend_view_form" model="ir.ui.view">
-        <field name="name">sapb1.lighting.backend.form</field>
-        <field name="model">sapb1.lighting.backend</field>
+        <field name="name">lighting.sapb1.backend.form</field>
+        <field name="model">lighting.sapb1.backend</field>
         <field name="arch" type="xml">
             <form string="SAP B1 Backend">
                 <header>
@@ -26,20 +26,6 @@
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button
-                            class="oe_stat_button"
-                            type="object"
-                            name="toggle_active"
-                            icon="fa-archive"
-                        >
-                            <field
-                                name="active"
-                                widget="boolean_button"
-                                options='{"terminology": "archive"}'
-                            />
-                        </button>
-                    </div>
                     <h1>
                         <field
                             name="name"
@@ -137,8 +123,12 @@
 
                         <field name="fileserver_version" />
                     </group>
-                    <notebook attrs="{'invisible':[('state', 'in', ['draft'])]}">
-                        <page name="import" string="Imports">
+                    <notebook>
+                        <page
+                            name="import"
+                            string="Imports"
+                            attrs="{'invisible':[('state', 'in', ['draft'])]}"
+                        >
                             <p class="oe_grey oe_inline">
                                 By clicking on the buttons,
                                 you will initiate the
@@ -162,47 +152,54 @@
                                 in the menu 'Connectors > Checkpoint'.
                             </p>
                             <group>
-                                <div>
+                                <group>
                                     <label
                                         string="Import Products since"
                                         class="oe_inline"
+                                        for="import_products_since_date"
                                     />
                                     <field
                                         name="import_products_since_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
-                                </div>
-                                <button
-                                    name="import_products_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Import in background"
-                                />
+                                </group>
+
+                                <group>
+                                    <button
+                                        name="import_products_since"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Import in background"
+                                    />
+                                </group>
                             </group>
                             <group>
-                                <div>
+                                <group>
                                     <label
                                         string="Export Products since"
                                         class="oe_inline"
+                                        for="export_products_since_date"
                                     />
                                     <field
                                         name="export_products_since_date"
                                         class="oe_inline"
                                         nolabel="1"
                                     />
-                                </div>
-                                <button
-                                    name="export_products_since"
-                                    type="object"
-                                    class="oe_highlight"
-                                    string="Export in background"
-                                />
+                                </group>
+                                <group>
+                                    <button
+                                        name="export_products_since"
+                                        type="object"
+                                        class="oe_highlight"
+                                        string="Export in background"
+                                    />
+                                </group>
                             </group>
                         </page>
                         <page name="mappings" string="Mappings">
                             <group string="Catalogs">
-                                <field name="catalog_map" nolabel="1">
+                                <field name="catalog_map" nolabel="1" colspan="2">
                                     <tree editable="bottom">
                                         <field name="catalog_id" />
                                         <field name="sap_item_group_id" />
@@ -210,7 +207,11 @@
                                 </field>
                             </group>
                             <group string="State Marketing">
-                                <field name="state_marketing_map" nolabel="1">
+                                <field
+                                    name="state_marketing_map"
+                                    nolabel="1"
+                                    colspan="2"
+                                >
                                     <tree editable="bottom">
                                         <field name="state_marketing" />
                                         <field name="sap_state_reference" />
@@ -218,7 +219,7 @@
                                 </field>
                             </group>
                             <group string="Languages">
-                                <field name="language_map" nolabel="1">
+                                <field name="language_map" nolabel="1" colspan="2">
                                     <tree editable="bottom">
                                         <field name="lang_id" />
                                         <field name="sap_lang_id" />
@@ -232,12 +233,11 @@
             </form>
         </field>
     </record>
-
     <record id="sapb1_lighting_backend_view_tree" model="ir.ui.view">
-        <field name="name">sapb1.lighting.backend.tree</field>
-        <field name="model">sapb1.lighting.backend</field>
+        <field name="name">lighting.sapb1.backend.tree</field>
+        <field name="model">lighting.sapb1.backend</field>
         <field name="arch" type="xml">
-            <tree string="SAP B1 Backend">
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="db_host" string="DB host" />
@@ -249,11 +249,9 @@
             </tree>
         </field>
     </record>
-
     <record id="sapb1_lighting_backend_action" model="ir.actions.act_window">
         <field name="name">SAP B1 Backends</field>
-        <field name="res_model">sapb1.lighting.backend</field>
-        <field name="view_type">form</field>
+        <field name="res_model">lighting.sapb1.backend</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

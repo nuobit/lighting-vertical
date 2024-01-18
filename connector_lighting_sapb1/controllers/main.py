@@ -16,7 +16,9 @@ except ImportError as err:
     _logger.debug(err)
 
 
-class SAPB1LightingController(http.Controller):
+# TODO: REVIEW: Can we split this controller in another module?
+#   It make sense to have it in connector?
+class LightingSAPB1Controller(http.Controller):
     @http.route(
         [
             "/sapb1/doc/<string:doctype>/r/C<string:cardcodenum>/<int:docnum>",
@@ -33,30 +35,7 @@ class SAPB1LightingController(http.Controller):
             doctype=doctype, cardcodenum=cardcodenum, docnum=docnum, refund=True
         )
 
-    @http.route(
-        [
-            "/sapb1/doc/<string:doctype>/C<string:cardcodenum>/<int:docnum>",
-        ],
-        type="http",
-        auth="user",
-    )
-    def download_doc(self, doctype=None, cardcodenum=None, docnum=None, refund=False):
-        cardcode = "C%s" % cardcodenum
-        backend = (
-            http.request.env["sapb1.lighting.backend"]
-            .sudo()
-            .search(
-                [
-                    ("active", "=", True),
-                ],
-                limit=1,
-                order="sequence,id",
-            )
-        )
-        if not backend:
-            return werkzeug.exceptions.InternalServerError("No configuration found")
-
-        ### prepare doctype parameters
+    def _prepare_doctype_parameters(self, doctype, refund):
         if doctype == "invoice":
             if not refund:
                 prefix = r"Factura\ de\ clientes"
@@ -75,8 +54,54 @@ class SAPB1LightingController(http.Controller):
             if not refund:
                 prefix = r"Pedido\ de\ cliente"
                 tablename = "ORDR"
-        else:
+        return prefix, tablename
+
+    def _get_file_docs_db(self, file_docs, db_docs):
+        file_docs_db = []
+        for fd in file_docs:
+            diffs = []
+            for dd in db_docs:
+                diff = (fd["createdatetime"] - dd["createdatetime"]).total_seconds()
+                if diff >= 0:
+                    diffs.append((dd, diff))
+
+            if diffs:
+                if len(diffs) > 1:
+                    _logger.warning(
+                        "More than one document found on DB that matches the file. "
+                        "Assuming it corresponds to the closest one in the past"
+                    )
+                diffs.sort(key=lambda x: x[1])
+                file_docs_db.append((fd, *diffs[0]))
+        return file_docs_db
+
+    @http.route(
+        [
+            "/sapb1/doc/<string:doctype>/C<string:cardcodenum>/<int:docnum>",
+        ],
+        type="http",
+        auth="user",
+    )
+    def download_doc(self, doctype=None, cardcodenum=None, docnum=None, refund=False):
+        cardcode = "C%s" % cardcodenum
+        backend = (
+            http.request.env["lighting.sapb1.backend"]
+            .sudo()
+            .search(
+                [
+                    ("active", "=", True),
+                ],
+                limit=1,
+                order="sequence,id",
+            )
+        )
+        if not backend:
+            return werkzeug.exceptions.InternalServerError("No configuration found")
+
+        # prepare doctype parameters
+        if doctype not in ["invoice", "delivery", "order"]:
             return werkzeug.exceptions.NotAcceptable("Doctype not exists")
+        prefix, tablename = self._prepare_doctype_parameters(doctype, refund)
 
         sql = """SELECT i."CardCode", i."DocNum", i."CreateDate", i."CreateTS"
                  FROM "%(schema)s".%(tablename)s i
@@ -88,7 +113,7 @@ class SAPB1LightingController(http.Controller):
             schema=backend.db_schema, tablename=tablename
         )
 
-        ##### check coherence between cardname and docnum
+        # check coherence between cardname and docnum
         conn = dbapi.connect(
             backend.db_host, backend.db_port, backend.db_username, backend.db_password
         )
@@ -123,10 +148,10 @@ class SAPB1LightingController(http.Controller):
 
         if not db_docs:
             return werkzeug.exceptions.NotFound(
-                "This document for this partner is canceled or " "does not exist on DB"
+                "This document for this partner is canceled or does not exist on DB"
             )
 
-        ##### get files
+        # get files
         # create ssh client
         client = paramiko.client.SSHClient()
         client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
@@ -171,32 +196,18 @@ class SAPB1LightingController(http.Controller):
             dt = datetime.datetime.strptime(dt_str, "%Y%m%d %H%M%S")
             file_docs.append({"filename": m.group(1), "createdatetime": dt})
 
-        ### find coherence between teoric db_docs and actual file_docs
-        ## find matching db register of file. The files should have been created
+        # find coherence between teoric db_docs and actual file_docs
+        # find matching db register of file. The files should have been created
         #  after or at the same time than dataabse register
-        file_docs_db = []
-        for fd in file_docs:
-            diffs = []
-            for dd in db_docs:
-                diff = (fd["createdatetime"] - dd["createdatetime"]).total_seconds()
-                if diff >= 0:
-                    diffs.append((dd, diff))
 
-            if diffs:
-                if len(diffs) > 1:
-                    _logger.warning(
-                        "More than one document found on DB that matches the file. "
-                        "Assuming it corresponds to the closest one in the past"
-                    )
-                diffs.sort(key=lambda x: x[1])
-                file_docs_db.append((fd, *diffs[0]))
-
+        file_docs_db = self._get_file_docs_db(file_docs, db_docs)
         if not file_docs_db:
             return werkzeug.exceptions.NotFound(
-                "Document found in DB and files but they cannot be associated because of timestamp incoherences"
+                "Document found in DB and files but they cannot "
+                "be associated because of timestamp incoherences"
             )
 
-        ### keep only the most recent one
+        # keep only the most recent one
         file_docs_db.sort(key=lambda x: x[0]["createdatetime"], reverse=True)
         filepath_def = file_docs_db[0][0]["filename"]
 

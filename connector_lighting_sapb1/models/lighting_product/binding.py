@@ -2,53 +2,14 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
-
-from odoo.addons.queue_job.job import job
+from odoo import api, fields, models
 
 
-class LightingProduct(models.Model):
-    _inherit = "lighting.product"
-
-    sapb1_lighting_bind_ids = fields.One2many(
-        comodel_name="sapb1.lighting.product",
-        inverse_name="odoo_id",
-        string="SAP B1 Bindings",
-    )
-    sapb1_write_date = fields.Datetime(
-        compute="_compute_sapb1_write_date",
-        store=True,
-        required=True,
-        default=fields.Datetime.now,
-    )
-
-    @api.depends(
-        "category_id", "family_ids", "state_marketing", "catalog_ids", "configurator"
-    )
-    def _compute_sapb1_write_date(self):
-        for rec in self:
-            rec.sapb1_write_date = fields.Datetime.now()
-
-    @api.constrains("reference")
-    def _check_reference(self):
-        for rec in self:
-            if rec.sudo().sapb1_lighting_bind_ids.filtered(
-                lambda x: not rec.company_id
-                or x.backend_id.company_id == rec.company_id
-            ):
-                raise ValidationError(
-                    _(
-                        "You can't modify the reference "
-                        "because the lot is connected to SAP B1"
-                    )
-                )
-
-
-class SapLightingProductBinding(models.Model):
-    _name = "sapb1.lighting.product"
-    _inherit = "sapb1.lighting.binding"
+class LightingSAPB1ProductBinding(models.Model):
+    _name = "lighting.sapb1.product"
+    _inherit = "lighting.sapb1.binding"
     _inherits = {"lighting.product": "odoo_id"}
+    _description = "Lighting SAP B1 Lighting product Binding"
 
     odoo_id = fields.Many2one(
         comodel_name="lighting.product",
@@ -56,72 +17,48 @@ class SapLightingProductBinding(models.Model):
         required=True,
         ondelete="cascade",
     )
+    sapb1_idproduct = fields.Char(
+        string="SAP B1 ID Product",
+        readonly=True,
+    )
 
-    @job(default_channel="root.sapb1.lighting")
-    def import_products_since(self, backend_record=None):
+    _sql_constraints = [
+        (
+            "external_uniq",
+            "unique(backend_id, sapb1_idproduct)",
+            "A binding already exists with the same External (idProduct) ID.",
+        ),
+    ]
+
+    @api.model
+    def _get_base_domain(self):
+        return []
+
+    # @job(default_channel="root.sapb1.lighting")
+    def import_products_since(self, backend_record=None, since_date=None):
         """Prepare the batch import of products modified on SAP B1 Lighting"""
-        filters = []
+        domain = self._get_base_domain()
         existing_hashes = (
-            self.env["sapb1.lighting.product"]
-            .search(
-                [
-                    ("external_content_hash", "!=", False),
-                ]
-            )
+            self.env["lighting.sapb1.product"]
+            .search([])
             .mapped("external_content_hash")
         )
         if existing_hashes:
-            filters = [("Hash", "not in", existing_hashes)]
-        now_fmt = fields.Datetime.now()
-        self.env["sapb1.lighting.product"].import_batch(
-            backend=backend_record, filters=filters
-        )
-        backend_record.import_products_since_date = now_fmt
-
+            domain += [("Hash", "not in", existing_hashes)]
+        #     TODO: NEW: How can we import with date?
+        # if since_date:
+        #     domain += [("after", "=", since_date)]
+        # now_fmt = fields.Datetime.now()
+        self.import_batch(backend_record, domain=domain, use_data=False)
+        # backend_record.import_products_since_date = now_fmt
         return True
 
-    @job(default_channel="root.sapb1.lighting")
-    def export_products_since(self, backend_record=None):
+    # @job(default_channel="root.sapb1.lighting")
+    def export_products_since(self, backend_record=None, since_date=None):
         """Prepare the batch export of products modified on Odoo"""
-        domain = []
-        if backend_record.export_products_since_date:
+        domain = self._get_base_domain()
+        if since_date:
             domain += [
-                ("sapb1_write_date", ">", backend_record.export_products_since_date),
-                ("sapb1_lighting_bind_ids.backend_id", "in", backend_record.ids),
+                ("sapb1_write_date", ">", fields.Datetime.to_datetime(since_date)),
             ]
-        now_fmt = fields.Datetime.now()
-        self.env["sapb1.lighting.product"].export_batch(
-            backend=backend_record, domain=domain
-        )
-        backend_record.export_products_since_date = now_fmt
-
-        return True
-
-    @api.multi
-    def resync_import(self):
-        for record in self:
-            with record.backend_id.work_on(record._name) as work:
-                binder = work.component(usage="binder")
-                external_id = binder.to_external(self)
-
-            func = record.import_record
-            if record.env.context.get("connector_delay"):
-                func = record.import_record.delay
-
-            func(record.backend_id, external_id)
-
-        return True
-
-    def resync_export(self):
-        for record in self:
-            with record.backend_id.work_on(record._name) as work:
-                binder = work.component(usage="binder")
-                relation = binder.unwrap_binding(record)
-
-            func = record.export_record
-            if record.env.context.get("connector_delay"):
-                func = func.with_delay
-
-            func(record.backend_id, relation)
-
-        return True
+        self.export_batch(backend_record, domain=domain)

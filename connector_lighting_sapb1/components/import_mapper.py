@@ -5,11 +5,11 @@
 from odoo.addons.component.core import AbstractComponent
 
 
-class SAPB1LightingLightingImportMapper(AbstractComponent):
-    _name = "sapb1.lighting.import.mapper"
-    _inherit = ["base.import.mapper", "base.sapb1.lighting.connector"]
+class LightingSAPB1ImportMapper(AbstractComponent):
+    _name = "lighting.sapb1.import.mapper"
+    _inherit = ["connector.extension.import.mapper", "base.lighting.sapb1.connector"]
 
 
-class SAPB1LightingImportMapChild(AbstractComponent):
-    _name = "sapb1.lighting.map.child.import"
-    _inherit = ["base.map.child.import", "base.sapb1.lighting.connector"]
+class LightingSAPB1ImportMapChild(AbstractComponent):
+    _name = "lighting.sapb1.map.child.import"
+    _inherit = ["connector.extension.map.child.import", "base.lighting.sapb1.connector"]
