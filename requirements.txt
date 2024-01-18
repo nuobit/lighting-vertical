@@ -1,3 +1,5 @@
 # generated from manifests external_dependencies
 hdbcli
+paramiko
 Pillow
+requests
