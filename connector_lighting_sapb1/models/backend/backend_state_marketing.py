@@ -11,21 +11,20 @@ from odoo.addons.lighting.models.product import STATES_MARKETING
 _logger = logging.getLogger(__name__)
 
 
-class SapB1LightingBackendStateMarketingMap(models.Model):
-    _name = "sapb1.lighting.backend.state.marketing.map"
+class LightingSapB1BackendStateMarketingMap(models.Model):
+    _name = "lighting.sapb1.backend.state.marketing.map"
+    _description = "Lighting SAP B1 Backend State Marketing Map"
 
     backend_id = fields.Many2one(
-        comodel_name="sapb1.lighting.backend",
+        comodel_name="lighting.sapb1.backend",
         required=True,
         ondelete="cascade",
     )
-
     state_marketing = fields.Selection(
         string="Odoo State Marketing",
         required=True,
         selection=STATES_MARKETING,
     )
-
     sap_state_reference = fields.Char(
         string="SAP State Reference",
         required=True,

@@ -5,12 +5,9 @@
 from odoo.addons.component.core import AbstractComponent
 
 
-class SAPB1LightingBaseConnectorComponent(AbstractComponent):
-    """Base SAP B1 Lighting Connector Component
-
-    All components of this connector should inherit from it.
-    """
-
-    _name = "base.sapb1.lighting.connector"
+class BaseLightingSAPB1Connector(AbstractComponent):
+    _name = "base.lighting.sapb1.connector"
     _inherit = "base.connector"
-    _collection = "sapb1.lighting.backend"
+    _collection = "lighting.sapb1.backend"
+
+    _description = "Base Lighting SAPB1 Connector Component"

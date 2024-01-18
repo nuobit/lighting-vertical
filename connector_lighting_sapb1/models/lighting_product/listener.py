@@ -6,8 +6,8 @@ from odoo.addons.component.core import Component
 
 
 class SAPB1LightingProductImporter(Component):
-    _name = "sapb1.lighting.product.listener"
-    _inherit = "sapb1.lighting.listener"
+    _name = "lighting.sapb1.product.listener"
+    _inherit = "lighting.sapb1.listener"
 
     _apply_on = "lighting.product"
 
@@ -31,6 +31,8 @@ class SAPB1LightingProductImporter(Component):
                 export = import_export_fields & set(fields)
         if export:
             for backend in record.sudo().sapb1_lighting_bind_ids.mapped("backend_id"):
-                self.env["sapb1.lighting.product"].sudo(
+                self.env["lighting.sapb1.product"].sudo().with_user(
                     backend.user_id
-                ).with_delay().export_record(backend.sudo(backend.user_id), record)
+                ).with_delay().export_record(
+                    backend.sudo().with_user(backend.user_id), record
+                )

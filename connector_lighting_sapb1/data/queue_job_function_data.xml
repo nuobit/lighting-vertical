@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
+<odoo noupdate="1">
+       <!--    Export Sale Order-->
+    <record id="lighting_sapb1_export_record_job_function" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_lighting_sapb1.model_lighting_sapb1_product"
+        />
+        <field name="method">export_record</field>
+        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <!--    Import Sale Order   -->
+    <record id="lighting_sapb1_import_batch" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_lighting_sapb1.model_lighting_sapb1_product"
+        />
+        <field name="method">import_batch</field>
+        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record id="lighting_sapb1_import_chunk" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_lighting_sapb1.model_lighting_sapb1_product"
+        />
+        <field name="method">import_chunk</field>
+        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+    <record id="lighting_sapb1_product_import_record" model="queue.job.function">
+        <field
+            name="model_id"
+            ref="connector_lighting_sapb1.model_lighting_sapb1_product"
+        />
+        <field name="method">import_record</field>
+        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
+    </record>
+</odoo>

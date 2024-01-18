@@ -13,15 +13,11 @@ from odoo.addons.connector.components.mapper import mapping, only_create
 ACCESSORY_CATALOG = "NX Lighting"
 
 
-class LigthingProductImportMapper(Component):
-    _name = "sapb1.lighting.product.import.mapper"
-    _inherit = "sapb1.lighting.import.mapper"
+class LigthingSAPB1ProductImportMapper(Component):
+    _name = "lighting.sapb1.product.import.mapper"
+    _inherit = "lighting.sapb1.import.mapper"
 
-    _apply_on = "sapb1.lighting.product"
-
-    @mapping
-    def backend_id(self, record):
-        return {"backend_id": self.backend_record.id}
+    _apply_on = "lighting.sapb1.product"
 
     @mapping
     def content_hash(self, record):
@@ -57,7 +53,6 @@ class LigthingProductImportMapper(Component):
         values["stock_future_qty"] = (
             record["ShipDate"] and (available_qty + (record["OnOrder"] or 0)) or 0
         )
-
         return values
 
     @mapping
@@ -74,7 +69,6 @@ class LigthingProductImportMapper(Component):
             )
             if price_currency:
                 price_currency_id = price_currency.id
-
         return price_currency_id
 
     @mapping
@@ -109,7 +103,9 @@ class LigthingProductImportMapper(Component):
             values["ibox_height"] = record["SHeight1"]
         return values
 
-    # @only_create
+    # TODO: Description_manual is translate=True. We only update on one lang.
+    #       We should update on all languages, probably returning a json or creating
+    #       a new decorator to catch this translatable fields.
     @mapping
     def description_manual(self, record):
         return {
@@ -130,8 +126,8 @@ class LigthingProductImportMapper(Component):
             ).state_marketing
             if not state_marketing:
                 raise ValidationError(
-                    "There's no mapping to %s in the Backend configuration"
-                    % (u_acc_obsmark,)
+                    _("There's no mapping to %s in the Backend configuration")
+                    % u_acc_obsmark
                 )
             return {
                 "state_marketing": state_marketing,
@@ -145,9 +141,9 @@ class LigthingProductImportMapper(Component):
         ).catalog_id
         if not catalog:
             raise ValidationError(
-                "There's no mapping for %s configured in Backend" % record["ItmsGrpCod"]
+                _("There's no mapping for %s configured in Backend")
+                % record["ItmsGrpCod"]
             )
-
         return {
             "catalog_ids": [(6, False, catalog.ids)],
         }
