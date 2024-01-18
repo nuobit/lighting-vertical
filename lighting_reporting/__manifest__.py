@@ -3,28 +3,28 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    'name': "Lighting Reporting",
-    'description': """* Product datasheet""",
-    'version': '11.0.0.15.10',
-    'author': 'NuoBiT Solutions, S.L., Eric Antones',
-    'license': 'AGPL-3',
-    'category': 'Custom',
-    'website': 'https://www.nuobit.com',
-    'external_dependencies': {
-        'python': [
-            'PIL',
+    "name": "Lighting Reporting",
+    "description": """* Product datasheet""",
+    "version": "11.0.0.15.10",
+    "author": "NuoBiT Solutions, S.L., Eric Antones",
+    "license": "AGPL-3",
+    "category": "Custom",
+    "website": "https://github.com/NuoBiT/lighting-vertical",
+    "external_dependencies": {
+        "python": [
+            "PIL",
         ],
     },
-    'depends': [
-        'lighting',
-        'lighting_seo',
+    "depends": [
+        "lighting",
+        "lighting_seo",
     ],
-    'data': [
-        'wizard/datasheet_wizard_views.xml',
-        'report/report.xml',
-        'views/report_product.xml',
-        'views/product_views.xml',
-        'views/product_attachment_type_views.xml',
+    "data": [
+        "wizard/datasheet_wizard_views.xml",
+        "report/report.xml",
+        "views/report_product.xml",
+        "views/product_views.xml",
+        "views/product_attachment_type_views.xml",
     ],
-    'installable': True,
+    "installable": True,
 }
