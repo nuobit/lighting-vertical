@@ -7,21 +7,21 @@
         <field name="name">lighting.product.connector.form</field>
         <field name="model">lighting.product</field>
         <field name="inherit_id" ref="lighting.product_form_view" />
-        <field
-            name="groups_id"
-            eval="[(4, ref('connector.group_connector_manager'))]"
-        />
         <field name="arch" type="xml">
             <xpath expr="/form/sheet/notebook" position="inside">
-                <page string="Connector">
+                <page string="Connector SAP B1">
                     <group string="SAP B1 Lighting Bindings">
-                        <field name="sapb1_lighting_bind_ids" nolabel="1" />
+                        <field
+                            name="sapb1_lighting_bind_ids"
+                            nolabel="1"
+                            groups="connector.group_connector_manager"
+                            colspan="2"
+                        />
                     </group>
                 </page>
             </xpath>
         </field>
     </record>
-
     <record id="lighting_product_view" model="ir.ui.view">
         <field name="name">lighting.product.sapb1.connector.search</field>
         <field name="model">lighting.product</field>
@@ -42,16 +42,15 @@
             </xpath>
         </field>
     </record>
-
     <record id="sapb1_lighting_product_view_form" model="ir.ui.view">
-        <field name="name">sapb1.lighting.product.form</field>
-        <field name="model">sapb1.lighting.product</field>
+        <field name="name">lighting.sapb1.product.form</field>
+        <field name="model">lighting.sapb1.product</field>
         <field name="arch" type="xml">
             <form string="SAP B1 Lighting Product">
                 <group>
                     <field name="backend_id" />
                     <field name="odoo_id" readonly="True" />
-                    <field name="external_id_display" readonly="True" />
+                    <field name="sapb1_idproduct" readonly="True" />
                     <field name="external_content_hash" readonly="True" />
                     <field name="sync_date" readonly="True" />
                 </group>
@@ -59,34 +58,32 @@
         </field>
     </record>
 
-    <record id="sapb1_lighting_product_view_tree" model="ir.ui.view">
-        <field name="name">sapb1.lighting.product.tree</field>
-        <field name="model">sapb1.lighting.product</field>
+    <record id="lighting_sapb1_product_view_tree" model="ir.ui.view">
+        <field name="name">lighting.sapb1.product.tree</field>
+        <field name="model">lighting.sapb1.product</field>
         <field name="arch" type="xml">
-            <tree string="SAP B1 Product">
+            <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
-                <field name="external_id_display" readonly="True" />
                 <field name="sync_date" />
                 <button
                     type="object"
                     string="Resynchronize (import)"
                     name="resync_import"
-                    icon="fa fa-download"
+                    icon="fa-download"
                 />
                 <button
                     type="object"
                     string="Resynchronize (export)"
                     name="resync_export"
-                    icon="fa fa-upload"
+                    icon="fa-upload"
                 />
             </tree>
         </field>
     </record>
-
     <record id="sapb1_lighting_product_action" model="ir.actions.act_window">
         <field name="name">Product</field>
-        <field name="res_model">sapb1.lighting.product</field>
+        <field name="res_model">lighting.sapb1.product</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

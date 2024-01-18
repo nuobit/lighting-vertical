@@ -9,28 +9,28 @@ from odoo import fields, models
 _logger = logging.getLogger(__name__)
 
 
-class SapB1LightingBackendLangMap(models.Model):
-    _name = "sapb1.lighting.backend.lang.map"
+class LightingSapB1BackendLangMap(models.Model):
+    _name = "lighting.sapb1.backend.lang.map"
+    _description = "Lighting SAP B1 Backend Lang Map"
 
     backend_id = fields.Many2one(
-        comodel_name="sapb1.lighting.backend",
+        comodel_name="lighting.sapb1.backend",
         required=True,
         ondelete="cascade",
     )
-
     lang_id = fields.Many2one(
         comodel_name="res.lang",
         string="Odoo Language",
         required=True,
         ondelete="restrict",
     )
-
     sap_lang_id = fields.Integer(
         string="SAP Language ID",
         required=True,
     )
-
-    sap_main_lang = fields.Boolean("SAP Main Language")
+    sap_main_lang = fields.Boolean(
+        string="SAP Main Language",
+    )
 
     _sql_constraints = [
         (

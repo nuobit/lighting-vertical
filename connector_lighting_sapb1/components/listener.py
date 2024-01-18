@@ -5,6 +5,6 @@
 from odoo.addons.component.core import AbstractComponent
 
 
-class SAPB1LightingListener(AbstractComponent):
-    _name = "sapb1.lighting.listener"
+class LightingSAPB1Listener(AbstractComponent):
+    _name = "lighting.sapb1.listener"
     _inherit = "base.connector.listener"

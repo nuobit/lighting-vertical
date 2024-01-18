@@ -5,11 +5,35 @@
 from odoo.addons.component.core import Component
 
 
-class LightingProductImporter(Component):
-    _name = "sapb1.lighting.product.importer"
-    _inherit = "sapb1.lighting.importer"
+class LightingSAPB1ProductBatchDirectImporter(Component):
+    """Import the SAP B1 Lighting Products.
 
-    _apply_on = "sapb1.lighting.product"
+    For every product in the list, import it directly.
+    """
+
+    _name = "lighting.sapb1.product.batch.direct.importer"
+    _inherit = "connector.extension.generic.batch.direct.importer"
+
+    _apply_on = "lighting.sapb1.product"
+
+
+class LightingSAPB1ProductBatchDelayedImporter(Component):
+    """Import the SAP B1 Lighting Products.
+
+    For every product in the list, a delayed job is created.
+    """
+
+    _name = "lighting.sapb1.product.batch.delayed.importer"
+    _inherit = "connector.extension.generic.batch.delayed.importer"
+
+    _apply_on = "lighting.sapb1.product"
+
+
+class LightingSAPB1ProductImporter(Component):
+    _name = "lighting.sapb1.product.record.direct.importer"
+    _inherit = "lighting.sapb1.record.direct.importer"
+
+    _apply_on = "lighting.sapb1.product"
 
     def _find_existing(self, external_id):
         """Find existing record by external_id"""
@@ -34,30 +58,3 @@ class LightingProductImporter(Component):
                 }
 
         return None
-
-    def _mapper_options(self, binding):
-        return {"binding": binding}
-
-
-class LightingProductDirectBatchImporter(Component):
-    """Import the SAP B1 Lighting Products.
-
-    For every product in the list, import it directly.
-    """
-
-    _name = "sapb1.lighting.product.direct.batch.importer"
-    _inherit = "sapb1.lighting.direct.batch.importer"
-
-    _apply_on = "sapb1.lighting.product"
-
-
-class LightingProductDelayedBatchImporter(Component):
-    """Import the SAP B1 Lighting Products.
-
-    For every product in the list, a delayed job is created.
-    """
-
-    _name = "sapb1.lighting.product.delayed.batch.importer"
-    _inherit = "sapb1.lighting.delayed.batch.importer"
-
-    _apply_on = "sapb1.lighting.product"
