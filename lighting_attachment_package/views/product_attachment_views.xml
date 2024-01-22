@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
-     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
 <odoo>
     <record id="attachment_package_form_view" model="ir.ui.view">
         <field name="name">attachment.package.form</field>
@@ -28,7 +27,6 @@
             </form>
         </field>
     </record>
-
     <record id="attachment_type_form_view" model="ir.ui.view">
         <field name="name">attachment.type.form.inherit.packages</field>
         <field name="model">lighting.attachment.type</field>
@@ -36,7 +34,7 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <group string="Packages">
-                    <field name="package_ids" nolabel="1">
+                    <field name="package_ids" nolabel="1" colspan="2">
                         <tree editable="bottom">
                             <field name="name" />
                             <field name="catalog_ids" widget="many2many_tags" />

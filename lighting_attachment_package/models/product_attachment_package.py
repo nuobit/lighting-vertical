@@ -1,5 +1,4 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -32,8 +31,9 @@ def pretty_size(value):
 class LightingAttachmentPackage(models.Model):
     _name = "lighting.attachment.package"
 
-    name = fields.Char(string="Description")
-
+    name = fields.Char(
+        string="Description",
+    )
     catalog_ids = fields.Many2many(
         string="Catalogs",
         comodel_name="lighting.catalog",
@@ -41,21 +41,32 @@ class LightingAttachmentPackage(models.Model):
         column1="package_id",
         column2="catalog_id",
     )
-
-    datas = fields.Binary(string="Document", attachment=True)
-    datas_fname = fields.Char(string="Filename", required=True)
-
+    datas = fields.Binary(
+        string="Document",
+        attachment=True,
+    )
+    datas_fname = fields.Char(
+        string="Filename",
+        required=True,
+    )
     file_size_human = fields.Char(
-        string="Size", compute="_compute_file_size_human", readonly=True
+        string="Size",
+        compute="_compute_file_size_human",
+        readonly=True,
     )
 
+    @api.depends("attachment_id", "attachment_id.file_size")
     def _compute_file_size_human(self):
         for rec in self:
             if rec.attachment_id.file_size:
                 rec.file_size_human = pretty_size(rec.attachment_id.file_size)
+            else:
+                rec.file_size_human = False
 
     attachment_id = fields.Many2one(
-        comodel_name="ir.attachment", compute="_compute_ir_attachment", readonly=True
+        comodel_name="ir.attachment",
+        compute="_compute_ir_attachment",
+        readonly=True,
     )
 
     @api.depends("datas")
@@ -82,14 +93,10 @@ class LightingAttachmentPackage(models.Model):
         comodel_name="lighting.language",
         ondelete="restrict",
     )
-
     last_update = fields.Datetime(
-        string="Last update",
         readonly=True,
     )
-
     type_id = fields.Many2one(
-        string="Type",
         required=True,
         comodel_name="lighting.attachment.type",
         ondelete="restrict",
@@ -128,11 +135,13 @@ class LightingAttachmentPackage(models.Model):
 
         return file_bin
 
-    def _generate_pdf(self, id):
+    def _generate_pdf(self, _id):
         return (
             self.env.ref("lighting_reporting.action_report_product")
             .with_context(lang=self.lang_id.code)
-            .render_qweb_pdf([id])[0]
+            ._render_qweb_pdf(
+                "lighting_reporting.action_report_product", res_ids=[_id]
+            )[0]
         )
 
     def generate_pdf_zipfile(self):
@@ -168,7 +177,7 @@ class LightingAttachmentPackage(models.Model):
                 # we need to invalidate cache, pdf renderization caches a lot of data
                 # and ends with run out of memory
                 if int(i % 10) == 0:
-                    self.invalidate_cache()
+                    self.env.invalidate_all()
             zf.close()
             tf.seek(0)
             file_bin = tf.read()
