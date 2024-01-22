@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-     Eric Antones <eantones@nuobit.com>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <!-- FTP Attachment backend -->
@@ -26,20 +25,6 @@
                     <field name="state" widget="statusbar" readonly="1" />
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button
-                            class="oe_stat_button"
-                            type="object"
-                            name="toggle_active"
-                            icon="fa-archive"
-                        >
-                            <field
-                                name="active"
-                                widget="boolean_button"
-                                options='{"terminology": "archive"}'
-                            />
-                        </button>
-                    </div>
                     <h1>
                         <field
                             name="name"
@@ -86,7 +71,7 @@
         <field name="name">ftp.attachment.backend.tree</field>
         <field name="model">ftp.attachment.backend</field>
         <field name="arch" type="xml">
-            <tree string="FTP Attachment Backend">
+            <tree>
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="host" />
@@ -99,7 +84,6 @@
     <record id="ftp_attachment_backend_action" model="ir.actions.act_window">
         <field name="name">FTP Attachment Backends</field>
         <field name="res_model">ftp.attachment.backend</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 </odoo>

@@ -1,26 +1,21 @@
-# Copyright NuoBiT Solutions, S.L. (<https://www.nuobit.com>)
-# Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
-
-from odoo.addons.queue_job.job import job
 
 
 class LightingAttachmentPackage(models.Model):
     _inherit = "lighting.attachment.package"
 
     auto = fields.Boolean(
-        string="Auto",
         default=True,
     )
-
     last_upload = fields.Datetime(
-        string="Last upload",
         readonly=True,
     )
 
-    @job(default_channel="root.ftpattach")
+    # TODO: Create channel
+    # @job(default_channel="root.ftpattach")
     def upload(self, backend, generate=False):
         self.ensure_one()
         if generate:
