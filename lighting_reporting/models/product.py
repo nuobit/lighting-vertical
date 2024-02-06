@@ -227,6 +227,7 @@ class LightingProduct(models.Model):
         groups = self.search([
             ('id', '!=', self.id),
             ('family_ids', 'in', self.family_ids.mapped('id')),
+            ('state_marketing', 'not in', ('ES', 'ESH', 'D', 'H')),
         ]).mapped('product_group_id') \
             .get_parent_group_by_type('PHOTO') \
             .filtered(lambda x: self not in x.flat_product_ids and
