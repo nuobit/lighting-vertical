@@ -157,6 +157,8 @@ class LightingProduct(models.Model):
                 [
                     ("id", "!=", self.id),
                     ("family_ids", "in", self.family_ids.mapped("id")),
+                    ("state", "=", "published"),
+                    ("state_marketing", "not in", (False, "ES", "ESH", "D", "H")),
                 ]
             )
             .mapped("product_group_id")
