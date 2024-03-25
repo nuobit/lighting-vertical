@@ -1,1 +1,2 @@
 odoo-addon-report_json@git+https://github.com/nuobit/odoo-addons.git@16.0#subdirectory=setup/report_json
+odoo-addon-connector_extension@git+https://github.com/nuobit/odoo-addons.git@16.0#subdirectory=setup/connector_extension
