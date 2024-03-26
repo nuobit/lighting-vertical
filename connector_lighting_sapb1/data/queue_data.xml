@@ -3,8 +3,8 @@
 License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
 <!--TODO: Migration script: channel root.sapb1.lighting to root.lighting.sapb1  with external_id lighting_sapb1-->
 <odoo noupdate="1">
-    <record id="lighting_sapb1" model="queue.job.channel">
-        <field name="name">lighting.sapb1</field>
+    <record id="channel_lighting_sapb1" model="queue.job.channel">
+        <field name="name">lighting_sapb1</field>
         <field name="parent_id" ref="queue_job.channel_root" />
     </record>
 </odoo>

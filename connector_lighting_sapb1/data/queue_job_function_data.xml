@@ -9,7 +9,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
             ref="connector_lighting_sapb1.model_lighting_sapb1_product"
         />
         <field name="method">export_record</field>
-        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field
+            name="channel_id"
+            ref="connector_lighting_sapb1.channel_lighting_sapb1"
+        />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
     <!--    Import Sale Order   -->
@@ -19,7 +22,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
             ref="connector_lighting_sapb1.model_lighting_sapb1_product"
         />
         <field name="method">import_batch</field>
-        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field
+            name="channel_id"
+            ref="connector_lighting_sapb1.channel_lighting_sapb1"
+        />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
     <record id="lighting_sapb1_import_chunk" model="queue.job.function">
@@ -28,7 +34,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
             ref="connector_lighting_sapb1.model_lighting_sapb1_product"
         />
         <field name="method">import_chunk</field>
-        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field
+            name="channel_id"
+            ref="connector_lighting_sapb1.channel_lighting_sapb1"
+        />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
     <record id="lighting_sapb1_product_import_record" model="queue.job.function">
@@ -37,7 +46,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)-->
             ref="connector_lighting_sapb1.model_lighting_sapb1_product"
         />
         <field name="method">import_record</field>
-        <field name="channel_id" ref="connector_lighting_sapb1.lighting_sapb1" />
+        <field
+            name="channel_id"
+            ref="connector_lighting_sapb1.channel_lighting_sapb1"
+        />
         <field name="retry_pattern" eval="{1: 10, 5: 30, 10: 60, 15: 300}" />
     </record>
 </odoo>
