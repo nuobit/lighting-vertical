@@ -23,9 +23,9 @@ class LightingProduct(models.Model):
             rec.datasheet_generation_date = fields.Datetime.now()
 
     def product_datasheet_wizard(self):
-        action = self.env.ref(
+        action = self.env["ir.actions.act_window"]._for_xml_id(
             "lighting_reporting.product_datasheet_wizard_action"
-        ).read()[0]
+        )
         return action
 
     def get_sheet_sources(self):
