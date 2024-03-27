@@ -65,6 +65,7 @@
             <tree>
                 <field name="backend_id" />
                 <field name="odoo_id" />
+                <field name="sapb1_idproduct" />
                 <field name="sync_date" />
                 <button
                     type="object"

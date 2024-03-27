@@ -20,6 +20,7 @@ class LightingSAPB1ProductBinding(models.Model):
     sapb1_idproduct = fields.Char(
         string="SAP B1 ID Product",
         readonly=True,
+        required=True,
     )
 
     _sql_constraints = [
@@ -34,7 +35,6 @@ class LightingSAPB1ProductBinding(models.Model):
     def _get_base_domain(self):
         return []
 
-    # @job(default_channel="root.sapb1.lighting")
     def import_products_since(self, backend_record=None, since_date=None):
         """Prepare the batch import of products modified on SAP B1 Lighting"""
         domain = self._get_base_domain()
@@ -53,7 +53,6 @@ class LightingSAPB1ProductBinding(models.Model):
         # backend_record.import_products_since_date = now_fmt
         return True
 
-    # @job(default_channel="root.sapb1.lighting")
     def export_products_since(self, backend_record=None, since_date=None):
         """Prepare the batch export of products modified on Odoo"""
         domain = self._get_base_domain()

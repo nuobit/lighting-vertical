@@ -4,7 +4,7 @@
 
 {
     "name": "Connector Lighting SAP B1",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.0.2",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Connector",

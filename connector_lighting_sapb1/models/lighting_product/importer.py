@@ -34,27 +34,3 @@ class LightingSAPB1ProductImporter(Component):
     _inherit = "lighting.sapb1.record.direct.importer"
 
     _apply_on = "lighting.sapb1.product"
-
-    def _find_existing(self, external_id):
-        """Find existing record by external_id"""
-        adapter = self.component(usage="backend.adapter", model_name=self.model)
-        external_id_d = adapter.id2dict(external_id)
-
-        reference = external_id_d["ItemCode"]
-        if reference:
-            product = self.env["lighting.product"].search(
-                [
-                    ("reference", "=", reference),
-                ]
-            )
-            if product:
-                if len(product) > 1:
-                    raise Exception(
-                        "There's more than one existing product "
-                        "with the same Reference %s" % reference
-                    )
-                return {
-                    "odoo_id": product.id,
-                }
-
-        return None
