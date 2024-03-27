@@ -36,8 +36,8 @@ class LightingCatalog(models.Model):
 
     def get_catalog_projects(self):
         self.ensure_one()
-        action = self.env.ref("lighting_project.product_catalog_action_project").read()[
-            0
-        ]
+        action = self.env["ir.actions.act_window"]._for_xml_id(
+            "lighting_project.product_catalog_action_project"
+        )
         action.update({"domain": [("id", "in", self.project_ids.mapped("id"))]})
         return action
