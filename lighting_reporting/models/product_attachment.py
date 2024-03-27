@@ -48,7 +48,7 @@ def resize(im, asked_size, by_side_long=False, allow_scale=True):
                 asked_size[0] > im.size[0] or asked_size[1] > im.size[1]
             ):
                 return im
-            return im.resize(asked_size, Image.ANTIALIAS)
+            return im.resize(asked_size, Image.LANCZOS)
 
     return im
 
