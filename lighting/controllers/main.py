@@ -52,6 +52,7 @@ class Binary(binary.Binary):
         if hash:
             attachment_objs = (
                 request.env[model]
+                .sudo()
                 .search(
                     [
                         ("id", "!=", False),
