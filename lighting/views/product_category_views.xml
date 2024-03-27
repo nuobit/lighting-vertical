@@ -164,7 +164,6 @@
                 <button
                     name="action_child"
                     type="object"
-                    string="Childs"
                     icon="fa-external-link"
                     attrs="{'invisible': [('child_count', '=', 0)]}"
                 />
@@ -172,7 +171,6 @@
                 <button
                     name="%(product_category_action_product)d"
                     type="action"
-                    string="Categories"
                     icon="fa-external-link"
                     attrs="{'invisible': [('product_count', '=', 0)]}"
                 />
@@ -183,7 +181,6 @@
                 <button
                     name="action_flat_product"
                     type="object"
-                    string="Products (flat)"
                     icon="fa-external-link"
                     attrs="{'invisible': [('flat_product_count', '=', 0)]}"
                 />
