@@ -1035,6 +1035,8 @@ class LightingProduct(models.Model):
                     rec.json_search_source_type = json.dumps(source_type_d)
                 else:
                     rec.json_search_source_type = False
+        else:
+            self.json_search_source_type = False
 
     marketplace_description_html = fields.Html(
         string="Marketplace description html",
