@@ -171,13 +171,18 @@ class LightingAttachment(models.Model):
     )
     public = fields.Boolean(
         compute="_compute_public",
-        readonly=False,
+        inverse="_inverse_public",
+        compute_sudo=True,
     )
 
     @api.depends("attachment_id", "attachment_id.public")
     def _compute_public(self):
         for rec in self:
             rec.public = rec.attachment_id.public
+
+    def _inverse_public(self):
+        for rec in self:
+            rec.attachment_id.sudo().public = rec.public
 
     url = fields.Char(
         compute="_compute_url",
