@@ -245,8 +245,8 @@ class LightingAttachment(models.Model):
                 pattern_l.append(resolution)
             pattern_l.append("%s")
 
-            if set_public and not self.attachment_id.public:
-                self.sudo().attachment_id.public = True
+            if set_public and not self.public:
+                self.public = True
 
             if self.attachment_id.checksum and self.datas_fname:
                 return "/".join(pattern_l) % (
