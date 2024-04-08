@@ -119,7 +119,7 @@
                             />
                         </group>
                     </group>
-                    <group>
+                    <group groups="lighting.group_lighting_user">
                         <group string="Attributes">
                             <field name="attribute_ids" widget="many2many_tags" />
                             <field name="inherit_attributes" />

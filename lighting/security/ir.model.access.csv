@@ -166,3 +166,4 @@ access_lighting_product_addattachment_guest,lighting.product.addattachment guest
 access_lighting_product_addattachment_user,lighting.product.addattachment user,model_lighting_product_addattachment,lighting.group_lighting_user,1,1,1,1
 access_lighting_product_define_substitute_guest,lighting.product.define.substitute guest,model_lighting_product_define_substitute,lighting.group_lighting_guest,1,0,0,0
 access_lighting_product_define_substitute_user,lighting.product.define.substitute user,model_lighting_product_define_substitute,lighting.group_lighting_user,1,1,1,1
+access_ir_model_fields_manager,ir.model.fields manager,base.model_ir_model_fields,lighting.group_lighting_user,1,0,0,0
