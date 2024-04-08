@@ -104,6 +104,15 @@ div.footer {
     font-size: 1px;
 }
 
+.nl-remove-border thead,
+.nl-remove-border tbody,
+.nl-remove-border td,
+.nl-remove-border thead th,
+.nl-remove-border tr,
+.nl-remove-border t {
+    border: none;
+}
+
 // section title
 .nl-section-title {
     font-family: "Raleway";

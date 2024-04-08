@@ -184,7 +184,7 @@
                     <div class="nl-layout-data">
                         <!-- general data -->
                         <div class="nl-section-title">GENERAL DATA</div>
-                        <table class="nl-table-data nl-main-data">
+                        <table class="nl-remove-border nl-table-data nl-main-data">
                             <tbody>
                                 <tr t-if="doc.category_id">
                                     <td>
@@ -307,7 +307,7 @@
 
                         <!-- light sources and beams -->
                         <div class="nl-section-title">LIGHT SOURCES AND BEAMS</div>
-                        <table class="nl-table-data nl-main-data">
+                        <table class="nl-remove-border nl-table-data nl-main-data">
                             <tr t-if="doc.source_ids">
                                 <td>
                                     Sources
@@ -379,7 +379,7 @@
 
                         <!-- technical data -->
                         <div class="nl-section-title">TECHNICAL DATA</div>
-                        <table class="nl-table-data nl-main-data">
+                        <table class="nl-remove-border nl-table-data nl-main-data">
                             <!-- Description -->
                             <tr t-if="doc.dimension_ids">
                                 <td>
@@ -960,7 +960,7 @@
                         <!-- notes -->
                         <t t-if="doc.note_ids">
                             <div class="nl-section-title">NOTES</div>
-                            <table class="nl-table-data nl-note-data">
+                            <table class="nl-remove-border nl-table-data nl-note-data">
                                 <tbody>
                                     <t
                                         t-foreach="doc.note_ids.sorted(lambda x: x.sequence)"
@@ -1046,7 +1046,7 @@
                                         </div>
                                         <div class="nl-accessory-data">
                                             <table
-                                                class="nl-table-data nl-accessory-data"
+                                                class="nl-remove-border nl-table-data nl-accessory-data"
                                             >
                                                 <t t-if="acc.reference[0] == 'A'">
                                                     <tr t-if="acc.body_material_ids">
@@ -1200,7 +1200,7 @@
                             t-value="doc.get_groups_same_family(groupsof=6)"
                         />
                         <t t-if="samfamgroups">
-                            <table class="nl-groups-same-family-table">
+                            <table class="nl-remove-border nl-groups-same-family-table">
                                 <thead>
                                     <th colspan="6">
                                         <div
