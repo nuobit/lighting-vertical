@@ -332,7 +332,7 @@ class LightingProductGroup(models.Model):
             .mapped("attachment_ids")
             .filtered(
                 lambda x: x.type_id.code == "F"
-                and x.attachment_id.index_content == "image"
+                and x.attachment_id.sudo().index_content == "image"
             )
             .sorted(lambda x: (x.sequence, x.id))
         )
