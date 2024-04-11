@@ -184,6 +184,15 @@ class LightingExportTemplate(models.Model):
 
         return field_name
 
+    def _invalidate_cache_composite_field(self, record, field):
+        parts = field.split(".")
+        if not parts:
+            raise ValidationError(_("The field %s structure is not valid" % parts))
+        if len(parts) == 1:
+            record.invalidate_recordset(fnames=parts)
+        else:
+            record[parts[0]].invalidate_recordset(fnames=[parts[1]])
+
     def generate_dict(self, obj, header, hide_empty_fields=True):  # noqa: C901
         def slug(s):
             char_map = {
@@ -228,7 +237,7 @@ class LightingExportTemplate(models.Model):
                 else (1, x.code),
             )
             for lang in meta_langs:
-                obj.invalidate_recordset(fnames=[field])
+                self._invalidate_cache_composite_field(obj, field)
                 datum = getattr(
                     obj.with_context(lang=lang.code, template_id=self), field
                 )
@@ -255,7 +264,7 @@ class LightingExportTemplate(models.Model):
                         or order_field not in x
                         or x[order_field]
                     ):
-                        x.invalidate_recordset(fnames=[subfield])
+                        self._invalidate_cache_composite_field(x, subfield)
                         subfield_l = x.mapped(subfield)
                         if subfield_l:
                             if len(subfield_l) > 1:
