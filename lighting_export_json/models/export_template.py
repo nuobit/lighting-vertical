@@ -228,6 +228,7 @@ class LightingExportTemplate(models.Model):
                 else (1, x.code),
             )
             for lang in meta_langs:
+                obj.invalidate_recordset(fnames=[field])
                 datum = getattr(
                     obj.with_context(lang=lang.code, template_id=self), field
                 )
@@ -254,6 +255,7 @@ class LightingExportTemplate(models.Model):
                         or order_field not in x
                         or x[order_field]
                     ):
+                        x.invalidate_recordset(fnames=[subfield])
                         subfield_l = x.mapped(subfield)
                         if subfield_l:
                             if len(subfield_l) > 1:
