@@ -24,5 +24,5 @@ class ProductReport(models.AbstractModel):
             "doc_ids": docids,
             "doc_model": model,
             "docs": docs,
-            "lang": lang,
+            "report_lang": lang,
         }
