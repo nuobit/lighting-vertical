@@ -15,5 +15,10 @@
     "data": [
         "views/report_product.xml",
     ],
+    "assets": {
+        "web.report_assets_pdf": [
+            "lighting_reporting_seo/static/src/scss/styles.scss",
+        ],
+    },
     "auto_install": True,
 }

@@ -1,0 +1,15 @@
+// family description
+.nl-family-description {
+    margin-bottom: 36px;
+
+    p {
+        font-family: "Helvetica Neue";
+        font-weight: 200;
+        font-size: 11px; // 7pt
+        line-height: 18px; // 10pt
+        text-align: justify;
+        text-justify: inter-word;
+        border: 0;
+        padding: 0;
+    }
+}
