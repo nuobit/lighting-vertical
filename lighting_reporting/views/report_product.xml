@@ -58,8 +58,8 @@
                         t-out="', '.join([x.name.upper() for x in doc.family_ids])"
                     />
                     <div class="nl-reference" t-field="doc.reference" />
-                    <div class="nl-description" t-field="doc.description" />
                 </div>
+                <div class="nl-description" t-field="doc.description" />
             </div>
         </div>
 
@@ -89,10 +89,9 @@
                         <ul class="list-unstyled">
                             <li>
                                 <strong t-field="company.name" />
-                                <a
-                                    t-att-href="company.website"
-                                    t-out="company.website.replace('https://', '').replace('http://', '')"
-                                />
+                                <span t-if="company.vat">
+                                    <strong t-out="'CIF/VAT/TVA: ' + company.vat" />
+                                </span>
                             </li>
                             <li t-if="company.street or company.street2">
                                 <span
@@ -113,6 +112,12 @@
                                     <span t-if="p.email" t-field="p.email" />
                                 </li>
                             </t>
+                            <li>
+                                <a
+                                    t-att-href="company.website"
+                                    t-out="company.website.replace('https://', '').replace('http://', '')"
+                                />
+                            </li>
                         </ul>
                     </div>
                     <div class="nl-footer-misc">
@@ -980,15 +985,15 @@
             </div>
 
             <!-- PAGE 2 -->
-            <div class="page">
-                <div class="nl-external-wrap">
-                    <div class="nl-layout-accessories">
-                        <t t-set="racc">REQUIRED ACCESSORIES</t>
-                        <t t-set="oacc">RECOMMENDED ACCESSORIES</t>
-                        <t
-                            t-foreach="[(racc, doc.required_ids.filter_by_catalogued()), (oacc, doc.optional_ids.filter_by_catalogued())]"
-                            t-as="accessory_data"
-                        >
+            <t t-set="racc">REQUIRED ACCESSORIES</t>
+            <t t-set="oacc">RECOMMENDED ACCESSORIES</t>
+            <t
+                t-foreach="[(racc, doc.required_ids.filter_by_catalogued()), (oacc, doc.optional_ids.filter_by_catalogued())]"
+                t-as="accessory_data"
+            >
+                <div class="page">
+                    <div class="nl-external-wrap">
+                        <div class="nl-layout-accessories">
                             <t t-if="accessory_data[1]">
                                 <div
                                     t-out="accessory_data[0]"
@@ -1157,10 +1162,10 @@
                                     </div>
                                 </t>
                             </t>
-                        </t>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </t>
 
             <!-- PAGE 2 -->
             <div class="page">

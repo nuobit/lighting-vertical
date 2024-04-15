@@ -1,55 +1,32 @@
 @font-face {
-    font-family: "Raleway Light";
-    src: local("Raleway Light"), local("Raleway-Black"),
-        url("/lighting_reporting/static/src/fonts/Raleway-Light.ttf") format("truetype");
+    font-family: "Helvetica Neue Light";
+    src: local("Helvetica Neue Light"), local("HelveticaNeue-Light"),
+        url("/lighting_reporting/static/src/fonts/HelveticaNeue-Light.ttf")
+            format("truetype");
     //font-weight: 300;
 }
 
 @font-face {
-    font-family: "Raleway";
-    src: local("Raleway"), local("Raleway"),
-        url("/lighting_reporting/static/src/fonts/Raleway-Regular.ttf")
+    font-family: "Helvetica Neue Bold";
+    src: local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"),
+        url("/lighting_reporting/static/src/fonts/HelveticaNeue-Bold.ttf")
             format("truetype");
-    //font-weight: 400;
+    //font-weight: 700;
 }
 
 @font-face {
-    font-family: "Raleway Medium";
-    src: local("Raleway Medium"), local("Raleway-Medium"),
-        url("/lighting_reporting/static/src/fonts/Raleway-Medium.ttf")
+    font-family: "Helvetica Neue Medium";
+    src: local("Helvetica Neue Medium"), local("HelveticaNeue-Medium"),
+        url("/lighting_reporting/static/src/fonts/HelveticaNeue-Medium.ttf")
             format("truetype");
     //font-weight: 500;
 }
 
 @font-face {
-    font-family: "Raleway SemiBold";
-    src: local("Raleway SemiBold"), local("Raleway-SemiBold"),
-        url("/lighting_reporting/static/src/fonts/Raleway-SemiBold.ttf")
-            format("truetype");
-    //font-weight: 600;
-}
-
-@font-face {
-    font-family: "Raleway Black";
-    src: local("Raleway Black"), local("Raleway-Black"),
-        url("/lighting_reporting/static/src/fonts/Raleway-Black.ttf") format("truetype");
-    //font-weight: 900;
-}
-
-@font-face {
-    font-family: "Helvetica Light";
-    src: local("Helvetica Light"), local("Helvetica-Light"),
-        url("/lighting_reporting/static/src/fonts/Helvetica-Light.ttf")
-            format("truetype");
-    //font-weight: 300;
-}
-
-@font-face {
-    font-family: "Helvetica";
-    src: local("Helvetica"), local("Helvetica"),
-        url("/lighting_reporting/static/src/fonts/Helvetica-Regular.ttf")
-            format("truetype");
-    //font-weight: 900;
+    font-family: "Helvetica Neue";
+    src: local("Helvetica Neue"), local("HelveticaNeue"),
+        url("/lighting_reporting/static/src/fonts/HelveticaNeue.ttf") format("truetype");
+    //font-weight: 400;
 }
 
 // general
@@ -115,7 +92,7 @@ div.footer {
 
 // section title
 .nl-section-title {
-    font-family: "Raleway";
+    font-family: "Helvetica Neue";
     font-size: 11px; // 7pt
     font-weight: 700; // bold
     margin-bottom: 10px;
@@ -144,13 +121,13 @@ div.footer {
 }
 
 .nl-table-data td:nth-child(1) {
-    font-family: "Raleway Medium";
-    font-weight: 500; // medium
+    font-family: "Helvetica Neue Medium";
+    font-weight: 300; // medium
 }
 
 .nl-table-data td:nth-child(2) {
-    font-family: "Raleway Light";
-    font-weight: 300; // light
+    font-family: "Helvetica Neue Light";
+    font-weight: 200; // light
 }
 
 ////////// HEADER ///////////////
@@ -182,7 +159,7 @@ div.footer {
     position: absolute;
     top: 13px;
     right: 0;
-    font-family: "Raleway";
+    font-family: "Helvetica Neue";
     font-size: 14px; // 8pt
 }
 
@@ -190,37 +167,36 @@ div.footer {
 .nl-reference-header {
     //border: 1px solid orange;
     width: 100%;
-    display: table;
     margin-top: 27px;
+    margin-bottom: 10px;
 }
 
 .nl-reference-header > div {
     //border: 1px solid red;
-    display: table-cell;
+    display: inline-block;
+    vertical-align: baseline;
 }
 
 .nl-reference-header .nl-family {
-    font-family: "Raleway Black";
-    font-weight: 900;
-    font-size: 35px; // 20pt
-    width: 1%;
+    font-family: "Helvetica Neue Light";
+    font-weight: 200;
+    font-size: 36px; // 20pt
+    width: auto;
     white-space: nowrap;
 }
 
 .nl-reference-header .nl-reference {
-    font-family: "Helvetica Light";
-    font-weight: 300;
+    font-family: "Helvetica Neue Light";
+    font-weight: 200;
     font-size: 19px; // 11pt
-    width: 1%;
     white-space: nowrap;
     padding-left: 22px;
 }
 
-.nl-reference-header .nl-description {
-    font-family: "Helvetica";
-    font-weight: 400;
-    font-size: 14px; // 8pt
-    text-align: right;
+.nl-description {
+    font-family: "Helvetica Neue";
+    font-weight: 200;
+    font-size: 19px; // 11pt
 }
 
 ////////// BODY MAIN PAGE ///////////////
@@ -240,21 +216,6 @@ div.footer {
     margin-left: 66px;
     width: 465px;
     float: left;
-}
-
-// family description
-.nl-family-description {
-    margin-bottom: 36px;
-
-    p {
-        font-family: "Raleway";
-        font-size: 10px; // 7pt
-        line-height: 16px; // 10pt
-        text-align: justify;
-        text-justify: inter-word;
-        border: 0;
-        padding: 0;
-    }
 }
 
 // table data
@@ -330,13 +291,13 @@ div.footer {
 }
 
 .nl-layout-accessories .nl-accessory-main-data .nl-accessory-reference {
-    font-family: "Helvetica Light";
-    font-weight: 300;
+    font-family: "Helvetica Neue Medium";
+    font-weight: 200;
     font-size: 18px; // 10pt
 }
 
 .nl-layout-accessories .nl-accessory-main-data .nl-accessory-description {
-    font-family: "Raleway";
+    font-family: "Helvetica Neue Light";
     font-size: 12px; // 7pt
     line-height: 16px; // 10pt
 }
@@ -393,6 +354,7 @@ div.footer {
 }
 
 .nl-groups-same-family-table > thead th {
+    text-align: left;
     border-bottom: 1px solid #918f8f;
 }
 
@@ -406,9 +368,10 @@ div.footer {
     .nl-group-name {
         margin-top: 9px;
         //margin-bottom: 0px;
-        font-family: "Helvetica Light";
-        font-weight: 300;
-        font-size: 18px; // 10pt
+        font-family: "Helvetica Neue Light";
+        font-weight: 200;
+        font-size: 14px; // 8pt
+        line-height: 16px; // 10pt
     }
 }
 
@@ -428,23 +391,28 @@ div.footer {
 }
 
 .nl-footer-company-logo {
-    width: 29%;
+    width: 20%;
 }
 
 .nl-footer-company-logo img {
+    padding-top: 21px;
     width: 100%;
 }
 
 .nl-footer-company-address {
-    width: 45%;
-    padding-left: 22px;
-    font-family: "Raleway";
+    width: 50%;
+    padding-left: 50px;
+    font-family: "Helvetica Neue";
+    font-weight: 200;
+    line-height: 11px; // 7pt
 }
 
 .nl-footer-misc {
-    width: 26%;
-    font-family: "Raleway";
-    padding-left: 22px;
+    width: 30%;
+    font-family: "Helvetica Neue";
+    padding-left: 50px;
+    font-weight: 200;
+    line-height: 11px; // 7pt
 }
 
 .nl-footer-misc li:nth-child(n + 2) {
