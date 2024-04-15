@@ -710,6 +710,7 @@ class LightingExportTemplate(models.Model):
                 product = products[0].with_context(template_id=self)
                 group_desc_d = {}
                 for lang in self.lang_ids:
+                    self._invalidate_cache_composite_field(product, "group_description")
                     lang_group_description = product.with_context(
                         lang=lang.code
                     ).group_description
