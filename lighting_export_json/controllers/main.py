@@ -13,7 +13,7 @@ _logger = logging.getLogger(__name__)
 class LightingExportJsonController(http.Controller):
     @http.route(
         [
-            "/lighting/export/<string:code>/<string:object>/<string:lang>",
+            "/lighting/export/<string:code>/<string:obj>/<string:lang>",
         ],
         type="http",
         auth="public",
@@ -88,12 +88,12 @@ class LightingExportJsonController(http.Controller):
                 return werkzeug.exceptions.Forbidden("Invalid credentials")
 
         # read the resource
-        filename = tmpl.get_full_filepath(object, lang_id.code)
+        filename = tmpl.get_full_filepath(obj, lang_id.code)
         try:
             with open(filename, "r") as f:
                 file_content = f.read()
         except FileNotFoundError:
-            return werkzeug.exceptions.NotFound("Resource %s not found" % (object,))
+            return werkzeug.exceptions.NotFound("Resource %s not found" % (obj,))
 
         return http.request.make_response(
             file_content,
