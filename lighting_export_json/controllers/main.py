@@ -93,7 +93,9 @@ class LightingExportJsonController(http.Controller):
             with open(filename, "r") as f:
                 file_content = f.read()
         except FileNotFoundError:
-            return werkzeug.exceptions.NotFound("Resource %s not found" % (obj,))
+            return werkzeug.exceptions.NotFound(
+                "The source file for %s has not been generated" % (obj,)
+            )
 
         return http.request.make_response(
             file_content,
