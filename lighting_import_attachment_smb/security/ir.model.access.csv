@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_lighting_import_backend_manager,lighting.import.backend manager,model_lighting_import_backend,lighting_import_attachment.import_group_manager,1,1,1,1
+access_lighting_import_backend_user,lighting.import.backend user,model_lighting_import_backend,lighting_import_attachment.import_group_user,1,0,0,0

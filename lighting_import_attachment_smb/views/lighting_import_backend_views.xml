@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="lighting_import_product_backend_view_form" model="ir.ui.view">
+        <field name="name">import.product.backend.form</field>
+        <field name="model">lighting.import.backend</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="state" invisible="1" />
+                <header>
+                    <button
+                        string="Reset To draft Connection"
+                        name="button_reset_to_draft"
+                        type="object"
+                        states="validated"
+                        attrs="{'invisible': [('state', '=', 'draft')]}"
+                    />
+                    <button
+                        string="Check Connection"
+                        name="button_check_connection"
+                        type="object"
+                        class="oe_highlight"
+                        states="draft"
+                    />
+                    <field name="state" widget="statusbar" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Name" />
+                        </h1>
+                    </div>
+                    <group string="Connection Parameters">
+                        <group>
+                            <field
+                                name="host"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                            <field
+                                name="port"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                            <field
+                                name="netbios_remote_server"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                            <field
+                                name="domain"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                            <field
+                                name="shared_resource"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                        </group>
+                        <group>
+                            <field
+                                name="user"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                            <field
+                                name="password"
+                                password="1"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                            <field
+                                name="folder"
+                                attrs="{'readonly': [('state', '=', 'validated')]}"
+                            />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="lighting_import_product_backend_view_tree" model="ir.ui.view">
+        <field name="name">import.product.backend.tree</field>
+        <field name="model">lighting.import.backend</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="shared_resource" />
+                <field name="folder" />
+                <field name="host" />
+                <field name="port" />
+                <field name="netbios_remote_server" />
+                <field name="domain" />
+                <field
+                    name="state"
+                    widget="badge"
+                    decoration-info="state == 'draft'"
+                    decoration-success="state == 'validated'"
+                />
+            </tree>
+        </field>
+    </record>
+    <record id="lighting_import_product_backend_action" model="ir.actions.act_window">
+        <field name="name">Import Product backend</field>
+        <field name="res_model">lighting.import.backend</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

@@ -1,0 +1,189 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_import_attachment_smb
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-04-30 13:44+0000\n"
+"PO-Revision-Date: 2024-04-30 13:44+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.ui.menu,name:lighting_import_attachment_smb.import_backend_configuration_menu
+msgid "Backend Configuration"
+msgstr "Configuración del Backend"
+
+#. module: lighting_import_attachment_smb
+#. odoo-python
+#: code:addons/lighting_import_attachment_smb/models/lighting_import_backend.py:0
+#, python-format
+msgid "Cannot connect to Host %(host)s on port %(port)i"
+msgstr "No se puede conectar al Host %(host)s en el puerto %(port)i"
+
+#. module: lighting_import_attachment_smb
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_smb.lighting_import_product_backend_view_form
+msgid "Check Connection"
+msgstr "Comprobar Conexión"
+
+#. module: lighting_import_attachment_smb
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_smb.lighting_import_product_backend_view_form
+msgid "Connection Parameters"
+msgstr "Parámetros de Conexión"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__display_name
+msgid "Display Name"
+msgstr "Nombre a Mostrar"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields.selection,name:lighting_import_attachment_smb.selection__lighting_import_backend__state__draft
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: lighting_import_attachment_smb
+#. odoo-python
+#: code:addons/lighting_import_attachment_smb/models/lighting_import_backend.py:0
+#, python-format
+msgid ""
+"Failed to connect or read from the SMB server. Wrong Connection Parameters:\n"
+"%s"
+msgstr ""
+"No se pudo conectar o leer del servidor SMB. Parámetros de conexión incorrectos:\n"
+"%s"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__folder
+msgid "Folder"
+msgstr "Carpeta"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__host
+msgid "Host"
+msgstr "Host"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,help:lighting_import_attachment_smb.field_lighting_import_backend__host
+msgid "Host address of the SMB server"
+msgstr "Dirección del Host del servidor SMB"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.actions.act_window,name:lighting_import_attachment_smb.lighting_import_product_backend_action
+msgid "Import Product backend"
+msgstr "Importar Backend de Producto"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend____last_update
+msgid "Last Modified on"
+msgstr "Última Modificación en"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__write_uid
+msgid "Last Updated by"
+msgstr "Última Actualización por"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__write_date
+msgid "Last Updated on"
+msgstr "Última Actualización en"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model,name:lighting_import_attachment_smb.model_lighting_import_attachment
+msgid "Lighting Import Attachment"
+msgstr "Importación de Adjuntos de Lighting"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model,name:lighting_import_attachment_smb.model_lighting_import_backend
+msgid "Lighting Import Backend"
+msgstr "Backend de Importación de Lighting"
+
+#. module: lighting_import_attachment_smb
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_smb.lighting_import_attachment_view_form
+msgid "Load Files From Source"
+msgstr "Cargar Archivos desde Origen"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__name
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_smb.lighting_import_product_backend_view_form
+msgid "Name"
+msgstr "Nombre"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__password
+msgid "Password"
+msgstr "Contraseña"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__port
+msgid "Port"
+msgstr "Puerto"
+
+#. module: lighting_import_attachment_smb
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_smb.lighting_import_product_backend_view_form
+msgid "Reset To draft Connection"
+msgstr "Restablecer Conexión a Borrador"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.ui.menu,name:lighting_import_attachment_smb.import_product_attachment_smb
+msgid "SMB"
+msgstr "SMB"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__shared_resource
+msgid "Shared Resource"
+msgstr "Recurso Compartido"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_attachment__source
+msgid "Source"
+msgstr "Origen"
+
+#. module: lighting_import_attachment_smb
+#. odoo-python
+#: code:addons/lighting_import_attachment_smb/models/lighting_import_attachment.py:0
+#, python-format
+msgid "Source connection is not validated."
+msgstr "Conexión de origen no validada."
+
+#. module: lighting_import_attachment_smb
+#. odoo-python
+#: code:addons/lighting_import_attachment_smb/models/lighting_import_attachment.py:0
+#, python-format
+msgid "Source is not defined."
+msgstr "Origen no definido."
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__state
+msgid "State"
+msgstr "Estado"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,field_description:lighting_import_attachment_smb.field_lighting_import_backend__user
+msgid "User"
+msgstr "Usuario"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields,help:lighting_import_attachment_smb.field_lighting_import_backend__user
+msgid "User to connect to the SMB server"
+msgstr "Usuario para conectarse al servidor SMB"
+
+#. module: lighting_import_attachment_smb
+#: model:ir.model.fields.selection,name:lighting_import_attachment_smb.selection__lighting_import_backend__state__validated
+msgid "Validated"
+msgstr "Validado"
