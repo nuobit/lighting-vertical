@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <menuitem
+        id="import_backend_configuration_menu"
+        name="Backend Configuration"
+        sequence="100"
+        parent="lighting_import_attachment.lighting_import_menu"
+    >
+        <menuitem
+            id="import_product_attachment_smb"
+            name="SMB"
+            action="lighting_import_product_backend_action"
+            sequence="100"
+        />
+    </menuitem>
+</odoo>
