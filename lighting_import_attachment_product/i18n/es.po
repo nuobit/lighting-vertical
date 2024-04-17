@@ -1,0 +1,221 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_import_attachment_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-05-22 12:27+0000\n"
+"PO-Revision-Date: 2024-05-22 12:27+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment.py:0
+#, python-format
+msgid "All attachments must be checked before importing"
+msgstr "Todos los archivos adjuntos deben ser verificados antes de importar"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__attachment_type_id
+msgid "Attachment Type"
+msgstr "Tipo de archivo adjunto"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product.selection__lighting_import_attachment_file__message_info__attachment_struct_error
+msgid "Attachment structure error"
+msgstr "Error de estructura de archivo adjunto"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file_product.py:0
+#, python-format
+msgid "Duplicate checksum %s"
+msgstr "Checksum duplicado %s"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__family_ids
+msgid "Family"
+msgstr "Familia"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid ""
+"Family name on file %(filename)s does not match any family on product "
+"%(product)s with families: %(families)s"
+msgstr ""
+"El nombre de la familia en el archivo %(filename)s no coincide con ninguna "
+"familia en el producto %(product)s con familias: %(families)s"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product.selection__lighting_import_attachment_file__message_info__family_not_found
+msgid "Family not found"
+msgstr "Familia no encontrada"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__file_id
+msgid "File"
+msgstr "Archivo"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__file_product_ids
+msgid "File Product"
+msgstr "Archivo de producto"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__file_datas_fname
+msgid "Filename"
+msgstr "Nombre de archivo"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model,name:lighting_import_attachment_product.model_lighting_import_attachment
+msgid "Lighting Import Attachment"
+msgstr "Importación de adjuntos de iluminación"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model,name:lighting_import_attachment_product.model_lighting_import_attachment_file
+msgid "Lighting Import Attachment File"
+msgstr "Archivo de importación de adjuntos de iluminación"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model,name:lighting_import_attachment_product.model_lighting_import_attachment_file_product
+msgid "Lighting Import Attachment File Product"
+msgstr "Archivo adjunto de importación de iluminación de producto"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__message_info
+msgid "Message Info"
+msgstr "Información del mensaje"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid "More than one family match in product %s"
+msgstr "Más de una familia coincide en el producto %s"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment.py:0
+#, python-format
+msgid "No attachments to check"
+msgstr "No hay archivos adjuntos para verificar"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product.selection__lighting_import_attachment_file__message_info__no_products_found
+msgid "No products found"
+msgstr "No se encontraron productos"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid ""
+"PostgreSQL 'unaccent' extension is not installed. It's necessary in order "
+"for the County heuristic to work."
+msgstr ""
+"La extensión 'unaccent' de PostgreSQL no está instalada. Es necesaria para "
+"que funcione la heurística del condado."
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__product_id
+msgid "Product"
+msgstr "Producto"
+
+#. module: lighting_import_attachment_product
+#: model:ir.ui.menu,name:lighting_import_attachment_product.lighting_import_product_attachment_menu
+msgid "Product Attachments"
+msgstr "Archivos adjuntos de producto"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_product.lighting_import_attachment_file_view_tree
+#, python-format
+msgid "Product Details"
+msgstr "Detalles del producto"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file_product.py:0
+#, python-format
+msgid "Product already exists"
+msgstr "El producto ya existe"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid "Product reference %(ref)s does not match the pattern %(pattern)s"
+msgstr ""
+"La referencia del producto %(ref)s no coincide con el patrón %(pattern)s"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file_product.py:0
+#, python-format
+msgid ""
+"The file %(file)s has more than one attachment with the same name in the "
+"product with reference: %(ref)s"
+msgstr ""
+"El archivo %(file)s tiene más de un adjunto con el mismo nombre en "
+"el producto con referencia: %(ref)s"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file_product.py:0
+#, python-format
+msgid "Unexpected: Attachment location is not file"
+msgstr "Inesperado: la ubicación del archivo adjunto no es un archivo"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file_product.py:0
+#, python-format
+msgid "Unexpected: Attachment type is not %s"
+msgstr "Inesperado: el tipo de archivo adjunto no es %s"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid "You cannot delete imported records."
+msgstr "No puedes eliminar registros importados."

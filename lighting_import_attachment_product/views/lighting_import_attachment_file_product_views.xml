@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="lighting_import_attachment_file_product_view_tree" model="ir.ui.view">
+        <field name="name">import.product.attachment.file.product.tree</field>
+        <field name="model">lighting.import.attachment.file.product</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="product_id" />
+                <field name="file_datas_fname" readonly="1" />
+            </tree>
+        </field>
+    </record>
+</odoo>
