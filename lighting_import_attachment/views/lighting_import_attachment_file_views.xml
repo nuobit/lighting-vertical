@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="lighting_import_attachment_file_view_form" model="ir.ui.view">
+        <field name="name">lighting.import.attachment.file.form</field>
+        <field name="model">lighting.import.attachment.file</field>
+        <field name="arch" type="xml">
+            <form string="Import Attachment File">
+                <sheet>
+                    <group>
+                        <field name="datas_fname" readonly="1" />
+                        <field name="datas" invisible="1" />
+                        <field name="message_info" readonly="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="lighting_import_attachment_file_view_tree" model="ir.ui.view">
+        <field name="name">lighting.import.attachment.file.tree</field>
+        <field name="model">lighting.import.attachment.file</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="datas_fname" />
+                <field name="datas" filename="datas_fname" />
+                <field name="message_info" readonly="1" />
+            </tree>
+        </field>
+    </record>
+</odoo>
