@@ -99,15 +99,38 @@ class LightingProductAddAttachment(models.TransientModel):
                     % rec.datas_location
                 )
 
-    # TODO: This function is too complex
+    def _prepare_values(self):
+        values = {
+            "type_id": self.type_id.id,
+            "datas_location": self.datas_location,
+        }
+        if self.name:
+            values["name"] = self.name
+        if self.lang_id:
+            values["lang_id"] = self.lang_id.id
+
+        if self.datas_location == "file":
+            values.update(
+                {
+                    "datas": self.datas,
+                    "datas_fname": self.datas_fname,
+                }
+            )
+        elif self.datas_location == "url":
+            values.update(
+                {
+                    "datas_url": self.datas_url,
+                }
+            )
+        return values
+
     def add_attachment(self):
         # get products
         context = dict(self._context or {})
         active_ids = context.get("active_ids", []) or []
         products = self.env["lighting.product"].browse(active_ids)
 
-        # construct the values
-        values = self._create_values()
+        values = self._prepare_values()
         if self.datas_location == "file":
             reset_default_domain = [
                 "|",
@@ -170,31 +193,6 @@ class LightingProductAddAttachment(models.TransientModel):
                 product.attachment_ids = [(0, False, values)]
 
         self._manage_errors(errors)
-        return {"type": "ir.actions.do_nothing"}
-
-    def _create_values(self):
-        values = {
-            "type_id": self.type_id.id,
-            "datas_location": self.datas_location,
-        }
-        if self.name:
-            values["name"] = self.name
-        if self.lang_id:
-            values["lang_id"] = self.lang_id.id
-
-        if self.datas_location == "file":
-            values.update(
-                {
-                    "datas": self.datas,
-                    "datas_fname": self.datas_fname,
-                }
-            )
-        elif self.datas_location == "url":
-            values.update(
-                {
-                    "datas_url": self.datas_url,
-                }
-            )
 
     def _manage_errors(self, errors):
         msg = []
