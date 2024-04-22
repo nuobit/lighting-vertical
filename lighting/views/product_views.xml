@@ -499,6 +499,18 @@
                 decoration-danger="state_marketing == 'D'"
                 decoration-muted="state_marketing == 'H'"
             >
+                 <header>
+                    <button
+                        name="%(lighting_product_addattachment_action)d"
+                        string="Add Attachment"
+                        type="action"
+                    />
+                    <button
+                        name="%(product_define_substitute_action)d"
+                        string="Define as Substitutes"
+                        type="action"
+                    />
+                </header>
                 <field name="sequence" widget="handle" />
                 <field name="reference" />
                 <field name="description" />

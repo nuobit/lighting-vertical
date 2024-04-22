@@ -24,12 +24,13 @@
             </form>
         </field>
     </record>
-<!--    TODO: Nobody calls this action-->
      <record id="product_define_substitute_action" model="ir.actions.act_window">
-        <field name="name">Define as substitutes</field>
-        <field name="res_model">lighting.product.define.substitute</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="lighting.product_define_substitute_view" />
-        <field name="target">new</field>
+         <field name="name">Define as Substitutes</field>
+         <field name="res_model">lighting.product.define.substitute</field>
+         <field name="view_mode">form</field>
+         <field name="view_id" ref="lighting.product_define_substitute_view" />
+         <field name="target">new</field>
+         <field name="binding_model_id" ref="lighting.model_lighting_product" />
+         <field name="binding_view_types">tree</field>
     </record>
 </odoo>

@@ -221,7 +221,8 @@ msgid "Activity Type Icon"
 msgstr ""
 
 #. module: lighting
-#: model:ir.actions.act_window,name:lighting.action_add_attachment
+#: model:ir.actions.act_window,name:lighting.lighting_product_addattachment_action
+#: model_terms:ir.ui.view,arch_db:lighting.product_tree_view
 msgid "Add Attachment"
 msgstr "Ajouter une pièce jointe"
 
@@ -1395,7 +1396,8 @@ msgstr "Définir"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_define_substitute_action
-msgid "Define as substitutes"
+#: model_terms:ir.ui.view,arch_db:lighting.product_tree_view
+msgid "Define as Substitutes"
 msgstr "Définir comme substituts"
 
 #. module: lighting

@@ -58,8 +58,9 @@ msgid "=Material code"
 msgstr "= Código material"
 
 #. module: lighting
-#: model:ir.actions.act_window,name:lighting.add_attachment_action
-msgid "Add attachment"
+#: model:ir.actions.act_window,name:lighting.lighting_product_addattachment_action
+#: model_terms:ir.ui.view,arch_db:lighting.product_tree_view
+msgid "Add Attachment"
 msgstr "Juntar anexo"
 
 #. module: lighting
@@ -790,7 +791,8 @@ msgstr "Definir"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.product_define_substitute_action
-msgid "Define as substitutes"
+#: model_terms:ir.ui.view,arch_db:lighting.product_tree_view
+msgid "Define as Substitutes"
 msgstr "Definir como substitutos"
 
 #. module: lighting

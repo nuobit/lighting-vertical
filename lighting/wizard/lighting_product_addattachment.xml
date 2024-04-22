@@ -72,13 +72,14 @@
             </form>
         </field>
     </record>
-<!--    TODO: Nobody calls this action-->
-    <record id="action_add_attachment" model="ir.actions.act_window">
+    <record id="lighting_product_addattachment_action" model="ir.actions.act_window">
         <field name="name">Add Attachment</field>
         <field name="res_model">lighting.product.addattachment</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="lighting.lighting_product_addattachment_view" />
         <field name="target">new</field>
+        <field name="binding_model_id" ref="lighting.model_lighting_product" />
+        <field name="binding_view_types">tree</field>
     </record>
 
 </odoo>
