@@ -338,3 +338,14 @@ class LightingAttachment(models.Model):
                 rec.image_small = base64.b64encode(open(img_path, "rb").read())
 
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        return super(
+            LightingAttachment, self.with_context(image_no_postprocess=True)
+        ).create(vals_list)
+
+    def write(self, vals):
+        return super(
+            LightingAttachment, self.with_context(image_no_postprocess=True)
+        ).write(vals)
