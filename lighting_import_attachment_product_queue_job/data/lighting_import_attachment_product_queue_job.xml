@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="import_attachment_file" model="queue.job.channel">
+        <field name="name">import_attachment_file</field>
+        <field name="parent_id" ref="queue_job.channel_root" />
+    </record>
+    <record
+        id="job_function_execute_delayed_import_attachments"
+        model="queue.job.function"
+    >
+        <field
+            name="model_id"
+            ref="lighting_import_attachment_product_queue_job.model_lighting_import_attachment_file"
+        />
+        <field name="method">execute_delayed_import_attachments</field>
+        <field name="channel_id" ref="import_attachment_file" />
+    </record>
+</odoo>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="lighting_import_attachment_file_queue_job_view_form" model="ir.ui.view">
+        <field name="name">import.product.attachment.file.queue.form</field>
+        <field name="model">lighting.import.attachment.file</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field
+                            name="file_jobs_ids"
+                            nolabel="1"
+                            colspan="2"
+                            readonly="1"
+                            context="{'tree_view_ref': 'lighting_import_attachment_product_queue_job.queue_job_view_form'}"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="lighting_import_attachment_file_view_tree" model="ir.ui.view">
+        <field name="name">import.product.attachment.file.tree</field>
+        <field name="model">lighting.import.attachment.file</field>
+        <field
+            name="inherit_id"
+            ref="lighting_import_attachment.lighting_import_attachment_file_view_tree"
+        />
+        <field name="arch" type="xml">
+            <tree position="inside">
+                <button
+                    name="action_show_queue_job_details"
+                    type="object"
+                    icon="fa-spinner fa-lg"
+                    title="Queue Job Details"
+                    attrs="{'invisible': [('file_jobs_ids', '=', [])]}"
+                />
+                <field name="job_state" />
+                <field name="file_jobs_ids" invisible="1" />
+            </tree>
+            <tree position="attributes">
+                <attribute name="decoration-danger">job_state == 'error'</attribute>
+                <attribute name="decoration-success">job_state == 'done'</attribute>
+                <attribute name="decoration-muted">job_state == 'cancel'</attribute>
+            </tree>
+        </field>
+    </record>
+</odoo>

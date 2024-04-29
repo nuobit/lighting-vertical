@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="lighting_import_attachment_view_form" model="ir.ui.view">
+        <field name="name">lighting.import.attachment.form</field>
+        <field name="model">lighting.import.attachment</field>
+        <field
+            name="inherit_id"
+            ref="lighting_import_attachment.lighting_import_attachment_view_form"
+        />
+        <field name="arch" type="xml">
+            <field name="date" position="before">
+                <field
+                    name="queue_job_import"
+                    widget="boolean_toggle"
+                    attrs="{'readonly': [('state', 'not in', ('draft', 'checked'))]}"
+                />
+            </field>
+            <field name="hide_done" position="attributes">
+                <attribute name="states">draft,pending</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

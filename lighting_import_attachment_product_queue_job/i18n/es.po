@@ -1,0 +1,108 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_import_attachment_product_queue_job
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-10 12:15+0000\n"
+"PO-Revision-Date: 2024-06-10 12:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product_queue_job.selection__lighting_import_attachment_file__job_state__cancel
+msgid "Cancelled"
+msgstr "Cancelado"
+
+#. module: lighting_import_attachment_product_queue_job
+#. odoo-python
+#: code:addons/lighting_import_attachment_product_queue_job/models/lighting_import_attachment.py:0
+#, python-format
+msgid "Checked"
+msgstr "Verificado"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product_queue_job.selection__lighting_import_attachment_file__job_state__done
+msgid "Done"
+msgstr "Hecho"
+
+#. module: lighting_import_attachment_product_queue_job
+#. odoo-python
+#: code:addons/lighting_import_attachment_product_queue_job/models/lighting_import_attachment.py:0
+#, python-format
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product_queue_job.selection__lighting_import_attachment_file__job_state__error
+msgid "Error"
+msgstr "Error"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields,field_description:lighting_import_attachment_product_queue_job.field_lighting_import_attachment__error_file_ids
+msgid "Error File"
+msgstr "Archivo de error"
+
+#. module: lighting_import_attachment_product_queue_job
+#. odoo-python
+#: code:addons/lighting_import_attachment_product_queue_job/models/lighting_import_attachment.py:0
+#, python-format
+msgid "Imported"
+msgstr "Importado"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields,field_description:lighting_import_attachment_product_queue_job.field_lighting_import_attachment_file__job_state
+msgid "Job State"
+msgstr "Estado del trabajo"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model,name:lighting_import_attachment_product_queue_job.model_lighting_import_attachment
+msgid "Lighting Import Attachment"
+msgstr "Importación de adjuntos de iluminación"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model,name:lighting_import_attachment_product_queue_job.model_lighting_import_attachment_file
+msgid "Lighting Import Attachment File"
+msgstr "Archivo de importación de adjuntos de iluminación"
+
+#. module: lighting_import_attachment_product_queue_job
+#. odoo-python
+#: code:addons/lighting_import_attachment_product_queue_job/models/lighting_import_attachment.py:0
+#: model:ir.model.fields.selection,name:lighting_import_attachment_product_queue_job.selection__lighting_import_attachment_file__job_state__pending
+#, python-format
+msgid "Pending"
+msgstr "Pendiente"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model,name:lighting_import_attachment_product_queue_job.model_queue_job
+msgid "Queue Job"
+msgstr "Trabajo en cola"
+
+#. module: lighting_import_attachment_product_queue_job
+#. odoo-python
+#: code:addons/lighting_import_attachment_product_queue_job/models/lighting_import_attachment_file.py:0
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_product_queue_job.lighting_import_attachment_file_view_tree
+#, python-format
+msgid "Queue Job Details"
+msgstr "Detalles del trabajo en cola"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields,field_description:lighting_import_attachment_product_queue_job.field_lighting_import_attachment__queue_job_import
+msgid "Queue Job Import"
+msgstr "Importación de Trabajo en Cola"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model:ir.model.fields,field_description:lighting_import_attachment_product_queue_job.field_lighting_import_attachment_file__file_jobs_ids
+msgid "Queue Jobs"
+msgstr "Trabajos en cola"
+
+#. module: lighting_import_attachment_product_queue_job
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_product_queue_job.queue_job_view_form
+msgid "Requeue"
+msgstr "Reencolar"
