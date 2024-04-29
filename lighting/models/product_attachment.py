@@ -141,6 +141,7 @@ class LightingAttachment(models.Model):
         for rec in self:
             rec.image_known = is_known_image(rec.get_datas())
 
+    # TODO: Review non-stored field cannot be searched
     attachment_id = fields.Many2one(
         comodel_name="ir.attachment",
         compute="_compute_ir_attachment",
