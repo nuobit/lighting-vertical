@@ -151,21 +151,7 @@ class LightingAttachment(models.Model):
     @api.depends("datas")
     def _compute_ir_attachment(self):
         for rec in self:
-            attachment_obj = (
-                rec.env["ir.attachment"]
-                .search(
-                    [
-                        ("res_field", "=", "datas"),
-                        ("res_id", "=", rec.id),
-                        ("res_model", "=", rec._name),
-                    ]
-                )
-                .sorted("id", reverse=True)
-            )
-            if attachment_obj:
-                rec.attachment_id = attachment_obj[0]
-            else:
-                rec.attachment_id = False
+            rec.attachment_id = rec.env["ir.attachment"].get_attachment(rec, "datas")
 
     checksum = fields.Char(
         related="attachment_id.checksum",

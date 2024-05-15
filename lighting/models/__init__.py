@@ -52,3 +52,4 @@ from . import assembler
 from . import language
 from . import supplier
 from . import supplier_product
+from . import ir_attachment
