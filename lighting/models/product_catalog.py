@@ -12,7 +12,7 @@ from odoo.exceptions import UserError
 class LightingCatalog(models.Model):
     _name = "lighting.catalog"
     _description = "Product Catalog"
-    _inherit = "image.mixin"
+    _inherit = ["image.mixin", "mail.thread", "mail.activity.mixin"]
     _order = "name"
 
     name = fields.Char(
