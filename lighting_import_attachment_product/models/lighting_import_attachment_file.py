@@ -97,12 +97,12 @@ class LightingImportAttachmentFile(models.Model):
         if not exact_match:
             ref_search += "%"
             ref_root_search += ".*$"
-        return (
-            check,
-            ref_search,
-            ref_root_search,
-            parse_error,
-        )
+        return {
+            "check": check,
+            "ref": ref_search,
+            "ref_root": ref_root_search,
+            "parse_error": parse_error,
+        }
 
     def check_filepath_structure(self, datas_fname):
         self.ensure_one()
@@ -147,7 +147,6 @@ class LightingImportAttachmentFile(models.Model):
             message_info = None
 
             # get families
-            family = None
             family = self.env["lighting.product.family"].search(
                 [
                     ("name", "=ilike", values["fam_name"].replace("x", "_")),
@@ -170,21 +169,16 @@ class LightingImportAttachmentFile(models.Model):
                     if m:
                         family |= family_d
             if family:
-                check = None
-                ref_root = None
+                values["check"] = None
+                values["ref_root"] = None
                 rec.family_ids = family
                 if values["ref_struct"]:
                     # find the parts of the reference
-                    (
-                        check,
-                        ref,
-                        ref_root,
-                        parse_error,
-                    ) = rec.parse_reference_structure(values["ref_struct"])
-                    if parse_error:
-                        rec.message_info = parse_error
+                    values.update(rec.parse_reference_structure(values["ref_struct"]))
+                    if values["parse_error"]:
+                        rec.message_info = values["parse_error"]
                         continue
-                    domain = [("reference", "=ilike", ref)]
+                    domain = [("reference", "=ilike", values["ref"])]
                 else:
                     domain = [("family_ids", "in", family.ids)]
 
@@ -194,21 +188,12 @@ class LightingImportAttachmentFile(models.Model):
                 new_products = products - rec.file_product_ids.product_id
                 data_products = []
                 for product in new_products:
-                    attach_filename = rec.prepare_attachment_data(
-                        product,
-                        family,
-                        values["attach_type_name"],
-                        values["ref_struct"],
-                        values["info"],
-                        values["ext"],
-                        check,
-                        ref_root,
-                    )
+                    attach_fname = rec.prepare_attachment_data(product, family, values)
                     data_products.append(
                         {
                             "file_id": rec.id,
                             "product_id": product.id,
-                            "file_datas_fname": attach_filename,
+                            "file_datas_fname": attach_fname,
                         }
                     )
                 if data_products:
@@ -218,17 +203,7 @@ class LightingImportAttachmentFile(models.Model):
             rec.message_info = "checked" if not message_info else message_info
 
     # TODO: Review add errors to the message_info instead of raising them
-    def prepare_attachment_data(
-        self,
-        product,
-        family,
-        attach_type_name,
-        ref_struct,
-        info,
-        ext,
-        check,
-        ref_root_search,
-    ):
+    def prepare_attachment_data(self, product, family, values):
         # search if the families are coherent
         family_id = set(product.family_ids) & set(family)
         if len(family_id) > 1:
@@ -252,9 +227,9 @@ class LightingImportAttachmentFile(models.Model):
         odoo_fam_name_slug = self.slug(family.name)
 
         # build attachment name
-        attach_filename_l = [attach_type_name, odoo_fam_name_slug]
-        if ref_struct:
-            m = re.match(ref_root_search, product.reference)
+        attach_filename_l = [values["attach_type_name"], odoo_fam_name_slug]
+        if values["ref_struct"]:
+            m = re.match(values["ref_root"], product.reference)
             if not m:
                 raise ValidationError(
                     _(
@@ -263,14 +238,14 @@ class LightingImportAttachmentFile(models.Model):
                     )
                     % {
                         "ref": product.reference,
-                        "pattern": ref_root_search,
+                        "pattern": values["ref_root"],
                     }
                 )
-            reference_root = check % m.groupdict()
+            reference_root = values["check"] % m.groupdict()
             attach_filename_l.append(reference_root)
-        if info is not None:
-            attach_filename_l.append(info)
-        attach_filename = "_".join(attach_filename_l) + "." + ext
+        if values["info"] is not None:
+            attach_filename_l.append(values["info"])
+        attach_filename = "_".join(attach_filename_l) + "." + values["ext"]
         return attach_filename
 
     def import_attachments(self):
