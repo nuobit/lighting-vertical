@@ -36,6 +36,7 @@ class LightingAttachmentType(models.Model):
     is_image = fields.Boolean(
         default=False,
     )
+    allow_multiple_files = fields.Boolean()
     product_count = fields.Integer(
         compute="_compute_product_count",
         string="Product(s)",

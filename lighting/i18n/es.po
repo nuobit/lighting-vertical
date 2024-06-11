@@ -250,6 +250,11 @@ msgid "Alternate name"
 msgstr "Nombre alternativo"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type__allow_multiple_files
+msgid "Allow Multiple Files"
+msgstr "Permitir Múltiples Archivos"
+
+#. module: lighting
 #: model:ir.model.fields.selection,name:lighting.selection__lighting_product_voltage__current_type__ac
 msgid "Alternating"
 msgstr "Alterna"
