@@ -14,6 +14,11 @@
                 <field name="family_ids" widget="many2many_tags" readonly="1" />
                 <field name="attachment_type_id" />
                 <field
+                    name="allow_multiple_files"
+                    widget="boolean_toggle"
+                    readonly="1"
+                />
+                <field
                     name="file_product_ids"
                     nolabel="1"
                     colspan="2"
@@ -32,12 +37,28 @@
         />
         <field name="arch" type="xml">
             <tree position="inside">
+                <field name="allow_multiple_files" invisible="1" />
+                <field name="is_import_file_policy_variable" invisible="1" />
                 <button
                     name="action_show_details"
                     type="object"
                     icon="fa-list fa-lg"
                     title="Product Details"
                     attrs="{'invisible': [('message_info', 'not in', ('checked', 'imported'))]}"
+                />
+                <button
+                    name="action_allow_multiple_files"
+                    type="object"
+                    icon="fa-copy text-warning fa-lg"
+                    title="Allow Multiple Files"
+                    attrs="{'invisible': ['|', ('is_import_file_policy_variable', '=', False), ('allow_multiple_files', '=', False)]}"
+                />
+                <button
+                    name="action_allow_multiple_files"
+                    type="object"
+                    icon="fa-file-o fa-lg"
+                    title="Unique File"
+                    attrs="{'invisible': ['|', ('is_import_file_policy_variable', '=', False), ('allow_multiple_files', '=', True)]}"
                 />
             </tree>
         </field>

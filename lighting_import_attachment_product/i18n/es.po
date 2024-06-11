@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-05-22 12:27+0000\n"
-"PO-Revision-Date: 2024-05-22 12:27+0000\n"
+"POT-Creation-Date: 2024-06-11 14:36+0000\n"
+"PO-Revision-Date: 2024-06-11 14:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,6 +21,12 @@ msgstr ""
 #, python-format
 msgid "All attachments must be checked before importing"
 msgstr "Todos los archivos adjuntos deben ser verificados antes de importar"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__allow_multiple_files
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_product.lighting_import_attachment_file_view_tree
+msgid "Allow Multiple Files"
+msgstr "Permitir Múltiples Archivos"
 
 #. module: lighting_import_attachment_product
 #: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__attachment_type_id
@@ -89,6 +95,24 @@ msgstr "Archivo de producto"
 #: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product__file_datas_fname
 msgid "Filename"
 msgstr "Nombre de archivo"
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,help:lighting_import_attachment_product.field_lighting_attachment_type__is_import_file_policy_variable
+msgid ""
+"If checked, during the import attachment process, you can choose whether to "
+"add a new imported file or overwrite the existing one. This allows "
+"flexibility in handling multiple file imports."
+msgstr ""
+"Si está marcado, durante el proceso de importación de adjuntos, puede elegir"
+" si desea agregar un nuevo archivo importado o sobrescribir el existente. "
+"Esto permite flexibilidad en el manejo de múltiples importaciones de "
+"archivos."
+
+#. module: lighting_import_attachment_product
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_attachment_type__is_import_file_policy_variable
+#: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file__is_import_file_policy_variable
+msgid "Is Import File Policy Variable"
+msgstr "¿Es la política del archivo de importación variable?"
 
 #. module: lighting_import_attachment_product
 #: model:ir.model.fields,field_description:lighting_import_attachment_product.field_lighting_import_attachment_file_product____last_update
@@ -196,8 +220,26 @@ msgid ""
 "The file %(file)s has more than one attachment with the same name in the "
 "product with reference: %(ref)s"
 msgstr ""
-"El archivo %(file)s tiene más de un adjunto con el mismo nombre en "
-"el producto con referencia: %(ref)s"
+"El archivo %(file)s tiene más de un adjunto con el mismo nombre en el "
+"producto con referencia: %(ref)s"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid ""
+"To change the allow multiple files policy, you must set the import file "
+"policy variable in the attachment type."
+msgstr ""
+"Para cambiar la política de permitir varios archivos, debes establecer la "
+"política de archivo de importación a variable en el tipo de adjunto."
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/product_attachment_type.py:0
+#, python-format
+msgid "To set the import file policy variable, you must allow multiple files."
+msgstr "Para establecer la política de archivo de importación a variable, debes permitir varios archivos."
 
 #. module: lighting_import_attachment_product
 #. odoo-python
@@ -212,6 +254,18 @@ msgstr "Inesperado: la ubicación del archivo adjunto no es un archivo"
 #, python-format
 msgid "Unexpected: Attachment type is not %s"
 msgstr "Inesperado: el tipo de archivo adjunto no es %s"
+
+#. module: lighting_import_attachment_product
+#: model_terms:ir.ui.view,arch_db:lighting_import_attachment_product.lighting_import_attachment_file_view_tree
+msgid "Unique File"
+msgstr "Archivo único"
+
+#. module: lighting_import_attachment_product
+#. odoo-python
+#: code:addons/lighting_import_attachment_product/models/lighting_import_attachment_file.py:0
+#, python-format
+msgid "You can not change this field in imported attachments"
+msgstr "No puedes cambiar este campo en los adjuntos importados"
 
 #. module: lighting_import_attachment_product
 #. odoo-python

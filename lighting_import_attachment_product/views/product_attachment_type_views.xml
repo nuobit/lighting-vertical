@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="attachment_type_form_view" model="ir.ui.view">
+        <field name="name">attachment.type.form</field>
+        <field name="model">lighting.attachment.type</field>
+        <field name="inherit_id" ref="lighting.attachment_type_form_view" />
+        <field name="arch" type="xml">
+            <field name="allow_multiple_files" position="after">
+                <field
+                    name="is_import_file_policy_variable"
+                    widget="boolean_toggle"
+                    attrs="{'invisible': [('allow_multiple_files', '=', False)]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

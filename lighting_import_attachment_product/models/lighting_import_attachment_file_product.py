@@ -77,7 +77,7 @@ class LightingImportAttachmentFileProduct(models.Model):
                                 "ref": rec.product_id.reference,
                             }
                         )
-                    if rec.file_id.attachment_type_id.allow_multiple_files:
+                    if rec.file_id.allow_multiple_files:
                         attach_d = False
                         match = re.match(
                             r"^(?P<filename>.+)\.(?P<ext>[^\.]+)$", rec.file_datas_fname

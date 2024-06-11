@@ -15,5 +15,6 @@
         "views/lighting_import_attachment_product_views.xml",
         "views/lighting_import_attachment_file_views.xml",
         "views/lighting_import_attachment_file_product_views.xml",
+        "views/product_attachment_type_views.xml",
     ],
 }

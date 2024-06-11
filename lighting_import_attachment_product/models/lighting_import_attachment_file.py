@@ -38,6 +38,39 @@ class LightingImportAttachmentFile(models.Model):
         readonly=True,
         ondelete="restrict",
     )
+    allow_multiple_files = fields.Boolean()
+    is_import_file_policy_variable = fields.Boolean(
+        compute="_compute_is_import_file_policy_variable",
+    )
+
+    @api.depends("attachment_type_id")
+    def _compute_is_import_file_policy_variable(self):
+        for rec in self:
+            rec.is_import_file_policy_variable = (
+                rec.attachment_type_id.is_import_file_policy_variable
+            )
+
+    def action_allow_multiple_files(self):
+        for rec in self:
+            rec.allow_multiple_files = not rec.allow_multiple_files
+
+    @api.constrains("allow_multiple_files")
+    def _check_allow_multiple_files(self):
+        for rec in self:
+            if (
+                rec.message_info
+                and not rec.attachment_type_id.is_import_file_policy_variable
+            ):
+                raise ValidationError(
+                    _(
+                        "To change the allow multiple files policy, you must set the "
+                        "import file policy variable in the attachment type."
+                    )
+                )
+            if rec.import_attachment_id.state == "imported":
+                raise ValidationError(
+                    _("You can not change this field in imported attachments")
+                )
 
     def slug(self, s):
         return (
@@ -144,6 +177,9 @@ class LightingImportAttachmentFile(models.Model):
                     [("code", "=", values["attach_type_name"])]
                 )
                 rec.attachment_type_id = attach_type.id
+                # assign allow_multiple_files value the first time
+                if not rec.message_info and rec.attachment_type_id.allow_multiple_files:
+                    rec.allow_multiple_files = True
             message_info = None
 
             # get families
