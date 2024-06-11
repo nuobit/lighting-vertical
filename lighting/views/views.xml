@@ -209,7 +209,7 @@
                         <field name="lampholder_technical_id" />
                     </group>
                     <group>
-                        <field name="line_ids" nolabel="1">
+                        <field name="line_ids" nolabel="1" colspan="2">
                             <tree>
                                 <field name="sequence" widget="handle" />
                                 <field name="type_id" />
