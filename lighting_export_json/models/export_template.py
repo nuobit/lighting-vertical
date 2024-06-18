@@ -486,6 +486,9 @@ class LightingExportTemplate(models.Model):
                 # bundle name
                 bundle_name_d = {}
                 for lang in self.lang_ids:
+                    self._invalidate_cache_composite_field(
+                        products[0], "group_description"
+                    )
                     lang_group_description = (
                         products[0].with_context(lang=lang.code).group_description
                     )
