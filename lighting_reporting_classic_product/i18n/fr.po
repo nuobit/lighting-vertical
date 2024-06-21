@@ -1,0 +1,471 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_reporting_classic_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-25 14:08+0000\n"
+"PO-Revision-Date: 2024-06-25 14:08+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_reporting_classic_product
+#: model:ir.actions.report,print_report_name:lighting_reporting_classic_product.report_classic_product_action
+msgid "\"Product - %s\" % (object.reference, )"
+msgstr "\"Produit - %s\" % (object.reference, )"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Alternative auxiliary equipment"
+msgstr "Equipement auxiliaire alternative"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Anchorage included"
+msgstr "Anchorage inclus"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Auxiliary equipment brand"
+msgstr "Marques d'équipement auxiliaires"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Auxiliary equipment brands"
+msgstr "Marques d'équipement auxiliaires"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Auxiliary gear"
+msgstr "Engrenage auxiliaire"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Average emergency time"
+msgstr "Temps d'urgence moyen"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Battery autonomy"
+msgstr "L'autonomie de la batterie"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Battery charge time"
+msgstr "Temps de charge de la batterie"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Battery output voltage"
+msgstr "Tension de sortie de la batterie"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Beam"
+msgstr "Faisceau"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Beams"
+msgstr "Poutres"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Blade material"
+msgstr "Matériau de la lame"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Body material"
+msgstr "Matériau du corps"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "COMPLEMENTARY IMAGES"
+msgstr "IMAGES COMPLÉMENTAIRES"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Cable outlets"
+msgstr "Sorties de câble"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Category"
+msgstr "Catégorie"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Charger connector type"
+msgstr "Type de connecteur de chargeur"
+
+#. module: lighting_reporting_classic_product
+#: model:ir.model,name:lighting_reporting_classic_product.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de configuration"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Corrosion resistance"
+msgstr "Résistance à la corrosion"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Cut hole box included"
+msgstr "Boîte de trou de coupe incluse"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Cut hole dimensions"
+msgstr "Dimensions du trou de coupe"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Cutting length"
+msgstr "Longueur de coupe"
+
+#. module: lighting_reporting_classic_product
+#: model:ir.model.fields,field_description:lighting_reporting_classic_product.field_res_config_settings__product_template
+msgid "Default Product Template"
+msgstr "Mòdele de produit par défaut"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Diffuser material"
+msgstr "Matériau diffuseur"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Dimensions"
+msgstr "Dimensions"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Dimmable"
+msgstr "Gradable"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Dinamic pressure"
+msgstr "Pression dynamique"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "ECORAEE category I"
+msgstr "ECORAEE catégorie I"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "ECORAEE category II"
+msgstr "ECORAEE catégorie II"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Electric screwdriver"
+msgstr "Tournevis électrique"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Emergency light"
+msgstr "Lumière d'urgence"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Energy efficiency"
+msgstr "Efficacité énergétique"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Family"
+msgstr "Famille"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Fan blades"
+msgstr "Pales de ventilateur"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Fan control"
+msgstr "Contrôle du ventilateur"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Fan wattages"
+msgstr "Puissances du ventilateur"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Finish"
+msgstr "Finition"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Finish 2"
+msgstr "Finition 2"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Flammable surfaces"
+msgstr "Surfaces inflammables"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Frame material"
+msgstr "Matériau du cadre"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Frequency"
+msgstr "Fréquence"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "GENERAL DATA"
+msgstr "DONNÉES GÉNÉRALES"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Glow wire temperature"
+msgstr "Température du fil incandescent"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Input voltage"
+msgstr "Tension d'entrée"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Installation"
+msgstr "Installation"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "LED lifetime B"
+msgstr "Durée de vie de la LED B"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "LED lifetime L"
+msgstr "Durée de vie de la LED L"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "LIGHT SOURCES AND BEAMS"
+msgstr "SOURCES DE LUMIÈRE ET FAISCEAUX"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Lamp included"
+msgstr "Lampe incluse"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Lampshade material"
+msgstr "Matériau de l'abat-jour"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Lead wire length"
+msgstr "Longueur du fil de plomb"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Lifetime"
+msgstr "Durée de vie"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Location"
+msgstr "Emplacement"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Material"
+msgstr "Matériau"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "NOTES"
+msgstr "REMARQUES"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Noise level"
+msgstr "Niveau de bruit"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Operating temperature range"
+msgstr "Plage de température de fonctionnement"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Output current"
+msgstr "Courant de sortie"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Output current (mA)"
+msgstr "Courant de sortie (mA)"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "PHOTOMETRIC DATA"
+msgstr "DONNÉES PHOTOMÉTRIQUES"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "PRODUCTS OF THE SAME FAMILY"
+msgstr "PRODUITS DE LA MÊME FAMILLE"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Periodic maintenance"
+msgstr "Entretien périodique"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Photobiological risk group"
+msgstr "Groupe de risque photobiologique"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Post included"
+msgstr "Poteau inclus"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Post with inspection chamber"
+msgstr "Poteau avec chambre d'inspection"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Power factor"
+msgstr "Facteur de puissance"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Power switches"
+msgstr "Interrupteurs d'alimentation"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Protection class"
+msgstr "Classe de protection"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "RECOMMENDED ACCESSORIES"
+msgstr "ACCESSOIRES RECOMMANDÉS"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "REQUIRED ACCESSORIES"
+msgstr "ACCESSOIRES REQUIS"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Rechargeable"
+msgstr "Rechargeable"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Reflector material"
+msgstr "Matériau du réflecteur"
+
+#. module: lighting_reporting_classic_product
+#: model:ir.model,name:lighting_reporting_classic_product.model_ir_actions_report
+msgid "Report Action"
+msgstr "Signaler l'action"
+
+#. module: lighting_reporting_classic_product
+#: model:ir.actions.report,name:lighting_reporting_classic_product.report_classic_product_action
+msgid "Report Product Classic"
+msgstr "Rapport Produit Classic"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Reverse direction"
+msgstr "Inversion de virage"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Rotation angle"
+msgstr "Angle de rotation"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Sensors"
+msgstr "Capteurs"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Sources"
+msgstr "Sources"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Static pressure"
+msgstr "Pression statique"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Surface temperature"
+msgstr "La température de surface"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "TECHNICAL DATA"
+msgstr "DONNÉES TECHNIQUES"
+
+#. module: lighting_reporting_classic_product
+#: model:ir.model.fields,field_description:lighting_reporting_classic_product.field_lighting_reporting_product_wizard__template
+msgid "Template"
+msgstr "Modèle"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Tilt angle"
+msgstr "Angle d'inclinaison"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Total wattage"
+msgstr "Puissance totale"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "USB ports charging devices"
+msgstr "ports USB pour charger des appareils"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Wattage"
+msgstr "Puisance"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Wattage (W)"
+msgstr "Puisance (W)"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.external_layout_lighting
+msgid "We reserve the right to change product specifications"
+msgstr "Reservamo-nos o direito de alterar as especificações do produto"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Weight"
+msgstr "Poids"
+
+#. module: lighting_reporting_classic_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_classic_product.report_classic_product_document
+msgid "Yes"
+msgstr "Oui"
