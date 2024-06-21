@@ -1,0 +1,497 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_reporting_vanguard_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-21 11:34+0000\n"
+"PO-Revision-Date: 2024-06-21 11:34+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_reporting_vanguard_product
+#: model:ir.actions.report,print_report_name:lighting_reporting_vanguard_product.report_product_vanguard_action
+msgid "\"Product - %s\" % (object.reference, )"
+msgstr "\"Producto - %s\" % (object.reference, )"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.external_layout_lighting_vanguard
+msgid ""
+"<span class=\"nl-brand-header-pages-vanguard\">\n"
+"                    <span class=\"page\"/>/<span class=\"topage\"/>\n"
+"                </span>"
+msgstr ""
+"<span class=\"nl-brand-header-pages-vanguard\">\n"
+"                    <span class=\"page\"/>/<span class=\"topage\"/>\n"
+"                </span>"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Alternative auxiliary equipment"
+msgstr "Equipamento auxiliar alternativa"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Anchorage included"
+msgstr "Anclaje incluído"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Auxiliary equipment brand"
+msgstr "Marca equipamento auxiliar"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Auxiliary equipment brands"
+msgstr "Marcas de equipamento auxiliar"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Auxiliary gear"
+msgstr "Equipamento auxiliar"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Average emergency time"
+msgstr "Tempo médio de emergência"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Battery autonomy"
+msgstr "Autonomia da bateria"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Battery charge time"
+msgstr "Tempo de carga da bateria"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Battery output voltage"
+msgstr "Tensão de saída da bateria"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Beam"
+msgstr "Feixe"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Beams"
+msgstr "Feixes"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Blade material"
+msgstr "Material da lâmina"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Body material"
+msgstr "Material do corpo"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Cable outlets"
+msgstr "Saídas de cabo"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Category"
+msgstr "Categoria"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Charger connector type"
+msgstr "Tipo de conector do carregador"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Color consistency"
+msgstr "Consistência de cor"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Color temperature"
+msgstr "Temperatura de cor"
+
+#. module: lighting_reporting_vanguard_product
+#: model:ir.model,name:lighting_reporting_vanguard_product.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configurações"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Corrosion resistance"
+msgstr "Resistência à corrosão"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Cut hole box included"
+msgstr "Caixa de corte incluída"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Cut hole dimensions"
+msgstr "Dimensões do furo de corte"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Cutting length"
+msgstr "Comprimento de corte"
+
+#. module: lighting_reporting_vanguard_product
+#: model:ir.model.fields,field_description:lighting_reporting_vanguard_product.field_res_config_settings__product_template
+msgid "Default Product Template"
+msgstr "Modelo de produto padrão"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Diffuser material"
+msgstr "Material do difusor"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Dimensions"
+msgstr "Dimensões"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Dimmable"
+msgstr "Dimável"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Dinamic pressure"
+msgstr "Pressão dinâmica"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "EAN"
+msgstr "EAN"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "ECORAEE category I"
+msgstr "Categoria ECORAEE I"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "ECORAEE category II"
+msgstr "Categoria ECORAEE II"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Electric screwdriver"
+msgstr "Chave de fenda elétrica"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Emergency light"
+msgstr "Luz de emergência"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Energy efficiency"
+msgstr "Eficiência energética"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Family"
+msgstr "Família"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Fan blades"
+msgstr "Pás do ventilador"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Fan control"
+msgstr "Controle do ventilador"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Fan wattages"
+msgstr "Potências do ventilador"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Finish"
+msgstr "Acabamento"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Finish 2"
+msgstr "Acabamento 2"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Flammable surfaces"
+msgstr "Superfícies inflamáveis"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Frame material"
+msgstr "Material da moldura"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Frequency"
+msgstr "Frequência"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "GENERAL DATA"
+msgstr "DADOS GERAIS"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Glow wire temperature"
+msgstr "Temperatura do fio incandescente"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Input voltage"
+msgstr "Tensão de entrada"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Installation"
+msgstr "Instalação"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "LED lifetime B"
+msgstr "Vida útil do LED B"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "LED lifetime L"
+msgstr "Vida útil do LED L"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "LIGHT BEAMS"
+msgstr "FEIXES DE LUZ"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "LIGHT SOURCES"
+msgstr "FONTES DE LUZ"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Lamp included"
+msgstr "Lâmpada incluída"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Lampshade material"
+msgstr "Material da cúpula"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Lead wire length"
+msgstr "Comprimento do fio de chumbo"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Lifetime"
+msgstr "Vida útil"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Light source power"
+msgstr "Potência da fonte de luz"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Location"
+msgstr "Localização"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Luminous flux"
+msgstr "Fluxo luminoso"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Material"
+msgstr "Material"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "NOTES"
+msgstr "NOTAS"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Noise level"
+msgstr "Nível de ruído"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Operating temperature range"
+msgstr "Faixa de temperatura de operação"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Output current"
+msgstr "Corrente de saída"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Output current (mA)"
+msgstr "Corrente de saída (mA)"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "PHOTOMETRIC DATA"
+msgstr "DADOS FOTOMÉTRICOS"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Periodic maintenance"
+msgstr "Manutenção periódica"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Photobiological risk group"
+msgstr "Grupo de risco fotobiológico"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Post included"
+msgstr "Post incluído"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Post with inspection chamber"
+msgstr "Poste com câmara de inspeção"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Power factor"
+msgstr "Fator de potência"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Power switches"
+msgstr "Interruptores de energia"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Protection class"
+msgstr "Classe de proteção"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "RECOMMENDED ACCESSORIES"
+msgstr "ACESSÓRIOS RECOMENDADOS"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Rechargeable"
+msgstr "Recarregável"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Reflector material"
+msgstr "Material do refletor"
+
+#. module: lighting_reporting_vanguard_product
+#: model:ir.model.fields,field_description:lighting_reporting_vanguard_product.field_lighting_reporting_product_wizard__report
+msgid "Report"
+msgstr "Relatório"
+
+#. module: lighting_reporting_vanguard_product
+#: model:ir.actions.report,name:lighting_reporting_vanguard_product.report_product_vanguard_action
+msgid "Report Product Vanguard"
+msgstr "Relatório do Produto Vanguard"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Reverse direction"
+msgstr "Direção reversa"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Rotation angle"
+msgstr "Ângulo de rotação"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Sensors"
+msgstr "Sensores"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Static pressure"
+msgstr "Pressão estática"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Surface temperature"
+msgstr "Temperatura da superfície"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "TECHNICAL DATA"
+msgstr "DADOS TÉCNICOS"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Tilt angle"
+msgstr "Ângulo de inclinação"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Total flux"
+msgstr "Fluxo total"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Total wattage"
+msgstr "Potência total"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Type of light source"
+msgstr "Tipo de fonte de luz"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "USB ports charging devices"
+msgstr "Portas USB para carregar dispositivos"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Wattage"
+msgstr "Potência"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Wattage (W)"
+msgstr "Potência (W)"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.external_layout_lighting_vanguard
+msgid "We reserve the right to change product specifications"
+msgstr "Reservamo-nos o direito de alterar as especificações do produto"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Weight"
+msgstr "Peso"
+
+#. module: lighting_reporting_vanguard_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_vanguard_product.report_vanguard_product_document
+msgid "Yes"
+msgstr "Sim"

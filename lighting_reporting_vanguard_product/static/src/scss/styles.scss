@@ -1,0 +1,306 @@
+@font-face {
+    font-family: "PPPangaia-Ultralight";
+    src: local("PPPangaia-Ultralight"), local("PPPangaia-Ultralight"),
+        url("/lighting_reporting_vanguard_product/static/src/fonts/PPPangaia-Ultralight.otf")
+            format("truetype");
+}
+@font-face {
+    font-family: "Poppins-ExtraLight";
+    src: local("Poppins-ExtraLight"), local("Poppins-ExtraLight"),
+        url("/lighting_reporting_vanguard_product/static/src/fonts/Poppins-ExtraLight.otf")
+            format("opentype");
+}
+@font-face {
+    font-family: "Poppins-Medium";
+    src: local("Poppins-Medium"), local("Poppins-Medium"),
+        url("/lighting_reporting_vanguard_product/static/src/fonts/Poppins-Medium.otf")
+            format("opentype");
+}
+@font-face {
+    font-family: "Poppins-Regular";
+    src: local("Poppins-Regular"), local("Poppins-Regular"),
+        url("/lighting_reporting_vanguard_product/static/src/fonts/Poppins-Regular.otf")
+            format("opentype");
+}
+
+// global wrapper
+.nl-external-wrap-vanguard {
+    width: 100%;
+}
+
+.nl-external-wrap-header-vanguard {
+    width: 100%;
+}
+
+// HEADER
+
+.nl-header-title-vanguard {
+    align-items: center;
+    margin-top: 45px;
+}
+.nl-family-vanguard {
+    font-family: "PPPangaia-Ultralight";
+    font-size: 45pt;
+    margin-right: 10px;
+}
+.nl-header-company-vanguard {
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 10px;
+}
+.nl-header-company-vanguard img {
+    width: 47mm;
+    height: 10mm;
+}
+.nl-reference-vanguard {
+    font-family: "Poppins-Regular";
+    font-size: 18px;
+    font-weight: lighter;
+    color: #231f1d;
+}
+.nl-description-vanguard {
+    width: 95%;
+    font-family: "Poppins-Medium";
+    font-weight: 500;
+    font-size: 12px;
+    margin-bottom: 7px;
+    color: #231f20;
+}
+.nl-header-brand-vanguard {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.nl-header-brand-vanguard img {
+    margin-bottom: 22px;
+    height: 11px;
+}
+
+// BODY
+
+.page1-vanguard {
+    margin-top: 0;
+}
+
+// section title
+.nl-section-title-vanguard {
+    font-family: "Poppins-Medium";
+    font-weight: 500;
+    font-size: 11px; // 7pt
+    padding-bottom: 8px;
+    color: #241e1e;
+    border-bottom: 1px solid #858585;
+    page-break-inside: avoid;
+}
+
+.nl-table-data-vanguard {
+    font-size: 11px; // 7pt
+}
+
+.nl-table-data-vanguard tr {
+    border-bottom: 1px solid #858585;
+}
+
+.nl-table-data-vanguard td {
+    height: 19px;
+    vertical-align: middle;
+}
+
+.nl-table-data-vanguard td p {
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.nl-table-data-vanguard td:nth-child(1) {
+    font-family: "Poppins-Medium";
+    font-weight: 500;
+    color: #241e1e;
+}
+
+.nl-table-data-vanguard td:nth-child(2) {
+    font-family: "Poppins-ExtraLight";
+    font-weight: 200; // light
+}
+.nl-table-item-data-vanguard td:nth-child(1),
+.nl-table-item-data-vanguard td:nth-child(2) {
+    padding-left: 10px;
+}
+[data-show-relevance="True"].nl-table-title-data-vanguard td:nth-child(1) {
+    padding-left: 10px;
+}
+[data-show-relevance="True"].nl-table-item-data-vanguard td:nth-child(1),
+[data-show-relevance="True"].nl-table-item-data-vanguard td:nth-child(2) {
+    padding-left: 20px;
+}
+
+// layout
+.nl-layout-data-vanguard {
+    //border: 1px solid red;
+    width: 66%;
+    float: left;
+}
+// table data
+.nl-layout-data-vanguard {
+    .nl-table-data-vanguard.nl-main-data-vanguard {
+        width: 100%;
+        margin-bottom: 22px;
+    }
+}
+.nl-light-source-item-vanguard tr:last-child {
+    border-bottom: 0px;
+}
+.nl-light-source-title-vanguard tr:first-child {
+    border-bottom: 0px;
+}
+.nl-layout-data-vanguard .nl-table-data-vanguard.nl-main-data-vanguard td:nth-child(1) {
+    width: 50%;
+}
+.nl-layout-main-images-vanguard {
+    width: 259px;
+    float: right;
+
+    img {
+        width: 100%;
+    }
+}
+.nl-layout-main-images-vanguard div:nth-child(2),
+.nl-layout-main-images-vanguard div:nth-child(3) {
+    margin-top: 92px;
+}
+.nl-photometric-images-vanguard {
+    padding-top: 13px;
+    margin-bottom: 36px;
+}
+.nl-photometric-images-vanguard > div {
+    float: left;
+    height: 155px;
+    width: 130px;
+    margin-right: 5px;
+}
+.nl-photometric-images-vanguard > div:nth-child(4) {
+    margin-right: 0px;
+}
+.nl-photometric-images-vanguard > div img {
+    width: 100%;
+    height: 100%;
+}
+.nl-note-title-vanguard {
+    font-family: "Poppins-ExtraLight";
+    font-weight: 200;
+}
+
+// recommended accesories
+
+.nl-recommended-accesories-vanguard {
+    width: 100%;
+    float: left;
+}
+.nl-section-content-vanguard {
+    width: 100%;
+    float: left;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+.nl-accessory-item-vanguard {
+    display: block;
+    clear: both;
+    page-break-inside: avoid;
+    margin-top: 10px;
+}
+.nl-recommended-accesories-title-vanguard {
+    width: 21%;
+    float: left;
+}
+.nl-recommended-accesories-title-vanguard span {
+    display: block;
+}
+.nl-recommended-accesories-title-vanguard span:nth-child(1) {
+    font-family: "Poppins-Medium";
+    font-size: 11px;
+    font-weight: 500;
+    color: #241e1e;
+    border-bottom: 1px solid #858585;
+}
+.nl-recommended-accesories-title-vanguard span:nth-child(2) {
+    margin-top: 8px;
+    font-family: "Poppins-ExtraLight";
+    font-weight: 200;
+    font-size: 11px;
+    width: 85%;
+}
+.nl-recommended-accesories-table-vanguard {
+    width: 45%;
+    float: left;
+    margin-right: 5px;
+}
+.nl-recommended-accesories-table-vanguard tr {
+    border-bottom: 1px solid #858585;
+}
+.nl-recommended-accesories-table-vanguard td:nth-child(1) {
+    width: 45%;
+    font-family: "Poppins-Medium";
+    font-size: 11px;
+    font-weight: 500;
+    color: #241e1e;
+}
+.nl-recommended-accesories-table-vanguard td:nth-child(2) {
+    width: 55%;
+    font-family: "Poppins-ExtraLight";
+    font-size: 11px;
+    font-weight: 200;
+}
+.nl-recommended-accesories-images-vanguard {
+    float: left;
+    margin-left: 15px;
+    margin-top: 5px;
+    overflow: auto;
+    height: 122px;
+    width: 122px;
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+// FOOTER
+
+.nl-footer-container-vanguard {
+    position: relative;
+}
+.nl-footer-vanguard {
+    font-family: "Poppins-ExtraLight";
+    margin-top: 10px;
+    font-size: 6pt;
+    font-weight: 100;
+}
+.nl-footer-vanguard > div {
+    width: 32%;
+    float: left;
+}
+.nl-footer-vanguard > div:nth-child(1),
+.nl-footer-vanguard > div:nth-child(2) {
+    margin-right: 17px;
+}
+.nl-footer-vanguard ul {
+    width: 63%;
+}
+.nl-footer-vanguard span {
+    line-height: 1.2;
+}
+.nl-footer-misc-vanguard li:nth-child(n + 2) {
+    margin-top: 11px;
+}
+.nl-brand-header-pages-vanguard {
+    position: fixed;
+    top: 70px;
+    right: 15px;
+    width: auto;
+    font-family: "Poppins-ExtraLight";
+    font-weight: 100;
+    font-size: 12px;
+}
