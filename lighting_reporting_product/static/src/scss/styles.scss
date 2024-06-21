@@ -1,0 +1,63 @@
+.nl-remove-border thead,
+.nl-remove-border tbody,
+.nl-remove-border td,
+.nl-remove-border thead th,
+.nl-remove-border tr,
+.nl-remove-border t {
+    border: none;
+}
+
+.lighting-position-relative {
+    position: relative;
+}
+
+.lighting-border-bottom {
+    border-bottom: 1px solid #918f8f;
+}
+
+.lighting-page-break {
+    page-break-inside: avoid;
+}
+
+.lighting-margin-left td {
+    padding-left: 20px;
+}
+
+.lighting-width-section {
+    width: 66%;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 0;
+    margin: 0;
+}
+
+div.page {
+    page-break-after: always;
+}
+
+div.page,
+div.header,
+div.footer {
+    overflow: hidden;
+}
+
+div.footer {
+    border-top: 1px solid #918f8f;
+}
+
+.nl-outline {
+    position: absolute !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    font-size: 1px;
+}
