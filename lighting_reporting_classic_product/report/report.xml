@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="paperformat_product_sheet_classic" model="report.paperformat">
+        <field name="name">Product sheet</field>
+        <field name="format">A4</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">42</field>
+        <field name="margin_bottom">24</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_spacing">35</field>
+        <field name="header_line" eval="False" />
+        <field name="dpi">90</field>
+    </record>
+    <record id="report_classic_product_action" model="ir.actions.report">
+        <field name="name">Report Product Classic</field>
+        <field name="model">lighting.product</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="paperformat_product_sheet_classic" />
+        <field
+            name="report_name"
+        >lighting_reporting_classic_product.report_classic</field>
+        <field name="print_report_name">"Product - %s" % (object.reference, )</field>
+    </record>
+</odoo>

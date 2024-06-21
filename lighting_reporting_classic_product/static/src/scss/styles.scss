@@ -1,0 +1,418 @@
+@font-face {
+    font-family: "Helvetica Neue Light";
+    src: local("Helvetica Neue Light"), local("HelveticaNeue-Light"),
+        url("/lighting_reporting_classic_product/static/src/fonts/HelveticaNeue-Light.ttf")
+            format("truetype");
+    //font-weight: 300;
+}
+
+@font-face {
+    font-family: "Helvetica Neue Bold";
+    src: local("Helvetica Neue Bold"), local("HelveticaNeue-Bold"),
+        url("/lighting_reporting_classic_product/static/src/fonts/HelveticaNeue-Bold.ttf")
+            format("truetype");
+    //font-weight: 700;
+}
+
+@font-face {
+    font-family: "Helvetica Neue Medium";
+    src: local("Helvetica Neue Medium"), local("HelveticaNeue-Medium"),
+        url("/lighting_reporting_classic_product/static/src/fonts/HelveticaNeue-Medium.ttf")
+            format("truetype");
+    //font-weight: 500;
+}
+
+@font-face {
+    font-family: "Helvetica Neue";
+    src: local("Helvetica Neue"), local("HelveticaNeue"),
+        url("/lighting_reporting_classic_product/static/src/fonts/HelveticaNeue.ttf")
+            format("truetype");
+    //font-weight: 400;
+}
+
+// general
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 0;
+    margin: 0;
+}
+
+// global settings
+div.page {
+    page-break-after: always;
+}
+
+div.page,
+div.header,
+div.footer {
+    //border: 1px solid black;
+    overflow: hidden;
+}
+
+div.footer {
+    border-top: 1px solid #918f8f;
+}
+
+// global wrapper
+.nl-external-wrap {
+    //border: 1px solid dodgerblue;
+    margin-left: 80px;
+    width: 753px;
+}
+
+.nl-external-wrap-header {
+    //.nl-external-wrap;
+    margin-left: 80px;
+    width: 753px;
+}
+
+//////////// COMMON ///////////////
+.nl-outline {
+    position: absolute !important;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    font-size: 1px;
+}
+
+// section title
+.nl-section-title {
+    font-family: "Helvetica Neue";
+    font-size: 11px; // 7pt
+    font-weight: 700; // bold
+    margin-bottom: 10px;
+}
+
+// table data
+.nl-table-data {
+    font-size: 11px; // 7pt
+}
+
+.nl-table-data tr {
+    border-top: 1px solid #918f8f; // 50% black //0.25pt
+    border-bottom: 1px solid #918f8f; // 50% black //0.25pt
+}
+
+.nl-table-data td {
+    height: 19px;
+    vertical-align: middle;
+}
+
+.nl-table-data td p {
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.nl-table-data td:nth-child(1) {
+    font-family: "Helvetica Neue Medium";
+    font-weight: 300; // medium
+}
+
+.nl-table-data td:nth-child(2) {
+    font-family: "Helvetica Neue Light";
+    font-weight: 200; // light
+}
+
+////////// HEADER ///////////////
+// header brand/pages
+.nl-brand-header {
+    position: relative;
+    height: 40px;
+    white-space: nowrap;
+}
+
+.nl-brand-header-brand {
+    display: inline;
+}
+
+.nl-brand-header-brand img {
+    height: 35px;
+}
+
+.nl-brand-header-ribbon {
+    display: inline-block;
+    height: 22px;
+    position: relative;
+    top: 13px;
+    margin-left: 9px;
+    width: 800px;
+}
+
+.nl-brand-header-pages {
+    position: absolute;
+    top: 13px;
+    right: 0;
+    font-family: "Helvetica Neue";
+    font-size: 14px; // 8pt
+}
+
+// header family/reference/description
+.nl-reference-header {
+    //border: 1px solid orange;
+    width: 100%;
+    margin-top: 27px;
+    margin-bottom: 10px;
+}
+
+.nl-reference-header > div {
+    //border: 1px solid red;
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+.nl-reference-header .nl-family {
+    font-family: "Helvetica Neue Light";
+    font-weight: 200;
+    font-size: 36px; // 20pt
+    width: auto;
+    white-space: nowrap;
+}
+
+.nl-reference-header .nl-reference {
+    font-family: "Helvetica Neue Light";
+    font-weight: 200;
+    font-size: 19px; // 11pt
+    white-space: nowrap;
+    padding-left: 22px;
+}
+
+.nl-description {
+    font-family: "Helvetica Neue";
+    font-weight: 200;
+    font-size: 19px; // 11pt
+}
+
+////////// BODY MAIN PAGE ///////////////
+// layout
+.nl-layout-main-images {
+    //border: 1px solid red;
+    width: 221px;
+    float: left;
+
+    img {
+        width: 100%;
+    }
+}
+
+.nl-layout-data {
+    //border: 1px solid red;
+    margin-left: 66px;
+    width: 465px;
+    float: left;
+}
+
+// table data
+.nl-layout-data {
+    .nl-table-data.nl-main-data,
+    .nl-table-data.nl-note-data {
+        width: 465px;
+        margin-bottom: 30px;
+    }
+}
+
+.nl-layout-data .nl-table-data.nl-main-data td:nth-child(1) {
+    width: 252px;
+}
+
+// photometric images
+.nl-photometric-images {
+    border-top: 1px solid #918f8f;
+    padding-top: 13px;
+    margin-bottom: 36px;
+}
+
+.nl-photometric-images > div {
+    float: left;
+    width: 133px;
+    //padding: 5px;
+}
+
+.nl-photometric-images > div img {
+    width: 100%;
+}
+
+////////// BODY ACCESSORIES PAGE ///////////////
+// layout
+.nl-layout-accessories {
+    width: 100%;
+    margin-bottom: 36px;
+}
+
+.nl-layout-accessories .nl-accessory {
+    padding-top: 7px;
+    padding-bottom: 7px;
+    border-top: 1px solid #918f8f;
+    page-break-inside: avoid;
+}
+
+.nl-layout-accessories .nl-accessory:last-child {
+    border-bottom: 1px solid #918f8f;
+}
+
+.nl-layout-accessories > div > div {
+    //border: 1px solid green;
+    float: left;
+}
+
+.nl-layout-accessories > div > div:nth-child(n + 2) {
+    margin-left: 13px;
+}
+
+// images
+.nl-layout-accessories .nl-accessory-images {
+    width: 111px;
+    height: 111px;
+}
+
+.nl-layout-accessories .nl-accessory-images img {
+    width: 100%;
+}
+
+// reference
+.nl-layout-accessories .nl-accessory-main-data {
+    width: 195px;
+}
+
+.nl-layout-accessories .nl-accessory-main-data .nl-accessory-reference {
+    font-family: "Helvetica Neue Medium";
+    font-weight: 200;
+    font-size: 18px; // 10pt
+}
+
+.nl-layout-accessories .nl-accessory-main-data .nl-accessory-description {
+    font-family: "Helvetica Neue Light";
+    font-size: 12px; // 7pt
+    line-height: 16px; // 10pt
+}
+
+// table data
+.nl-layout-accessories .nl-table-data.nl-accessory-data {
+    width: 297px;
+}
+
+.nl-table-data.nl-accessory-data tr:nth-child(1) {
+    border-top: none;
+}
+
+.nl-table-data.nl-accessory-data td:nth-child(1) {
+    width: 168px;
+}
+
+////////// COMPLEMENTARY IMAGES AND GROUP SAME FAMILY PRODUCTS PAGE ///////////////
+// complementary images
+.nl-complementary-images {
+    margin-bottom: 36px;
+}
+
+.nl-complementary-images {
+    //outline: 1px solid mediumvioletred;
+    border-top: 1px solid #918f8f;
+    padding-top: 18px;
+}
+
+.nl-complementary-images .nl-complementary-row-images:nth-last-child(n + 2) {
+    margin-bottom: 44px;
+}
+
+.nl-complementary-images .nl-complementary-row-images > div {
+    float: left;
+    width: 221px;
+
+    img {
+        width: 100%;
+    }
+}
+
+.nl-complementary-images .nl-complementary-row-images > div:nth-child(n + 2) {
+    margin-left: 44px;
+}
+
+/////// groups same fmaily
+.nl-layout-groups-same-family {
+    margin-bottom: 36px;
+}
+
+.nl-groups-same-family-table {
+    width: 753px;
+}
+
+.nl-groups-same-family-table > thead th {
+    text-align: left;
+    border-bottom: 1px solid #918f8f;
+}
+
+.nl-groups-same-family-table > tbody td {
+    padding-top: 13px;
+
+    img {
+        width: 110px;
+    }
+
+    .nl-group-name {
+        margin-top: 9px;
+        //margin-bottom: 0px;
+        font-family: "Helvetica Neue Light";
+        font-weight: 200;
+        font-size: 14px; // 8pt
+        line-height: 16px; // 10pt
+    }
+}
+
+.nl-groups-same-family-table > tbody td:nth-last-child(n + 2) {
+    width: 128px; // 110px + 18px
+}
+
+////////// FOOTER ///////////////
+.nl-footer {
+    margin-top: 8px;
+    font-size: 10px; // 6pt
+}
+
+.nl-footer > div {
+    float: left;
+    font-size: 9px; // 5.1pt
+}
+
+.nl-footer-company-logo {
+    width: 20%;
+}
+
+.nl-footer-company-logo img {
+    padding-top: 21px;
+    width: 100%;
+}
+
+.nl-footer-company-address {
+    width: 50%;
+    padding-left: 50px;
+    font-family: "Helvetica Neue";
+    font-weight: 200;
+    line-height: 11px; // 7pt
+}
+
+.nl-footer-misc {
+    width: 30%;
+    font-family: "Helvetica Neue";
+    padding-left: 50px;
+    font-weight: 200;
+    line-height: 11px; // 7pt
+}
+
+.nl-footer-misc li:nth-child(n + 2) {
+    margin-top: 7px;
+}
+
+.fake-link {
+    display: inline-block;
+    width: 100px; // wide enough to cover the real link
+    height: 50px; // high enough to cover the real link
+}
