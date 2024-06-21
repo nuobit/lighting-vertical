@@ -1,0 +1,138 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_reporting_product
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-06-25 13:51+0000\n"
+"PO-Revision-Date: 2024-06-25 13:51+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_reporting_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_product.lighting_reporting_product_wizard_view_form
+msgid "Cancel"
+msgstr "Cancelar"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: lighting_reporting_product
+#: model:ir.model,name:lighting_reporting_product.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de configuración"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__create_date
+msgid "Created on"
+msgstr "Creado en"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_product__datasheet_generation_date
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_sapb1_product__datasheet_generation_date
+msgid "Datasheet Generation Date"
+msgstr "Fecha de generación de la ficha técnica"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_res_config_settings__product_template
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_product.res_config_settings_view_form
+msgid "Default Product Template"
+msgstr "Plantilla de producto predeterminado"
+
+#. module: lighting_reporting_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_product.res_config_settings_view_form
+msgid ""
+"Default product template to generate the\n"
+"                                        technical sheet."
+msgstr ""
+"Plantilla de producto predeterminado para\n"
+"                                        generar la ficha técnica."
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__display_name
+msgid "Display Name"
+msgstr "Nombre a mostrar"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_attachment_type__include_in_datasheet
+msgid "Include in Datasheet"
+msgstr "Incluir en Ficha Técnica"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__lang_id
+msgid "Language"
+msgstr "Idioma"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard____last_update
+msgid "Last Modified on"
+msgstr "Última modificación en"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__write_date
+msgid "Last Updated on"
+msgstr "Última actualización en"
+
+#. module: lighting_reporting_product
+#: model:ir.actions.act_window,name:lighting_reporting_product.lighting_reporting_product_wizard_action
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_product.lihgting_product_form_view
+msgid "Print datasheet"
+msgstr "Imprimir ficha técnica"
+
+#. module: lighting_reporting_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_product.lighting_reporting_product_wizard_view_form
+msgid "Print product datasheet"
+msgstr "Imprimir ficha técnica de producto"
+
+#. module: lighting_reporting_product
+#: model:ir.model,name:lighting_reporting_product.model_lighting_product
+msgid "Product"
+msgstr "Producto"
+
+#. module: lighting_reporting_product
+#: model:ir.model,name:lighting_reporting_product.model_lighting_attachment
+msgid "Product Attachment"
+msgstr "iluminación.attachment"
+
+#. module: lighting_reporting_product
+#: model:ir.model,name:lighting_reporting_product.model_lighting_attachment_type
+msgid "Product Attachment Type"
+msgstr "iluminación.attachment.type"
+
+#. module: lighting_reporting_product
+#: model:ir.model,name:lighting_reporting_product.model_lighting_product_source
+msgid "Product Source"
+msgstr "iluminación.producto.source"
+
+#. module: lighting_reporting_product
+#: model_terms:ir.ui.view,arch_db:lighting_reporting_product.res_config_settings_view_form
+msgid "Reports"
+msgstr "Informes"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__template
+msgid "Template"
+msgstr "Plantilla"
+
+#. module: lighting_reporting_product
+#: model:ir.model.fields,field_description:lighting_reporting_product.field_lighting_reporting_product_wizard__template_visible
+msgid "Template Visible"
+msgstr "Plantilla visible"
