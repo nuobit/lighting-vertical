@@ -29,6 +29,12 @@ class LightingImportAttachmentFileProduct(models.Model):
             ):
                 raise ValidationError(_("Product already exists"))
 
+    def get_datas_fname_values(self, datas_fname):
+        match = re.match(r"^(?P<filename>.+)\.(?P<ext>[^\.]+)$", datas_fname)
+        if not match:
+            return {"filename": datas_fname}
+        return match.groupdict()
+
     # flake8: noqa: C901
     def _import(self):
         for rec in self:
@@ -66,31 +72,14 @@ class LightingImportAttachmentFileProduct(models.Model):
                         attach_sorted_d[0],
                         attach_sorted_d[1:],
                     )
-                    if attach_to_remove_ld:
-                        raise ValidationError(
-                            _(
-                                "The file %(file)s has more than one attachment with "
-                                "the same name in the product with reference: %(ref)s"
-                            )
-                            % {
-                                "file": rec.file_id.datas_fname,
-                                "ref": rec.product_id.reference,
-                            }
-                        )
                     if rec.file_id.attachment_type_id.allow_multiple_files:
                         attach_d = False
-                        match = re.match(
-                            r"^(?P<filename>.+)\.(?P<ext>[^\.]+)$", rec.file_datas_fname
-                        )
-                        datas_fname_vals = (
-                            match.groupdict()
-                            if match
-                            else {"filename": rec.file_datas_fname}
+                        datas_fname_vals = rec.get_datas_fname_values(
+                            rec.file_datas_fname
                         )
                         similar_attach_d = attachment_ids.filtered(
-                            lambda x: x.datas_fname.startswith(
-                                datas_fname_vals["filename"]
-                            )
+                            lambda x: x.datas_location == "file"
+                            and x.datas_fname.startswith(datas_fname_vals["filename"])
                         )
                         nums = []
                         for attach in similar_attach_d:
@@ -104,10 +93,44 @@ class LightingImportAttachmentFileProduct(models.Model):
                         if nums:
                             all_nums = range(1, max(nums) + 1)
                             missing_nums = set(all_nums) - set(nums)
-                            count = min(missing_nums) if missing_nums else max(nums) + 1
+                            count = min(missing_nums, default=max(nums) + 1)
+                        for attach in sorted(
+                            attach_to_remove_ld, key=lambda x: x.sequence
+                        ):
+                            attach_fname_vals = rec.get_datas_fname_values(
+                                attach.datas_fname
+                            )
+                            f_struct = rec.file_id.check_filepath_structure(
+                                attach.datas_fname
+                            )
+                            if f_struct:
+                                if f_struct.get("info") and f_struct["info"].isdigit():
+                                    attach_fname_vals["filename"].removesuffix(
+                                        f_struct["info"]
+                                    )
+                            datas_fname = f"{attach_fname_vals['filename']}_{count}"
+                            if attach_fname_vals.get("ext"):
+                                datas_fname += f".{attach_fname_vals['ext']}"
+                            attach.datas_fname = datas_fname
+                            if nums:
+                                missing_nums.discard(count)
+                                count = min(missing_nums, default=max(nums) + 1)
+                            else:
+                                count += 1
                         new_fname = f"{datas_fname_vals['filename']}_{count}"
                         if datas_fname_vals.get("ext"):
                             new_fname += f".{datas_fname_vals['ext']}"
+                    elif attach_to_remove_ld:
+                        raise ValidationError(
+                            _(
+                                "The file %(file)s has more than one attachment with "
+                                "the same name in the product with reference: %(ref)s"
+                            )
+                            % {
+                                "file": rec.file_id.datas_fname,
+                                "ref": rec.product_id.reference,
+                            }
+                        )
             if not attach_d:
                 values.update(
                     {
