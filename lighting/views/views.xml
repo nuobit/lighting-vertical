@@ -239,6 +239,7 @@
         <field name="arch" type="xml">
             <form string="Product source line Form">
                 <sheet>
+                    <field name="invisible_fields" invisible="1" />
                     <group col="6">
                         <field name="type_id" colspan="2" />
                         <field
@@ -255,24 +256,28 @@
                     </group>
                     <group col="6">
                         <field name="is_max_wattage" />
-                        <field name="wattage" />
+                        <field
+                            name="wattage"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('wattage', ))]}"
+                        />
                         <field
                             name="wattage_magnitude"
-                            attrs="{'required': [('wattage', '>', 0)]}"
+                            attrs="{'required': [('wattage', '>', 0)], 'invisible': [('invisible_fields', 'in', ('wattage_magnitude', ))]}"
                         />
                         <field
                             colspan="3"
                             name="efficiency_ids"
                             widget="many2many_tags"
                             options="{'color_field': 'color'}"
-                            attrs="{'invisible': [('is_integrated', '=', False), ('is_lamp_included', '=', False)]}"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('efficiency_ids', ))]}"
                         />
                     </group>
-                    <group
-                        col="6"
-                        attrs="{'invisible': [('is_integrated', '=', False), ('is_lamp_included', '=', False)]}"
-                    >
-                        <field name="color_temperature_flux_ids" colspan="4">
+                    <group col="6">
+                        <field
+                            name="color_temperature_flux_ids"
+                            colspan="4"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('color_temperature_flux_ids', ))]}"
+                        >
                             <tree editable="bottom">
                                 <field name="color_temperature_id" />
                                 <field name="total_flux" />
@@ -281,7 +286,11 @@
                                 <field name="efficiency_id" />
                             </tree>
                         </field>
-                        <field name="is_color_temperature_flux_tunable" colspan="2" />
+                        <field
+                            name="is_color_temperature_flux_tunable"
+                            colspan="2"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('is_color_temperature_flux_tunable', ))]}"
+                        />
                     </group>
 
                     <group
@@ -289,11 +298,26 @@
                         attrs="{'invisible': [('is_led', '=', False)]}"
                     >
                         <field name="is_led" invisible="1" />
-                        <field name="cri_min" />
-                        <field name="color_consistency" />
-                        <field name="special_spectrum_id" />
-                        <field name="leds_m" />
-                        <field name="led_chip_ids">
+                        <field
+                            name="cri_min"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('cri_min', ))]}"
+                        />
+                        <field
+                            name="color_consistency"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('color_consistency', ))]}"
+                        />
+                        <field
+                            name="special_spectrum_id"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('special_spectrum_id', ))]}"
+                        />
+                        <field
+                            name="leds_m"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('leds_m', ))]}"
+                        />
+                        <field
+                            name="led_chip_ids"
+                            attrs="{'invisible': [('invisible_fields', 'in', ('led_chip_ids', ))]}"
+                        >
                             <tree editable="bottom">
                                 <field name="reference" />
                                 <field name="brand_id" />

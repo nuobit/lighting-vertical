@@ -20,6 +20,221 @@ class LightingProductSourceLine(models.Model):
     _rec_name = "type_id"
     _order = "sequence"
 
+    # Start of dependent fields management methods
+    ####################################################################################
+
+    @property
+    def KEY_FIELDS(self):
+        """This method returns a list of key boolean fields that determine
+        the configuration state of a product."""
+        return [
+            "is_led",
+            "is_integrated",
+            "is_lamp_included",
+            "is_max_wattage",
+        ]
+
+    @property
+    def FIELD_GROUP_MAP(self):
+        """This method defines a mapping of product specification categories
+        to specific fields relevant to those categories."""
+        return {
+            "wattage": {"wattage", "wattage_magnitude"},
+            "ccts": {
+                "efficiency_ids",
+                "color_temperature_flux_ids",
+                "is_color_temperature_flux_tunable",
+            },
+            "led_specs": {
+                "cri_min",
+                "color_consistency",
+                "special_spectrum_id",
+                "leds_m",
+                "led_chip_ids",
+            },
+            "lamp_included": {"is_lamp_included"},
+            "max_wattage": {"is_max_wattage"},
+        }
+
+    @property
+    def GROUP_MAP(self):
+        """This method returns a dictionary where keys are binary strings
+        derived from the values of KEY_FIELDS."""
+        return {
+            "0000": {
+                "wattage": False,
+                "ccts": False,
+                "led_specs": False,
+                "lamp_included": False,
+                "max_wattage": True,
+            },
+            "0001": {
+                "wattage": True,
+                "ccts": False,
+                "led_specs": False,
+                "lamp_included": False,
+                "max_wattage": True,
+            },
+            "0010": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": False,
+                "lamp_included": True,
+                "max_wattage": False,
+            },
+            "0011": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": False,
+                "lamp_included": True,
+                "max_wattage": False,
+            },
+            "0100": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": False,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "0101": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": False,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "0110": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": False,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "0111": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": False,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "1000": {
+                "wattage": False,
+                "ccts": False,
+                "led_specs": False,
+                "lamp_included": True,
+                "max_wattage": True,
+            },
+            "1001": {
+                "wattage": True,
+                "ccts": False,
+                "led_specs": False,
+                "lamp_included": True,
+                "max_wattage": True,
+            },
+            "1010": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": True,
+                "lamp_included": True,
+                "max_wattage": False,
+            },
+            "1011": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": True,
+                "lamp_included": True,
+                "max_wattage": False,
+            },
+            "1100": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": True,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "1101": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": True,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "1110": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": True,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+            "1111": {
+                "wattage": True,
+                "ccts": True,
+                "led_specs": True,
+                "lamp_included": False,
+                "max_wattage": False,
+            },
+        }
+
+    def _get_dependent_all_fields(self):
+        self.ensure_one()
+        all_fields = set()
+        for fields_g in self.FIELD_GROUP_MAP.values():
+            all_fields |= set(fields_g)
+        return all_fields
+
+    def _get_dependant_irrelevant_fields(self, values=None):
+        self.ensure_one()
+        return self._get_dependent_all_fields() - self._get_dependant_relevant_fields(
+            values=values
+        )
+
+    def _get_dependant_relevant_fields(self, values=None):
+        self.ensure_one()
+        if not values:
+            new_vals = self
+        else:
+            new_vals = {}
+            for x in self.KEY_FIELDS:
+                new_vals[x] = values[x] if x in values else self[x]
+        key = "".join(["1" if new_vals[x] else "0" for x in self.KEY_FIELDS])
+        group_values = self.GROUP_MAP[key]
+        field_group_map = self.FIELD_GROUP_MAP
+        fields = set()
+        for group, relevant in group_values.items():
+            if relevant:
+                fields |= field_group_map[group]
+        return fields
+
+    def get_dependent_field_value(self, field):
+        self.ensure_one()
+        if field not in self._get_dependent_all_fields():
+            raise ValidationError(_("Field %s is not a dependent field" % field))
+        if field in self._get_dependant_relevant_fields():
+            return self[field]
+        return None
+
+    def update_dependent_fields(self, values):
+        self.ensure_one()
+        for field in self._get_dependant_irrelevant_fields(values):
+            # This is to be sure we don't update already falsy values
+            if not self[field]:
+                if field in values:
+                    del values[field]
+            else:
+                values[field] = None
+
+    # End of dependent fields management methods
+    ####################################################################################
+
+    invisible_fields = fields.Json(
+        compute="_compute_invisible_fields",
+    )
+
+    @api.depends("is_led", "is_integrated", "is_lamp_included", "is_max_wattage")
+    def _compute_invisible_fields(self):
+        for rec in self:
+            rec.invisible_fields = list(rec._get_dependant_irrelevant_fields())
+
     sequence = fields.Integer(
         required=True,
         default=1,
@@ -41,10 +256,15 @@ class LightingProductSourceLine(models.Model):
         default="w",
     )
 
-    @api.constrains("wattage", "type_id", "is_integrated")
+    @api.constrains(
+        "wattage", "type_id", "is_integrated", "is_max_wattage", "is_lamp_included"
+    )
     def _check_wattage(self):
         for rec in self:
-            if rec.type_id.is_integrated and rec.wattage <= 0:
+            if (
+                rec.get_dependent_field_value("wattage") is not None
+                and rec.wattage <= 0
+            ):
                 raise ValidationError(
                     _(
                         "%(source_id)s: The wattage on line %(type_id)s must be greater "
@@ -312,6 +532,7 @@ class LightingProductSourceLine(models.Model):
                 is_lamp_included = vals.get("is_lamp_included", rec.is_lamp_included)
                 if not (is_integrated or is_lamp_included):
                     vals["color_temperature_flux_ids"] = [(5, 0, 0)]
+            rec.update_dependent_fields(vals)
         return super().write(vals)
 
     @api.model_create_multi
