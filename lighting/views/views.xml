@@ -254,12 +254,12 @@
                         />
                     </group>
                     <group col="6">
+                        <field name="is_max_wattage" />
                         <field name="wattage" />
                         <field
                             name="wattage_magnitude"
                             attrs="{'required': [('wattage', '>', 0)]}"
                         />
-                        <field name="is_max_wattage" />
                         <field
                             colspan="3"
                             name="efficiency_ids"
