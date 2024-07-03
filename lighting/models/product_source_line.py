@@ -47,7 +47,7 @@ class LightingProductSourceLine(models.Model):
             if rec.type_id.is_integrated and rec.wattage <= 0:
                 raise ValidationError(
                     _(
-                        "%(source_id)s: The wattage on line %type_id must be greater "
+                        "%(source_id)s: The wattage on line %(type_id)s must be greater "
                         "than 0 if source type is integrated"
                     )
                     % {
