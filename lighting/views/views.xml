@@ -298,7 +298,11 @@
 
                     <group
                         string="LED specifications"
-                        attrs="{'invisible': [('is_led', '=', False)]}"
+                        attrs="{'invisible': [('invisible_fields', 'in', ('cri_min', )),
+                                              ('invisible_fields', 'in', ('color_consistency', )),
+                                              ('invisible_fields', 'in', ('special_spectrum_id', )),
+                                              ('invisible_fields', 'in', ('leds_m', )),
+                                              ('invisible_fields', 'in', ('led_chip_ids', ))]}"
                     >
                         <field name="is_led" invisible="1" />
                         <field
