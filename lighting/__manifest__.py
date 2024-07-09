@@ -19,6 +19,7 @@
         "security/ir.model.access.csv",
         "wizard/lighting_product_addattachment.xml",
         "wizard/product_define_substitute_views.xml",
+        "views/res_config_settings_views.xml",
         "views/product_beam_views.xml",
         "views/product_beam_photodistribution_views.xml",
         "views/product_catalog_views.xml",
@@ -59,4 +60,5 @@
         "data/lighting_data.xml",
         "data/lighting_product_ral_data.xml",
     ],
+    "application": True,
 }

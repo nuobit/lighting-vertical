@@ -4,6 +4,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import formatLang
 
 
 def float2text(f, decs=2):
@@ -427,6 +428,13 @@ class LightingProductSourceLine(models.Model):
                 rec.energy_efficiency_display = False
                 rec.color_temperature_display = False
                 rec.luminous_flux_display = False
+
+    def get_format_lang_decimal(self, number):
+        if number == int(number):
+            return "%g" % number
+        else:
+            digits = len(str(number).split(".")[1].rstrip("0"))
+            return formatLang(self.env, number, digits=digits)
 
     # TODO: This to remove is an old comment.
     # to remove
