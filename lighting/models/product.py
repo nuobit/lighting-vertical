@@ -77,6 +77,7 @@ class LightingProduct(models.Model):
         max_height=128,
         store=True,
         compute="_compute_images",
+        verify_resolution=False,
     )
     image_medium = fields.Image(
         string="Medium-sized image",
@@ -85,6 +86,7 @@ class LightingProduct(models.Model):
         max_height=512,
         store=True,
         compute="_compute_images",
+        verify_resolution=False,
     )
 
     @api.depends(
