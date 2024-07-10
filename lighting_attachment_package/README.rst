@@ -1,6 +1,6 @@
-===========================
-Lighting Attachment Package
-===========================
+========================================
+(DEPRECATED) Lighting Attachment Package
+========================================
 
 .. 
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -21,6 +21,9 @@ Lighting Attachment Package
     :alt: NuoBiT/lighting-vertical
 
 |badge1| |badge2| |badge3|
+
+.. warning::
+    This module is deprecated.
 
 Generate attachment packages.
 
