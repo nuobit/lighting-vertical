@@ -112,6 +112,7 @@ class LightingAttachment(models.Model):
         max_height=128,
         store=True,
         compute="_compute_images",
+        verify_resolution=False,
     )
     image_medium = fields.Binary(
         string="Medium-sized image",
@@ -120,6 +121,7 @@ class LightingAttachment(models.Model):
         max_height=512,
         store=True,
         compute="_compute_images",
+        verify_resolution=False,
     )
 
     @api.depends("datas", "datas_url", "datas_location", "type_id", "type_id.is_image")
