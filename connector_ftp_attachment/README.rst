@@ -1,6 +1,6 @@
-========================
-Connector FTP attachment
-========================
+=====================================
+(DEPRECATED) Connector FTP attachment
+=====================================
 
 .. 
    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -21,6 +21,9 @@ Connector FTP attachment
     :alt: NuoBiT/lighting-vertical
 
 |badge1| |badge2| |badge3|
+
+.. warning::
+    This module is deprecated.
 
 Connector to upload attachments to FTP.
 
