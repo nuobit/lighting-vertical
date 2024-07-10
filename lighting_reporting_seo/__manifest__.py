@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 {
-    "name": "Lighting Reporting SEO",
+    "name": "(DEPRECATED) Lighting Reporting SEO",
     "version": "16.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
