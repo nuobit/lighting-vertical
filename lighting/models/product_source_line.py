@@ -66,14 +66,14 @@ class LightingProductSourceLine(models.Model):
                 "wattage": False,
                 "ccts": False,
                 "led_specs": False,
-                "lamp_included": False,
+                "lamp_included": True,
                 "max_wattage": True,
             },
             "0001": {
                 "wattage": True,
                 "ccts": False,
                 "led_specs": False,
-                "lamp_included": False,
+                "lamp_included": True,
                 "max_wattage": True,
             },
             "0010": {
