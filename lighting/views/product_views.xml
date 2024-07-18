@@ -649,7 +649,11 @@
                 <field
                     name="reference"
                     string="Product"
-                    filter_domain="['|', '|', '|', '|', '|', '|', ('reference','ilike',self), ('description','ilike',self), ('ean','ilike',self), ('catalog_ids','ilike',self), ('location_ids','ilike',self), ('family_ids','ilike',self), ('category_id','ilike',self)]"
+                    filter_domain="['|', '|', '|', '|', '|', '|',
+                        ('reference','ilike',self),
+                        ('description','ilike',self), ('ean','ilike',self), ('catalog_ids','ilike',self),
+                        ('location_ids','ilike',self), ('family_ids','ilike',self),
+                        ('category_id.complete_name','ilike',self)]"
                 />
                 <field
                     name="attachment_ids"
