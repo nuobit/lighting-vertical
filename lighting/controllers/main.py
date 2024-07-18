@@ -31,22 +31,24 @@ class Binary(binary.Binary):
         type="http",
         auth="public",
     )
+    # pylint: disable=redefined-builtin,invalid-name
     def content_image(
         self,
-        hash=None,  # pylint: disable=W0622
+        hash=None,
         xmlid=None,
         model="ir.attachment",
-        id=None,  # pylint: disable=W0622
-        field="datas",
-        filename_field="datas_fname",
-        unique=None,
+        id=None,
+        field="raw",
+        filename_field="name",
         filename=None,
         mimetype=None,
-        download=None,
+        unique=False,
+        download=False,
         width=0,
         height=0,
         crop=False,
         access_token=None,
+        nocache=False,
     ):
 
         if hash:
@@ -75,13 +77,14 @@ class Binary(binary.Binary):
             id=id,
             field=field,
             filename_field=filename_field,
-            unique=unique,
             filename=filename,
             mimetype=mimetype,
+            unique=unique,
             download=download,
             width=width,
             height=height,
             crop=crop,
             access_token=access_token,
+            nocache=nocache,
         )
         return res
