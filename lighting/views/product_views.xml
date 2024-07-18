@@ -661,7 +661,10 @@
                 <field name="ean" />
                 <field name="catalog_ids" />
                 <field name="location_ids" />
-                <field name="category_id" />
+                <field
+                    name="category_id"
+                    filter_domain="[('category_id.complete_name','ilike',self)]"
+                />
                 <field name="family_ids" />
                 <field name="installation_ids" />
                 <field name="application_ids" />
