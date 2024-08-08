@@ -145,6 +145,16 @@ class LightingProduct(models.Model):
 
         return list(chunks(attachments, groupsof))
 
+    def get_complementary_fp_fa_images(self, groupsof=None):
+        attachments = (
+            self.get_attachments_by_type("FP") + self.get_attachments_by_type("FA")[2:]
+        )
+
+        if not groupsof:
+            groupsof = len(attachments)
+
+        return list(chunks(attachments, groupsof))
+
     def get_groups_same_family(self, groupsof=None):
         groups = (
             self.search(
