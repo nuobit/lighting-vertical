@@ -192,6 +192,37 @@
     font-weight: 200;
 }
 
+// complementary images
+.nl-complementary-group-images-vanguard {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.nl-complementary-group-images-vanguard
+    .nl-complementary-group-row-images:nth-last-child(n + 2) {
+    margin-bottom: 10px;
+}
+
+.nl-complementary-group-images-vanguard .nl-complementary-group-row-images > div {
+    float: left;
+    width: 125px;
+
+    img {
+        width: 100%;
+    }
+}
+
+.nl-complementary-group-images-vanguard
+    .nl-complementary-group-row-images
+    > div:nth-child(n + 2) {
+    margin-left: 12px;
+}
+.nl-group-name-vanguard {
+    font-family: "Poppins-ExtraLight";
+    font-weight: 200;
+    font-size: 12px;
+}
+
 // recommended accesories
 
 .nl-recommended-accesories-vanguard {
@@ -235,6 +266,7 @@
     width: 45%;
     float: left;
     margin-right: 5px;
+    border-bottom: 1px solid #858585;
 }
 .nl-recommended-accesories-table-vanguard tr {
     border-bottom: 1px solid #858585;
