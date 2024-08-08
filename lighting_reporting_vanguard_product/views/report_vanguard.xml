@@ -1103,8 +1103,10 @@
                             </t>
                         </t>
                     </div>
-                    <div class="nl-recommended-accesories-vanguard lighting-page-break">
-                        <t t-if="doc.optional_ids">
+                    <t t-if="doc.optional_ids">
+                        <div
+                            class="nl-recommended-accesories-vanguard lighting-page-break"
+                        >
                             <div
                                 class="nl-section-title-vanguard lighting-width-section"
                             >RECOMMENDED ACCESSORIES</div>
@@ -1226,6 +1228,71 @@
                                 </div>
                             </div>
                         </t>
+                        </div>
+                    </t>
+                    <div class="nl-layout-data-vanguard lighting-page-break">
+                        <t
+                            t-set="compimages"
+                            t-value="doc.get_complementary_fp_fa_images(groupsof=4)"
+                        />
+                        <t t-if="compimages">
+                            <div
+                                class="nl-section-title-vanguard"
+                            >COMPLEMENTARY IMAGES</div>
+                            <div class="nl-complementary-group-images-vanguard">
+                                <t t-foreach="compimages" t-as="cimgs">
+                                    <div
+                                        class="nl-complementary-group-row-images clearfix"
+                                    >
+                                        <t t-foreach="cimgs" t-as="cimg">
+                                            <div>
+                                                <a
+                                                    t-att-href="cimg.url_get(set_public=True)"
+                                                    target="_blank"
+                                                >
+                                                    <img
+                                                        t-attf-src="data:image/*;base64,{{cimg.get_optimized_image()}}"
+                                                    />
+                                                </a>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </t>
+                        <t
+                            t-set="samfamgroups"
+                            t-value="doc.get_groups_same_family(groupsof=4)"
+                        />
+                        <t t-if="samfamgroups">
+                            <div
+                                class="nl-section-title-vanguard"
+                            >PRODUCTS OF THE SAME FAMILY</div>
+                            <div class="nl-complementary-group-images-vanguard">
+                                <t t-foreach="samfamgroups" t-as="sfgrps">
+                                    <div
+                                        class="nl-complementary-group-row-images clearfix"
+                                    >
+                                        <t t-foreach="sfgrps" t-as="sfgrp">
+                                            <t
+                                                t-set="gimg"
+                                                t-value="sfgrp.get_default_group_image()"
+                                            />
+                                            <t t-if="gimg">
+                                                <div>
+                                                    <img
+                                                        t-attf-src="data:image/*;base64,{{gimg.get_optimized_image()}}"
+                                                    />
+                                                    <div
+                                                        class="nl-group-name-vanguard"
+                                                        t-out="sfgrp.alt_name or sfgrp.name"
+                                                    />
+                                                </div>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
                         </t>
                     </div>
                 </div>
