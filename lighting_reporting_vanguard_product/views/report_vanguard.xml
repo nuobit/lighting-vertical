@@ -172,9 +172,7 @@
                                         Finish
                                     </td>
                                     <td>
-                                        <span
-                                            t-out="' / '.join(filter(None, [doc.finish_id.display_name, doc.finish2_id.display_name]))"
-                                        />
+                                        <span t-out="doc.get_finish_display()" />
                                     </td>
                                 </tr>
                                 <tr t-if="doc.location_ids">
