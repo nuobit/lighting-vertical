@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_bulk_update_view" model="ir.ui.view">
+        <field name="name">product.bulk.update.form</field>
+        <field name="model">lighting.product.bulk.update</field>
+        <field
+            name="inherit_id"
+            ref="lighting_product_bulk_update.product_bulk_update_view"
+        />
+        <field name="arch" type="xml">
+            <field name="state_marketing" position="after">
+                <field name="website_published" widget="boolean_toggle" />
+            </field>
+        </field>
+    </record>
+</odoo>
