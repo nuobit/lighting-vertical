@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record model="ir.ui.view" id="product_tree_view">
+        <field name="name">product.tree</field>
+        <field name="model">lighting.product</field>
+        <field name="inherit_id" ref="lighting.product_tree_view" />
+        <field name="arch" type="xml">
+            <header position="inside">
+                <button
+                    name="%(product_bulk_update_action)d"
+                    string="Bulk Data Update"
+                    type="action"
+                />
+            </header>
+        </field>
+    </record>
+</odoo>
