@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="product_bulk_update_view" model="ir.ui.view">
+        <field name="name">product.bulk.update.form</field>
+        <field name="model">lighting.product.bulk.update</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Update">
+                <header />
+                <sheet>
+                    <group>
+                        <field name="state_marketing" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        name="apply_and_close_product_bulk_update"
+                        string="Apply and Close"
+                        type="object"
+                        class="oe_highlight"
+                        data-hotkey="q"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="product_bulk_update_action" model="ir.actions.act_window">
+        <field name="name">Product Data Bulk Update</field>
+        <field name="res_model">lighting.product.bulk.update</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_bulk_update_view" />
+        <field name="target">new</field>
+    </record>
+</odoo>
