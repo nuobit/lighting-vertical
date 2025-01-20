@@ -14,7 +14,7 @@ class LightingProductSourceLine(models.Model):
         if self.source_id.num > 1:
             values_l.append("(%ix)" % self.source_id.num)
         values_l.append(value)
-        return "".join(values_l)
+        return " ".join(values_l)
 
     def _get_color_temperature_flux_values(self, flux_attr):
         self.ensure_one()
