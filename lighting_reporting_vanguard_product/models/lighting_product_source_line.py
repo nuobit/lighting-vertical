@@ -10,6 +10,8 @@ class LightingProductSourceLine(models.Model):
 
     def _prepend_source_num(self, value):
         self.ensure_one()
+        if not value:
+            return value
         values_l = []
         if self.source_id.num > 1:
             values_l.append("(%ix)" % self.source_id.num)
