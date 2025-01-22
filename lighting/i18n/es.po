@@ -3134,7 +3134,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:lighting.selection__lighting_product__state_marketing__n
 #: model_terms:ir.ui.view,arch_db:lighting.lighting_product_view
 msgid "New"
-msgstr ""
+msgstr "Nuevo"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__activity_date_deadline
@@ -3145,7 +3145,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group__activity_date_deadline
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "Nuevo"
+msgstr ""
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__activity_summary
