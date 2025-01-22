@@ -165,7 +165,7 @@ class LightingProductAddAttachment(models.TransientModel):
                     if not ir_attach:
                         continue
                     ir_attach = ir_attach[0]
-                    if ir_attach.checksum == addattach.checksum:
+                    if ir_attach.sudo().checksum == addattach.sudo().checksum:
                         attach_grouped.setdefault("bydatas", []).append(attach)
                     elif attach.datas_fname.lower() == self.datas_fname.lower():
                         attach_grouped.setdefault("byfname", []).append(attach)
