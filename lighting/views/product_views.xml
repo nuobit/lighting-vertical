@@ -527,7 +527,7 @@
                 <field name="category_id" />
                 <field name="family_ids" widget="many2many_tags" />
                 <field name="product_group_id" optional="show" />
-                <field name="state" optional="show" />
+                <field name="state" optional="hide" />
                 <field name="state_marketing" />
                 <field name="available_qty" />
             </tree>
