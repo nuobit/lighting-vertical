@@ -260,6 +260,11 @@ msgid "Alternating"
 msgstr "Alterna"
 
 #. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_voltage__current_type__ac/dc
+msgid "Alternating/Direct"
+msgstr "Alterna/Continua"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__auxiliary_equipment_model_alt
 msgid "Alternative auxiliary gear code"
 msgstr "Modelo equipo auxiliar alternativo"

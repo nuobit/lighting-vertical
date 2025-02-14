@@ -76,9 +76,19 @@ msgid "More than one attachment found with the same name: %s"
 msgstr "Mais de um anexo encontrado com o mesmo nome: %s"
 
 #. module: lighting
-#: selection:lighting.product.voltage,current_type:0
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_voltage__current_type__ac/dc
+msgid "Alternating/Direct"
+msgstr "Alternado/Contínua"
+
+#. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_voltage__current_type__ac
 msgid "Alternating"
-msgstr "Alternando"
+msgstr "Alternado"
+
+#. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_voltage__current_type__dc
+msgid "Direct"
+msgstr "Contínua"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_anchorage_included
@@ -889,11 +899,6 @@ msgstr "Regulável"
 #: model:ir.ui.menu,name:lighting.product_dimmables_menu
 msgid "Dimmables"
 msgstr "Dimmables"
-
-#. module: lighting
-#: selection:lighting.product.voltage,current_type:0
-msgid "Direct"
-msgstr "Direto"
 
 #. module: lighting
 #: model:ir.ui.view,arch_db:lighting.product_family_form_view
