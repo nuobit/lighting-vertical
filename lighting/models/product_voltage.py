@@ -31,6 +31,8 @@ class LightingProductVoltage(models.Model):
                 voltage_l.append(" %s" % rec.current_type)
             if voltage_l:
                 rec.name = "".join(voltage_l)
+            else:
+                rec.name = False
 
     voltage1 = fields.Float(
         string="Voltage 1 (V)",
