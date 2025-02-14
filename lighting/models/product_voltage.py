@@ -64,7 +64,11 @@ class LightingProductVoltage(models.Model):
                 raise ValidationError(_("Voltage 2 cannot be 0"))
 
     current_type = fields.Selection(
-        selection=[("AC", "Alternating"), ("DC", "Direct")],
+        selection=[
+            ("AC", "Alternating"),
+            ("DC", "Direct"),
+            ("AC/DC", "Alternating/Direct"),
+        ],
         string="Current type",
         required=True,
     )
