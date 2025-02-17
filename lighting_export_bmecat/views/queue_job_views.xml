@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <record id="queue_job_view_tree" model="ir.ui.view">
+        <field name="model">queue.job</field>
+        <field name="priority" eval="9999" />
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date_created" />
+                <field name="eta" />
+                <field name="date_done" />
+                <field name="state" />
+                <button
+                    type="object"
+                    name="requeue"
+                    string="Requeue"
+                    class="oe_highlight"
+                    attrs="{'invisible': [('state', '!=', 'failed')]}"
+                />
+            </tree>
+        </field>
+    </record>
+</odoo>

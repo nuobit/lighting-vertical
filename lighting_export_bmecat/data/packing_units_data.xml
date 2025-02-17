@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record
+        id="lighting_bmecat_packing_unit_format_be"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">BE</field>
+        <field name="name">BE - Bundle</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_bg"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">BG</field>
+        <field name="name">BG - Bag</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_bo"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">BO</field>
+        <field name="name">BO - Bottle</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_bx"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">BX</field>
+        <field name="name">BX - Box</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_c62"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">C62</field>
+        <field name="name">C62 - One (unit)</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_ca"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CA</field>
+        <field name="name">CA - Can</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_cl"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CL</field>
+        <field name="name">CL - Coil</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_cq"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CQ</field>
+        <field name="name">CQ - Cartridge</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_cr"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CR</field>
+        <field name="name">CR - Crate</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_cs"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CS</field>
+        <field name="name">CS - Case</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_ct"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CT</field>
+        <field name="name">CT - Carton</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_cy"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">CY</field>
+        <field name="name">CY - Cylinder</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_d99"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">D99</field>
+        <field name="name">D99 - Sleeve</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_dr"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">DR</field>
+        <field name="name">DR - Drum</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_ev"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">EV</field>
+        <field name="name">EV - Envelope</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_kg"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">KG</field>
+        <field name="name">KG - Keg</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_ne"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">NE</field>
+        <field name="name">NE - Unpacked *</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_pa"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">PA</field>
+        <field name="name">PA - Packet</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_pf"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">PF</field>
+        <field name="name">PF - Pallet (lift)</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_pk"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">PK</field>
+        <field name="name">PK - Pack</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_pl"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">PL</field>
+        <field name="name">PL - Pail</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_pr"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">PR</field>
+        <field name="name">PR - Pair</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_pu"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">PU</field>
+        <field name="name">PU - Tray / tray pack</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_rg"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">RG</field>
+        <field name="name">RG - Ring</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_rl"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">RL</field>
+        <field name="name">RL - Reel</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_ro"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">RO</field>
+        <field name="name">RO - Roll</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_sa"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">SA</field>
+        <field name="name">SA - Sack</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_set"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">SET</field>
+        <field name="name">SET - Set</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_tn"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">TN</field>
+        <field name="name">TN - Tin</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_tu"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">TU</field>
+        <field name="name">TU - Tube</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_wr"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">WR</field>
+        <field name="name">WR - Wrap</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_z2"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">Z2</field>
+        <field name="name">Z2 - Chest</field>
+    </record>
+    <record
+        id="lighting_bmecat_packing_unit_format_z3"
+        model="lighting.bmecat.packing.unit"
+    >
+        <field name="code">Z3</field>
+        <field name="name">Z3 - Cask</field>
+    </record>
+</odoo>

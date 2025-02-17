@@ -1,0 +1,834 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* lighting_export_bmecat
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-04 17:21+0000\n"
+"PO-Revision-Date: 2025-03-04 17:21+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_form
+msgid "000.000"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
+msgid "36"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_header
+msgid "5.0"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_needaction
+msgid "Action Needed"
+msgstr "Acción requerida"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_ids
+msgid "Activities"
+msgstr "Actividades"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Decoración de excepción de actividad"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_state
+msgid "Activity State"
+msgstr "Estado de la actividad"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Icono del tipo de actividad"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__attachment_id
+msgid "Attachment"
+msgstr "Adjunto"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_attachment_count
+msgid "Attachment Count"
+msgstr "Número de adjuntos"
+
+#. module: lighting_export_bmecat
+#: model:ir.actions.act_window,name:lighting_export_bmecat.lighting_bmecat_config_action
+#: model:ir.ui.menu,name:lighting_export_bmecat.lighting_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_form
+msgid "BMEcat"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_catalog.py:0
+#, python-format
+msgid "BMEcat Catalog"
+msgstr "Catálogo BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.actions.act_window,name:lighting_export_bmecat.lighting_export_bmecat_action
+msgid "BMEcat Catalogs"
+msgstr "Catálogos BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.actions.report,name:lighting_export_bmecat.action_report_bmecat_header
+msgid "BMEcat Export Header"
+msgstr "Cabecera de exportación BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.actions.report,name:lighting_export_bmecat.action_report_bmecat_product
+msgid "BMEcat Export Product"
+msgstr "Producto de exportación BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_bmecat_config__version__etim_5_0
+msgid "BMEcat_ETIM_5.0"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__bmecat_config_id
+msgid "Bmecat Config"
+msgstr "Configuración BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__cache_clear_limit
+msgid "Cache Clear Limit"
+msgstr "Límite de limpieza de caché"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__catalog_id
+msgid "Catalog"
+msgstr "Catálogo"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__catalog_version
+msgid "Catalog Version"
+msgstr "Versión del catálogo"
+
+#. module: lighting_export_bmecat
+#: model:ir.ui.menu,name:lighting_export_bmecat.lighting_export_bmecat
+msgid "Catalogs"
+msgstr "Catálogos"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__chunk_size
+msgid "Chunk Size (MB)"
+msgstr "Tamaño del bloque (MB)"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__chunk_size
+msgid ""
+"Chunk size in MB used when reading files. A larger chunk size can improve "
+"performance for large files but may increase memory usage."
+msgstr ""
+"Tamaño del bloque en MB utilizado al leer archivos. Un tamaño de bloque "
+"mayor puede mejorar el rendimiento en archivos grandes, pero puede aumentar "
+"el uso de memoria."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__code
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__code
+msgid "Code"
+msgstr "Código"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__company_id
+msgid "Company"
+msgstr "Compañía"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__config_id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__config_id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__config_id
+msgid "Config"
+msgstr "Configuración"
+
+#. module: lighting_export_bmecat
+#: model:ir.ui.menu,name:lighting_export_bmecat.lighting_bmecat_config_menu
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__create_job
+msgid "Create Job"
+msgstr "Crear Trabajo en Cola"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.actions.act_window,help:lighting_export_bmecat.lighting_bmecat_config_action
+#: model_terms:ir.actions.act_window,help:lighting_export_bmecat.lighting_export_bmecat_action
+msgid "Create the first bmecat"
+msgstr "Crear el primer bmecat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__create_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__create_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__create_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__create_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__create_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__create_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__create_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__create_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__create_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__create_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__create_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__create_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__create_date
+msgid "Created on"
+msgstr "Creado el"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__default
+msgid "Default"
+msgstr "Predeterminado"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__dimension
+msgid "Dimension"
+msgstr "Dimensión"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__dimension_type_id
+msgid "Dimension Type"
+msgstr "Tipo de Dimensión"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__display_name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__display_name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__display_name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__display_name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__display_name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__display_name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__display_name
+msgid "Display Name"
+msgstr "Nombre"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_form
+msgid "Download BMEcat file"
+msgstr "Descargar archivo BMEcat"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_export_bmecat__state__draft
+#, python-format
+msgid "Draft"
+msgstr "Borrador"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
+msgid "ECORAEE"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.catalog_form_view
+msgid "Export BMEcat"
+msgstr "Exportar BMEcat"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "Failed to install xmlstarlet: %s"
+msgstr "Error al instalar xmlstarlet: %s"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_follower_ids
+msgid "Followers"
+msgstr "Seguidores"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Seguidores (Contactos)"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Icono de Font Awesome, por ejemplo: fa-tasks"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_form
+msgid "Generate BMEcat file"
+msgstr "Generar archivo BMEcat"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_export_bmecat__state__generated
+#, python-format
+msgid "Generated"
+msgstr "Generado"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__generator_info
+msgid "Generator Info"
+msgstr "Información del generador"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__has_message
+msgid "Has Message"
+msgstr "Tiene mensaje"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__id
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__id
+msgid "ID"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_exception_icon
+msgid "Icon"
+msgstr "Icono"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "Icono para indicar una actividad con excepción."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si está marcado, los nuevos mensajes requieren su atención."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__message_has_error
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__message_has_sms_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si está marcado, algunos mensajes tienen un error de envío."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__validate_xml
+msgid ""
+"If enabled, the XML files will be validated against their respective XSD "
+"schema."
+msgstr ""
+"Si se habilita, los archivos XML serán validados contra su respectivo "
+"esquema XSD."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_is_follower
+msgid "Is Follower"
+msgstr "Es seguidor"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__lang_iso392_2
+msgid "Lang Iso392 2"
+msgstr "Idioma ISO392-2"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__language_id
+msgid "Language"
+msgstr "Idioma"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config____last_update
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details____last_update
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code____last_update
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping____last_update
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit____last_update
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping____last_update
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat____last_update
+msgid "Last Modified on"
+msgstr "Última modificación el"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__write_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__write_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__write_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__write_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__write_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__write_uid
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__write_uid
+msgid "Last Updated by"
+msgstr "Última actualización por"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__write_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__write_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__write_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__write_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__write_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__write_date
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__write_date
+msgid "Last Updated on"
+msgstr "Última actualización el"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_bmecat_config
+msgid "Lighting BMEcat Configuration"
+msgstr "Configuración de Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_bmecat_logistic_details
+msgid "Lighting BMEcat Logistic Details"
+msgstr "Detalles logísticos de Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_bmecat_mime_code
+msgid "Lighting BMEcat Mime Code"
+msgstr "Código MIME de Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_bmecat_mime_code_mapping
+msgid "Lighting BMEcat Mime Code Mapping"
+msgstr "Mapeo de código MIME de Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_bmecat_packing_unit
+msgid "Lighting BMEcat Packing Unit"
+msgstr "Unidad de empaque de Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_bmecat_packing_unit_mapping
+msgid "Lighting BMEcat Packing Unit Mapping"
+msgstr "Mapeo de unidad de empaque de Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_export_bmecat
+msgid "Lighting Export BMEcat"
+msgstr "Exportación Lighting BMEcat"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__logistic_details_ids
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_bmecat_config_view_form
+msgid "Logistic Details"
+msgstr "Detalles logísticos"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_main_attachment_id
+msgid "Main Attachment"
+msgstr "Adjunto principal"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_bmecat_config_view_form
+msgid "Mappings"
+msgstr "Mapeos"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__state_marketing_filter
+msgid "Marketing Status Filter"
+msgstr "Filtro de estado de marketing"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_has_error
+msgid "Message Delivery error"
+msgstr "Error de entrega del mensaje"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_ids
+msgid "Messages"
+msgstr "Mensajes"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__mime_code_ids
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__mime_code_id
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_bmecat_config_view_form
+msgid "Mime Code"
+msgstr "Código MIME"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Fecha límite de mi actividad"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code__name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit__name
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__name
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_form
+msgid "Name"
+msgstr "Nombre"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_bmecat_logistic_details__dimension__net_depth
+msgid "Net Depth"
+msgstr "Profundidad neta"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_bmecat_logistic_details__dimension__net_diameter
+msgid "Net Diameter"
+msgstr "Diámetro neto"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_bmecat_logistic_details__dimension__net_length
+msgid "Net Length"
+msgstr "Longitud neta"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_bmecat_logistic_details__dimension__net_volume
+msgid "Net Volume"
+msgstr "Volumen neto"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_bmecat_logistic_details__dimension__net_width
+msgid "Net Width"
+msgstr "Ancho neto"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Fecha límite de la próxima actividad"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_summary
+msgid "Next Activity Summary"
+msgstr "Resumen de la próxima actividad"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_type_id
+msgid "Next Activity Type"
+msgstr "Tipo de la próxima actividad"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "No BMECat file has been generated yet."
+msgstr "No se ha generado ningún archivo BMECat todavía."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Número de acciones"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_has_error_counter
+msgid "Number of errors"
+msgstr "Número de errores"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Número de mensajes que requieren acción"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Número de mensajes con error de entrega"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__cache_clear_limit
+msgid "Number of records to clear cache."
+msgstr "Número de registros para limpiar la caché."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__packing_unit_ids
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__packing_unit_id
+msgid "Packing Unit"
+msgstr "Unidad de empaque"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_bmecat_config_view_form
+msgid "Packing Units"
+msgstr "Unidades de empaque"
+
+#. module: lighting_export_bmecat
+#: model:ir.model,name:lighting_export_bmecat.model_lighting_catalog
+msgid "Product Catalog"
+msgstr "iluminación.catalog"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__valid_start_date
+msgid "Publication Date"
+msgstr "Fecha de publicación"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_export_bmecat__state__published
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_search
+#, python-format
+msgid "Published"
+msgstr "Publicado"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__bmecat_jobs_ids
+msgid "Queue Job"
+msgstr "Trabajo en cola"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_export_bmecat_view_form
+msgid "Queue Jobs"
+msgstr "Trabajos en cola"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.queue_job_view_tree
+msgid "Requeue"
+msgstr "Reencolar"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__activity_user_id
+msgid "Responsible User"
+msgstr "Usuario responsable"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "Error en la entrega de SMS"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__state_marketing_filter
+msgid "Select marketing states to filter products during export."
+msgstr ""
+"Seleccione los estados de marketing para filtrar productos durante la "
+"exportación."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__state
+msgid "State"
+msgstr "Estado"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Estado basado en las actividades\n"
+"Atrasado: La fecha límite ya ha pasado\n"
+"Hoy: La fecha de la actividad es hoy\n"
+"Planificado: Actividades futuras."
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.lighting_bmecat_config_view_form
+msgid "Technical Details"
+msgstr "Detalles técnicos"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The BMECat version is not supported."
+msgstr "La versión de BMECat no es compatible."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid ""
+"The BMEcat catalog of %(catalog_name)s has been successfully generated."
+msgstr "El catálogo BMEcat de %(catalog_name)s se ha generado correctamente."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_bmecat_mime_code_mapping.py:0
+#, python-format
+msgid "The MIME Code '%s' is already assigned to this BMEcat."
+msgstr "El código MIME '%s' ya está asignado a este BMEcat."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_bmecat_mime_code_mapping.py:0
+#, python-format
+msgid "The MIME Type '%s' is already assigned to this BMEcat."
+msgstr "El tipo MIME '%s' ya está asignado a este BMEcat."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The XML is not valid: %s"
+msgstr "El XML no es válido: %s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The catalog must have a code."
+msgstr "El catálogo debe tener un código."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid ""
+"The catalog version is not correct. It should be in the format 'XXX.XXX'"
+msgstr ""
+"La versión del catálogo no es correcta. Debe tener el formato 'XXX.XXX'."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The company must have an email."
+msgstr "La empresa debe tener un correo electrónico."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid ""
+"The following dimensions do not have a UOM defined:\n"
+"%s"
+msgstr ""
+"Las siguientes dimensiones no tienen una UOM definida:\n"
+"%s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The following products do not have a description: %s"
+msgstr "Los siguientes productos no tienen una descripción: %s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The following products do not have a reference: %s"
+msgstr "Los siguientes productos no tienen una referencia: %s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "The following products do not have taxes: %s"
+msgstr "Los siguientes productos no tienen impuestos: %s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid ""
+"The following products have dimensions that are not configured in the BMECat configuration:\n"
+"%s"
+msgstr ""
+"Los siguientes productos tienen dimensiones que no están configuradas en la configuración BMECat:\n"
+"%s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid ""
+"The following products have no packing unit associated with their "
+"measurement unit in the BMECat configuration: %s"
+msgstr ""
+"Los siguientes productos no tienen una unidad de embalaje asociada con su "
+"unidad de medida en la configuración BMECat: %s"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_bmecat_packing_unit_mapping.py:0
+#, python-format
+msgid ""
+"The same Unit of Measure (UoM) cannot be used more than once in the same "
+"BMEcat."
+msgstr ""
+"La misma unidad de medida (UoM) no se puede usar más de una vez en el mismo "
+"BMEcat."
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_bmecat_config.py:0
+#, python-format
+msgid "There can only be one default BMEcat configuration."
+msgstr "Solo puede haber una configuración BMEcat predeterminada."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_mime_code_mapping__type_id
+msgid "Type"
+msgstr "Tipo"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Tipo de la actividad de excepción en el registro."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__uom_id
+msgid "Unit of Measure"
+msgstr "Unidad de medida"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_packing_unit_mapping__uom_id
+msgid "Uom"
+msgstr "Unidad de medida"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__validate_xml
+msgid "Validate XML"
+msgstr "Validar XML"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#: model:ir.model.fields.selection,name:lighting_export_bmecat.selection__lighting_export_bmecat__state__validated
+#, python-format
+msgid "Validated"
+msgstr "Validado"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__version
+msgid "Version"
+msgstr "Versión"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__website_message_ids
+msgid "Website Messages"
+msgstr "Mensajes del sitio web"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__website_message_ids
+msgid "Website communication history"
+msgstr "Historial de comunicaciones del sitio web"
+
+#. module: lighting_export_bmecat
+#. odoo-python
+#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
+#, python-format
+msgid "You must generate the BMEcat file first"
+msgstr "Debe generar primero el archivo BMEcat"
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
+msgid "base"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
+msgid "false"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
+msgid "physical"
+msgstr ""
+
+#. module: lighting_export_bmecat
+#: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
+msgid "true"
+msgstr ""

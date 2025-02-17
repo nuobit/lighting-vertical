@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="lighting_bmecat_mime_code_md01" model="lighting.bmecat.mime.code">
+        <field name="code">MD01</field>
+        <field name="name">MD01 - Product picture</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md02" model="lighting.bmecat.mime.code">
+        <field name="code">MD02</field>
+        <field name="name">MD02 - Similar figure</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md03" model="lighting.bmecat.mime.code">
+        <field name="code">MD03</field>
+        <field name="name">MD03 - Safety data sheet</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md04" model="lighting.bmecat.mime.code">
+        <field name="code">MD04</field>
+        <field name="name">MD04 - Deeplink product page</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md05" model="lighting.bmecat.mime.code">
+        <field name="code">MD05</field>
+        <field name="name">MD05 - Declaration REACH</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md06" model="lighting.bmecat.mime.code">
+        <field name="code">MD06</field>
+        <field name="name">MD06 - Energy label</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md07" model="lighting.bmecat.mime.code">
+        <field name="code">MD07</field>
+        <field name="name">MD07 - Product data sheet for energy label</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md08" model="lighting.bmecat.mime.code">
+        <field name="code">MD08</field>
+        <field name="name">MD08 - Calibration certificate</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md09" model="lighting.bmecat.mime.code">
+        <field name="code">MD09</field>
+        <field name="name">MD09 - Certificate</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md10" model="lighting.bmecat.mime.code">
+        <field name="code">MD10</field>
+        <field name="name">MD10 - Circuit diagram</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md11" model="lighting.bmecat.mime.code">
+        <field name="code">MD11</field>
+        <field name="name">MD11 - Construction Products Regulation</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md12" model="lighting.bmecat.mime.code">
+        <field name="code">MD12</field>
+        <field name="name">MD12 - Dimensioned drawing</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md13" model="lighting.bmecat.mime.code">
+        <field name="code">MD13</field>
+        <field name="name">MD13 - Environment label</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md14" model="lighting.bmecat.mime.code">
+        <field name="code">MD14</field>
+        <field name="name">MD14 - Instructions for use</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md15" model="lighting.bmecat.mime.code">
+        <field name="code">MD15</field>
+        <field name="name">MD15 - Light cone diagram</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md16" model="lighting.bmecat.mime.code">
+        <field name="code">MD16</field>
+        <field name="name">MD16 - Light Distribution Curve</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md17" model="lighting.bmecat.mime.code">
+        <field name="code">MD17</field>
+        <field name="name">MD17 - Logo 1c</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md18" model="lighting.bmecat.mime.code">
+        <field name="code">MD18</field>
+        <field name="name">MD18 - Logo 4c</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md19" model="lighting.bmecat.mime.code">
+        <field name="code">MD19</field>
+        <field name="name">MD19 - Luminaire data</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md20" model="lighting.bmecat.mime.code">
+        <field name="code">MD20</field>
+        <field name="name">MD20 - Ambient picture</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md21" model="lighting.bmecat.mime.code">
+        <field name="code">MD21</field>
+        <field name="name">MD21 - Mounting instruction</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md22" model="lighting.bmecat.mime.code">
+        <field name="code">MD22</field>
+        <field name="name">MD22 - Product data sheet</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md23" model="lighting.bmecat.mime.code">
+        <field name="code">MD23</field>
+        <field name="name">MD23 - Product picture back view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md24" model="lighting.bmecat.mime.code">
+        <field name="code">MD24</field>
+        <field name="name">MD24 - Product picture bottom view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md25" model="lighting.bmecat.mime.code">
+        <field name="code">MD25</field>
+        <field name="name">MD25 - Product picture detailed view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md26" model="lighting.bmecat.mime.code">
+        <field name="code">MD26</field>
+        <field name="name">MD26 - Product picture front view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md27" model="lighting.bmecat.mime.code">
+        <field name="code">MD27</field>
+        <field name="name">MD27 - Product picture sloping</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md28" model="lighting.bmecat.mime.code">
+        <field name="code">MD28</field>
+        <field name="name">MD28 - Product picture top view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md29" model="lighting.bmecat.mime.code">
+        <field name="code">MD29</field>
+        <field name="name">MD29 - Product picture view from the left side</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md30" model="lighting.bmecat.mime.code">
+        <field name="code">MD30</field>
+        <field name="name">MD30 - Product picture view from the right side</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md31" model="lighting.bmecat.mime.code">
+        <field name="code">MD31</field>
+        <field name="name">MD31 - Seal of approval</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md32" model="lighting.bmecat.mime.code">
+        <field name="code">MD32</field>
+        <field name="name">MD32 - Technical information</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md33" model="lighting.bmecat.mime.code">
+        <field name="code">MD33</field>
+        <field name="name">MD33 - Test approval</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md34" model="lighting.bmecat.mime.code">
+        <field name="code">MD34</field>
+        <field name="name">MD34 - Wiring diagram</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md35" model="lighting.bmecat.mime.code">
+        <field name="code">MD35</field>
+        <field
+            name="name"
+        >MD35 - Supplier’s declaration for products having preferential origin status</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md37" model="lighting.bmecat.mime.code">
+        <field name="code">MD37</field>
+        <field name="name">MD37 - 3D / BIM object</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md38" model="lighting.bmecat.mime.code">
+        <field name="code">MD38</field>
+        <field name="name">MD38 - Management, operation and maintenance document</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md39" model="lighting.bmecat.mime.code">
+        <field name="code">MD39</field>
+        <field name="name">MD39 - Instructional video</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md40" model="lighting.bmecat.mime.code">
+        <field name="code">MD40</field>
+        <field name="name">MD40 - Spare parts list</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md41" model="lighting.bmecat.mime.code">
+        <field name="code">MD41</field>
+        <field name="name">MD41 - Sales brochure</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md42" model="lighting.bmecat.mime.code">
+        <field name="code">MD42</field>
+        <field
+            name="name"
+        >MD42 - AVCP certificate (Assessment and Verification of Constancy of Performance)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md43" model="lighting.bmecat.mime.code">
+        <field name="code">MD43</field>
+        <field name="name">MD43 - CLP (Classification, Labelling and Packaging)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md44" model="lighting.bmecat.mime.code">
+        <field name="code">MD44</field>
+        <field name="name">MD44 - ECOP (Environmental Code of Practice)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md45" model="lighting.bmecat.mime.code">
+        <field name="code">MD45</field>
+        <field name="name">MD45 - Product video</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md46" model="lighting.bmecat.mime.code">
+        <field name="code">MD46</field>
+        <field name="name">MD46 - 360° view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md47" model="lighting.bmecat.mime.code">
+        <field name="code">MD47</field>
+        <field name="name">MD47 - Thumbnail of Product picture (MD01)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md48" model="lighting.bmecat.mime.code">
+        <field name="code">MD48</field>
+        <field name="name">MD48 - Pictogram/Icon</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md49" model="lighting.bmecat.mime.code">
+        <field name="code">MD49</field>
+        <field name="name">MD49 - Declaration RoHS</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md50" model="lighting.bmecat.mime.code">
+        <field name="code">MD50</field>
+        <field
+            name="name"
+        >MD50 - Declaration CoC (Certificate of Conformity, requested for CPR)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md51" model="lighting.bmecat.mime.code">
+        <field name="code">MD51</field>
+        <field name="name">MD51 - Declaration DOP (Declaration of performance)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md52" model="lighting.bmecat.mime.code">
+        <field name="code">MD52</field>
+        <field
+            name="name"
+        >MD52 - Declaration DOC CE (Declaration of conformity CE)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md53" model="lighting.bmecat.mime.code">
+        <field name="code">MD53</field>
+        <field name="name">MD53 - Declaration BREEAM</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md54" model="lighting.bmecat.mime.code">
+        <field name="code">MD54</field>
+        <field
+            name="name"
+        >MD54 - Declaration EPD (Environmental Product Declaration)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md55" model="lighting.bmecat.mime.code">
+        <field name="code">MD55</field>
+        <field
+            name="name"
+        >MD55 - Declaration ETA (European Technical Assessment)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md56" model="lighting.bmecat.mime.code">
+        <field name="code">MD56</field>
+        <field name="name">MD56 - Declaration warranty (Warranty statement)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md57" model="lighting.bmecat.mime.code">
+        <field name="code">MD57</field>
+        <field name="name">MD57 - Application video</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md58" model="lighting.bmecat.mime.code">
+        <field name="code">MD58</field>
+        <field name="name">MD58 - Question and Answer (Q&amp;A video)</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md59" model="lighting.bmecat.mime.code">
+        <field name="code">MD59</field>
+        <field name="name">MD59 - Product picture square format</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md60" model="lighting.bmecat.mime.code">
+        <field name="code">MD60</field>
+        <field name="name">MD60 - Exploded view drawing</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md61" model="lighting.bmecat.mime.code">
+        <field name="code">MD61</field>
+        <field name="name">MD61 - Flowchart</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md62" model="lighting.bmecat.mime.code">
+        <field name="code">MD62</field>
+        <field name="name">MD62 - Product presentation</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md63" model="lighting.bmecat.mime.code">
+        <field name="code">MD63</field>
+        <field name="name">MD63 - Specification text</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md64" model="lighting.bmecat.mime.code">
+        <field name="code">MD64</field>
+        <field name="name">MD64 - Line drawing</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md65" model="lighting.bmecat.mime.code">
+        <field name="code">MD65</field>
+        <field name="name">MD65 - Product family view</field>
+    </record>
+    <record id="lighting_bmecat_mime_code_md99" model="lighting.bmecat.mime.code">
+        <field name="code">MD99</field>
+        <field name="name">MD99 - Others</field>
+    </record>
+</odoo>

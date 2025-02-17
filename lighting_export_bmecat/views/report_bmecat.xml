@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="bmecat_header">
+        <t t-set="catalog" t-value="bmecat.catalog_id" />
+        <HEADER>
+            <GENERATOR_INFO t-out="bmecat.bmecat_config_id.generator_info" />
+            <CATALOG>
+                <LANGUAGE default="true" t-out="bmecat.lang_iso392_2" />
+                <CATALOG_ID t-out="catalog.code" />
+                <CATALOG_VERSION t-out="bmecat.catalog_version" />
+                <CATALOG_NAME t-out="catalog.name" />
+                <DATETIME type="generation_date">
+                    <DATE t-out="datetime.datetime.now().strftime('%Y-%m-%d')" />
+                </DATETIME>
+                <CURRENCY t-out="bmecat.company_id.currency_id.name" />
+            </CATALOG>
+            <BUYER>
+                <BUYER_ID type="buyer_specific" t-out="catalog.code" />
+                <BUYER_NAME t-out="bmecat.company_id.name" />
+            </BUYER>
+            <SUPPLIER>
+                <SUPPLIER_NAME t-out="bmecat.company_id.name" />
+                <ADDRESS type="supplier">
+                    <STREET t-out="bmecat.company_id.street" />
+                    <ZIP t-out="bmecat.company_id.zip" />
+                    <CITY t-out="bmecat.company_id.city" />
+                    <COUNTRY t-out="bmecat.company_id.country_id.name" />
+                    <VAT_ID t-out="bmecat.company_id.vat" />
+                    <EMAIL t-out="bmecat.company_id.email" />
+                    <URL t-out="bmecat.company_id.website" />
+                </ADDRESS>
+            </SUPPLIER>
+            <USER_DEFINED_EXTENSIONS>
+                <UDX.EDXF.VERSION>5.0</UDX.EDXF.VERSION>
+            </USER_DEFINED_EXTENSIONS>
+        </HEADER>
+    </template>
+
+    <template id="bmecat_catalog_product">
+        <PRODUCT mode="new">
+            <SUPPLIER_PID t-out="product.reference" />
+            <PRODUCT_DETAILS>
+                <DESCRIPTION_SHORT t-out="product.description" />
+                <INTERNATIONAL_PID type="gtin" t-out="product.ean" />
+                <PRODUCT_TYPE>physical</PRODUCT_TYPE>
+            </PRODUCT_DETAILS>
+            <PRODUCT_FEATURES>
+                <REFERENCE_FEATURE_SYSTEM_NAME
+                    t-out="'ETIM-%d.0' % product.class_id.version"
+                />
+                <REFERENCE_FEATURE_GROUP_ID
+                    t-out="product.class_id.code or 'EC000000'"
+                />
+                <t t-foreach="product.feature_ids" t-as="feature">
+                    <FEATURE>
+                        <FNAME t-out="feature.feature_code" />
+                        <t t-if="feature.feature_type == 'R'">
+                            <FVALUE t-out="feature.r1_value" />
+                            <FVALUE t-out="feature.r2_value" />
+                        </t>
+                        <t t-if="feature.feature_type == 'N'">
+                            <FVALUE t-out="feature.n_value" />
+                        </t>
+                        <t t-if="feature.feature_type == 'L'">
+                            <FVALUE t-out="'true' if feature.l_value else 'false'" />
+                        </t>
+                        <t t-if="feature.feature_type == 'A'">
+                            <FVALUE t-out="feature.a_value_id.code" />
+                        </t>
+                    </FEATURE>
+                </t>
+            </PRODUCT_FEATURES>
+            <t t-set="packing_unit" t-value="bmecat.get_packing_unit(product)" />
+            <PRODUCT_ORDER_DETAILS>
+                <ORDER_UNIT t-out="packing_unit" />
+                <CONTENT_UNIT t-out="packing_unit" />
+                <NO_CU_PER_OU t-out="product.product_variant_id.uom_id.ratio" />
+                <PRICE_QUANTITY t-out="product.price" />
+                <QUANTITY_MIN t-out="product.product_variant_id.uom_id.ratio" />
+                <QUANTITY_INTERVAL t-out="product.product_variant_id.uom_id.ratio" />
+            </PRODUCT_ORDER_DETAILS>
+            <PRODUCT_PRICE_DETAILS>
+                <DATETIME type="valid_start_date">
+                    <DATE t-out="bmecat.valid_start_date.strftime('%Y-%m-%d')" />
+                </DATETIME>
+                <DAILY_PRICE>false</DAILY_PRICE>
+                <t t-foreach="product.product_variant_id.taxes_id" t-as="tax">
+                    <PRODUCT_PRICE price_type="net_list">
+                        <PRICE_AMOUNT t-out="product.price" />
+                        <TAX t-out="tax.amount / 100" />
+                        <LOWER_BOUND>1</LOWER_BOUND>
+                    </PRODUCT_PRICE>
+                </t>
+            </PRODUCT_PRICE_DETAILS>
+            <USER_DEFINED_EXTENSIONS>
+                <t t-if="bmecat.has_mime_code(product.attachment_ids)">
+                    <UDX.EDXF.MIME_INFO>
+                        <t t-foreach="product.attachment_ids" t-as="attach">
+                            <t
+                                t-set="mime_code"
+                                t-value="bmecat.get_mime_code(attach)"
+                            />
+                            <t t-if="mime_code">
+                                <UDX.EDXF.MIME>
+                                    <UDX.EDXF.MIME_SOURCE t-out="attach.url" />
+                                    <UDX.EDXF.MIME_CODE t-out="mime_code" />
+                                    <t t-if="attach.datas_fname">
+                                        <UDX.EDXF.MIME_FILENAME
+                                            t-out="attach.datas_fname[:250]"
+                                        />
+                                    </t>
+                                    <t
+                                        t-set="mime_alt"
+                                        t-value="'%s:%s' % (mime_code, attach.datas_fname)"
+                                    />
+                                    <UDX.EDXF.MIME_ALT t-out="mime_alt[:80]" />
+                                    <UDX.EDXF.MIME_ORDER t-out="5 + attach_index*6" />
+                                </UDX.EDXF.MIME>
+                            </t>
+                        </t>
+                    </UDX.EDXF.MIME_INFO>
+                </t>
+                <UDX.EDXF.PRODUCT_TO_STOCK>true</UDX.EDXF.PRODUCT_TO_STOCK>
+                <t t-foreach="product.family_ids" t-as="family">
+                    <UDX.EDXF.PRODUCT_SERIES t-out="family.name" />
+                </t>
+                <UDX.EDXF.PACKING_UNITS>
+                    <UDX.EDXF.PACKING_UNIT>
+                        <UDX.EDXF.QUANTITY_MIN
+                        >1</UDX.EDXF.QUANTITY_MIN> <!-- pending customer -->
+                        <UDX.EDXF.PACKING_UNIT_CODE t-out="packing_unit" />
+                        <UDX.EDXF.PACKAGE_BREAK
+                        >false</UDX.EDXF.PACKAGE_BREAK> <!-- pending customer -->
+                        <UDX.EDXF.PACKING_PARTS
+                        >1</UDX.EDXF.PACKING_PARTS> <!-- pending customer -->
+                        <UDX.EDXF.VOLUME t-out="product.ibox_volume" />
+                        <UDX.EDXF.LENGTH t-out="product.ibox_length" />
+                        <UDX.EDXF.WIDTH t-out="product.ibox_width" />
+                        <UDX.EDXF.DEPTH t-out="product.ibox_height" />
+                        <UDX.EDXF.GTIN t-out="product.ean" />
+                    </UDX.EDXF.PACKING_UNIT>
+                </UDX.EDXF.PACKING_UNITS>
+                <t t-if="product.dimension_ids or product.weight">
+                    <t
+                        t-set="logistic_values"
+                        t-value="bmecat.get_logistic_values(product)"
+                    />
+                    <UDX.EDXF.PRODUCT_LOGISTIC_DETAILS>
+                        <UDX.EDXF.NETVOLUME
+                            t-out="logistic_values.get('net_volume', False)"
+                        />
+                        <UDX.EDXF.NETWEIGHT t-out="product.weight" />
+                        <UDX.EDXF.NETLENGTH
+                            t-out="logistic_values.get('net_length', False)"
+                        />
+                        <UDX.EDXF.NETWIDTH
+                            t-out="logistic_values.get('net_width', False)"
+                        />
+                        <UDX.EDXF.NETDEPTH
+                            t-out="logistic_values.get('net_height', False)"
+                        />
+                        <UDX.EDXF.NETDIAMETER
+                            t-out="logistic_values.get('net_diameter', False)"
+                        />
+                    </UDX.EDXF.PRODUCT_LOGISTIC_DETAILS>
+                </t>
+                <UDX.EDXF.BATTERY_CONTAINED>true</UDX.EDXF.BATTERY_CONTAINED>
+                <UDX.EDXF.ROHS_INDICATOR
+                >true</UDX.EDXF.ROHS_INDICATOR> <!-- RoHS pending customer -->
+                <UDX.EDXF.CE_MARKING
+                >true</UDX.EDXF.CE_MARKING> <!-- CE pending customer -->
+                <UDX.EDXF.SURCHARGE_LIST>
+                    <UDX.EDXF.SURCHARGE>
+                        <UDX.EDXF.SURCHARGE_TYPE
+                        >ECORAEE</UDX.EDXF.SURCHARGE_TYPE> <!-- ECORAEE pending customer -->
+                        <UDX.EDXF.SURCHARGE_MANNER
+                        >base</UDX.EDXF.SURCHARGE_MANNER> <!-- base pending customer -->
+                    </UDX.EDXF.SURCHARGE>
+                </UDX.EDXF.SURCHARGE_LIST>
+                <UDX.EDXF.WARRANTY>
+                    <UDX.EDXF.WARRANTY_CONSUMER
+                    >36</UDX.EDXF.WARRANTY_CONSUMER> <!-- warranty pending customer -->
+                </UDX.EDXF.WARRANTY>
+            </USER_DEFINED_EXTENSIONS>
+            <t t-foreach="product.optional_ids" t-as="optional">
+                <PRODUCT_REFERENCE type="accessories" quantity="1">
+                    <PROD_ID_TO t-out="optional.reference" />
+                </PRODUCT_REFERENCE>
+            </t>
+        </PRODUCT>
+    </template>
+
+    <record id="action_report_bmecat_header" model="ir.actions.report">
+        <field name="report_name">lighting_export_bmecat.bmecat_header</field>
+        <field name="name">BMEcat Export Header</field>
+        <field name="report_type">qweb-xml</field>
+        <field name="model">lighting.export.bmecat</field>
+    </record>
+
+    <record id="action_report_bmecat_product" model="ir.actions.report">
+        <field name="report_name">lighting_export_bmecat.bmecat_catalog_product</field>
+        <field name="name">BMEcat Export Product</field>
+        <field name="report_type">qweb-xml</field>
+        <field name="model">lighting.export.bmecat</field>
+    </record>
+</odoo>
