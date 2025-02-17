@@ -44,6 +44,7 @@
                     <group>
                         <field name="code" />
                         <field name="uom" />
+                        <field name="uom_id" />
                         <field name="description" widget="text" />
                     </group>
                 </sheet>
