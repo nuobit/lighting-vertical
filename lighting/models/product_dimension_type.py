@@ -20,6 +20,10 @@ class LightingDimensionType(models.Model):
     uom = fields.Char(
         help="Unit of measure",
     )
+    uom_id = fields.Many2one(
+        comodel_name="uom.uom",
+        string="Unit of Measure",
+    )
     description = fields.Char(
         string="Internal description",
     )

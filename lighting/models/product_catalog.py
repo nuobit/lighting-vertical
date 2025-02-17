@@ -19,6 +19,7 @@ class LightingCatalog(models.Model):
         string="Catalog",
         required=True,
     )
+    code = fields.Char(required=True, tracking=True)
     description_show_ip = fields.Boolean(
         string="Description show IP",
         help="If checked, IP and IP2 will be shown on a generated product description "

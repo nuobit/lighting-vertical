@@ -60,5 +60,8 @@
         "data/lighting_data.xml",
         "data/lighting_product_ral_data.xml",
     ],
+    "external_dependencies": {
+        "python": ["openupgradelib"],
+    },
     "application": True,
 }

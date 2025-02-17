@@ -762,6 +762,7 @@ msgstr "Cerrar"
 #: model_terms:ir.ui.view,arch_db:lighting.product_family_search_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_finish_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_ral_form_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog__code
 msgid "Code"
 msgstr "Código"
 
@@ -5327,8 +5328,9 @@ msgstr ""
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__uom_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type__uom_id
 msgid "Unit of Measure"
-msgstr ""
+msgstr "Unidad de medida"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__uom_name

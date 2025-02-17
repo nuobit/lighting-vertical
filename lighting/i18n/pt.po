@@ -442,6 +442,7 @@ msgstr "Perto"
 #: model:ir.ui.view,arch_db:lighting.product_finish_form_view
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog__code
 msgid "Code"
 msgstr "Código"
 
@@ -2775,6 +2776,12 @@ msgstr "Tipos"
 #: model:ir.ui.menu,name:lighting.product_categories_menu
 msgid "Categories"
 msgstr "Categorias"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type__uom_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__uom_id
+msgid "Unit of Measure"
+msgstr "Unidade de medida"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_id

@@ -20,6 +20,7 @@
         <field name="model">lighting.catalog</field>
         <field name="arch" type="xml">
             <form string="Catalog Form">
+                <header />
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button
@@ -43,6 +44,7 @@
                     </div>
                     <group>
                         <group>
+                            <field name="code" />
                             <field name="html_color" />
                         </group>
                     </group>
@@ -70,6 +72,7 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name" />
+                <field name="code" />
                 <field name="description_show_ip" />
                 <field name="product_count" />
                 <button
@@ -91,6 +94,7 @@
                 <field name="id" />
                 <field name="image_128" />
                 <field name="name" />
+                <field name="code" />
                 <field name="product_count" />
                 <templates>
                     <t t-name="kanban-box">
