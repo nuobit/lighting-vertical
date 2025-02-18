@@ -13,6 +13,7 @@ class LightingImportAttachmentFileProduct(models.Model):
     product_id = fields.Many2one(
         comodel_name="lighting.product",
         required=True,
+        ondelete="cascade",
     )
     file_id = fields.Many2one(
         comodel_name="lighting.import.attachment.file",
