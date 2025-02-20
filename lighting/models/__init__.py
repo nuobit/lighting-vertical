@@ -12,6 +12,7 @@ from . import product_category_attachment
 from . import product_application
 from . import product_application_attachment
 from . import product_dimension_abstract
+from . import product_dimension_product_abstract
 from . import product_dimension
 from . import product_dimension_recess
 from . import product_dimension_type

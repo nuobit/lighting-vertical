@@ -2594,6 +2594,21 @@ msgid "The lampholder name must be unique!"
 msgstr "O nome do lampholder deve ser único!"
 
 #. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_beam_dimension.py:0
+#: code:addons/lighting/models/product_dimension_product_abstract.py:0
+#, python-format
+msgid "The dimension %s is duplicated"
+msgstr "A dimensão %s está duplicada"
+
+#. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_dimension_abstract.py:0
+#, python-format
+msgid "The value of the dimension %s must be greater than 0"
+msgstr "O valor da dimensão %s deve ser maior que 0"
+
+#. module: lighting
 #: sql_constraint:lighting.language:0
 msgid "The language code must be unique!"
 msgstr "O código de idioma deve ser único!"

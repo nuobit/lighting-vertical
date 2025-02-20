@@ -771,6 +771,21 @@ msgid "Code used to identify the dimension type"
 msgstr ""
 
 #. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_beam_dimension.py:0
+#: code:addons/lighting/models/product_dimension_product_abstract.py:0
+#, python-format
+msgid "The dimension %s is duplicated"
+msgstr "La dimension %s está duplicada"
+
+#. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_dimension_abstract.py:0
+#, python-format
+msgid "The value of the dimension %s must be greater than 0"
+msgstr "El valor de la dimensión %s debe ser mayor que 0"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog__color
 #: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency__color
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__color

@@ -6,22 +6,22 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class LightingProductBeamDimension(models.Model):
-    _name = "lighting.product.beam.dimension"
-    _description = "Product Beam Dimension"
+class LightingProductDimensionProductAbstract(models.AbstractModel):
+    _name = "lighting.product.dimension.product.abstract"
     _inherit = "lighting.product.dimension.abstract"
+    _description = "Product Dimension Product Abstract"
 
-    beam_id = fields.Many2one(
-        comodel_name="lighting.product.beam",
+    product_id = fields.Many2one(
+        comodel_name="lighting.product",
         ondelete="cascade",
     )
 
-    @api.constrains("type_id", "beam_id")
+    @api.constrains("type_id", "product_id")
     def _check_duplicated_dimension(self):
         for rec in self:
             others = self.search(
                 [
-                    ("beam_id", "=", rec.beam_id.id),
+                    ("product_id", "=", rec.product_id.id),
                     ("type_id", "=", rec.type_id.id),
                     ("id", "!=", rec.id),
                 ]

@@ -2,12 +2,13 @@
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
-class LightingProductAbstractDimension(models.AbstractModel):
+class LightingProductDimensionAbstract(models.AbstractModel):
     _name = "lighting.product.dimension.abstract"
-    _description = "Product Dimension"
+    _description = "Product Dimension Abstract"
     _rec_name = "type_id"
     _order = "sequence"
 
@@ -68,3 +69,12 @@ class LightingProductAbstractDimension(models.AbstractModel):
             return "%s: %s" % (res_label, res_value)
 
         return False
+
+    @api.constrains("value")
+    def _check_value(self):
+        for rec in self:
+            if rec.value <= 0:
+                raise ValidationError(
+                    _("The value of the dimension %s must be greater than 0")
+                    % rec.type_id.name
+                )
