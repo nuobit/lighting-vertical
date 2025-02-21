@@ -1,6 +1,8 @@
 # generated from manifests external_dependencies
 hdbcli
+openupgradelib
 paramiko
 Pillow
+pycountry
 pysmb
 requests
