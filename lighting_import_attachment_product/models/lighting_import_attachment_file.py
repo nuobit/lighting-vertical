@@ -65,11 +65,11 @@ class LightingImportAttachmentFile(models.Model):
         patterns = [
             (
                 r"^(?P<fam_code>[^-]+)-(?P<params>[^-]+)-"
-                r"(?P<finish1>[^-]{2})-(?P<finish2>[^-]{2})$",
+                r"(?P<finish1>[^-]{2,4})-(?P<finish2>[^-]{2,4})$",
                 "%(fam_code)s-%(params)s-%(finish1)s-%(finish2)s",
             ),  # finish2
             (
-                r"^(?P<fam_code>[^-]+)-(?P<params>[^-]+)-(?P<finish1>[^-]{2})",
+                r"^(?P<fam_code>[^-]+)-(?P<params>[^-]+)-(?P<finish1>[^-]{2,4})",
                 "%(fam_code)s-%(params)s-%(finish1)s",
             ),  # finish1
             (
