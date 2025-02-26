@@ -9,10 +9,13 @@ class LightingImportAttachment(models.Model):
     _inherit = "lighting.import.attachment"
 
     def action_check(self):
+        valid_attach_types = (
+            self.env["lighting.attachment.type"].search([]).mapped("code")
+        )
         for rec in self:
             if not rec.file_ids:
                 raise ValidationError(_("No attachments to check"))
-            rec.file_ids.check()
+            rec.file_ids.check(valid_attach_types)
             if not rec.file_ids.filtered(lambda r: r.message_info != "checked"):
                 rec.state = "checked"
 

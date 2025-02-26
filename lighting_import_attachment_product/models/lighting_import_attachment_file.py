@@ -104,38 +104,49 @@ class LightingImportAttachmentFile(models.Model):
             "parse_error": parse_error,
         }
 
-    def check_filepath_structure(self, datas_fname):
+    def check_filepath_structure(self, datas_fname, valid_attach_types):
         self.ensure_one()
         res = {
             x: None
             for x in ["attach_type_name", "fam_name", "ref_struct", "info", "ext"]
         }
+        # extract attach type name
+        attach_type_pattern = "|".join(
+            sorted(valid_attach_types, key=len, reverse=True)
+        )
         m = re.match(
-            r"^(?P<attach_type_name>[A-Z]{1,2})_(?P<fam_name>[^_]+)_"
-            r"(?P<ref_struct>[^_]+)_(?P<info>[^.]+)\.(?P<ext>[^.]+)$",
+            rf"^(?P<attach_type_name>{attach_type_pattern})_(?P<datas_fname_rest>.+)$",
             datas_fname,
         )
         if not m:
+            return None
+        res["attach_type_name"] = m.group("attach_type_name")
+        datas_fname_rest = m.group("datas_fname_rest")
+
+        # exract the rest: family name, reference structure, info and extension
+        m = re.match(
+            r"^(?P<fam_name>[^_]+)_(?P<ref_struct>[^_]+)_(?P<info>[^.]+)\.(?P<ext>[^.]+)$",
+            datas_fname_rest,
+        )
+        if not m:
             m = re.match(
-                r"^(?P<attach_type_name>[A-Z]{1,2})_(?P<fam_name>[^_]+)_"
-                r"(?P<ref_struct>[^.]+)\.(?P<ext>[^.]+)$",
-                datas_fname,
+                r"(?P<fam_name>[^_]+)_(?P<ref_struct>[^.]+)\.(?P<ext>[^.]+)$",
+                datas_fname_rest,
             )
             if not m:
                 m = re.match(
-                    r"^(?P<attach_type_name>[A-Z]{1,2})_(?P<fam_name>[^_]+)\."
-                    "(?P<ext>[^.]+)$",
-                    datas_fname,
+                    r"^(?P<fam_name>[^_]+)\.(?P<ext>[^.]+)$",
+                    datas_fname_rest,
                 )
                 if not m:
                     return None
         res.update(m.groupdict())
         return res
 
-    def check(self):
+    def check(self, valid_attach_types):
         self.check_unaccent()
         for rec in self:
-            values = rec.check_filepath_structure(rec.datas_fname)
+            values = rec.check_filepath_structure(rec.datas_fname, valid_attach_types)
             if not values:
                 rec.message_info = "attachment_struct_error"
                 continue
