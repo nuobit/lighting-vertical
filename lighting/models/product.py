@@ -160,6 +160,7 @@ class LightingProduct(models.Model):
         "source_ids.line_ids.color_temperature_flux_ids",
         "source_ids.line_ids.color_temperature_flux_ids.color_temperature_id",
         "source_ids.line_ids.color_temperature_flux_ids.color_temperature_id.value",
+        "source_ids.line_ids.color_temperature_flux_ids.total_flux",
         "source_ids.line_ids.color_temperature_flux_ids.nominal_flux",
         "beam_ids.dimension_ids",
         "beam_ids.dimension_ids.type_id",
@@ -173,7 +174,6 @@ class LightingProduct(models.Model):
     def _compute_description(self):
         for rec in self:
             for lang in self.env["res.lang"].search([]):
-                # rec.with_context(lang_aux=lang.code)
                 rec.with_context(lang=lang.code).description = rec.with_context(
                     lang=lang.code
                 )._generate_description()
