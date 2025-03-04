@@ -37,7 +37,7 @@ class LightingImportAttachmentFileProduct(models.Model):
         return match.groupdict()
 
     # flake8: noqa: C901
-    def _import(self):
+    def _import(self, valid_attach_types):
         for rec in self:
             # find existing attahcments
             attachment_ids = self.env["lighting.attachment"].search(
@@ -85,7 +85,8 @@ class LightingImportAttachmentFileProduct(models.Model):
                         nums = []
                         for attach in similar_attach_d:
                             f_struct = rec.file_id.check_filepath_structure(
-                                attach.datas_fname
+                                attach.datas_fname,
+                                valid_attach_types,
                             )
                             if f_struct:
                                 if f_struct.get("info") and f_struct["info"].isdigit():
@@ -102,7 +103,8 @@ class LightingImportAttachmentFileProduct(models.Model):
                                 attach.datas_fname
                             )
                             f_struct = rec.file_id.check_filepath_structure(
-                                attach.datas_fname
+                                attach.datas_fname,
+                                valid_attach_types,
                             )
                             if f_struct:
                                 if f_struct.get("info") and f_struct["info"].isdigit():
