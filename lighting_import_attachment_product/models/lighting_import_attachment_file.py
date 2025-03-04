@@ -259,9 +259,9 @@ class LightingImportAttachmentFile(models.Model):
         attach_filename = "_".join(attach_filename_l) + "." + values["ext"]
         return attach_filename
 
-    def import_attachments(self):
+    def import_attachments(self, valid_attach_types):
         for rec in self:
-            rec.file_product_ids._import()
+            rec.file_product_ids._import(valid_attach_types)
             rec.message_info = "imported"
 
     # TODO: Review put this method in xml
