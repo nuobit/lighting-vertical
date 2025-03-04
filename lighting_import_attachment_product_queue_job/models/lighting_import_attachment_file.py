@@ -43,19 +43,21 @@ class LightingImportAttachmentFile(models.Model):
             else:
                 rec.job_state = False
 
-    def import_attachments(self):
+    def import_attachments(self, valid_attach_types):
         if not self.import_attachment_id.queue_job_import:
-            return super().import_attachments()
+            return super().import_attachments(valid_attach_types)
         queue_obj = self.env["queue.job"]
         for rec in self:
-            new_delay = rec.with_delay().execute_delayed_import_attachments()
+            new_delay = rec.with_delay().execute_delayed_import_attachments(
+                valid_attach_types
+            )
             job = queue_obj.search([("uuid", "=", new_delay.uuid)], limit=1)
             rec.file_jobs_ids |= job
         self.import_attachment_id._compute_state()
 
-    def execute_delayed_import_attachments(self):
+    def execute_delayed_import_attachments(self, valid_attach_types):
         self.ensure_one()
-        return super().import_attachments()
+        return super().import_attachments(valid_attach_types)
 
     def action_show_queue_job_details(self):
         self.ensure_one()
