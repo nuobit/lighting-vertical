@@ -10,9 +10,20 @@
             ref="lighting_product_bulk_update.product_bulk_update_view"
         />
         <field name="arch" type="xml">
-            <field name="state_marketing" position="after">
-                <field name="website_published" widget="boolean_toggle" />
-            </field>
+            <sheet position="inside">
+                <group col="12">
+                    <group col="1" colspan="1">
+                        <field name="website_published_enabled" nolabel="1" />
+                    </group>
+                    <group col="2" colspan="11">
+                        <field
+                            name="website_published"
+                            widget="boolean_toggle"
+                            attrs="{'readonly': [('website_published_enabled', '=', False)]}"
+                        />
+                    </group>
+                </group>
+            </sheet>
         </field>
     </record>
 </odoo>
