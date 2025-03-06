@@ -9,10 +9,12 @@ class LightingProductBulkUpdate(models.TransientModel):
     _name = "lighting.product.bulk.update"
     _description = "Bulk Update for Products"
 
+    state_enabled = fields.Boolean()
     state = fields.Selection(
         selection=lambda self: self.env["lighting.product"]._fields["state"].selection,
     )
 
+    state_marketing_enabled = fields.Boolean()
     state_marketing = fields.Selection(
         selection=lambda self: self.env["lighting.product"]
         ._fields["state_marketing"]
@@ -20,14 +22,18 @@ class LightingProductBulkUpdate(models.TransientModel):
     )
 
     def _get_product_bulk_update_values(self):
-        return {
-            "state_marketing": self.state_marketing,
-            "state": self.state,
-        }
+        values = {}
+        if self.state_enabled:
+            values["state"] = self.state
+        if self.state_marketing_enabled:
+            values["state_marketing"] = self.state_marketing
+        return values
 
     def apply_and_close_product_bulk_update(self):
         self.ensure_one()
-        self.env["lighting.product"].browse(self.env.context.get("active_ids")).write(
-            self._get_product_bulk_update_values()
-        )
+        values = self._get_product_bulk_update_values()
+        if values:
+            self.env["lighting.product"].browse(
+                self.env.context.get("active_ids")
+            ).write(values)
         return {"type": "ir.actions.act_window_close"}

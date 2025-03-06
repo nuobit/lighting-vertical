@@ -10,9 +10,27 @@
             <form string="Bulk Update">
                 <header />
                 <sheet>
-                    <group>
-                        <field name="state" />
-                        <field name="state_marketing" />
+                    <group col="12">
+                        <group col="1" colspan="1">
+                            <field name="state_enabled" nolabel="1" />
+                        </group>
+                        <group col="2" colspan="11">
+                            <field
+                                name="state"
+                                attrs="{'readonly': [('state_enabled', '=', False)]}"
+                            />
+                        </group>
+                    </group>
+                    <group col="12">
+                        <group col="1" colspan="1">
+                            <field name="state_marketing_enabled" nolabel="1" />
+                        </group>
+                        <group col="2" colspan="11">
+                            <field
+                                name="state_marketing"
+                                attrs="{'readonly': [('state_marketing_enabled', '=', False)]}"
+                            />
+                        </group>
                     </group>
                 </sheet>
                 <footer>
