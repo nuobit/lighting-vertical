@@ -76,6 +76,11 @@ msgid "Product Data Bulk Update"
 msgstr "Actualización masiva de datos de productos"
 
 #. module: lighting_product_bulk_update
+#: model:ir.model.fields,field_description:lighting_product_bulk_update.field_lighting_product_bulk_update__state
+msgid "State"
+msgstr "Estado"
+
+#. module: lighting_product_bulk_update
 #: model:ir.model.fields,field_description:lighting_product_bulk_update.field_lighting_product_bulk_update__state_marketing
 msgid "State Marketing"
 msgstr "Estado de marketing"
