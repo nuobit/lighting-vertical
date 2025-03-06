@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT 2025 - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -7,6 +8,10 @@ from odoo import fields, models
 class LightingProductBulkUpdate(models.TransientModel):
     _name = "lighting.product.bulk.update"
     _description = "Bulk Update for Products"
+
+    state = fields.Selection(
+        selection=lambda self: self.env["lighting.product"]._fields["state"].selection,
+    )
 
     state_marketing = fields.Selection(
         selection=lambda self: self.env["lighting.product"]
@@ -17,6 +22,7 @@ class LightingProductBulkUpdate(models.TransientModel):
     def _get_product_bulk_update_values(self):
         return {
             "state_marketing": self.state_marketing,
+            "state": self.state,
         }
 
     def apply_and_close_product_bulk_update(self):

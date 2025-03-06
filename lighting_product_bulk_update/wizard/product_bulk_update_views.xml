@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright NuoBiT 2025 - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record id="product_bulk_update_view" model="ir.ui.view">
@@ -10,6 +11,7 @@
                 <header />
                 <sheet>
                     <group>
+                        <field name="state" />
                         <field name="state_marketing" />
                     </group>
                 </sheet>
