@@ -26,6 +26,7 @@ class LightingImportAttachmentFile(models.Model):
     attachment_id = fields.Many2one(
         comodel_name="ir.attachment",
         compute="_compute_ir_attachment",
+        search="_search_attachment_id",
         readonly=True,
     )
 
@@ -33,6 +34,20 @@ class LightingImportAttachmentFile(models.Model):
     def _compute_ir_attachment(self):
         for rec in self:
             rec.attachment_id = rec.env["ir.attachment"].get_attachment(rec, "datas")
+
+    def _search_attachment_id(self, operator, value):
+        attachment_ids = (
+            self.env["ir.attachment"]
+            .search(
+                [
+                    ("res_model", "=", self._name),
+                    ("res_field", "=", "datas"),
+                    ("id", operator, value),
+                ]
+            )
+            .mapped("res_id")
+        )
+        return [("id", "in", attachment_ids)]
 
     checksum = fields.Char(
         related="attachment_id.checksum",
