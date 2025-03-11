@@ -33,7 +33,22 @@ class LightingProductFamilyAttachment(models.Model):
     attachment_id = fields.Many2one(
         comodel_name="ir.attachment",
         compute="_compute_ir_attachment",
+        search="_search_attachment_id",
     )
+
+    def _search_attachment_id(self, operator, value):
+        attachment_ids = (
+            self.env["ir.attachment"]
+            .search(
+                [
+                    ("res_model", "=", self._name),
+                    ("res_field", "=", "datas"),
+                    ("id", operator, value),
+                ]
+            )
+            .mapped("res_id")
+        )
+        return [("id", "in", attachment_ids)]
 
     @api.depends("datas")
     def _compute_ir_attachment(self):
@@ -52,7 +67,22 @@ class LightingProductFamilyAttachment(models.Model):
 
     checksum = fields.Char(
         compute="_compute_checksum",
+        search="_search_checksum",
     )
+
+    def _search_checksum(self, operator, value):
+        attachment_ids = (
+            self.env["ir.attachment"]
+            .search(
+                [
+                    ("res_model", "=", self._name),
+                    ("res_field", "=", "datas"),
+                    ("checksum", operator, value),
+                ]
+            )
+            .mapped("res_id")
+        )
+        return [("id", "in", attachment_ids)]
 
     @api.depends("attachment_id", "attachment_id.checksum")
     def _compute_checksum(self):
