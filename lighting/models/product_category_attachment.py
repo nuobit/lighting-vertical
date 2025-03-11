@@ -32,8 +32,23 @@ class LightingProductCategoryAttachment(models.Model):
     attachment_id = fields.Many2one(
         comodel_name="ir.attachment",
         compute="_compute_ir_attachment",
+        search="_search_attachment_id",
         readonly=True,
     )
+
+    def _search_attachment_id(self, operator, value):
+        attachment_ids = (
+            self.env["ir.attachment"]
+            .search(
+                [
+                    ("res_model", "=", self._name),
+                    ("res_field", "=", "datas"),
+                    ("id", operator, value),
+                ]
+            )
+            .mapped("res_id")
+        )
+        return [("id", "in", attachment_ids)]
 
     @api.depends("datas")
     def _compute_ir_attachment(self):
