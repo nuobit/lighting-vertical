@@ -31,6 +31,16 @@ class LightingBMEcatConfig(models.Model):
         help="Number of records to clear cache.",
         required=True,
     )
+    ecommerce_datasheet_download_url = fields.Char(
+        required=True,
+        help="URL to download datasheets from the e-commerce site. If '%(reference)s' "
+        "is included, it will be replaced by the product's reference.",
+    )
+    ecommerce_catalog_url = fields.Char(
+        required=True,
+        help="URL to access the e-commerce catalog. If '%(reference)s' is included, "
+        "it will be replaced by the product's reference.",
+    )
     validate_xml = fields.Boolean(
         string="Validate XML",
         default=True,

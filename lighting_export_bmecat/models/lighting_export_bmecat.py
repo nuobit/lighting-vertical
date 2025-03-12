@@ -107,18 +107,52 @@ class LightingExportBMEcat(models.Model):
             if rec.state != "draft" and not rec.attachment_id:
                 raise ValidationError(_("You must generate the BMEcat file first"))
 
-    def has_mime_code(self, attachments):
-        return any(
-            [
-                attach.type_id in self.bmecat_config_id.mime_code_ids.mapped("type_id")
-                for attach in attachments
-            ]
-        )
+    def get_mime_info(self, product):
+        mime_info = {}
+        index = 0
+        for index, attach in enumerate(product.attachment_ids, start=1):
+            mime_code = self.bmecat_config_id.mime_code_ids.filtered(
+                lambda x: x.type_id == attach.type_id
+            ).mime_code_id.code
+            if mime_code:
+                mime_info[index] = {
+                    "mime_source": attach.url,
+                    "mime_code": mime_code,
+                    "mime_filename": attach.datas_fname[:250]
+                    if attach.datas_fname
+                    else False,
+                    "mime_alt": "%s:%s" % (mime_code, attach.datas_fname),
+                }
+        mime_info[index + 1] = self.get_mime_md04(product)
+        mime_info[index + 2] = self.get_mime_md22(product)
+        return mime_info
 
-    def get_mime_code(self, attachment):
-        return self.bmecat_config_id.mime_code_ids.filtered(
-            lambda x: x.type_id == attachment.type_id
-        ).mime_code_id.code
+    def _get_url_mime(self, product, url_func, code):
+        return {
+            "mime_source": url_func(product),
+            "mime_code": code,
+            "mime_filename": f"URL {code}",
+            "mime_alt": f"URL {code}",
+        }
+
+    def get_mime_md04(self, product):
+        return self._get_url_mime(product, self.get_product_web_url, "MD04")
+
+    def get_mime_md22(self, product):
+        return self._get_url_mime(product, self.get_datasheet_download_url, "MD22")
+
+    def _format_url(self, url, product):
+        if "%(reference)s" in url:
+            return url % {"reference": product.reference}
+        return url
+
+    def get_product_web_url(self, product):
+        base_url = self.bmecat_config_id.ecommerce_catalog_url
+        return self._format_url(base_url, product)
+
+    def get_datasheet_download_url(self, product):
+        base_url = self.bmecat_config_id.ecommerce_datasheet_download_url
+        return self._format_url(base_url, product)
 
     def get_packing_unit(self, product):
         return self.bmecat_config_id.packing_unit_ids.filtered(
@@ -378,7 +412,9 @@ class LightingExportBMEcat(models.Model):
 
     def send_bmecat_notification(self, attachment):
         self.message_post(attachment_ids=[attachment.id])
-        self.with_context(mail_notify_author=True).message_post(
+        if self.create_job:
+            self = self.with_context(mail_notify_author=True)
+        self.message_post(
             body=_(
                 "The BMEcat catalog of %(catalog_name)s has been successfully generated."
             )

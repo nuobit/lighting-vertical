@@ -22,7 +22,7 @@ Lighting Export BMEcat
 
 |badge1| |badge2| |badge3|
 
-This module adds the function generate_generic_name for display names models
+This module allows generating catalogs in BMEcat ETIM format.
 
 **Table of contents**
 

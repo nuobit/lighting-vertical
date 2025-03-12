@@ -1,1 +1,1 @@
-This module adds the function generate_generic_name for display names models
+This module allows generating catalogs in BMEcat ETIM format.
