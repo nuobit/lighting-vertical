@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-04 17:21+0000\n"
-"PO-Revision-Date: 2025-03-04 17:21+0000\n"
+"POT-Creation-Date: 2025-03-13 08:10+0000\n"
+"PO-Revision-Date: 2025-03-13 08:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -238,6 +238,16 @@ msgstr "Borrador"
 #: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
 msgid "ECORAEE"
 msgstr ""
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_catalog_url
+msgid "Ecommerce Catalog Url"
+msgstr "URL Catálogo Ecommerce"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_datasheet_download_url
+msgid "Ecommerce Datasheet Download Url"
+msgstr "URL Descarga de Ficha Técnica Ecommerce"
 
 #. module: lighting_export_bmecat
 #: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.catalog_form_view
@@ -767,6 +777,16 @@ msgstr "Tipo"
 #: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Tipo de la actividad de excepción en el registro."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_catalog_url
+msgid "URL to access the e-commerce catalog."
+msgstr "URL para acceder al catálogo de comercio electrónico."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_datasheet_download_url
+msgid "URL to download datasheets from the e-commerce site."
+msgstr "URL para descargar fichas técnicas del sitio de comercio electrónico."
 
 #. module: lighting_export_bmecat
 #: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__uom_id

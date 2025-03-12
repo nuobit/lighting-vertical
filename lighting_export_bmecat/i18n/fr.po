@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-04 17:23+0000\n"
-"PO-Revision-Date: 2025-03-04 17:23+0000\n"
+"POT-Creation-Date: 2025-03-13 08:11+0000\n"
+"PO-Revision-Date: 2025-03-13 08:11+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -238,6 +238,16 @@ msgstr "Brouillon"
 #: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.bmecat_catalog_product
 msgid "ECORAEE"
 msgstr ""
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_catalog_url
+msgid "Ecommerce Catalog Url"
+msgstr "URL Catalogue Ecommerce"
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_datasheet_download_url
+msgid "Ecommerce Datasheet Download Url"
+msgstr "URL Téléchargement Fiche Technique Ecommerce"
 
 #. module: lighting_export_bmecat
 #: model_terms:ir.ui.view,arch_db:lighting_export_bmecat.catalog_form_view
@@ -727,8 +737,7 @@ msgid ""
 "The following products have dimensions that are not configured in the BMECat configuration:\n"
 "%s"
 msgstr ""
-"Les produits suivants ont des dimensions qui ne sont pas configurées dans la "
-"configuration BMECat :\n"
+"Les produits suivants ont des dimensions qui ne sont pas configurées dans la configuration BMECat :\n"
 "%s"
 
 #. module: lighting_export_bmecat
@@ -769,6 +778,16 @@ msgstr ""
 #: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_export_bmecat__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Type de l'activité d'exception sur l'enregistrement."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_catalog_url
+msgid "URL to access the e-commerce catalog."
+msgstr "URL pour accéder au catalogue e-commerce."
+
+#. module: lighting_export_bmecat
+#: model:ir.model.fields,help:lighting_export_bmecat.field_lighting_bmecat_config__ecommerce_datasheet_download_url
+msgid "URL to download datasheets from the e-commerce site."
+msgstr "URL pour télécharger les fiches techniques depuis le site e-commerce."
 
 #. module: lighting_export_bmecat
 #: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_bmecat_logistic_details__uom_id

@@ -59,6 +59,8 @@
                                 <field name="generator_info" />
                                 <field name="chunk_size" />
                                 <field name="cache_clear_limit" />
+                                <field name="ecommerce_datasheet_download_url" />
+                                <field name="ecommerce_catalog_url" />
                             </group>
                         </page>
                     </notebook>

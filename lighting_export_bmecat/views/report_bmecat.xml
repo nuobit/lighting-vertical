@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template id="bmecat_header">
         <t t-set="catalog" t-value="bmecat.catalog_id" />
@@ -12,6 +14,7 @@
                 <DATETIME type="generation_date">
                     <DATE t-out="datetime.datetime.now().strftime('%Y-%m-%d')" />
                 </DATETIME>
+                <TERRITORY t-out="False" /> <!-- pending customer -->
                 <CURRENCY t-out="bmecat.company_id.currency_id.name" />
             </CATALOG>
             <BUYER>
@@ -21,6 +24,7 @@
             <SUPPLIER>
                 <SUPPLIER_NAME t-out="bmecat.company_id.name" />
                 <ADDRESS type="supplier">
+                    <CONTACT t-out="bmecat.company_id.name" />
                     <STREET t-out="bmecat.company_id.street" />
                     <ZIP t-out="bmecat.company_id.zip" />
                     <CITY t-out="bmecat.company_id.city" />
@@ -30,6 +34,13 @@
                     <URL t-out="bmecat.company_id.website" />
                 </ADDRESS>
             </SUPPLIER>
+<!--            <MIME_INFO>-->
+<!--                <MIME>-->
+<!--                    <MIME_SOURCE t-out="Logo.png" /> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                    <MIME_DESCR>MD18</MIME_DESCR> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                    <MIME_ALT t-out="bmecat.company_id.name"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                </MIME>-->
+<!--            </MIME_INFO>-->
             <USER_DEFINED_EXTENSIONS>
                 <UDX.EDXF.VERSION>5.0</UDX.EDXF.VERSION>
             </USER_DEFINED_EXTENSIONS>
@@ -42,6 +53,12 @@
             <PRODUCT_DETAILS>
                 <DESCRIPTION_SHORT t-out="product.description" />
                 <INTERNATIONAL_PID type="gtin" t-out="product.ean" />
+                <SUPPLIER_ALT_PID t-out="False" /> <!-- pending customer -->
+                <MANUFACTURER_PID t-out="False" /> <!-- pending customer -->
+                <MANUFACTURER_NAME t-out="False" /> <!-- pending customer -->
+                <MANUFACTURER_TYPE_DESCR t-out="False" /> <!-- pending customer -->
+                <DELIVERY_TIME t-out="False" /> <!-- pending customer -->
+                <PRODUCT_STATUS t-out="False" /> <!-- pending customer -->
                 <PRODUCT_TYPE>physical</PRODUCT_TYPE>
             </PRODUCT_DETAILS>
             <PRODUCT_FEATURES>
@@ -67,6 +84,7 @@
                         <t t-if="feature.feature_type == 'A'">
                             <FVALUE t-out="feature.a_value_id.code" />
                         </t>
+                        <FVALUE_DETAILS t-out="False" /> <!-- pending customer -->
                     </FEATURE>
                 </t>
             </PRODUCT_FEATURES>
@@ -93,33 +111,32 @@
                 </t>
             </PRODUCT_PRICE_DETAILS>
             <USER_DEFINED_EXTENSIONS>
-                <t t-if="bmecat.has_mime_code(product.attachment_ids)">
+                <t t-set="mime_info" t-value="bmecat.get_mime_info(product)" />
+                <t t-if="mime_info">
                     <UDX.EDXF.MIME_INFO>
-                        <t t-foreach="product.attachment_ids" t-as="attach">
-                            <t
-                                t-set="mime_code"
-                                t-value="bmecat.get_mime_code(attach)"
-                            />
-                            <t t-if="mime_code">
-                                <UDX.EDXF.MIME>
-                                    <UDX.EDXF.MIME_SOURCE t-out="attach.url" />
-                                    <UDX.EDXF.MIME_CODE t-out="mime_code" />
-                                    <t t-if="attach.datas_fname">
-                                        <UDX.EDXF.MIME_FILENAME
-                                            t-out="attach.datas_fname[:250]"
-                                        />
-                                    </t>
-                                    <t
-                                        t-set="mime_alt"
-                                        t-value="'%s:%s' % (mime_code, attach.datas_fname)"
-                                    />
-                                    <UDX.EDXF.MIME_ALT t-out="mime_alt[:80]" />
-                                    <UDX.EDXF.MIME_ORDER t-out="5 + attach_index*6" />
-                                </UDX.EDXF.MIME>
-                            </t>
+                        <t t-foreach="mime_info.values()" t-as="mime">
+                            <UDX.EDXF.MIME>
+                                <UDX.EDXF.MIME_SOURCE
+                                    t-out="mime.get('mime_source', False)"
+                                />
+                                <UDX.EDXF.MIME_CODE
+                                    t-out="mime.get('mime_code', False)"
+                                />
+                                <UDX.EDXF.MIME_FILENAME
+                                    t-out="mime.get('mime_filename', False)"
+                                />
+                                <UDX.EDXF.MIME_ALT
+                                    t-out="mime.get('mime_alt', False)"
+                                />
+                                <UDX.EDXF.MIME_ORDER t-out="5 + mime_index*6" />
+                            </UDX.EDXF.MIME>
                         </t>
                     </UDX.EDXF.MIME_INFO>
                 </t>
+<!--                <UDX.EDXF.DISCOUNT_GROUP>-->
+<!--                    <UDX.EDXF.DISCOUNT_GROUP_MANUFACTURER t-out="False"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                </UDX.EDXF.DISCOUNT_GROUP>-->
+                <UDX.EDXF.ADDITIONAL_FACTORS t-out="False" /> <!-- pending customer -->
                 <UDX.EDXF.PRODUCT_TO_STOCK>true</UDX.EDXF.PRODUCT_TO_STOCK>
                 <t t-foreach="product.family_ids" t-as="family">
                     <UDX.EDXF.PRODUCT_SERIES t-out="family.name" />
@@ -128,16 +145,25 @@
                     <UDX.EDXF.PACKING_UNIT>
                         <UDX.EDXF.QUANTITY_MIN
                         >1</UDX.EDXF.QUANTITY_MIN> <!-- pending customer -->
+                        <UDX.EDXF.QUANTITY_MAX
+                            t-out="False"
+                        /> <!-- pending customer -->
+                        <UDX.EDXF.PACKING_UNIT_NAME
+                            t-out="False"
+                        /> <!-- pending customer -->
                         <UDX.EDXF.PACKING_UNIT_CODE t-out="packing_unit" />
                         <UDX.EDXF.PACKAGE_BREAK
                         >false</UDX.EDXF.PACKAGE_BREAK> <!-- pending customer -->
                         <UDX.EDXF.PACKING_PARTS
                         >1</UDX.EDXF.PACKING_PARTS> <!-- pending customer -->
                         <UDX.EDXF.VOLUME t-out="product.ibox_volume" />
+                        <UDX.EDXF.WEIGHT t-out="product.ibox_weight" />
                         <UDX.EDXF.LENGTH t-out="product.ibox_length" />
                         <UDX.EDXF.WIDTH t-out="product.ibox_width" />
                         <UDX.EDXF.DEPTH t-out="product.ibox_height" />
+                        <UDX.EDXF.DIAMETER t-out="False" /> <!-- pending customer -->
                         <UDX.EDXF.GTIN t-out="product.ean" />
+                        <UDX.EDXF.GS1_128 t-out="False" /> <!-- pending customer -->
                     </UDX.EDXF.PACKING_UNIT>
                 </UDX.EDXF.PACKING_UNITS>
                 <t t-if="product.dimension_ids or product.weight">
@@ -162,8 +188,18 @@
                         <UDX.EDXF.NETDIAMETER
                             t-out="logistic_values.get('net_diameter', False)"
                         />
+                        <UDX.EDXF.REGION_OF_ORIGIN
+                            t-out="False"
+                        /> <!-- pending customer -->
                     </UDX.EDXF.PRODUCT_LOGISTIC_DETAILS>
                 </t>
+                <UDX.EDXF.SHELF_LIFE_PERIOD t-out="False" /> <!-- pending customer -->
+<!--                <UDX.EDXF.REACH>-->
+<!--                    <UDX.EDXF.REACH.LISTDATE t-out="False"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                    <UDX.EDXF.REACH.INFO t-out="False"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                    <UDX.EDXF.SCIP_NUMBER t-out="False"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                    <UDX.EDXF.UFI_CODE t-out="False"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                </UDX.EDXF.REACH>-->
                 <UDX.EDXF.BATTERY_CONTAINED>true</UDX.EDXF.BATTERY_CONTAINED>
                 <UDX.EDXF.ROHS_INDICATOR
                 >true</UDX.EDXF.ROHS_INDICATOR> <!-- RoHS pending customer -->
@@ -175,6 +211,9 @@
                         >ECORAEE</UDX.EDXF.SURCHARGE_TYPE> <!-- ECORAEE pending customer -->
                         <UDX.EDXF.SURCHARGE_MANNER
                         >base</UDX.EDXF.SURCHARGE_MANNER> <!-- base pending customer -->
+                        <UDX.EDXF.SURCHARGE_PRICE_AMOUNT
+                            t-out="False"
+                        /> <!-- pending customer -->
                     </UDX.EDXF.SURCHARGE>
                 </UDX.EDXF.SURCHARGE_LIST>
                 <UDX.EDXF.WARRANTY>
@@ -187,6 +226,13 @@
                     <PROD_ID_TO t-out="optional.reference" />
                 </PRODUCT_REFERENCE>
             </t>
+            <PRODUCT_LOGISTIC_DETAILS>
+<!--                <CUSTOMS_TARIFF_NUMBER>-->
+<!--                    <CUSTOMS_NUMBER t-out="False"/> &lt;!&ndash; pending customer &ndash;&gt;-->
+<!--                </CUSTOMS_TARIFF_NUMBER>-->
+                <STATISTICS_FACTOR>1</STATISTICS_FACTOR>
+                <COUNTRY_OF_ORIGIN t-out="False" /> <!-- pending customer -->
+            </PRODUCT_LOGISTIC_DETAILS>
         </PRODUCT>
     </template>
 

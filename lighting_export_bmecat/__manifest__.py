@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 {
     "name": "Lighting Export BMEcat",
+    "summary": "This module allows generating catalogs in BMEcat ETIM format.",
     "version": "16.0.1.0.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
