@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <template
+        id="bmecat_catalog_product_seo"
+        inherit_id="lighting_export_bmecat.bmecat_catalog_product"
+    >
+        <xpath expr="//PRODUCT_DETAILS/DESCRIPTION_SHORT" position="after">
+            <DESCRIPTION_LONG t-out="product.marketplace_description or False" />
+        </xpath>
+        <xpath expr="//PRODUCT_DETAILS/DELIVERY_TIME" position="after">
+            <t
+                t-set="keywords"
+                t-value="'\n'.join(product.seo_keyword_ids.mapped('name'))"
+            />
+            <KEYWORD t-out="keywords[:50] if keywords else False" />
+            <REMARKS
+                t-out="'\n'.join(product.note_ids.note_id.mapped('name')) or False"
+            />
+        </xpath>
+    </template>
+</odoo>
