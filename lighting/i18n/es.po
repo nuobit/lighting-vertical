@@ -3345,6 +3345,12 @@ msgid "Online"
 msgstr "Online"
 
 #. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product__state_marketing__s
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Special"
+msgstr "Especial"
+
+#. module: lighting
 #. odoo-python
 #: code:addons/lighting/models/product.py:0
 #, python-format

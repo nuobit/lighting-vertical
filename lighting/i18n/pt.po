@@ -2256,6 +2256,12 @@ msgid "Online"
 msgstr "Online"
 
 #. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product__state_marketing__s
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Special"
+msgstr "Especial"
+
+#. module: lighting
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: selection:lighting.product,state_marketing:0
 msgid "New"
