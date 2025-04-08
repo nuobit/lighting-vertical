@@ -24,6 +24,7 @@ YESNO = [
 
 STATES_MARKETING = [
     ("O", "Online"),
+    ("S", "Special"),
     ("N", "New"),
     ("C", "Cataloged"),
     ("ES", "Until end of stock"),
@@ -34,7 +35,7 @@ STATES_MARKETING = [
 
 ES_MAP = {"ES": "D", "ESH": "H"}
 D_MAP = {v: k for k, v in ES_MAP.items()}
-C_STATES = {"O", "N", "C", False}
+C_STATES = {"O", "S", "N", "C", False}
 
 
 def _get_state_name_map(x):
