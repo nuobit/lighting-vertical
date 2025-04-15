@@ -23,7 +23,7 @@ class LightingSAPB1ProductAdapter(Component):
                         FROM %(schema)s.OITM p
                         WHERE p."U_ACC_Obsmark" IN
                             ('Online', 'Novedades', 'Catalogado', 'Fe Digital',
-                             'Descatalogado', 'Fe Histórico','Histórico') and
+                             'Descatalogado', 'Fe Histórico', 'Histórico', 'Especiales') and
                               p."ItmsGrpCod" IN (107, 108, 109, 110, 111)
                               -- Cristher, Dopo, Exo, Indeluz, NX Lighting
                     ),
