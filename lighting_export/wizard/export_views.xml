@@ -41,6 +41,9 @@
         <field name="res_model">lighting.export</field>
         <field name="groups_id" eval="[(4,ref('lighting_export.export_group_user'))]" />
         <field name="view_mode">form</field>
+        <field name="view_id" ref="lighting_export.export_product_view" />
         <field name="target">new</field>
+        <field name="binding_model_id" ref="lighting.model_lighting_product" />
+        <field name="binding_view_types">tree</field>
     </record>
 </odoo>
