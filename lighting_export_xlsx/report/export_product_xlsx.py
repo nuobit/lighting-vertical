@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 import logging
 
@@ -32,6 +33,7 @@ class ExportProductXlsx(models.AbstractModel):
             objects = self.env[active_model].search(active_domain)
         else:
             objects = self.env["lighting.product"].browse(data.get("active_ids"))
+
         if data.get("exclude_configurator"):
             objects = objects.filtered(lambda x: not x.configurator)
 
@@ -90,35 +92,33 @@ class ExportProductXlsx(models.AbstractModel):
             row += 1
 
     def _get_meta_num(self, meta, datum, obj_d):
-        subfields = []
+        pass
+
         for j, sf in enumerate(datum, 1):
-            # update x in headers
-            sf1 = list(sf.keys())
-            if subfields:
-                if set(subfields) != set(sf1):
-                    raise Exception("Unexpected Error")
-            else:
-                subfields = sf1
+            if not isinstance(sf, dict) or not sf:
+                continue
+            field_name, exportable_value = next(iter(sf.items()))
+            column_name = f"Attachment{j}/{field_name}"
 
-            fnam = "%s%i" % (meta["string"], j)
-            for k, v in sf.items():
-                sfkey = "%s/%s" % (fnam, k)
-                if sfkey in obj_d:
-                    raise Exception("The subfield '%s' is duplicated" % sfkey)
-                obj_d[sfkey] = v
+            if column_name in obj_d:
+                raise Exception(f"The column '{column_name}' already exists")
 
-                if not meta["subfields"]:
-                    meta["subfields"] = []
-                if sfkey not in meta["subfields"]:
-                    meta["subfields"].append(sfkey)
+            obj_d[column_name] = exportable_value
 
-        return max(meta["num"], len(datum)), obj_d
+            if not meta.get("subfields"):
+                meta["subfields"] = []
+            if column_name not in meta["subfields"]:
+                meta["subfields"].append(column_name)
+
+        meta["num"] = max(meta["num"], len(datum))
+        return meta["num"], obj_d
 
     def _generate_products(self, header, object_ids, template_id):
         n = len(object_ids)
         _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
         objects_ld = []
+
         for i, obj_id in enumerate(object_ids, 1):
             obj = self.env["lighting.product"].browse(obj_id)
             obj_d = {}
@@ -142,9 +142,7 @@ class ExportProductXlsx(models.AbstractModel):
                     datum = None
 
                 if isinstance(datum, (tuple, list)):
-
                     meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
-
                 else:
                     fkey = meta["string"]
                     if fkey in obj_d:

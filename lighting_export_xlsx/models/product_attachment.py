@@ -17,12 +17,14 @@ class LightingAttachment(models.Model):
                 for pa in prod_attachment_ids:
                     if not pa.public:
                         pa.sudo().public = True
-                    type_meta = pa.fields_get(["type_id"], ["string"])["type_id"]
+                    pa.fields_get(["type_id"], ["string"])["type_id"]
                     res.append(
                         OrderedDict(
                             [
-                                (type_meta["string"], pa.type_id.display_name),
-                                ("URL", pa.url_get(resolution=ta.resolution)),
+                                (
+                                    pa.type_id.display_name,
+                                    pa.url_get(resolution=ta.resolution),
+                                ),
                             ]
                         )
                     )
