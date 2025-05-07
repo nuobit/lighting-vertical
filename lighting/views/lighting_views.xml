@@ -91,6 +91,13 @@
                     action="product_sealing_list_action"
                     sequence="45"
                 />
+                <!--Dimmables-->
+                <menuitem
+                    id="product_dimmable_menu"
+                    name="Dimmables"
+                    action="product_dimmable_list_action"
+                    sequence="47"
+                />
                 <!--Lampholders-->
                 <menuitem
                     id="product_source_lampholders_menu"
