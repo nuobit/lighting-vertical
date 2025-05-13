@@ -620,6 +620,7 @@ msgstr "Capacidad"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog__name
 #: model_terms:ir.ui.view,arch_db:lighting.catalog_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Catalog"
 msgstr "Catálogo"
 
@@ -1848,6 +1849,7 @@ msgstr "Familias"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment__family_id
 #: model_terms:ir.ui.view,arch_db:lighting.product_family_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_family_search_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Family"
 msgstr "Familia"
 
@@ -3572,6 +3574,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier__product_id
 #: model_terms:ir.ui.view,arch_db:lighting.attachment_kanban_view
 #: model_terms:ir.ui.view,arch_db:lighting.lighting_product_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Product"
 msgstr "Producto"
 
@@ -3638,7 +3641,7 @@ msgstr "Distribución fotométrica del haz del producto."
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_catalog
 msgid "Product Catalog"
-msgstr "iluminación.catalog"
+msgstr "Catálogo de producto"
 
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_product_category

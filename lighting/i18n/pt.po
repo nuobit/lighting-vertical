@@ -400,6 +400,7 @@ msgstr "Cancelar"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog_name
 #: model:ir.ui.view,arch_db:lighting.catalog_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Catalog"
 msgstr "Catálogo"
 
@@ -1112,6 +1113,7 @@ msgstr "Famílias"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_name
 #: model:ir.ui.view,arch_db:lighting.product_family_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Family"
 msgstr "Família"
 
@@ -1895,6 +1897,7 @@ msgstr "Interruptores"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_product_id
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Product"
 msgstr "produtos"
 

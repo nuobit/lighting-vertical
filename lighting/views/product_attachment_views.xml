@@ -2,7 +2,14 @@
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
-        <!-- window action product2attachment smart button-->
+    <!-- window action all attachments menu item-->
+    <record id="lighting_attachment_action" model="ir.actions.act_window">
+        <field name="name">All Attachments</field>
+        <field name="res_model">lighting.attachment</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- window action product2attachment smart button-->
     <record id="attachment_list_action" model="ir.actions.act_window">
         <field name="name">Attachment</field>
         <field name="res_model">lighting.attachment</field>
@@ -63,6 +70,7 @@
                         <field name="write_date" readonly="1" />
                         <field name="is_default" />
                         <field name="sequence" />
+                        <field name="product_id" readonly="1" />
                     </group>
                     <group attrs="{'invisible': [('datas_location', '=', 'url')]}">
                         <field name="public" />
@@ -92,7 +100,7 @@
                 <field name="lang_id" />
                 <field name="write_date" />
                 <field name="is_default" />
-                <field name="public" />
+                <field name="product_id" readonly="1" />
             </tree>
         </field>
     </record>
@@ -144,6 +152,64 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <record id="lighting_attachment_view_search" model="ir.ui.view">
+        <field name="name">lighting.attachment.search</field>
+        <field name="model">lighting.attachment</field>
+        <field name="arch" type="xml">
+            <search string="Search Attachments">
+                <field
+                    name="name"
+                    string="Attachment"
+                    filter_domain="['|', '|', '|', '|', '|', '|',
+                        ('name', 'ilike', self),
+                        ('datas_fname', 'ilike', self),
+                        ('type_id.name', 'ilike', self),
+                        ('type_id.code', 'ilike', self),
+                        ('product_id', 'ilike', self),
+                        ('product_id.family_ids', 'ilike', self),
+                        ('product_id.catalog_ids', 'ilike', self),
+                    ]"
+                />
+                <field name="datas_fname" string="Filename" />
+                <field name="type_id" string="Type" />
+                <field name="name" string="Description" />
+                <field name="product_id" string="Product" />
+                <field
+                    name="product_id"
+                    string="Family"
+                    filter_domain="[('product_id.family_ids', 'ilike', self)]"
+                />
+                <field
+                    name="product_id"
+                    string="Catalog"
+                    filter_domain="[('product_id.catalog_ids', 'ilike', self)]"
+                />
+                <group expand="1" string="Group By">
+                    <filter
+                        name="group_by_product"
+                        string="Product"
+                        context="{'group_by': 'product_id'}"
+                    />
+                    <filter
+                        name="group_by_type"
+                        string="Type"
+                        context="{'group_by': 'type_id'}"
+                    />
+                    <filter
+                        name="group_by_filename"
+                        string="Filename"
+                        context="{'group_by': 'datas_fname'}"
+                    />
+                    <filter
+                        name="group_by_write_date"
+                        string="Last Updated"
+                        context="{'group_by': 'write_date'}"
+                    />
+                </group>
+            </search>
         </field>
     </record>
 </odoo>
