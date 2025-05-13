@@ -204,7 +204,12 @@ msgstr "Anexar vários arquivos"
 
 #. module: lighting
 #: model:ir.actions.act_window,name:lighting.attachment_list_action
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment__attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment__attachment_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment__attachment_id
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
+#: model:ir.ui.view,arch_db:lighting.lighting_attachment_search
 msgid "Attachment"
 msgstr "Anexo"
 
@@ -245,8 +250,16 @@ msgid "Attachment(s)"
 msgstr "Attachment (s)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_attachment_ids
-#: model:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__attachment_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application__attachment_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category__attachment_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__attachment_ids
+#: model_terms:ir.ui.view,arch_db:lighting.product_application_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_category_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_family_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.ui.menu,name:lighting.lighting_attachment_menu
+#: model:ir.actions.act_window,name:lighting.lighting_attachment_action
 msgid "Attachments"
 msgstr "Anexos"
 
@@ -813,21 +826,29 @@ msgid "Define substitutes"
 msgstr "Definir substitutos"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_photodistribution_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_description
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_description
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_material_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_photobiologicalriskgroup_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_supplier_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_display
-#: model:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_energyefficiency__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__description
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_photodistribution__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_connectortype__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_ecorraecategory__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__description
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_group__description
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_material__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_photobiologicalriskgroup__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_ral__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source__line_display
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_supplier__name
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
+#: model_terms:ir.ui.view,arch_db:lighting.product_category_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Description"
 msgstr "Descrição"
 
@@ -1132,8 +1153,12 @@ msgid "Fan wattages (W)"
 msgstr "Potências dos ventiladores (W)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas_fname
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas_fname
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas_fname
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment__datas_fname
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment__datas_fname
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment__datas_fname
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment__datas_fname
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Filename"
 msgstr "Nome do arquivo"
 
@@ -2764,12 +2789,12 @@ msgid "Total wattage (W)"
 msgstr "Potência total (W)"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_type_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_type_id
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_type_name
-#: model:ir.ui.view,arch_db:lighting.product_source_type_form_view
-#: model:ir.ui.view,arch_db:lighting.product_type_form_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__type
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment__type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__type_id
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
+#: model_terms:ir.ui.view,arch_db:lighting.product_source_type_form_view
 msgid "Type"
 msgstr "Tipo"
 
@@ -3170,3 +3195,14 @@ msgstr "max."
 #: model:ir.actions.act_window,name:lighting.product_finish_list_action
 msgid "product finish"
 msgstr "acabamento do produto"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_attachment_search
+msgid "Search Attachments"
+msgstr "Pesquisar Anexos"
+
+#. module: lighting
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
+msgid "Last Updated"
+msgstr "Última Atualização"
+

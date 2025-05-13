@@ -353,6 +353,8 @@ msgstr "Joindre plusieurs fichiers"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment__attachment_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment__attachment_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment__attachment_id
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
+#: model:ir.ui.view,arch_db:lighting.lighting_attachment_search
 msgid "Attachment"
 msgstr "Pièce jointe"
 
@@ -1463,6 +1465,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source__line_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier__name
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 #: model_terms:ir.ui.view,arch_db:lighting.product_category_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Description"
@@ -1892,6 +1895,7 @@ msgstr "Ficher"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_application_attachment__datas_fname
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category_attachment__datas_fname
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family_attachment__datas_fname
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Filename"
 msgstr "Nom du fichier"
 
@@ -6792,3 +6796,13 @@ msgstr "Gris clair nacré"
 #: model:lighting.product.ral,name:lighting.product_ral_9023
 msgid "Pearl dark grey"
 msgstr "Gris fonçé nacré"
+
+#. module: lighting
+#: model:ir.ui.view,arch_db:lighting.lighting_attachment_search
+msgid "Search Attachments"
+msgstr "Rechercher des pièces jointes"
+
+#. module: lighting
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
+msgid "Last Updated"
+msgstr "Dernière mise à jour"
