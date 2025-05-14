@@ -621,6 +621,44 @@ class LightingProduct(models.Model):
         else:
             self.json_display_substitute = False
 
+    # Display Same Family
+    json_display_same_family = fields.Serialized(
+        string="Same Family JSON Display",
+        compute="_compute_json_display_same_family",
+    )
+
+    @api.depends("family_ids")
+    def _compute_json_display_same_family(self):
+        template_id = self.env.context.get("template_id")
+        if template_id:
+            for rec in self:
+                if rec.family_ids:
+                    template_same_family_published = self.search(
+                        [
+                            ("id", "!=", rec.id),
+                            ("family_ids", "in", rec.family_ids.ids),
+                            ("state", "=", "published"),
+                            (
+                                "state_marketing",
+                                "not in",
+                                (False, "ES", "ESH", "D", "H"),
+                            ),
+                        ]
+                    ).filtered(
+                        lambda x: x.product_group_id.get_parent_group_by_type("FINISH")
+                        != rec.product_group_id.get_parent_group_by_type("FINISH")
+                    )
+                    template_same_family_l = list(
+                        set(template_same_family_published.mapped("finish_group_name"))
+                    )
+                    rec.json_display_same_family = json.dumps(
+                        sorted(template_same_family_l)
+                    )
+                else:
+                    rec.json_display_same_family = False
+        else:
+            self.json_display_same_family = False
+
     # Display First Product Photo
     json_display_photo = fields.Serialized(
         string="Photo JSON Display",
