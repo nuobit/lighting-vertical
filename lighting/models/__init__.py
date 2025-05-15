@@ -19,6 +19,7 @@ from . import product_dimension_type
 from . import product_material
 from . import product_sealing
 from . import product_finish
+from . import product_finish_type
 from . import product_model
 from . import product_ral
 from . import product_voltage

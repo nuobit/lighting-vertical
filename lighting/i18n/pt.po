@@ -447,16 +447,24 @@ msgid "Close"
 msgstr "Perto"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type_code
-#: model:ir.model.fields,field_description:lighting.field_lighting_language_code
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_code
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_material_code
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder_code
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_code
-#: model:ir.ui.view,arch_db:lighting.product_finish_form_view
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_code
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_family_code
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_catalog__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_language__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_type__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_group_type__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_location__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_material__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_ral__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type__code
+#: model_terms:ir.ui.view,arch_db:lighting.product_family_search_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_ral_form_view
 msgid "Code"
 msgstr "Código"
 
@@ -1782,13 +1790,19 @@ msgid "Minimum power factor"
 msgstr "Fator de potência mínima"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_category_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_installation_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_location_name
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum_name
+#: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_type__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_group__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_group_type__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_installation__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_location__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_model__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_note__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum__name
 msgid "Name"
 msgstr "Nome"
 
@@ -3209,3 +3223,45 @@ msgstr "Pesquisar Anexos"
 msgid "Last Updated"
 msgstr "Última Atualização"
 
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__finish_type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__finish_type_id
+msgid "Finish Type"
+msgstr "Tipo de acabamento"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_finish_type_list_action
+#: model:ir.ui.menu,name:lighting.product_finish_types_menu
+msgid "Finish Types"
+msgstr "Tipos de acabamento"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__finish2_type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__finish2_type_id
+msgid "Finish2 Type"
+msgstr "Tipo de acabamento 2"
+
+#. module: lighting
+#: model:ir.model.constraint,message:lighting.constraint_lighting_product_finish_type_code_uniq
+msgid "The finish type code must be unique!"
+msgstr "O código do tipo de acabamento deve ser único!"
+
+#. module: lighting
+#: model:ir.model.constraint,message:lighting.constraint_lighting_product_finish_type_name_uniq
+msgid "The finish type name must be unique!"
+msgstr "O nome do tipo de acabamento deve ser único!"
+
+#. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_family.py:0
+#, python-format
+msgid ""
+"The field '%(finish_field_string)s' is not consistent across all families "
+"'%(families)s'!"
+msgstr ""
+"O campo '%(finish_field_string)s' não é consistente em todas as famílias '%(families)s'!"
+
+#. module: lighting
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
+msgid "Product finish Type Form"
+msgstr "Formulário de tipos de acabamento do produto"

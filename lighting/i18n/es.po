@@ -753,11 +753,13 @@ msgstr "Cerrar"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment_type__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_catalog__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_language__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_family__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_finish__code
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_type__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group_type__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_location__code
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_material__code
@@ -766,8 +768,8 @@ msgstr "Cerrar"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type__code
 #: model_terms:ir.ui.view,arch_db:lighting.product_family_search_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_finish_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_ral_form_view
-#: model:ir.model.fields,field_description:lighting.field_lighting_catalog__code
 msgid "Code"
 msgstr "Código"
 
@@ -3138,6 +3140,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting.field_lighting_dimension_type__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_type__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group_type__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_installation__name
@@ -6811,3 +6814,46 @@ msgstr "Buscar Anexos"
 #: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 msgid "Last Updated"
 msgstr "Última Actualización"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__finish_type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__finish_type_id
+msgid "Finish Type"
+msgstr "Tipo de acabado"
+
+#. module: lighting
+#: model:ir.actions.act_window,name:lighting.product_finish_type_list_action
+#: model:ir.ui.menu,name:lighting.product_finish_types_menu
+msgid "Finish Types"
+msgstr "Tipos de acabado"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__finish2_type_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_family__finish2_type_id
+msgid "Finish2 Type"
+msgstr "Tipo de acabado 2"
+
+#. module: lighting
+#: model:ir.model.constraint,message:lighting.constraint_lighting_product_finish_type_code_uniq
+msgid "The finish type code must be unique!"
+msgstr "El código del tipo de acabado tiene que ser único!"
+
+#. module: lighting
+#: model:ir.model.constraint,message:lighting.constraint_lighting_product_finish_type_name_uniq
+msgid "The finish type name must be unique!"
+msgstr "El nombre del tipo de acabado tiene que ser único!"
+
+#. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_family.py:0
+#, python-format
+msgid ""
+"The field '%(finish_field_string)s' is not consistent across all families "
+"'%(families)s'!"
+msgstr ""
+"¡El campo '%(finish_field_string)s' no es consistente en todas las familias '%(families)s'!"
+
+#. module: lighting
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
+msgid "Product finish Type Form"
+msgstr "Formulario tipos de acabado de producto"

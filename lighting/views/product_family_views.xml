@@ -91,13 +91,21 @@
                         </group>
                     </group>
                     <group>
-                        <field name="is_export" />
                         <field name="description" />
+                    </group>
+                    <group>
+                        <field name="finish_type_id" />
+                        <field name="finish2_type_id" />
                     </group>
                     <group>
                         <field name="sequence" />
                     </group>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
             </form>
         </field>
     </record>
@@ -106,13 +114,16 @@
         <field name="model">lighting.product.family</field>
         <field name="arch" type="xml">
             <tree
+                multi_edit="1"
                 decoration-warning="discontinued_product_percent > 50"
                 decoration-danger="discontinued_product_percent == 100"
             >
                 <field name="sequence" widget="handle" />
-                <field name="name" />
-                <field name="code" />
-                <field name="is_export" />
+                <field name="name" readonly="1" />
+                <field name="code" readonly="1" />
+                <field name="finish_type_id" optional="hidden" />
+                <field name="finish2_type_id" optional="hidden" />
+                <field name="is_export" optional="hidden" />
                 <field name="product_count" />
                 <button
                     name="%(product_family_action_product)d"
