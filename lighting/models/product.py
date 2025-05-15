@@ -646,11 +646,34 @@ class LightingProduct(models.Model):
         string="Applications",
         tracking=True,
     )
+
     finish_id = fields.Many2one(
         comodel_name="lighting.product.finish",
         ondelete="restrict",
         tracking=True,
     )
+    finish_type_id = fields.Many2one(
+        comodel_name="lighting.product.finish.type",
+        compute="_compute_finish_types",
+        readonly=True,
+    )
+
+    finish2_type_id = fields.Many2one(
+        comodel_name="lighting.product.finish.type",
+        compute="_compute_finish_types",
+        readonly=True,
+    )
+
+    @api.depends("family_ids")
+    def _compute_finish_types(self):
+        finish_type_fields = self.family_ids.get_finish_type_fields()
+        for rec in self:
+            for field in finish_type_fields:
+                if rec.family_ids:
+                    rec[field.name] = rec.family_ids.get_finish_type(field.name)
+                else:
+                    rec[field.name] = False
+
     finish_prefix = fields.Char(
         compute="_compute_finish_prefix",
     )

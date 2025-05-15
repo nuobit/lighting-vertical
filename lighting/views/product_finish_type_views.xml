@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
+<odoo>
+    <!-- view finish type -->
+    <record id="product_finish_type_form_view" model="ir.ui.view">
+        <field name="name">product.finish.type.form</field>
+        <field name="model">lighting.product.finish.type</field>
+        <field name="arch" type="xml">
+            <form string="Product finish Type Form">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="code" placeholder="Code" />
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="name" />
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="activity_ids" />
+                    <field name="message_ids" />
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="product_finish_type_tree_view" model="ir.ui.view">
+        <field name="name">product.finish.type.tree</field>
+        <field name="model">lighting.product.finish.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="code" />
+                <field name="name" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- window action finish type -->
+    <record id="product_finish_type_list_action" model="ir.actions.act_window">
+        <field name="name">Finish Types</field>
+        <field name="res_model">lighting.product.finish.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first product finish typ
+            </p>
+        </field>
+    </record>
+</odoo>

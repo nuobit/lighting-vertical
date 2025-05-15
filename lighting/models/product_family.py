@@ -1,8 +1,9 @@
 # Copyright 2021 NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import re
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class LightingProductFamily(models.Model):
@@ -70,6 +71,57 @@ class LightingProductFamily(models.Model):
     def _compute_attachment_count(self):
         for rec in self:
             rec.attachment_count = len(rec.attachment_ids)
+
+    finish_type_id = fields.Many2one(
+        comodel_name="lighting.product.finish.type",
+        string="Finish Type",
+        ondelete="restrict",
+        tracking=True,
+    )
+
+    finish2_type_id = fields.Many2one(
+        comodel_name="lighting.product.finish.type",
+        string="Finish2 Type",
+        ondelete="restrict",
+        tracking=True,
+    )
+
+    def get_finish_type(self, finish_field_name):
+        if self:
+            finish_types = {x[finish_field_name] for x in self}
+            if len(finish_types) != 1:
+                raise ValidationError(
+                    _(
+                        "The field '%(finish_field_string)s' is not consistent across "
+                        "all families '%(families)s'!"
+                    )
+                    % {
+                        "finish_field_string": self._fields[finish_field_name].string,
+                        "families": ", ".join([x.name for x in self]),
+                    }
+                )
+            return list(finish_types)[0]
+        return False
+
+    @api.model
+    def get_finish_type_fields(self):
+        """Get the finish type fields for the product family."""
+        return [
+            f for k, f in self._fields.items() if re.match(r"^finish[0-9]*_type_id$", k)
+        ]
+
+    def check_finish_type_consistency(self):
+        """Check the finish type consistency between all familes of the recordset"""
+        for field in self.get_finish_type_fields():
+            self.get_finish_type(field.name)
+
+    @api.constrains("finish_type_id", "finish2_type_id")
+    def _check_product_finish_type_consistency(self):
+        for rec in self:
+            products = self.env["lighting.product"].search(
+                [("family_ids", "in", rec.ids)]
+            )
+            products.family_ids.check_finish_type_consistency()
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "The family must be unique!"),

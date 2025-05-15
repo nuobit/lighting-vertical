@@ -135,6 +135,13 @@
                     action="product_finish_list_action"
                     sequence="70"
                 />
+                <!--Finish Types-->
+                <menuitem
+                    id="product_finish_types_menu"
+                    name="Finish Types"
+                    action="product_finish_type_list_action"
+                    sequence="70"
+                />
                 <!--RALs-->
                 <menuitem
                     id="product_rals_menu"

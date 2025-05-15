@@ -34,6 +34,7 @@
         "views/product_color_temperature_views.xml",
         "views/product_sealing_views.xml",
         "views/product_finish_views.xml",
+        "views/product_finish_type_views.xml",
         "views/product_language_views.xml",
         "views/product_model_views.xml",
         "views/product_ral_views.xml",

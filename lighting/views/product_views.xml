@@ -137,54 +137,87 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group>
-                                <field
+                                <group>
+                                    <field
                                     name="location_ids"
                                     widget="many2many_tags"
                                     options="{'color_field': 'color'}"
                                     attrs="{'required': [('state', '=', 'published')]}"
                                 />
-                                <field
+                                    <field
                                     name="installation_ids"
                                     widget="many2many_tags"
                                 />
-                                <field name="application_ids" widget="many2many_tags" />
-                                <field name="finish_id" />
-                                <field name="finish2_id" />
-                                <field name="ral_id" />
-                                <field
+                                    <field
+                                    name="application_ids"
+                                    widget="many2many_tags"
+                                />
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="finish_id" />
+                                    </group>
+                                    <group>
+                                        <field
+                                        name="finish_type_id"
+                                        options="{'no_open': True}"
+                                    />
+                                    </group>/
+                                </group>
+                                <group>
+                                    <group>
+                                        <field name="finish2_id" />
+                                    </group>
+                                    <group>
+                                        <field
+                                        name="finish2_type_id"
+                                        options="{'no_open': True}"
+                                    />
+                                    </group>/
+                                </group>
+                                <group>
+                                    <field name="ral_id" />
+                                </group>
+                                <group>
+                                    <field
                                     name="body_material_ids"
                                     widget="many2many_tags"
                                 />
-                                <field
+                                    <field
                                     name="lampshade_material_ids"
                                     widget="many2many_tags"
                                 />
-                                <field
+                                    <field
                                     name="diffusor_material_ids"
                                     widget="many2many_tags"
                                 />
-                                <field
+                                    <field
                                     name="frame_material_ids"
                                     widget="many2many_tags"
                                 />
-                                <field
+                                    <field
                                     name="reflector_material_ids"
                                     widget="many2many_tags"
                                 />
-                                <field
+                                    <field
                                     name="blade_material_ids"
                                     widget="many2many_tags"
                                 />
-                                <field name="sealing_id" />
-                                <field name="sealing2_id" />
-                                <field name="ik" />
-                                <field name="static_pressure" />
-                                <field name="dynamic_pressure" />
-                                <field name="dynamic_pressure_velocity" />
-                                <field name="corrosion_resistance" />
-                                <field name="technical_comments" widget="text" />
-                            </group>
+                                </group>
+                                <group>
+                                    <field name="sealing_id" />
+                                    <field name="sealing2_id" />
+                                    <field name="ik" />
+                                </group>
+                                <group>
+                                    <field name="static_pressure" />
+                                    <field name="dynamic_pressure" />
+                                    <field name="dynamic_pressure_velocity" />
+                                    <field name="corrosion_resistance" />
+                                </group>
+                                <group>
+                                    <field name="technical_comments" widget="text" />
+                                </group>
                         </page>
                         <page string="Electrics">
                             <group>
