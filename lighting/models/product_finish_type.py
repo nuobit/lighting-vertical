@@ -1,7 +1,9 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
-from odoo import fields, models
+from odoo import api, fields, models
+
+from .tools import check_record_code_format
 
 
 class LightingProductFinishType(models.Model):
@@ -19,6 +21,11 @@ class LightingProductFinishType(models.Model):
         translate=True,
         tracking=True,
     )
+
+    @api.constrains("code")
+    def _check_code(self):
+        for rec in self:
+            check_record_code_format(rec.code)
 
     _sql_constraints = [
         ("name_uniq", "unique (name)", "The finish type name must be unique!"),

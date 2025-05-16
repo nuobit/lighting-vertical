@@ -6855,3 +6855,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
 msgid "Product finish Type Form"
 msgstr "Formulaire de types de finition du produit"
+
+#. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/tools.py:0
+#, python-format
+msgid "Code must be only lowercase letters, numbers, or underscores."
+msgstr "Le code doit être composé uniquement de lettres minuscules, de chiffres ou de tirets bas."
