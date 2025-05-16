@@ -29,16 +29,26 @@ class LightingProductFamily(models.Model):
         default=1,
         help="The sequence field is used to define order",
     )
+    product_ids = fields.Many2many(
+        comodel_name="lighting.product",
+        compute="_compute_product_ids",
+        help="Products linked to this family",
+    )
+
+    def _compute_product_ids(self):
+        for rec in self:
+            product_ids = self.env["lighting.product"].search(
+                [("family_ids", "=", rec.id)]
+            )
+            rec.product_ids = product_ids
+
     product_count = fields.Integer(
         compute="_compute_product_count",
-        string="Product(s)",
     )
 
     def _compute_product_count(self):
-        for record in self:
-            record.product_count = self.env["lighting.product"].search_count(
-                [("family_ids", "=", record.id)]
-            )
+        for rec in self:
+            rec.product_count = len(rec.product_ids)
 
     discontinued_product_percent = fields.Float(
         compute="_compute_discontinued_product_percent",

@@ -2,6 +2,32 @@
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
+    <!-- window action finishtype2family smart button -->
+    <record
+        id="lighting_product_finish_type_action_family"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Family</field>
+        <field name="res_model">lighting.product.family</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Family</p>
+        </field>
+    </record>
+
+    <!-- window action finishtype2product smart button -->
+    <record
+        id="lighting_product_finish_type_action_product"
+        model="ir.actions.act_window"
+    >
+        <field name="name">Product</field>
+        <field name="res_model">lighting.product</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">Create the first Product</p>
+        </field>
+    </record>
+
     <!-- view finish type -->
     <record id="product_finish_type_form_view" model="ir.ui.view">
         <field name="name">product.finish.type.form</field>
@@ -9,6 +35,30 @@
         <field name="arch" type="xml">
             <form string="Product finish Type Form">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="action_finish_type_families"
+                        ><field
+                                string="Families"
+                                name="family_count"
+                                widget="statinfo"
+                            />
+                        </button>
+                        <button
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-filter"
+                            name="action_finish_type_products"
+                        ><field
+                                string="Products"
+                                name="product_count"
+                                widget="statinfo"
+                            />
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Nombre" />
@@ -33,6 +83,22 @@
             <tree>
                 <field name="name" />
                 <field name="code" />
+                <field name="family_count" string="Families" />
+                <button
+                    name="action_finish_type_families"
+                    type="object"
+                    string="Families"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('family_count', '=', 0)]}"
+                />
+                <field name="product_count" string="Products" />
+                <button
+                    name="action_finish_type_products"
+                    type="object"
+                    string="Products"
+                    icon="fa-external-link"
+                    attrs="{'invisible': [('product_count', '=', 0)]}"
+                />
             </tree>
         </field>
     </record>

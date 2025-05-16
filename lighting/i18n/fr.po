@@ -1018,8 +1018,11 @@ msgstr "Créer le premier groupe de risque photobiologique"
 
 #. module: lighting
 #: model_terms:ir.actions.act_window,help:lighting.dimension_type_action_product
+#: model_terms:ir.actions.act_window,help:lighting.lighting_product_finish_type_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_application_action_product
+#: model_terms:ir.actions.act_window,help:lighting.product_assembler_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_attachment_type_action_product
+#: model_terms:ir.actions.act_window,help:lighting.product_auxiliaryequipment_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_catalog_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_category_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_color_temperature_action_product
@@ -1035,6 +1038,7 @@ msgstr "Créer le premier groupe de risque photobiologique"
 #: model_terms:ir.actions.act_window,help:lighting.product_protectionclass_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_ral_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_sealing_action_product
+#: model_terms:ir.actions.act_window,help:lighting.product_sensor_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_source_lampholder_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_source_type_action_product
 #: model_terms:ir.actions.act_window,help:lighting.product_voltage_action_product
@@ -1836,7 +1840,10 @@ msgstr ""
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__family_ids
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_finish_type__family_ids
 #: model:ir.ui.menu,name:lighting.product_families_menu
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_tree_view
 msgid "Families"
 msgstr "Familles"
 
@@ -4150,6 +4157,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_protectionclass__product_ids
 #: model:ir.ui.menu,name:lighting.lighting_product_menu
 #: model:ir.ui.menu,name:lighting.products_menu
+#: model_terms:ir.ui.view,arch_db:lighting.assembler_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.assembler_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.attachment_type_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.attachment_type_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.catalog_form_view
@@ -4160,6 +4169,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lighting.energyefficiency_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_application_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_application_tree_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_auxiliaryequipment_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_auxiliaryequipment_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_color_temperature_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_color_temperature_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_connectortype_form_view
@@ -4172,6 +4183,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lighting.product_family_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_finish_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_finish_tree_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_finish_type_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_frequency_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_frequency_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_group_form_view
@@ -4193,6 +4206,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lighting.product_ral_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_sealing_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_sealing_tree_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_sensor_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_sensor_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_source_lampholder_form_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_source_lampholder_tree_view
 #: model_terms:ir.ui.view,arch_db:lighting.product_source_type_form_view
@@ -6862,3 +6877,20 @@ msgstr "Formulaire de types de finition du produit"
 #, python-format
 msgid "Code must be only lowercase letters, numbers, or underscores."
 msgstr "Le code doit être composé uniquement de lettres minuscules, de chiffres ou de tirets bas."
+
+#. module: lighting
+#: model:ir.model.fields,help:lighting.field_lighting_product_family__product_ids
+msgid "Products linked to this family"
+msgstr "Produits liés à cette famille"
+
+#. module: lighting
+#. odoo-python
+#: code:addons/lighting/models/product_finish_type.py:0
+#, python-format
+msgid "The code cannot be changed because it is used in the families %s"
+msgstr "Le code ne peut pas être modifié car il est utilisé dans les familles %s"
+
+#. module: lighting
+#: model_terms:ir.actions.act_window,help:lighting.lighting_product_finish_type_action_family
+msgid "Create the first Family"
+msgstr "Créer la première famille"
