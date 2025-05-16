@@ -12,13 +12,14 @@ class LightingProductFinishType(models.Model):
     _description = "Product Finish Type"
     _order = "name"
 
-    code = fields.Char(
-        required=True,
-        tracking=True,
-    )
     name = fields.Char(
         required=True,
         translate=True,
+        tracking=True,
+    )
+
+    code = fields.Char(
+        required=True,
         tracking=True,
     )
 
