@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -30,6 +31,7 @@ def pretty_size(value):
 
 class LightingAttachmentPackage(models.Model):
     _name = "lighting.attachment.package"
+    _description = "Lighting Attachment Package"
 
     name = fields.Char(
         string="Description",
