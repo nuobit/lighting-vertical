@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import datetime
@@ -8,6 +9,7 @@ from odoo import _, api, fields, models
 
 class LightingProductReview(models.Model):
     _name = "lighting.review.package"
+    _description = "Lighting Product Review Package"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     _order = "name"
