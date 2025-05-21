@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -27,7 +28,6 @@ class LightingProductBeam(models.Model):
     dimension_ids = fields.One2many(
         comodel_name="lighting.product.beam.dimension",
         inverse_name="beam_id",
-        string="Dimensions",
         copy=True,
     )
     product_id = fields.Many2one(
@@ -38,7 +38,7 @@ class LightingProductBeam(models.Model):
     # computed fields
     dimensions_display = fields.Char(
         compute="_compute_dimensions_display",
-        string="Dimensions",
+        string="Beam Dimensions",
     )
 
     @api.depends("dimension_ids")

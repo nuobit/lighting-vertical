@@ -804,6 +804,7 @@ msgstr ""
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux__color_temperature_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__color_temperature_display
 msgid "Color Temperature"
 msgstr "Temperatura de color"
 
@@ -816,12 +817,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__color_consistency
 msgid "Color consistency (SDCM)"
 msgstr "Consistencia del color (SDCM)"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__color_temperature_display
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__color_temperature_ids
-msgid "Color temperature"
-msgstr "Temperatura de color"
 
 #. module: lighting
 #: model_terms:ir.ui.view,arch_db:lighting.product_color_temperature_form_view
@@ -952,10 +947,14 @@ msgid "Corrosion resistance"
 msgstr "Resistencia a la corrosión"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__cost
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__standard_price
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Cost"
 msgstr "Coste"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__cost
+msgid "Actual Cost"
+msgstr "Coste Real"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__cost_currency_id
@@ -1562,10 +1561,15 @@ msgstr "Tipos de dimension"
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__dimension_ids
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam__dimension_ids
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_beam__dimensions_display
 #: model_terms:ir.ui.view,arch_db:lighting.product_category_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Dimensions"
 msgstr "Dimensiones"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_beam__dimensions_display
+msgid "Beam Dimensions"
+msgstr "Dimensiones del Haz"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable__name
@@ -1898,13 +1902,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lighting.product_category_form_view
 msgid "Fields"
 msgstr ""
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas
-#: model:ir.model.fields.selection,name:lighting.selection__lighting_attachment__datas_location__file
-#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_addattachment__datas_location__file
-msgid "File"
-msgstr "Fichero"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas_fname
@@ -4383,14 +4380,18 @@ msgid "Recommended accessories"
 msgstr "Accesorios recomendados"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__code
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__reference
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel__reference
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip__reference
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier__reference
 #: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_tree_view
 msgid "Reference"
 msgstr "Referencia"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__reference
+msgid "Product Reference"
+msgstr "Referencia del Producto"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product__reflector_material_ids
@@ -5395,13 +5396,32 @@ msgid "Uom"
 msgstr "Uom"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas_url
 #: model:ir.model.fields,field_description:lighting.field_lighting_attachment__url
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment__datas_url
 #: model:ir.model.fields.selection,name:lighting.selection__lighting_attachment__datas_location__url
 #: model:ir.model.fields.selection,name:lighting.selection__lighting_product_addattachment__datas_location__url
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_kanban_view
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_tree_view
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_form_view
 msgid "Url"
 msgstr "Url"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas_url
+msgid "Attachment Url"
+msgstr "Url Adjunta"
+
+#. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_attachment__datas_location__file
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_addattachment__datas_location__file
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_form_view
+msgid "File"
+msgstr "Fichero"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas
+msgid "Attachment File"
+msgstr "Fichero Adjunto"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group__use_category_attributes

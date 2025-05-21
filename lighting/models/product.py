@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 # TODO :Deleted from security:
 #  access_product_product_price_history_guest,product.product
@@ -66,6 +67,7 @@ class LightingProduct(models.Model):
     # TODO: This reference can be a product.default_code?
     # Common data
     reference = fields.Char(
+        string="Product Reference",
         required=True,
         tracking=True,
     )
@@ -1404,6 +1406,7 @@ class LightingProduct(models.Model):
         readonly=True,
     )
     cost = fields.Float(
+        string="Actual Cost",
         readonly=True,
         tracking=True,
         groups="lighting.group_lighting_user",

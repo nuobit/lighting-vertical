@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -439,7 +440,7 @@ class LightingProductSourceLine(models.Model):
     # TODO: This to remove is an old comment.
     # to remove
     color_temperature_ids = fields.Many2many(
-        string="Color temperature",
+        string="Color temperature Common",
         comodel_name="lighting.product.color.temperature",
         relation="lighting_product_source_line_color_temperature_rel",
         column1="source_line_id",

@@ -55,7 +55,7 @@ Contributors
   * Eric Antones <eantones@nuobit.com>
   * Kilian Niubo <kniubo@nuobit.com>
   * Deniz Gallo <dgallo@nuobit.com>
-  * Bijaya kumal <bkumal@nuobit.com>
+  * Bijaya Kumal <bkumal@nuobit.com>
 
 Maintainers
 ~~~~~~~~~~~
