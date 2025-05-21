@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, fields, models
@@ -6,6 +7,7 @@ from odoo import api, fields, models
 
 class LightingETIMValue(models.Model):
     _name = "lighting.etim.value"
+    _description = "ETIM Value"
     _order = "code"
 
     code = fields.Char(
