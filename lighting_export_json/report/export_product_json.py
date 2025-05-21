@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -10,6 +11,7 @@ from odoo import fields, models
 
 class ExportProductJson(models.AbstractModel):
     _name = "report.lighting_export_json.export_product_json"
+    _description = "Lighting Product Export JSON"
     _inherit = "report.report_json.abstract"
 
     def generate_json_report(self, data, objects):
