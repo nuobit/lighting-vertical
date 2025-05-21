@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import api, models
@@ -7,6 +8,7 @@ from odoo import api, models
 # TODO:Review: Rename this model or file
 class ProductReport(models.AbstractModel):
     _name = "report.lighting_reporting_vanguard_product.report_vanguard"
+    _description = "Vanguard Product Report"
 
     @api.model
     def _get_report_values(self, docids, data=None):
