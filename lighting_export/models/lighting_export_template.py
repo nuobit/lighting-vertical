@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -8,6 +9,7 @@ from odoo.exceptions import ValidationError
 
 class LightingExportTemplate(models.Model):
     _name = "lighting.export.template"
+    _description = "Lighting Product Export Template"
     _inherit = ["mail.thread", "mail.activity.mixin", "image.mixin"]
     _order = "sequence,name"
 
