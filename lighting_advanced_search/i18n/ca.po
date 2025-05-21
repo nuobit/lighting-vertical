@@ -120,8 +120,9 @@ msgstr ""
 #. module: lighting_advanced_search
 #: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__nominal_flux_from_in
 #: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__wattage_from_in
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "From"
-msgstr ""
+msgstr "Des de"
 
 #. module: lighting_advanced_search
 #: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__id
@@ -211,8 +212,9 @@ msgstr ""
 #. module: lighting_advanced_search
 #: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__nominal_flux_to_in
 #: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__wattage_to_in
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "To"
-msgstr ""
+msgstr "Fins a"
 
 #. module: lighting_advanced_search
 #: model:ir.model.fields,field_description:lighting_advanced_search.field_lighting_product_advanced_search__attachment_type_in_ids
@@ -244,3 +246,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
 msgid "Without types"
 msgstr ""
+
+#. module: lighting_advanced_search
+#: model_terms:ir.ui.view,arch_db:lighting_advanced_search.product_advanced_search_view_form
+msgid "Operation"
+msgstr "Operació"

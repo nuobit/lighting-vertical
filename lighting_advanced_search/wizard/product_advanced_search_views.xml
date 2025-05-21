@@ -18,6 +18,7 @@
                             />
                             <field
                                 name="application_in_op"
+                                string="Operation"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
@@ -41,6 +42,7 @@
                             />
                             <field
                                 name="lampholder_in_op"
+                                string="Operation"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
@@ -56,6 +58,7 @@
                             />
                             <field
                                 name="source_type_in_op"
+                                string="Operation"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
@@ -71,6 +74,7 @@
                             />
                             <field
                                 name="body_material_in_op"
+                                string="Operation"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
@@ -86,6 +90,7 @@
                             />
                             <field
                                 name="voltage_in_op"
+                                string="Operation"
                                 widget="radio"
                                 options="{'horizontal': true}"
                                 nolabel="1"
@@ -112,12 +117,12 @@
                 </group>
                 <group>
                     <group string="Luminous flux (Lm)">
-                        <field name="nominal_flux_from_in" />
-                        <field name="nominal_flux_to_in" />
+                        <field name="nominal_flux_from_in" string="From" />
+                        <field name="nominal_flux_to_in" string="To" />
                     </group>
                     <group string="Wattage (W)">
-                        <field name="wattage_from_in" />
-                        <field name="wattage_to_in" />
+                        <field name="wattage_from_in" string="From" />
+                        <field name="wattage_to_in" string="To" />
                     </group>
                 </group>
                 <group string="Attachment type">
@@ -125,6 +130,7 @@
                         <field name="attachment_type_in_ids" widget="many2many_tags" />
                         <field
                             name="attachment_type_in_op"
+                            string="Types"
                             widget="radio"
                             options="{'horizontal': true}"
                         />
@@ -132,10 +138,12 @@
                     <group string="Without types">
                         <field
                             name="attachment_type_not_in_ids"
+                            string="Types"
                             widget="many2many_tags"
                         />
                         <field
                             name="attachment_type_not_in_op"
+                            string="Operation"
                             widget="radio"
                             options="{'horizontal': true}"
                         />
