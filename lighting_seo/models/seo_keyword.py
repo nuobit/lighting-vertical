@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, fields, models
@@ -7,6 +8,7 @@ from odoo.exceptions import UserError
 
 class LightingSEOKeyword(models.Model):
     _name = "lighting.seo.keyword"
+    _description = "Lighting SEO Keyword"
     _order = "name"
 
     name = fields.Char(
