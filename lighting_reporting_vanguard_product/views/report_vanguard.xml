@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+     Copyright NuoBiT Solutions 2025 - Bijaya Kumal <abkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template id="external_layout_lighting_vanguard">
@@ -167,12 +168,40 @@
                                         />
                                     </td>
                                 </tr>
-                                <tr t-if="doc.finish_id or doc.finish2_id">
+                                <tr t-if="doc.finish_id">
                                     <td>
-                                        Finish
+                                        <t
+                                            t-if="doc.finish_type_id"
+                                            t-out="doc.finish_type_id.display_name"
+                                        />
+                                        <t t-else="">
+                                            Finish 1
+                                        </t>
                                     </td>
                                     <td>
-                                        <span t-out="doc.get_finish_display()" />
+                                        <span t-out="doc.finish_id.display_name" />
+                                    </td>
+                                </tr>
+                                <tr t-if="doc.finish2_id">
+                                    <td>
+                                        <t
+                                            t-if="doc.finish2_type_id"
+                                            t-out="doc.finish2_type_id.display_name"
+                                        />
+                                        <t t-else="">
+                                            Finish 2
+                                        </t>
+                                    </td>
+                                    <td>
+                                        <span t-out="doc.finish2_id.display_name" />
+                                    </td>
+                                </tr>
+                                <tr t-if="doc.ral_id">
+                                    <td>
+                                        RAL
+                                    </td>
+                                    <td>
+                                        <span t-out="doc.ral_id.display_name" />
                                     </td>
                                 </tr>
                                 <tr t-if="doc.location_ids">
