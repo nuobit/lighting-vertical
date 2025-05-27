@@ -129,13 +129,23 @@ class LightingProduct(models.Model):
                 rec.json_display_finish_group_name = False
 
     # Display finishes
-    def _get_finish_json(self, template_id, finish):
+    def _get_finish_json(self, template_id, finish, finish_type):
         finish_d = {}
-        finish_lang_d = {}
+        finish_lang_d, finish_type_name_lang_d = {}, {}
         for lang in template_id.lang_ids.mapped("code"):
             finish_lang_d[lang] = finish.with_context(lang=lang).name
+            if finish_type:
+                finish_type_name_lang_d[lang] = finish_type.with_context(lang=lang).name
         if finish_lang_d:
             finish_d.update({"description": finish_lang_d})
+        if finish_type:
+            finish_lang_d = {}
+            if finish_type.code:
+                finish_lang_d.update({"code": finish_type.code})
+            if finish_type_name_lang_d:
+                finish_lang_d.update({"description": finish_type_name_lang_d})
+            if finish_lang_d:
+                finish_d.update({"type": finish_lang_d})
         if finish.html_color:
             finish_d.update({"html_color": finish.html_color})
         if finish_d:
@@ -155,7 +165,9 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.finish_id:
-                    finish_d = self._get_finish_json(template_id, rec.finish_id)
+                    finish_d = self._get_finish_json(
+                        template_id, rec.finish_id, rec.finish_type_id
+                    )
                     if finish_d:
                         rec.json_display_finish = finish_d
                     else:
@@ -179,7 +191,9 @@ class LightingProduct(models.Model):
         if template_id:
             for rec in self:
                 if rec.finish2_id:
-                    finish_d = self._get_finish_json(template_id, rec.finish2_id)
+                    finish_d = self._get_finish_json(
+                        template_id, rec.finish2_id, rec.finish2_type_id
+                    )
                     if finish_d:
                         rec.json_display_finish2 = finish_d
                     else:
