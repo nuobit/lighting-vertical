@@ -175,7 +175,7 @@
                                             t-out="doc.finish_type_id.display_name"
                                         />
                                         <t t-else="">
-                                            Finish 1
+                                            Finish
                                         </t>
                                     </td>
                                     <td>
