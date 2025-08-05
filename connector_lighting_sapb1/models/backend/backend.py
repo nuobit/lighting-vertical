@@ -18,20 +18,9 @@ class LightingSapB1Backend(models.Model):
     _description = "Lighting SAP B1 Backend Configuration"
     _order = "sequence"
 
-    name = fields.Char(
-        required=True,
-    )
     sequence = fields.Integer(
         required=True,
         default=1,
-    )
-    company_id = fields.Many2one(
-        comodel_name="res.company",
-        index=True,
-        required=True,
-        default=lambda self: self.env["res.company"]._company_default_get(
-            "lighting.sapb1.backend"
-        ),
     )
     user_id = fields.Many2one(
         comodel_name="res.users",
