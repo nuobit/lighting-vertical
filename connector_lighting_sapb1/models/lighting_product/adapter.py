@@ -249,4 +249,4 @@ class LightingSAPB1ProductAdapter(Component):
                 tuple([x[d] for d in self.binder_for().get_id_fields(in_field=False)])
                 for x in res
             ]
-        return res, res_len
+        return res
