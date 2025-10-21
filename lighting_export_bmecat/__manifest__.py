@@ -8,7 +8,7 @@
     "license": "AGPL-3",
     "category": "Lighting",
     "website": "https://github.com/NuoBiT/lighting-vertical",
-    "depends": ["lighting", "report_xml", "queue_job", "mail"],
+    "depends": ["lighting", "report_xml", "queue_job"],
     "data": [
         "security/ir.model.access.csv",
         "security/lighting_bmecat_rule.xml",
