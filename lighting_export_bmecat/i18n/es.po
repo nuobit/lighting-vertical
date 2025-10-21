@@ -255,13 +255,6 @@ msgid "Export BMEcat"
 msgstr "Exportar BMEcat"
 
 #. module: lighting_export_bmecat
-#. odoo-python
-#: code:addons/lighting_export_bmecat/models/lighting_export_bmecat.py:0
-#, python-format
-msgid "Failed to install xmlstarlet: %s"
-msgstr "Error al instalar xmlstarlet: %s"
-
-#. module: lighting_export_bmecat
 #: model:ir.model.fields,field_description:lighting_export_bmecat.field_lighting_export_bmecat__message_follower_ids
 msgid "Followers"
 msgstr "Seguidores"
