@@ -51,7 +51,9 @@
         <PRODUCT mode="new">
             <SUPPLIER_PID t-out="product.reference" />
             <PRODUCT_DETAILS>
-                <DESCRIPTION_SHORT t-out="product.description" />
+                <DESCRIPTION_SHORT
+                    t-out="product.description and product.description[:150]"
+                />
                 <INTERNATIONAL_PID type="gtin" t-out="product.ean" />
                 <SUPPLIER_ALT_PID t-out="False" /> <!-- pending customer -->
                 <MANUFACTURER_PID t-out="False" /> <!-- pending customer -->
