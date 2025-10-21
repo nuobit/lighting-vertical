@@ -4,7 +4,6 @@ import gzip
 import hashlib
 import itertools
 import os
-import shutil
 import subprocess
 
 from pycountry import languages
@@ -216,20 +215,6 @@ class LightingExportBMEcat(models.Model):
             )
         else:
             raise ValidationError(_("The BMECat version is not supported."))
-        # TODO REVIEW: Add installation of xmlstarlet in the pre_init_hook
-        if shutil.which("xmlstarlet") is None:
-            try:
-                subprocess.run(
-                    ["sudo", "apt", "install", "-y", "xmlstarlet"],
-                    check=True,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
-                    text=True,
-                )
-            except subprocess.CalledProcessError as e:
-                raise ValidationError(
-                    _("Failed to install xmlstarlet: %s") % e.stderr
-                ) from e
         result = subprocess.run(
             ["xmlstarlet", "val", "--err", "--xsd", schema_path, xml_file_path],
             stdout=subprocess.PIPE,
