@@ -10,7 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2026-03-07 19:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: fr\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -19,14 +19,14 @@ msgstr ""
 #. module: lighting_export_xlsx
 #: model:ir.actions.report,print_report_name:lighting_export_xlsx.export_product_xlsx
 msgid "'Products XLSX report'"
-msgstr "'Rapport XLSX des produits'"
+msgstr "'XLSX-Produktbericht'"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:0
 #, python-format
 msgid "- Column '%(label)s': fields %(fields)s"
-msgstr "- Colonne '%(label)s' : champs %(fields)s"
+msgstr "- Spalte '%(label)s': Felder %(fields)s"
 
 #. module: lighting_export_xlsx
 #. odoo-python
@@ -42,36 +42,36 @@ msgid ""
 "- Remove one of the duplicated fields.\n"
 "- Set a different '%(label_field)s' on one of them."
 msgstr ""
-"Impossible d'exporter le modèle '%(template)s' : les champs suivants "
-"partagent le même nom de colonne et produiraient des colonnes en double dans "
-"le fichier.\n"
+"Vorlage '%(template)s' kann nicht exportiert werden: Die folgenden Felder "
+"haben denselben Spaltennamen und würden doppelte Spalten in der Datei "
+"erzeugen.\n"
 "\n"
 "%(details)s\n"
 "\n"
-"Pour corriger, allez dans Export > Templates > %(template)s et :\n"
-"- Supprimez l'un des champs en double.\n"
-"- Ou définissez un '%(label_field)s' différent sur l'un d'eux."
+"Um dies zu beheben, gehen Sie zu Export > Templates > %(template)s und:\n"
+"- Entfernen Sie eines der doppelten Felder.\n"
+"- Oder legen Sie ein anderes '%(label_field)s' für eines davon fest."
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/models/product_source.py:0
 #, python-format
 msgid "Color temperature"
-msgstr "Température de couleur"
+msgstr "Farbtemperatur"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/models/product_source.py:0
 #, python-format
 msgid "Energy Efficiency"
-msgstr "Efficacité énergétique"
+msgstr "Energieeffizienz"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/models/product_source.py:0
 #, python-format
 msgid "Error in field %s(field): %(error)s"
-msgstr "Erreur dans le champ %s(field) : %(error)s"
+msgstr "Fehler im Feld %s(field): %(error)s"
 
 #. module: lighting_export_xlsx
 #. odoo-python
@@ -79,40 +79,40 @@ msgstr "Erreur dans le champ %s(field) : %(error)s"
 #: model:ir.model.fields.selection,name:lighting_export_xlsx.selection__lighting_export__output_type__export_product_xlsx
 #, python-format
 msgid "Excel file (.xlsx)"
-msgstr "Fichier Excel (.xlsx)"
+msgstr "Excel-Datei (.xlsx)"
 
 #. module: lighting_export_xlsx
 #: model:ir.model,name:lighting_export_xlsx.model_report_lighting_export_xlsx_export_product_xlsx
 msgid "Export Product XLSX"
-msgstr "Exporter produit XLSX"
+msgstr "Produkt XLSX exportieren"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/models/product_source.py:0
 #, python-format
 msgid "Flux"
-msgstr "Flux"
+msgstr "Lichtstrom"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:0
 #, python-format
 msgid "No"
-msgstr "Non"
+msgstr "Nein"
 
 #. module: lighting_export_xlsx
 #: model:ir.model.fields,field_description:lighting_export_xlsx.field_lighting_export__output_type
 msgid "Output Type"
-msgstr "Type de sortie"
+msgstr "Ausgabetyp"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:0
 #, python-format
 msgid "Yes"
-msgstr "Oui"
+msgstr "Ja"
 
 #. module: lighting_export_xlsx
 #: model:ir.actions.report,name:lighting_export_xlsx.export_product_xlsx
 msgid "lighting_export_xlsx.export_product_xlsx"
-msgstr "Rapport XLSX des produits"
+msgstr "XLSX-Produktbericht"
