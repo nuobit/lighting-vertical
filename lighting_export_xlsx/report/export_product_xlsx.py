@@ -5,6 +5,7 @@ import json
 import logging
 
 from odoo import _, models
+from odoo.exceptions import ValidationError
 
 _logger = logging.getLogger(__name__)
 
@@ -52,6 +53,8 @@ class ExportProductXlsx(models.AbstractModel):
                 meta.update(dict(num=0, subfields=None))
                 header.append((field, meta))
 
+        self._check_duplicate_labels(header, template_id)
+
         # generate data and gather header data
         objects_ld = self._generate_products(header, objects.ids, template_id)
 
@@ -92,6 +95,41 @@ class ExportProductXlsx(models.AbstractModel):
                         sheet.write(row, col, obj.get(k))
                         col += 1
             row += 1
+
+    def _check_duplicate_labels(self, header, template_id):
+        seen_labels = {}
+        for field, meta in header:
+            seen_labels.setdefault(meta["string"], []).append(field)
+        duplicates = {
+            label: fields for label, fields in seen_labels.items() if len(fields) > 1
+        }
+        if duplicates:
+            details = "\n".join(
+                _(
+                    "- Column '%(label)s': fields %(fields)s",
+                    label=label,
+                    fields=", ".join(fields),
+                )
+                for label, fields in duplicates.items()
+            )
+            label_string = self.env["lighting.export.template.field"].fields_get(
+                ["label"]
+            )["label"]["string"]
+            raise ValidationError(
+                _(
+                    "Cannot export template '%(template)s':"
+                    " the following fields share the same column name"
+                    " and would produce duplicate columns in the file."
+                    "\n\n%(details)s"
+                    "\n\nTo fix this, go to Export > Templates > %(template)s"
+                    " and either:"
+                    "\n- Remove one of the duplicated fields."
+                    "\n- Set a different '%(label_field)s' on one of them.",
+                    template=template_id.display_name,
+                    details=details,
+                    label_field=label_string,
+                )
+            )
 
     def _get_meta_num(self, meta, datum, obj_d):
         subfields = []
