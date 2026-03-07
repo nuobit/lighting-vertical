@@ -38,13 +38,16 @@ class ExportProductXlsx(models.AbstractModel):
         # base headers with labels replaced and subset acoridng to template
         header = []
         for line in template_id.field_ids.sorted(lambda x: x.sequence):
-            item = objects.fields_get(
-                [line.field_id.name], ["string", "type", "selection"]
-            )
+            item = objects.fields_get([line.field_id.name], ["type", "selection"])
             if item:
                 field, meta = tuple(item.items())[0]
+                # fields_get follows base_field for _inherits delegated fields,
+                # returning the parent model's label instead of the current one.
+                # Use line.field_id.field_description to get the correct label.
                 if line.label and line.label.strip():
                     meta["string"] = line.label
+                else:
+                    meta["string"] = line.field_id.field_description
                 meta.update(dict(num=0, subfields=None))
                 header.append((field, meta))
 
