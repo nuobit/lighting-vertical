@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-20 01:59+0000\n"
-"PO-Revision-Date: 2024-01-20 01:59+0000\n"
+"POT-Creation-Date: 2026-03-07 19:03+0000\n"
+"PO-Revision-Date: 2026-03-07 19:03+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -18,7 +19,38 @@ msgstr ""
 #. module: lighting_export_xlsx
 #: model:ir.actions.report,print_report_name:lighting_export_xlsx.export_product_xlsx
 msgid "'Products XLSX report'"
-msgstr "Products XLSX report"
+msgstr "'Informe XLSX de productos'"
+
+#. module: lighting_export_xlsx
+#. odoo-python
+#: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:0
+#, python-format
+msgid "- Column '%(label)s': fields %(fields)s"
+msgstr "- Columna '%(label)s': campos %(fields)s"
+
+#. module: lighting_export_xlsx
+#. odoo-python
+#: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:0
+#, python-format
+msgid ""
+"Cannot export template '%(template)s': the following fields share the same "
+"column name and would produce duplicate columns in the file.\n"
+"\n"
+"%(details)s\n"
+"\n"
+"To fix this, go to Export > Templates > %(template)s and either:\n"
+"- Remove one of the duplicated fields.\n"
+"- Set a different '%(label_field)s' on one of them."
+msgstr ""
+"No se puede exportar la plantilla '%(template)s': los siguientes campos "
+"comparten el mismo nombre de columna y producirían columnas duplicadas en el "
+"fichero.\n"
+"\n"
+"%(details)s\n"
+"\n"
+"Para solucionarlo, vaya a Export > Templates > %(template)s y:\n"
+"- Elimine uno de los campos duplicados.\n"
+"- O establezca una '%(label_field)s' diferente en uno de ellos."
 
 #. module: lighting_export_xlsx
 #. odoo-python
@@ -32,14 +64,14 @@ msgstr "Temperatura de color"
 #: code:addons/lighting_export_xlsx/models/product_source.py:0
 #, python-format
 msgid "Energy Efficiency"
-msgstr "Eficiencia Energética"
+msgstr "Eficiencia energética"
 
 #. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/models/product_source.py:0
 #, python-format
 msgid "Error in field %s(field): %(error)s"
-msgstr ""
+msgstr "Error en el campo %s(field): %(error)s"
 
 #. module: lighting_export_xlsx
 #. odoo-python
@@ -52,12 +84,7 @@ msgstr "Fichero Excel (.xlsx)"
 #. module: lighting_export_xlsx
 #: model:ir.model,name:lighting_export_xlsx.model_report_lighting_export_xlsx_export_product_xlsx
 msgid "Export Product XLSX"
-msgstr ""
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_export
-msgid "Export data"
-msgstr "Exportar datos"
+msgstr "Exportar producto XLSX"
 
 #. module: lighting_export_xlsx
 #. odoo-python
@@ -79,41 +106,6 @@ msgid "Output Type"
 msgstr "Tipo de salida"
 
 #. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_attachment
-msgid "Product Attachment"
-msgstr "iluminación.attachment"
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_product_auxiliaryequipmentmodel
-msgid "Product Auxiliary Equipment Model"
-msgstr "iluminación.producto.auxiliaryequipmentmodelmodelo"
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_product_beam
-msgid "Product Beam"
-msgstr "Lighting.product.beam"
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_product_dimension_abstract
-msgid "Product Dimension"
-msgstr "iluminación.producto.dimension"
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_product_fanwattage
-msgid "Product Fan Wattage"
-msgstr "iluminación.producto.fanwattage"
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_product_source
-msgid "Product Source"
-msgstr "iluminación.producto.source"
-
-#. module: lighting_export_xlsx
-#: model:ir.model,name:lighting_export_xlsx.model_lighting_product_supplier
-msgid "Product Supplier"
-msgstr "iluminación.producto.supplier"
-
-#. module: lighting_export_xlsx
 #. odoo-python
 #: code:addons/lighting_export_xlsx/report/export_product_xlsx.py:0
 #, python-format
@@ -123,4 +115,4 @@ msgstr "Sí"
 #. module: lighting_export_xlsx
 #: model:ir.actions.report,name:lighting_export_xlsx.export_product_xlsx
 msgid "lighting_export_xlsx.export_product_xlsx"
-msgstr "Products XLSX report"
+msgstr "Informe XLSX de productos"
