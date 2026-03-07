@@ -1,6 +1,7 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
+import json
 import logging
 
 from odoo import _, models
@@ -140,12 +141,13 @@ class ExportProductXlsx(models.AbstractModel):
                         datum = datum.export_xlsx(template_id)
                     else:
                         datum = None  # NOT SUPPORTED
+                elif meta["type"] == "serialized":
+                    datum = json.dumps(datum) if datum else None
 
                 if meta["type"] != "boolean" and not datum:
                     datum = None
 
                 if isinstance(datum, (tuple, list)):
-
                     meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
 
                 else:
