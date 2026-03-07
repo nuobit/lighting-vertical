@@ -6,6 +6,7 @@ import logging
 
 from odoo import _, models
 from odoo.exceptions import ValidationError
+from odoo.tools import human_size
 
 _logger = logging.getLogger(__name__)
 
@@ -181,6 +182,8 @@ class ExportProductXlsx(models.AbstractModel):
                         datum = None  # NOT SUPPORTED
                 elif meta["type"] == "serialized":
                     datum = json.dumps(datum) if datum else None
+                elif meta["type"] == "binary":
+                    datum = human_size(len(datum)) if datum else None
 
                 if meta["type"] != "boolean" and not datum:
                     datum = None
