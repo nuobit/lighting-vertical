@@ -80,7 +80,10 @@ class ExportProductXlsx(models.AbstractModel):
             sheet.write(row, col, col_header, bold)
             col += 1
 
-        # write data to xlsx according to header multiplicity
+        # returns a callable that maps field types to Excel cell formats
+        cell_format = self._get_cell_format(workbook, data["lang"])
+
+        # write data to xlsx
         row = 1
         for obj in objects_ld:
             col = 0
@@ -88,12 +91,14 @@ class ExportProductXlsx(models.AbstractModel):
                 if not meta["num"] and data.get("hide_empty_fields"):
                     continue
 
+                fmt = cell_format(meta["type"])
+                write = sheet.write_datetime if fmt else sheet.write
                 if not meta["subfields"]:
-                    sheet.write(row, col, obj[meta["string"]])
+                    write(row, col, obj[meta["string"]], fmt)
                     col += 1
                 else:
                     for k in meta["subfields"]:
-                        sheet.write(row, col, obj.get(k))
+                        write(row, col, obj.get(k), fmt)
                         col += 1
             row += 1
 
@@ -132,6 +137,30 @@ class ExportProductXlsx(models.AbstractModel):
                 )
             )
 
+    @staticmethod
+    def _strftime_to_excel(fmt):
+        return (
+            fmt.replace("%d", "dd")
+            .replace("%m", "mm")
+            .replace("%Y", "yyyy")
+            .replace("%y", "yy")
+            .replace("%H", "hh")
+            .replace("%M", "mm")
+            .replace("%S", "ss")
+        )
+
+    def _get_cell_format(self, workbook, lang_code):
+        lang = self.env["res.lang"]._lang_get(lang_code)
+        xl_date = self._strftime_to_excel(lang.date_format)
+        xl_time = self._strftime_to_excel(lang.time_format)
+        formats = {
+            "date": workbook.add_format({"num_format": xl_date}),
+            "datetime": workbook.add_format(
+                {"num_format": "%s %s" % (xl_date, xl_time)}
+            ),
+        }
+        return lambda field_type: formats.get(field_type)
+
     def _get_meta_num(self, meta, datum, obj_d):
         subfields = []
         for j, sf in enumerate(datum, 1):
@@ -157,6 +186,29 @@ class ExportProductXlsx(models.AbstractModel):
 
         return max(meta["num"], len(datum)), obj_d
 
+    def _convert_field_value(self, obj, field, meta, template_id):
+        datum = getattr(obj, field)
+        if meta["type"] == "selection":
+            datum = dict(meta["selection"]).get(datum)
+        elif meta["type"] == "many2many":
+            datum = ",".join([x.display_name for x in datum])
+        elif meta["type"] == "boolean":
+            datum = _("Yes") if datum else _("No")
+        elif meta["type"] == "many2one":
+            datum = datum.display_name
+        elif meta["type"] == "one2many":
+            if hasattr(datum, "export_xlsx"):
+                datum = datum.export_xlsx(template_id)
+            else:
+                datum = None  # NOT SUPPORTED
+        elif meta["type"] == "serialized":
+            datum = json.dumps(datum) if datum else None
+        elif meta["type"] == "binary":
+            datum = human_size(len(datum)) if datum else None
+        if meta["type"] != "boolean" and not datum:
+            datum = None
+        return datum
+
     def _generate_products(self, header, object_ids, template_id):
         n = len(object_ids)
         _logger.info("Generating %i products..." % n)
@@ -166,31 +218,10 @@ class ExportProductXlsx(models.AbstractModel):
             obj = self.env["lighting.product"].browse(obj_id)
             obj_d = {}
             for field, meta in header:
-                datum = getattr(obj, field)
-                if meta["type"] == "selection":
-                    datum = dict(meta["selection"]).get(datum)
-                elif meta["type"] == "many2many":
-                    datum = ",".join([x.display_name for x in datum])
-                elif meta["type"] == "boolean":
-                    datum = _("Yes") if datum else _("No")
-                elif meta["type"] == "many2one":
-                    datum = datum.display_name
-                elif meta["type"] == "one2many":
-                    if hasattr(datum, "export_xlsx"):
-                        datum = datum.export_xlsx(template_id)
-                    else:
-                        datum = None  # NOT SUPPORTED
-                elif meta["type"] == "serialized":
-                    datum = json.dumps(datum) if datum else None
-                elif meta["type"] == "binary":
-                    datum = human_size(len(datum)) if datum else None
-
-                if meta["type"] != "boolean" and not datum:
-                    datum = None
+                datum = self._convert_field_value(obj, field, meta, template_id)
 
                 if isinstance(datum, (tuple, list)):
                     meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
-
                 else:
                     fkey = meta["string"]
                     if fkey in obj_d:
