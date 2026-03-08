@@ -24,7 +24,7 @@ class ExportProductXlsx(models.AbstractModel):
             workbook, data, objects
         )
 
-    def generate_xlsx_report_ctx(self, workbook, data, objects):
+    def generate_xlsx_report_ctx(self, workbook, data, objects):  # noqa: C901
         template_id = self.env["lighting.export.template"].browse(
             data.get("template_id")
         )
@@ -92,13 +92,20 @@ class ExportProductXlsx(models.AbstractModel):
                     continue
 
                 fmt = cell_format(meta["type"])
-                write = sheet.write_datetime if fmt else sheet.write
                 if not meta["subfields"]:
-                    write(row, col, obj[meta["string"]], fmt)
+                    value = obj[meta["string"]]
+                    if fmt and value is not None:
+                        sheet.write_datetime(row, col, value, fmt)
+                    else:
+                        sheet.write(row, col, value)
                     col += 1
                 else:
                     for k in meta["subfields"]:
-                        write(row, col, obj.get(k), fmt)
+                        value = obj.get(k)
+                        if fmt and value is not None:
+                            sheet.write_datetime(row, col, value, fmt)
+                        else:
+                            sheet.write(row, col, value)
                         col += 1
             row += 1
 
