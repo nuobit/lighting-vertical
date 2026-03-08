@@ -4,7 +4,7 @@
 import json
 import logging
 
-from odoo import _, models
+from odoo import _, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools import human_size
 
@@ -201,6 +201,10 @@ class ExportProductXlsx(models.AbstractModel):
                 datum = datum.export_xlsx(template_id)
             else:
                 datum = None  # NOT SUPPORTED
+        elif meta["type"] == "datetime":
+            if datum:
+                datum = fields.Datetime.context_timestamp(obj, datum)
+                datum = datum.replace(tzinfo=None)
         elif meta["type"] == "serialized":
             datum = json.dumps(datum) if datum else None
         elif meta["type"] == "binary":
