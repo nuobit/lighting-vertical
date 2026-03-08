@@ -10,7 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2026-03-08 08:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: es\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -20,199 +20,199 @@ msgstr ""
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_attachment
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_attachment
 msgid "Attachments JSON Display"
-msgstr "Adjuntos JSON"
+msgstr "Anhänge JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__link_auth_enabled
 msgid "Authentication enabled"
-msgstr "Autenticación habilitada"
+msgstr "Authentifizierung aktiviert"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__auto_execute
 msgid "Auto Execute"
-msgstr "Ejecución automática"
+msgstr "Automatische Ausführung"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__output_base_directory
 msgid "Base directory"
-msgstr "Directorio base"
+msgstr "Basisverzeichnis"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_beam
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_beam
 msgid "Beam JSON Display"
-msgstr "Haces JSON"
+msgstr "Lichtstrahlen JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_beam_angle
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_beam_angle
 msgid "Beam angle JSON Display"
-msgstr "Ángulo del haz JSON"
+msgstr "Abstrahlwinkel JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_beam_angle
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_beam_angle
 msgid "Beam angle JSON Search"
-msgstr "Búsqueda JSON ángulo del haz"
+msgstr "JSON-Suche Abstrahlwinkel"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_bundles
 msgid "Bundles"
-msgstr "Paquetes"
+msgstr "Pakete"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_cri_color_temperature
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_cri_color_temperature
 msgid "CRI - Color Temperature JSON Search"
-msgstr "Búsqueda JSON CRI - Temperatura de color"
+msgstr "JSON-Suche CRI - Farbtemperatur"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_cri
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_cri
 msgid "CRI JSON Search"
-msgstr "Búsqueda JSON CRI"
+msgstr "JSON-Suche CRI"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_categories
 msgid "Categories"
-msgstr "Categorías"
+msgstr "Kategorien"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_color_temperature
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_color_temperature
 msgid "Color temperature JSON Display"
-msgstr "Temperatura de color JSON"
+msgstr "Farbtemperatur JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_color_temperature
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_color_temperature
 msgid "Color temperature JSON Search"
-msgstr "Búsqueda JSON temperatura de color"
+msgstr "JSON-Suche Farbtemperatur"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_cut_hole_dimension
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_cut_hole_dimension
 msgid "Cut hole dimension JSON Display"
-msgstr "Dimensión de empotramiento JSON"
+msgstr "Einbauöffnung JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__db_filestore
 msgid "Database filestore"
-msgstr "Almacén de ficheros de la base de datos"
+msgstr "Dateispeicher der Datenbank"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_dimension
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_dimension
 msgid "Dimension JSON Display"
-msgstr "Dimensión JSON"
+msgstr "Abmessung JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_dimmable
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_dimmable
 msgid "Dimmable JSON Display"
-msgstr "Regulable JSON"
+msgstr "Dimmbar JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__output_directory
 msgid "Directory"
-msgstr "Directorio"
+msgstr "Verzeichnis"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__link_enabled
 msgid "Enabled"
-msgstr "Habilitado"
+msgstr "Aktiviert"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,help:lighting_export_json.field_lighting_product_family__no_templates
 msgid ""
 "Enabled if this family is NOT allowed to contain templates (products with "
 "variants)"
-msgstr "Habilitado si esta familia NO puede contener plantillas (productos con variantes)"
+msgstr "Aktiviert, wenn diese Familie KEINE Vorlagen (Produkte mit Varianten) enthalten darf"
 
 #. module: lighting_export_json
 #: model_terms:ir.ui.view,arch_db:lighting_export_json.export_template_form_view_inherit_json
 msgid "Export"
-msgstr "Exportar"
+msgstr "Exportieren"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__category_complete_ids
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__category_complete_ids
 msgid "Export Category Complete"
-msgstr "Exportar categoría completa"
+msgstr "Kategorie vollständig exportieren"
 
 #. module: lighting_export_json
 #: model:ir.actions.server,name:lighting_export_json.export_template_auto_execute_ir_actions_server
 #: model:ir.cron,cron_name:lighting_export_json.export_template_auto_execute
 msgid "Export Json template auto execute"
-msgstr "Ejecución automática de plantilla de exportación JSON"
+msgstr "Automatische Ausführung der JSON-Exportvorlage"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__export_url_attachments
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__export_url_attachments
 msgid "Export Url Attachments"
-msgstr "Exportar adjuntos URL"
+msgstr "URL-Anhänge exportieren"
 
 #. module: lighting_export_json
 #: model_terms:ir.ui.view,arch_db:lighting_export_json.export_template_form_view_inherit_json
 msgid "External HTTP link"
-msgstr "Enlace HTTP externo"
+msgstr "Externer HTTP-Link"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_families
 msgid "Families"
-msgstr "Familias"
+msgstr "Familien"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__output_filename_prefix
 msgid "Filename prefix"
-msgstr "Prefijo del nombre de fichero"
+msgstr "Dateinamen-Präfix"
 
 #. module: lighting_export_json
 #: model_terms:ir.ui.view,arch_db:lighting_export_json.export_template_form_view_inherit_json
 msgid "Files"
-msgstr "Ficheros"
+msgstr "Dateien"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__finish_group_name
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__finish_group_name
 msgid "Finish Group Name"
-msgstr "Nombre del grupo de acabado"
+msgstr "Name der Oberflächengruppe"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_finish
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_finish
 msgid "Finish JSON Display"
-msgstr "Acabado JSON"
+msgstr "Oberfläche JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_finish_group_name
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_finish_group_name
 msgid "Finish group name JSON Display"
-msgstr "Nombre del grupo de acabado JSON"
+msgstr "Name der Oberflächengruppe JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_finish2
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_finish2
 msgid "Finish2 JSON Display"
-msgstr "Acabado 2 JSON"
+msgstr "Oberfläche 2 JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__group_description
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__group_description
 msgid "Group Description"
-msgstr "Descripción del grupo"
+msgstr "Gruppenbeschreibung"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_groups
 msgid "Groups"
-msgstr "Grupos"
+msgstr "Gruppen"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,help:lighting_export_json.field_lighting_product_special_spectrum__use_as_cct
 msgid ""
 "If checked, this special spectrum will be used as CCT (Correlated Color "
 "Temperature) value in json search."
-msgstr "Si está marcado, este espectro especial se utilizará como valor de CCT (Temperatura de Color Correlacionada) en la búsqueda JSON."
+msgstr "Wenn aktiviert, wird dieses Spezialspektrum als CCT-Wert (korrelierte Farbtemperatur) in der JSON-Suche verwendet."
 
 #. module: lighting_export_json
 #: model:ir.model.fields,help:lighting_export_json.field_lighting_export__sort_keys
@@ -220,13 +220,13 @@ msgstr "Si está marcado, este espectro especial se utilizará como valor de CCT
 msgid ""
 "If sort_keys is true (default: False), then the output of dictionaries will "
 "be sorted by key."
-msgstr "Si sort_keys es verdadero (por defecto: False), la salida de los diccionarios se ordenará por clave."
+msgstr "Wenn sort_keys wahr ist (Standard: False), wird die Ausgabe der Wörterbücher nach Schlüssel sortiert."
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_input_voltage
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_input_voltage
 msgid "Input Voltage JSON Search"
-msgstr "Búsqueda JSON tensión de entrada"
+msgstr "JSON-Suche Eingangsspannung"
 
 #. module: lighting_export_json
 #: model:ir.model.fields.selection,name:lighting_export_json.selection__lighting_export_template__lang_field_format__json
@@ -241,12 +241,12 @@ msgstr "Json"
 #: model:ir.model.fields.selection,name:lighting_export_json.selection__lighting_export_template__output_type__export_product_json
 #, python-format
 msgid "Json file (.json)"
-msgstr "Fichero Json (.json)"
+msgstr "Json-Datei (.json)"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_labels
 msgid "Labels"
-msgstr "Etiquetas"
+msgstr "Bezeichnungen"
 
 #. module: lighting_export_json
 #. odoo-python
@@ -255,7 +255,7 @@ msgstr "Etiquetas"
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Language field format %s not supported"
-msgstr "El formato de campo de idioma %s no está soportado"
+msgstr "Das Sprachfeldformat %s wird nicht unterstützt"
 
 #. module: lighting_export_json
 #. odoo-python
@@ -263,78 +263,78 @@ msgstr "El formato de campo de idioma %s no está soportado"
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Language field format %s not supported on json templates"
-msgstr "El formato de campo de idioma %s no está soportado en plantillas JSON"
+msgstr "Das Sprachfeldformat %s wird für JSON-Vorlagen nicht unterstützt"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_luminous_flux
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_luminous_flux
 msgid "Luminous flux JSON Display"
-msgstr "Flujo luminoso JSON"
+msgstr "Lichtstrom JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_luminous_flux
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_luminous_flux
 msgid "Luminous flux JSON Search"
-msgstr "Búsqueda JSON flujo luminoso"
+msgstr "JSON-Suche Lichtstrom"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__marketplace_description_html
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__marketplace_description_html
 msgid "Marketplace description html"
-msgstr "Descripción marketplace HTML"
+msgstr "Marketplace-Beschreibung HTML"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_material_ids
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_material_ids
 msgid "Material JSON Search"
-msgstr "Búsqueda JSON material"
+msgstr "JSON-Suche Material"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_model
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_model
 msgid "Model JSON Display"
-msgstr "Modelo JSON"
+msgstr "Modell JSON"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Multivalue Method '%s' does not exist"
-msgstr "El método multivalor '%s' no existe"
+msgstr "Die Multiwert-Methode '%s' existiert nicht"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "No"
-msgstr "No"
+msgstr "Nein"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_family__no_templates
 msgid "No Templates"
-msgstr "Sin plantillas"
+msgstr "Keine Vorlagen"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_optional
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_optional
 msgid "Optional JSON Display"
-msgstr "Opcionales JSON"
+msgstr "Optionale JSON"
 
 #. module: lighting_export_json
 #: model_terms:ir.ui.view,arch_db:lighting_export_json.export_template_form_view_inherit_json
 msgid "Output"
-msgstr "Salida"
+msgstr "Ausgabe"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__link_password
 msgid "Password"
-msgstr "Contraseña"
+msgstr "Passwort"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__photo_group_id
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__photo_group_id
 msgid "Photo Group"
-msgstr "Grupo de fotos"
+msgstr "Fotogruppe"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_photo
@@ -346,66 +346,66 @@ msgstr "Foto JSON"
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export__pretty_print
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__pretty_print
 msgid "Pretty Print"
-msgstr "Impresión formateada"
+msgstr "Formatierte Ausgabe"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_products
 msgid "Products"
-msgstr "Productos"
+msgstr "Produkte"
 
 #. module: lighting_export_json
 #: model:ir.actions.report,name:lighting_export_json.report_export_product_json
 msgid "Products JSON Report"
-msgstr "Informe JSON de productos"
+msgstr "JSON-Bericht der Produkte"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_same_family
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_same_family
 msgid "Same Family JSON Display"
-msgstr "Misma familia JSON"
+msgstr "Gleiche Familie JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export__sort_keys
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__sort_keys
 msgid "Sort Keys"
-msgstr "Ordenar por clave"
+msgstr "Nach Schlüssel sortieren"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_source_type
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_source_type
 msgid "Source type JSON Display"
-msgstr "Tipo de fuente JSON"
+msgstr "Quellentyp JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_source_type
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_source_type
 msgid "Source type JSON Search"
-msgstr "Búsqueda JSON tipo de fuente"
+msgstr "JSON-Suche Quellentyp"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_substitute
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_substitute
 msgid "Substitute JSON Display"
-msgstr "Sustitutos JSON"
+msgstr "Ersatzprodukte JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__export_templates
 msgid "Templates"
-msgstr "Plantillas"
+msgstr "Vorlagen"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "The field %s structure is not valid"
-msgstr "La estructura del campo %s no es válida"
+msgstr "Die Struktur des Feldes %s ist ungültig"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "The key subfield %s value must return a singleton"
-msgstr "El valor del subcampo clave %s debe devolver un singleton"
+msgstr "Der Wert des Schlüssel-Unterfeldes %s muss einen Singleton zurückgeben"
 
 #. module: lighting_export_json
 #. odoo-python
@@ -413,7 +413,7 @@ msgstr "El valor del subcampo clave %s debe devolver un singleton"
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "The subfield %s value must return a singleton"
-msgstr "El valor del subcampo %s debe devolver un singleton"
+msgstr "Der Wert des Unterfeldes %s muss einen Singleton zurückgeben"
 
 #. module: lighting_export_json
 #. odoo-python
@@ -421,69 +421,69 @@ msgstr "El valor del subcampo %s debe devolver un singleton"
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Type %s no supported on Serialized fields with multivalue separator"
-msgstr "El tipo %s no está soportado en campos serializados con separador multivalor"
+msgstr "Der Typ %s wird für serialisierte Felder mit Multiwert-Trennzeichen nicht unterstützt"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Unexpected!! The key %s is duplicated!"
-msgstr "¡Inesperado! ¡La clave %s está duplicada!"
+msgstr "Unerwartet! Der Schlüssel %s ist dupliziert!"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Unexpected, the field %s is not defined on template"
-msgstr "Inesperado, el campo %s no está definido en la plantilla"
+msgstr "Unerwartet, das Feld %s ist in der Vorlage nicht definiert"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product_special_spectrum__use_as_cct
 msgid "Use as CCT"
-msgstr "Usar como CCT"
+msgstr "Als CCT verwenden"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_export_template__link_username
 msgid "Username"
-msgstr "Nombre de usuario"
+msgstr "Benutzername"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_video
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_video
 msgid "Video JSON Display"
-msgstr "Vídeo JSON"
+msgstr "Video JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_display_wattage
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_display_wattage
 msgid "Wattage JSON Display"
-msgstr "Potencia JSON"
+msgstr "Leistung JSON"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_wattage
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_wattage
 msgid "Wattage JSON Search"
-msgstr "Búsqueda JSON potencia"
+msgstr "JSON-Suche Leistung"
 
 #. module: lighting_export_json
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_product__json_search_wattage2
 #: model:ir.model.fields,field_description:lighting_export_json.field_lighting_sapb1_product__json_search_wattage2
 msgid "Wattage2 JSON Search"
-msgstr "Búsqueda JSON potencia 2"
+msgstr "JSON-Suche Leistung 2"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "Yes"
-msgstr "Sí"
+msgstr "Ja"
 
 #. module: lighting_export_json
 #. odoo-python
 #: code:addons/lighting_export_json/models/export_template.py:0
 #, python-format
 msgid "You need to define at least one field"
-msgstr "Debe definir al menos un campo"
+msgstr "Sie müssen mindestens ein Feld definieren"
 
 #. module: lighting_export_json
 #: model:ir.model,name:lighting_export_json.model_report_lighting_export_json_export_product_json
