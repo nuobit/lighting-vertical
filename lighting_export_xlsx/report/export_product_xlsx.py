@@ -198,6 +198,8 @@ class ExportProductXlsx(models.AbstractModel):
             # actual data into memory (can cause MemoryError with large
             # batches). The export only needs the file size, not the content.
             datum = obj.with_context(bin_size=True)[field]
+            if isinstance(datum, bytes):
+                datum = datum.decode("utf-8", errors="replace")
             datum = datum if datum else None
             return datum
         datum = getattr(obj, field)
