@@ -86,8 +86,11 @@ class ExportProductXlsx(models.AbstractModel):
         cell_format = self._get_cell_format(workbook, data["lang"])
 
         # write data to xlsx
+        n = len(objects_ld)
+        th = int(n / 100) or 1
+        _logger.info("Writing %i rows to xlsx..." % n)
         row = 1
-        for obj in objects_ld:
+        for i, obj in enumerate(objects_ld, 1):
             col = 0
             for _field, meta in header:
                 if not meta["num"] and data.get("hide_empty_fields"):
@@ -110,13 +113,22 @@ class ExportProductXlsx(models.AbstractModel):
                             sheet.write(row, col, value)
                         col += 1
             row += 1
+            if (i % th) == 0:
+                _logger.info(
+                    " - Progress xlsx writing %i%%" % round(i / n * 100)
+                )
+        _logger.info("Xlsx writing completed...")
 
         # make exported attachments public (single write at the end to avoid
         # concurrent access issues during batch processing)
         if non_public_ids:
-            self.env["lighting.attachment"].sudo().browse(non_public_ids).write(
-                {"public": True}
+            _logger.info(
+                "Setting %i attachments to public..." % len(non_public_ids)
             )
+            self.env["lighting.attachment"].sudo().browse(
+                non_public_ids
+            ).write({"public": True})
+            _logger.info("Attachments updated...")
 
     def _check_duplicate_labels(self, header, template_id):
         seen_labels = {}
