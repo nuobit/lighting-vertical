@@ -6,7 +6,6 @@ import logging
 
 from odoo import _, fields, models
 from odoo.exceptions import ValidationError
-from odoo.tools import human_size
 
 _logger = logging.getLogger(__name__)
 
@@ -215,7 +214,9 @@ class ExportProductXlsx(models.AbstractModel):
         elif meta["type"] == "serialized":
             datum = json.dumps(datum) if datum else None
         elif meta["type"] == "binary":
-            datum = human_size(len(datum)) if datum else None
+            # With bin_size=True context, datum is already a human-readable
+            # size string (e.g. "1.16 Kb"), no conversion needed
+            datum = datum if datum else None
         if meta["type"] != "boolean" and not datum:
             datum = None
         return datum
@@ -228,7 +229,11 @@ class ExportProductXlsx(models.AbstractModel):
         objects_ld = []
         for batch_start in range(0, n, batch_size):
             batch_ids = object_ids[batch_start : batch_start + batch_size]
-            batch = self.env["lighting.product"].browse(batch_ids)
+            batch = (
+                self.env["lighting.product"]
+                .with_context(bin_size=True)
+                .browse(batch_ids)
+            )
             for i, obj in enumerate(batch, batch_start + 1):
                 obj_d = {}
                 for field, meta in header:
