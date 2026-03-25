@@ -193,6 +193,13 @@ class ExportProductXlsx(models.AbstractModel):
         return max(meta["num"], len(datum)), obj_d
 
     def _convert_field_value(self, obj, field, meta, template_id):
+        if meta["type"] == "binary":
+            # Access binary fields with bin_size=True to avoid loading the
+            # actual data into memory (can cause MemoryError with large
+            # batches). The export only needs the file size, not the content.
+            datum = obj.with_context(bin_size=True)[field]
+            datum = datum if datum else None
+            return datum
         datum = getattr(obj, field)
         if meta["type"] == "selection":
             datum = dict(meta["selection"]).get(datum)
@@ -213,10 +220,6 @@ class ExportProductXlsx(models.AbstractModel):
                 datum = datum.replace(tzinfo=None)
         elif meta["type"] == "serialized":
             datum = json.dumps(datum) if datum else None
-        elif meta["type"] == "binary":
-            # With bin_size=True context, datum is already a human-readable
-            # size string (e.g. "1.16 Kb"), no conversion needed
-            datum = datum if datum else None
         if meta["type"] != "boolean" and not datum:
             datum = None
         return datum
@@ -229,11 +232,7 @@ class ExportProductXlsx(models.AbstractModel):
         objects_ld = []
         for batch_start in range(0, n, batch_size):
             batch_ids = object_ids[batch_start : batch_start + batch_size]
-            batch = (
-                self.env["lighting.product"]
-                .with_context(bin_size=True)
-                .browse(batch_ids)
-            )
+            batch = self.env["lighting.product"].browse(batch_ids)
             for i, obj in enumerate(batch, batch_start + 1):
                 obj_d = {}
                 for field, meta in header:
@@ -256,7 +255,7 @@ class ExportProductXlsx(models.AbstractModel):
                     _logger.info(
                         " - Progress products generation %i%%" % round(i / n * 100)
                     )
-            batch.invalidate_recordset()
+            self.env.invalidate_all()
 
         _logger.info("Products successfully generated...")
 
