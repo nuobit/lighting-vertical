@@ -726,11 +726,13 @@ class LightingProduct(models.Model):
             prefixes_with_siblings = {row[0] for row in self.env.cr.fetchall()}
         for rec in self:
             prefix = rec_prefix[rec.id]
-            if prefix and prefix in prefixes_with_siblings:
-                # Original code sets False here (not prefix), kept as-is
-                rec.finish_prefix = False
+            if prefix:
+                if prefix in prefixes_with_siblings:
+                    rec.finish_prefix = prefix
+                else:
+                    rec.finish_prefix = rec.reference
             else:
-                rec.finish_prefix = rec.reference
+                rec.finish_prefix = False
 
     finish2_id = fields.Many2one(
         comodel_name="lighting.product.finish",
