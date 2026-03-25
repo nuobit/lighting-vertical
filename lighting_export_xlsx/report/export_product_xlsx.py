@@ -232,7 +232,11 @@ class ExportProductXlsx(models.AbstractModel):
         objects_ld = []
         for batch_start in range(0, n, batch_size):
             batch_ids = object_ids[batch_start : batch_start + batch_size]
-            batch = self.env["lighting.product"].browse(batch_ids)
+            batch = (
+                self.env["lighting.product"]
+                .with_context(bin_size=True)
+                .browse(batch_ids)
+            )
             for i, obj in enumerate(batch, batch_start + 1):
                 obj_d = {}
                 for field, meta in header:
