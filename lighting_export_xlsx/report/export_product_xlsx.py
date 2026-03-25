@@ -56,7 +56,10 @@ class ExportProductXlsx(models.AbstractModel):
         self._check_duplicate_labels(header, template_id)
 
         # generate data and gather header data
-        objects_ld = self._generate_products(header, objects.ids, template_id)
+        non_public_ids = []
+        objects_ld = self.with_context(
+            non_public_attachment_ids=non_public_ids
+        )._generate_products(header, objects.ids, template_id)
 
         # generate xlsx headers according to data
         xlsx_header = []
@@ -107,6 +110,13 @@ class ExportProductXlsx(models.AbstractModel):
                             sheet.write(row, col, value)
                         col += 1
             row += 1
+
+        # make exported attachments public (single write at the end to avoid
+        # concurrent access issues during batch processing)
+        if non_public_ids:
+            self.env["lighting.attachment"].sudo().browse(non_public_ids).write(
+                {"public": True}
+            )
 
     def _check_duplicate_labels(self, header, template_id):
         seen_labels = {}
