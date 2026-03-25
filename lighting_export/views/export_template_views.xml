@@ -123,6 +123,7 @@
                             <group>
                                 <field name="output_type" />
                                 <field name="hide_empty_fields" />
+                                <field name="export_batch_size" />
                             </group>
                         </group>
                         <group>

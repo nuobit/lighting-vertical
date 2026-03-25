@@ -220,15 +220,14 @@ class ExportProductXlsx(models.AbstractModel):
             datum = None
         return datum
 
-    _BATCH_SIZE = 500
-
     def _generate_products(self, header, object_ids, template_id):
         n = len(object_ids)
         _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
+        batch_size = template_id.export_batch_size
         objects_ld = []
-        for batch_start in range(0, n, self._BATCH_SIZE):
-            batch_ids = object_ids[batch_start : batch_start + self._BATCH_SIZE]
+        for batch_start in range(0, n, batch_size):
+            batch_ids = object_ids[batch_start : batch_start + batch_size]
             batch = self.env["lighting.product"].browse(batch_ids)
             for i, obj in enumerate(batch, batch_start + 1):
                 obj_d = {}

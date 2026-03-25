@@ -82,6 +82,14 @@ class LightingExportTemplate(models.Model):
     hide_empty_fields = fields.Boolean(
         default=True,
     )
+    export_batch_size = fields.Integer(
+        string="Export batch size",
+        required=True,
+        default=500,
+        help="Number of products processed at a time during export. "
+        "Lower values use less memory, higher values may be faster "
+        "for templates with few fields.",
+    )
     output_type = fields.Selection(
         selection=[],
     )
