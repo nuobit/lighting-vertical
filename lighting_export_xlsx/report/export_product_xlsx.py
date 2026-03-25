@@ -220,34 +220,39 @@ class ExportProductXlsx(models.AbstractModel):
             datum = None
         return datum
 
+    _BATCH_SIZE = 500
+
     def _generate_products(self, header, object_ids, template_id):
         n = len(object_ids)
         _logger.info("Generating %i products..." % n)
         th = int(n / 100) or 1
         objects_ld = []
-        for i, obj_id in enumerate(object_ids, 1):
-            obj = self.env["lighting.product"].browse(obj_id)
-            obj_d = {}
-            for field, meta in header:
-                datum = self._convert_field_value(obj, field, meta, template_id)
+        for batch_start in range(0, n, self._BATCH_SIZE):
+            batch_ids = object_ids[batch_start : batch_start + self._BATCH_SIZE]
+            batch = self.env["lighting.product"].browse(batch_ids)
+            for i, obj in enumerate(batch, batch_start + 1):
+                obj_d = {}
+                for field, meta in header:
+                    datum = self._convert_field_value(obj, field, meta, template_id)
 
-                if isinstance(datum, (tuple, list)):
-                    meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
-                else:
-                    fkey = meta["string"]
-                    if fkey in obj_d:
-                        raise Exception("The field '%s' is duplicated" % fkey)
-                    obj_d[fkey] = datum
+                    if isinstance(datum, (tuple, list)):
+                        meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
+                    else:
+                        fkey = meta["string"]
+                        if fkey in obj_d:
+                            raise Exception("The field '%s' is duplicated" % fkey)
+                        obj_d[fkey] = datum
 
-                    if not meta["num"] and datum:
-                        meta["num"] = 1
+                        if not meta["num"] and datum:
+                            meta["num"] = 1
 
-            objects_ld.append(obj_d)
+                objects_ld.append(obj_d)
 
-            if (i % th) == 0:
-                _logger.info(
-                    " - Progress products generation %i%%" % round(i / n * 100)
-                )
+                if (i % th) == 0:
+                    _logger.info(
+                        " - Progress products generation %i%%" % round(i / n * 100)
+                    )
+            batch.invalidate_recordset()
 
         _logger.info("Products successfully generated...")
 

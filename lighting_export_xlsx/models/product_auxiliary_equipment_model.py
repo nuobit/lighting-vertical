@@ -11,11 +11,12 @@ class LightingProductAuxiliaryEquipmentModel(models.Model):
 
     def export_xlsx(self, template_id=None):
         valid_field = ["reference", "brand_id", "date"]
+        field_meta_base = self.fields_get(valid_field, ["string", "type"])
         res = []
         for rec in self:
             line = OrderedDict()
             for field in valid_field:
-                field_meta = self.fields_get([field], ["string", "type"])[field]
+                field_meta = field_meta_base[field]
                 datum = getattr(rec, field)
                 if field_meta["type"] in ("many2one", "many2many", "one2many"):
                     datum = datum.display_name
