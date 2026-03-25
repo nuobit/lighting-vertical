@@ -14,6 +14,7 @@ class LightingProductDimensionProductAbstract(models.AbstractModel):
     product_id = fields.Many2one(
         comodel_name="lighting.product",
         ondelete="cascade",
+        index=True,
     )
 
     @api.constrains("type_id", "product_id")

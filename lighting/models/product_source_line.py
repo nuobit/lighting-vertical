@@ -607,6 +607,7 @@ class LightingProductSourceLine(models.Model):
         comodel_name="lighting.product.source",
         ondelete="cascade",
         string="Source",
+        index=True,
     )
 
     @api.constrains("type_id", "is_integrated", "is_lamp_included")

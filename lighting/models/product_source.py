@@ -44,6 +44,7 @@ class LightingProductSource(models.Model):
     product_id = fields.Many2one(
         comodel_name="lighting.product",
         ondelete="cascade",
+        index=True,
     )
 
     # computed fields

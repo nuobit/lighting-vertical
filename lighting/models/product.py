@@ -590,16 +590,36 @@ class LightingProduct(models.Model):
 
     @api.depends("optional_ids", "required_ids")
     def _compute_parents_brands(self):
+        if not self:
+            return
+        # Raw SQL for performance: the ORM approach triggers one search per
+        # record which is too slow on large recordsets
+        self.env.cr.execute(
+            """
+            SELECT product_id, array_agg(DISTINCT catalog_id)
+            FROM (
+                SELECT orel.optional_id AS product_id,
+                       crel.lighting_catalog_id AS catalog_id
+                FROM lighting_product_optional_rel orel
+                JOIN lighting_product_catalog_rel crel
+                    ON crel.lighting_product_id = orel.product_id
+                WHERE orel.optional_id IN %s
+                UNION ALL
+                SELECT rrel.required_id AS product_id,
+                       crel.lighting_catalog_id AS catalog_id
+                FROM lighting_product_required_rel rrel
+                JOIN lighting_product_catalog_rel crel
+                    ON crel.lighting_product_id = rrel.product_id
+                WHERE rrel.required_id IN %s
+            ) sub
+            GROUP BY product_id
+            """,
+            (tuple(self.ids), tuple(self.ids)),
+        )
+        brands_per_product = dict(self.env.cr.fetchall())
         for rec in self:
-            parents = self.env["lighting.product"].search(
-                [
-                    "|",
-                    ("optional_ids", "=", rec.id),
-                    ("required_ids", "=", rec.id),
-                ]
-            )
-            if parents:
-                brand_ids = list(set(parents.mapped("catalog_ids.id")))
+            brand_ids = brands_per_product.get(rec.id)
+            if brand_ids:
                 rec.parents_brand_ids = [(6, False, brand_ids)]
             else:
                 rec.parents_brand_ids = False
@@ -679,21 +699,38 @@ class LightingProduct(models.Model):
     )
 
     def _compute_finish_prefix(self):
+        if not self:
+            return
+        rec_prefix = {}
         for rec in self:
-            has_sibling = False
-            m = re.match(r"^(.+)-.{2}$", rec.reference)
-            if m:
-                prefix = m.group(1)
-                product_siblings = self.search(
-                    [
-                        ("reference", "=like", "%s-__" % prefix),
-                        ("id", "!=", rec.id),
-                    ]
-                )
-                if product_siblings:
-                    rec.finish_prefix = prefix
-                    has_sibling = True
-            rec.finish_prefix = rec.reference if not has_sibling else False
+            m = re.match(r"^(.+)-.{2}$", rec.reference or "")
+            rec_prefix[rec.id] = m.group(1) if m else None
+        # Collect unique prefixes to search
+        unique_prefixes = {p for p in rec_prefix.values() if p}
+        # One query: find which prefixes have at least 2 matching references
+        # Raw SQL for performance: the ORM approach triggers one search per
+        # record which is too slow on large recordsets
+        prefixes_with_siblings = set()
+        if unique_prefixes:
+            conditions = ["reference LIKE %s"] * len(unique_prefixes)
+            params = [p + "-__" for p in unique_prefixes]
+            self.env.cr.execute(
+                "SELECT left(reference, length(reference) - 3)"
+                " FROM lighting_product"
+                " WHERE "
+                + " OR ".join(conditions)
+                + " GROUP BY left(reference, length(reference) - 3)"
+                " HAVING COUNT(*) > 1",
+                params,
+            )
+            prefixes_with_siblings = {row[0] for row in self.env.cr.fetchall()}
+        for rec in self:
+            prefix = rec_prefix[rec.id]
+            if prefix and prefix in prefixes_with_siblings:
+                # Original code sets False here (not prefix), kept as-is
+                rec.finish_prefix = False
+            else:
+                rec.finish_prefix = rec.reference
 
     finish2_id = fields.Many2one(
         comodel_name="lighting.product.finish",
@@ -1177,10 +1214,16 @@ class LightingProduct(models.Model):
 
     @api.depends("attachment_ids")
     def _compute_attachment_count(self):
-        for record in self:
-            record.attachment_count = self.env["lighting.attachment"].search_count(
-                [("product_id", "=", record.id)]
-            )
+        if not self:
+            return
+        data = self.env["lighting.attachment"].read_group(
+            domain=[("product_id", "in", self.ids)],
+            fields=["product_id"],
+            groupby=["product_id"],
+        )
+        counts = {d["product_id"][0]: d["product_id_count"] for d in data}
+        for rec in self:
+            rec.attachment_count = counts.get(rec.id, 0)
 
     # Optional accesories tab
     optional_ids = fields.Many2many(
@@ -1197,10 +1240,20 @@ class LightingProduct(models.Model):
 
     @api.depends("optional_ids")
     def _compute_parent_optional_accessory_product_count(self):
+        if not self:
+            return
+        # Raw SQL for performance: the ORM approach triggers one query per
+        # record which is too slow on large recordsets
+        self.env.cr.execute(
+            "SELECT optional_id, COUNT(*)"
+            " FROM lighting_product_optional_rel"
+            " WHERE optional_id IN %s"
+            " GROUP BY optional_id",
+            (tuple(self.ids),),
+        )
+        counts = dict(self.env.cr.fetchall())
         for rec in self:
-            rec.parent_optional_accessory_product_count = self.env[
-                "lighting.product"
-            ].search_count([("optional_ids", "=", rec.id)])
+            rec.parent_optional_accessory_product_count = counts.get(rec.id, 0)
 
     is_optional_accessory = fields.Boolean(
         string="Is recommended accessory",
@@ -1210,10 +1263,19 @@ class LightingProduct(models.Model):
 
     @api.depends("optional_ids")
     def _compute_is_optional_accessory(self):
+        if not self:
+            return
+        # Raw SQL for performance: the ORM approach triggers one query per
+        # record which is too slow on large recordsets
+        self.env.cr.execute(
+            "SELECT DISTINCT optional_id"
+            " FROM lighting_product_optional_rel"
+            " WHERE optional_id IN %s",
+            (tuple(self.ids),),
+        )
+        accessory_ids = {row[0] for row in self.env.cr.fetchall()}
         for rec in self:
-            rec.is_optional_accessory = bool(
-                self.env["lighting.product"].search([("optional_ids", "=", rec.id)])
-            )
+            rec.is_optional_accessory = rec.id in accessory_ids
 
     def _search_is_optional_accessory(self, operator, value):
         ids = (
@@ -1238,10 +1300,20 @@ class LightingProduct(models.Model):
 
     @api.depends("required_ids")
     def _compute_parent_required_accessory_product_count(self):
-        for record in self:
-            record.parent_required_accessory_product_count = self.env[
-                "lighting.product"
-            ].search_count([("required_ids", "=", record.id)])
+        if not self:
+            return
+        # Raw SQL for performance: the ORM approach triggers one query per
+        # record which is too slow on large recordsets
+        self.env.cr.execute(
+            "SELECT required_id, COUNT(*)"
+            " FROM lighting_product_required_rel"
+            " WHERE required_id IN %s"
+            " GROUP BY required_id",
+            (tuple(self.ids),),
+        )
+        counts = dict(self.env.cr.fetchall())
+        for rec in self:
+            rec.parent_required_accessory_product_count = counts.get(rec.id, 0)
 
     is_required_accessory = fields.Boolean(
         compute="_compute_is_required_accessory",
@@ -1250,10 +1322,19 @@ class LightingProduct(models.Model):
 
     @api.depends("required_ids")
     def _compute_is_required_accessory(self):
+        if not self:
+            return
+        # Raw SQL for performance: the ORM approach triggers one query per
+        # record which is too slow on large recordsets
+        self.env.cr.execute(
+            "SELECT DISTINCT required_id"
+            " FROM lighting_product_required_rel"
+            " WHERE required_id IN %s",
+            (tuple(self.ids),),
+        )
+        accessory_ids = {row[0] for row in self.env.cr.fetchall()}
         for rec in self:
-            rec.is_required_accessory = bool(
-                self.env["lighting.product"].search([("required_ids", "=", rec.id)])
-            )
+            rec.is_required_accessory = rec.id in accessory_ids
 
     def _search_is_required_accessory(self, operator, value):
         ids = (
