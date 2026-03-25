@@ -17,11 +17,7 @@ class LightingAttachment(models.Model):
             if prod_attachment_ids.mapped("attachment_id"):
                 non_public = prod_attachment_ids.filtered(lambda x: not x.public)
                 if non_public:
-                    ids_list = self.env.context.get("non_public_attachment_ids")
-                    if ids_list is not None:
-                        ids_list.extend(non_public.ids)
-                    else:
-                        non_public.sudo().write({"public": True})
+                    self.env.context["non_public_attachment_ids"].extend(non_public.ids)
                 for pa in prod_attachment_ids:
                     res.append(
                         OrderedDict(
