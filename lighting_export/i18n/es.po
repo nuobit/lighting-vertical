@@ -126,6 +126,21 @@ msgid "Exclude Configurator"
 msgstr "Excluir configurador"
 
 #. module: lighting_export
+#: model:ir.model.fields,field_description:lighting_export.field_lighting_export_template__export_batch_size
+msgid "Export batch size"
+msgstr "Tamaño del lote de exportación"
+
+#. module: lighting_export
+#: model:ir.model.fields,help:lighting_export.field_lighting_export_template__export_batch_size
+msgid ""
+"Number of products processed at a time during export. Lower values use less "
+"memory, higher values may be faster for templates with few fields."
+msgstr ""
+"Número de productos procesados a la vez durante la exportación. Valores más "
+"bajos usan menos memoria, valores más altos pueden ser más rápidos para "
+"plantillas con pocos campos."
+
+#. module: lighting_export
 #: model:ir.ui.menu,name:lighting_export.export_menu
 #: model_terms:ir.ui.view,arch_db:lighting_export.export_product_view
 msgid "Export"

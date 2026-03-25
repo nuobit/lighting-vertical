@@ -196,6 +196,7 @@ class LightingProductETIMFeature(models.Model):
         comodel_name="lighting.product",
         ondelete="cascade",
         required=True,
+        index=True,
     )
 
     _sql_constraints = [

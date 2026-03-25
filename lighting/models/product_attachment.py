@@ -225,6 +225,7 @@ class LightingAttachment(models.Model):
     product_id = fields.Many2one(
         comodel_name="lighting.product",
         ondelete="cascade",
+        index=True,
     )
 
     def name_get(self):
