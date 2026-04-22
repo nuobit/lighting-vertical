@@ -2445,6 +2445,23 @@ msgid "Recommended accessories"
 msgstr "Acessórios recomendados"
 
 #. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__spare_part_ids
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.lighting_product_view
+msgid "Spare parts"
+msgstr "Peças sobressalentes"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_spare_part
+msgid "Is spare part"
+msgstr "É peça sobressalente"
+
+#. module: lighting
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+msgid "P. sp. parts"
+msgstr "P. peças"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_required_ids
 #: model:ir.ui.view,arch_db:lighting.product_form_view
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
