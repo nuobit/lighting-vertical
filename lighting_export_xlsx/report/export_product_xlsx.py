@@ -114,20 +114,16 @@ class ExportProductXlsx(models.AbstractModel):
                         col += 1
             row += 1
             if (i % th) == 0:
-                _logger.info(
-                    " - Progress xlsx writing %i%%" % round(i / n * 100)
-                )
+                _logger.info(" - Progress xlsx writing %i%%" % round(i / n * 100))
         _logger.info("Xlsx writing completed...")
 
         # make exported attachments public (single write at the end to avoid
         # concurrent access issues during batch processing)
         if non_public_ids:
-            _logger.info(
-                "Setting %i attachments to public..." % len(non_public_ids)
+            _logger.info("Setting %i attachments to public..." % len(non_public_ids))
+            self.env["lighting.attachment"].sudo().browse(non_public_ids).write(
+                {"public": True}
             )
-            self.env["lighting.attachment"].sudo().browse(
-                non_public_ids
-            ).write({"public": True})
             _logger.info("Attachments updated...")
 
     def _check_duplicate_labels(self, header, template_id):
