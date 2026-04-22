@@ -18,13 +18,15 @@ class LightingProductSourceLine(models.Model):
         values_l.append(value)
         return " ".join(values_l)
 
-    def _get_color_temperature_flux_values(self, flux_attr):
+    def _get_color_temperature_flux_values(self, flux_attr, as_integer=False):
         self.ensure_one()
         found = False
         flux_data = []
         for flux in self.color_temperature_flux_ids:
             value = flux[flux_attr]
             if value:
+                if as_integer:
+                    value = round(value)
                 value = self.get_format_lang_decimal(value) + flux.flux_magnitude
                 if not found:
                     found = True
@@ -42,7 +44,7 @@ class LightingProductSourceLine(models.Model):
     def get_total_flux_display(self):
         self.ensure_one()
         return self._prepend_source_num(
-            self._get_color_temperature_flux_values("total_flux")
+            self._get_color_temperature_flux_values("total_flux", as_integer=True)
         )
 
     def get_total_wattage_display(self):
