@@ -3446,6 +3446,11 @@ msgid "P. rec. acc."
 msgstr ""
 
 #. module: lighting
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+msgid "P. sp. parts"
+msgstr "P. pièces"
+
+#. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_category__parent_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_group__parent_id
 #: model_terms:ir.ui.view,arch_db:lighting.product_group_search_view
