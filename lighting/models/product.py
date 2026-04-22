@@ -1357,6 +1357,37 @@ class LightingProduct(models.Model):
         tracking=True,
     )
 
+    # Spare parts tab
+    spare_part_ids = fields.Many2many(
+        comodel_name="lighting.product",
+        relation="lighting_product_spare_part_rel",
+        column1="product_id",
+        column2="spare_part_id",
+        string="Spare parts",
+        tracking=True,
+    )
+
+    is_spare_part = fields.Boolean(
+        string="Is spare part",
+        compute="_compute_is_spare_part",
+        search="_search_is_spare_part",
+    )
+
+    @api.depends("spare_part_ids")
+    def _compute_is_spare_part(self):
+        for rec in self:
+            rec.is_spare_part = bool(
+                self.env["lighting.product"].search([("spare_part_ids", "=", rec.id)])
+            )
+
+    def _search_is_spare_part(self, operator, value):
+        ids = (
+            self.env["lighting.product"]
+            .search([("spare_part_ids", "!=", False)])
+            .mapped("spare_part_ids.id")
+        )
+        return [("id", "in", ids)]
+
     # logistics tab
     tariff_item = fields.Char(
         tracking=True,
