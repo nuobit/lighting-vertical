@@ -94,7 +94,10 @@ class LigthingSAPB1ProductImportMapper(Component):
         if not binding or not binding.ibox_weight:
             values["ibox_weight"] = record["SWeight1"]
         if not binding or not binding.ibox_volume:
-            values["ibox_volume"] = record["SVolume"] * 1000
+            if record["SVolUnit"] == 3:
+                values["ibox_volume"] = record["SVolume"] * 1000
+            else:
+                values["ibox_volume"] = record["SVolume"]
         if not binding or not binding.ibox_length:
             values["ibox_length"] = record["SLength1"]
         if not binding or not binding.ibox_width:

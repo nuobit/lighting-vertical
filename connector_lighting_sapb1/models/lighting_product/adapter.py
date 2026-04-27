@@ -147,8 +147,8 @@ class LightingSAPB1ProductAdapter(Component):
                                g."ItmsGrpCod", g."ItmsGrpNam", p."U_U_familia",
                                p."U_U_aplicacion",p."U_ACC_Obsmark",
                                p."U_U_Configurador", p."U_U_FECHACAT",
-                               p."SWeight1", p."SVolume", p."SLength1",
-                               p."SWidth1", p."SHeight1", s."OnHand",
+                               p."SWeight1", p."SVolume", p."SVolUnit",
+                               p."SLength1", p."SWidth1", p."SHeight1", s."OnHand",
                                s."IsCommited", s."OnOrder", s."ShipDate",
                                s."Capacity", p."AvgPrice", p."LastPurDat",
                                COALESCE(pp."PurchasePrice", 0)
@@ -178,6 +178,7 @@ class LightingSAPB1ProductAdapter(Component):
                                     COALESCE(to_binary(p."U_U_FECHACAT"), '00'), '00',
                                     COALESCE(to_binary(p."SWeight1"), '00'), '00',
                                     COALESCE(to_binary(p."SVolume"), '00'), '00',
+                                    COALESCE(to_binary(p."SVolUnit"), '00'), '00',
                                     COALESCE(to_binary(p."SLength1"), '00'), '00',
                                     COALESCE(to_binary(p."SWidth1"), '00'), '00',
                                     COALESCE(to_binary(p."SHeight1"), '00'), '00',

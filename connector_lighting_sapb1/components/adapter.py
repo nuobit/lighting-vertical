@@ -135,6 +135,7 @@ class LightingConnectorSAPB1Adapter(AbstractComponent):
         conv_mapper = {
             "/SWeight1": lambda x: float(x) or float(0),
             "/SVolume": lambda x: float(x) or float(0),
+            "/SVolUnit": lambda x: int(x) if x is not None else None,
             "/SLength1": lambda x: float(x) or float(0),
             "/SWidth1": lambda x: float(x) or float(0),
             "/SHeight1": lambda x: float(x) or float(0),
