@@ -3,7 +3,7 @@
 
 {
     "name": "(DEPRECATED) Lighting Reporting",
-    "version": "16.0.1.0.0",
+    "version": "16.0.1.2.0",
     "author": "NuoBiT Solutions SL",
     "license": "AGPL-3",
     "category": "Lighting",
