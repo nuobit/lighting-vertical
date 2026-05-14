@@ -822,7 +822,7 @@
                 <filter
                     string="Spare parts"
                     name="spare_parts"
-                    domain="[('is_spare_part', '=', True)]"
+                    domain="[('is_used_as_spare_part', '=', True)]"
                 />
                 <filter
                     string="Mandatory accessories"

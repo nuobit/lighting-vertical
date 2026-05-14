@@ -2569,9 +2569,15 @@ msgid "Is recommended accessory"
 msgstr ""
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_spare_part
-msgid "Is spare part"
-msgstr "Es recambio"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_component
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_category__is_component
+msgid "Is Component"
+msgstr "Es componente"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_used_as_spare_part
+msgid "Is used as spare part"
+msgstr "Se usa como recambio"
 
 #. module: lighting
 #: model:ir.model.constraint,message:lighting.constraint_lighting_product_voltage_voltage_uniq

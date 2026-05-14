@@ -554,6 +554,38 @@ class LightingProduct(models.Model):
                 raise ValidationError(_("Operator '%s' not supported") % operator)
         return [("id", "in", ids)]
 
+    is_component = fields.Boolean(
+        compute="_compute_is_component",
+        search="_search_is_component",
+        readonly=True,
+    )
+
+    @api.depends("category_id", "category_id.is_component")
+    def _compute_is_component(self):
+        for rec in self:
+            if rec.category_id:
+                rec.is_component = rec.category_id._get_is_component()
+            else:
+                rec.is_component = False
+
+    def _search_is_component(self, operator, value):
+        ids = []
+        for prod in self.env["lighting.product"].search(
+            [
+                ("category_id", "!=", False),
+            ]
+        ):
+            is_component = prod.category_id._get_is_component()
+            if operator == "=":
+                if is_component == value:
+                    ids.append(prod.id)
+            elif operator == "!=":
+                if is_component != value:
+                    ids.append(prod.id)
+            else:
+                raise ValidationError(_("Operator '%s' not supported") % operator)
+        return [("id", "in", ids)]
+
     is_composite = fields.Boolean(
         default=False,
     )
@@ -1364,6 +1396,7 @@ class LightingProduct(models.Model):
         column1="product_id",
         column2="spare_part_id",
         string="Spare parts",
+        domain="[('is_component', '=', True)]",
         tracking=True,
     )
     parent_spare_part_product_count = fields.Integer(
@@ -1387,14 +1420,14 @@ class LightingProduct(models.Model):
         for rec in self:
             rec.parent_spare_part_product_count = counts.get(rec.id, 0)
 
-    is_spare_part = fields.Boolean(
-        string="Is spare part",
-        compute="_compute_is_spare_part",
-        search="_search_is_spare_part",
+    is_used_as_spare_part = fields.Boolean(
+        string="Is used as spare part",
+        compute="_compute_is_used_as_spare_part",
+        search="_search_is_used_as_spare_part",
     )
 
     @api.depends("spare_part_ids")
-    def _compute_is_spare_part(self):
+    def _compute_is_used_as_spare_part(self):
         if not self:
             return
         # Raw SQL for performance: the ORM approach triggers one query per
@@ -1407,9 +1440,9 @@ class LightingProduct(models.Model):
         )
         spare_ids = {row[0] for row in self.env.cr.fetchall()}
         for rec in self:
-            rec.is_spare_part = rec.id in spare_ids
+            rec.is_used_as_spare_part = rec.id in spare_ids
 
-    def _search_is_spare_part(self, operator, value):
+    def _search_is_used_as_spare_part(self, operator, value):
         ids = (
             self.env["lighting.product"]
             .search([("spare_part_ids", "!=", False)])
