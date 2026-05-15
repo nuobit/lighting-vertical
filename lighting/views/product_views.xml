@@ -30,18 +30,6 @@
             <p class="oe_view_nocontent_create">Create the first product</p>
         </field>
     </record>
-    <record id="product_action_parent_spare_part_product" model="ir.actions.act_window">
-        <field name="name">Parent products as spare parts</field>
-        <field name="res_model">lighting.product</field>
-        <field name="view_mode">tree,kanban,form</field>
-        <field name="domain">[('spare_part_ids', '=', active_id)]</field>
-        <field
-            name="context"
-        >{'default_spare_part_ids': [(4, active_id, False)]}</field>
-        <field name="help" type="html">
-            <p class="oe_view_nocontent_create">Create the first product</p>
-        </field>
-    </record>
     <record model="ir.ui.view" id="product_form_view">
         <field name="name">product.form</field>
         <field name="model">lighting.product</field>
@@ -82,20 +70,6 @@
                                 string="P. mand. acc."
                                 name="parent_required_accessory_product_count"
                                 help="Products where one of its mandatory accessories is the current product"
-                                widget="statinfo"
-                            />
-                        </button>
-                        <button
-                            type="action"
-                            class="oe_stat_button"
-                            icon="fa-filter"
-                            name="%(product_action_parent_spare_part_product)d"
-                            attrs="{'invisible': [('parent_spare_part_product_count', '=', 0)]}"
-                        >
-                            <field
-                                string="P. sp. parts"
-                                name="parent_spare_part_product_count"
-                                help="Products where one of its spare parts is the current product"
                                 widget="statinfo"
                             />
                         </button>
@@ -523,6 +497,11 @@
                                 <field name="optional_ids" nolabel="1" colspan="2" />
                             </group>
                         </page>
+                        <page string="Spare parts">
+                            <group>
+                                <field name="spare_part_ids" nolabel="1" colspan="2" />
+                            </group>
+                        </page>
                         <page
                             string="Mandatory accessories"
                             attrs="{'invisible': [('is_composite', '=', False)]}"
@@ -534,11 +513,6 @@
                         <page string="Substitutes">
                             <group>
                                 <field name="substitute_ids" nolabel="1" colspan="2" />
-                            </group>
-                        </page>
-                        <page string="Spare parts">
-                            <group>
-                                <field name="spare_part_ids" nolabel="1" colspan="2" />
                             </group>
                         </page>
                     </notebook>

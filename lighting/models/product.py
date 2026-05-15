@@ -1366,26 +1366,6 @@ class LightingProduct(models.Model):
         string="Spare parts",
         tracking=True,
     )
-    parent_spare_part_product_count = fields.Integer(
-        compute="_compute_parent_spare_part_product_count"
-    )
-
-    @api.depends("spare_part_ids")
-    def _compute_parent_spare_part_product_count(self):
-        if not self:
-            return
-        # Raw SQL for performance: the ORM approach triggers one query per
-        # record which is too slow on large recordsets
-        self.env.cr.execute(
-            "SELECT spare_part_id, COUNT(*)"
-            " FROM lighting_product_spare_part_rel"
-            " WHERE spare_part_id IN %s"
-            " GROUP BY spare_part_id",
-            (tuple(self.ids),),
-        )
-        counts = dict(self.env.cr.fetchall())
-        for rec in self:
-            rec.parent_spare_part_product_count = counts.get(rec.id, 0)
 
     is_spare_part = fields.Boolean(
         string="Is spare part",
@@ -1395,19 +1375,10 @@ class LightingProduct(models.Model):
 
     @api.depends("spare_part_ids")
     def _compute_is_spare_part(self):
-        if not self:
-            return
-        # Raw SQL for performance: the ORM approach triggers one query per
-        # record which is too slow on large recordsets
-        self.env.cr.execute(
-            "SELECT DISTINCT spare_part_id"
-            " FROM lighting_product_spare_part_rel"
-            " WHERE spare_part_id IN %s",
-            (tuple(self.ids),),
-        )
-        spare_ids = {row[0] for row in self.env.cr.fetchall()}
         for rec in self:
-            rec.is_spare_part = rec.id in spare_ids
+            rec.is_spare_part = bool(
+                self.env["lighting.product"].search([("spare_part_ids", "=", rec.id)])
+            )
 
     def _search_is_spare_part(self, operator, value):
         ids = (
@@ -1613,7 +1584,7 @@ class LightingProduct(models.Model):
                     )
                 )
 
-    @api.constrains("optional_ids", "required_ids", "spare_part_ids")
+    @api.constrains("optional_ids", "required_ids")
     def _check_product_dependency(self):
         for rec in self:
             if rec in rec.required_ids:
@@ -1625,10 +1596,6 @@ class LightingProduct(models.Model):
                     _(
                         "The current reference cannot be defined as a recomended accessory"
                     )
-                )
-            if rec in rec.spare_part_ids:
-                raise ValidationError(
-                    _("The current reference cannot be defined as a spare part")
                 )
 
     # TODO: REVIEW: Self ensure
