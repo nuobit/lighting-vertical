@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - kilian Niubo <kniubo@nuobit.com>
      Copyright NuoBiT Solutions - Frank Cespedes <fcespedes@nuobit.com>
+     Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template
@@ -9,7 +10,7 @@
     >
 
         <xpath
-            expr="//t/div/div/div/div[@class='nl-section-title-vanguard']"
+            expr="//t/div/div/div/div[hasclass('nl-section-title-vanguard')]"
             position="before"
         >
             <!-- long description -->

@@ -402,7 +402,10 @@
                                             widget="many2many_tags"
                                             options="{'color_field': 'color'}"
                                         />
-                                        <field name="dimensions_display" />
+                                        <field
+                                            name="dimensions_display"
+                                            string="Dimensions"
+                                        />
                                     </tree>
                                 </field>
                             </group>
@@ -497,6 +500,7 @@
                                         <field name="cost_currency_id" invisible="1" />
                                         <field
                                             name="cost"
+                                            string="Cost"
                                             widget="monetary"
                                             options="{'currency_field': 'cost_currency_id'}"
                                         />
@@ -577,7 +581,7 @@
                     />
                 </header>
                 <field name="sequence" widget="handle" />
-                <field name="reference" />
+                <field name="reference" string="Reference" />
                 <field name="description" />
                 <field
                     name="catalog_ids"

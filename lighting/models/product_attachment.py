@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 import base64
@@ -68,10 +69,10 @@ class LightingAttachment(models.Model):
         required=True,
     )
     datas_url = fields.Char(
-        string="Url",
+        string="Attachment Url",
     )
     datas = fields.Binary(
-        string="File",
+        string="Attachment File",
         attachment=True,
     )
     datas_fname = fields.Char(
@@ -114,7 +115,7 @@ class LightingAttachment(models.Model):
         compute="_compute_images",
         verify_resolution=False,
     )
-    image_medium = fields.Binary(
+    image_medium = fields.Image(
         string="Medium-sized image",
         attachment=True,
         max_width=512,

@@ -484,7 +484,8 @@ msgid "Color temperature/Flux"
 msgstr "Color temperature/Flux"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_display
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_color_temperature_flux__color_temperature_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line__color_temperature_display
 msgid "Color temperature"
 msgstr "Temperatura de cor"
 
@@ -935,8 +936,14 @@ msgstr "Tipos de dimensão"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimension_ids
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_beam_dimensions_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimension_ids
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Dimensions"
 msgstr "Dimensões"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_beam__dimensions_display
+msgid "Beam Dimensions"
+msgstr "Dimensões do Feixe"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_dimmable_name
@@ -1075,9 +1082,14 @@ msgid "Price currency"
 msgstr "Price currency"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_cost
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
 msgid "Cost"
-msgstr "Cost"
+msgstr "Custo"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__cost
+msgid "Actual Cost"
+msgstr "Custo Real"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_cost_currency_id
@@ -1150,13 +1162,6 @@ msgstr "Família"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fan_blades
 msgid "Fan blades"
 msgstr "Pás de ventilador"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_datas
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_datas
-#: selection:lighting.attachment,datas_location:0
-msgid "File"
-msgstr "Arquivo"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment_overwrite
@@ -2414,13 +2419,18 @@ msgid "Cut hole box included"
 msgstr "Caixa de recesso incluído"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel_reference
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip_reference
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_reference
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_reference
-#: model:ir.ui.view,arch_db:lighting.product_form_view
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_auxiliaryequipmentmodel__reference
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_ledchip__reference
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier__reference
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+#: model_terms:ir.ui.view,arch_db:lighting.product_tree_view
 msgid "Reference"
 msgstr "Referência"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__reference
+msgid "Product Reference"
+msgstr "Referência do Produto"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_reflector_material_ids
@@ -2939,9 +2949,32 @@ msgid "UGR"
 msgstr "UGR"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_attachment_url
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__url
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_addattachment__datas_url
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_attachment__datas_location__url
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_addattachment__datas_location__url
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_kanban_view
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_tree_view
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_form_view
 msgid "Url"
 msgstr "Url"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas_url
+msgid "Attachment Url"
+msgstr "URL Anexo"
+
+#. module: lighting
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_attachment__datas_location__file
+#: model:ir.model.fields.selection,name:lighting.selection__lighting_product_addattachment__datas_location__file
+#: model_terms:ir.ui.view,arch_db:lighting.attachment_form_view
+msgid "File"
+msgstr "Arquivo"
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_attachment__datas
+msgid "Attachment File"
+msgstr "Ficheiro Anexo"
 
 #. module: lighting
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_usb_ports

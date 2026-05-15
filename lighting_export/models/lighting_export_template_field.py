@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import fields, models
@@ -7,6 +8,7 @@ from odoo import fields, models
 
 class LightingExportTemplateField(models.Model):
     _name = "lighting.export.template.field"
+    _description = "Lighting Product Export Template Field"
     _order = "sequence"
 
     sequence = fields.Integer(
@@ -16,7 +18,7 @@ class LightingExportTemplateField(models.Model):
     )
     sequence_aux = fields.Integer(
         related="sequence",
-        string="Sequence",
+        string="Sequence aux",
     )
     field_id = fields.Many2one(
         comodel_name="ir.model.fields",

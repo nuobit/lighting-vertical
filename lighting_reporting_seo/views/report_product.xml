@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Copyright NuoBiT Solutions - kilian Niubo <kniubo@nuobit.com>
+     Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <template
@@ -7,7 +8,10 @@
         inherit_id="lighting_reporting.report_product_document"
     >
 
-        <xpath expr="//t/div/div/div/div[@class='nl-section-title']" position="before">
+        <xpath
+            expr="//t/div/div/div/div[hasclass('nl-section-title')]"
+            position="before"
+        >
             <!-- long description -->
             <t t-if="doc.seo_description">
                 <div class="nl-family-description">

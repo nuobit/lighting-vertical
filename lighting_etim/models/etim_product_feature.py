@@ -1,4 +1,5 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 
@@ -26,6 +27,7 @@ EV000080 = "Blue"
 
 class LightingProductETIMFeature(models.Model):
     _name = "lighting.etim.product.feature"
+    _description = "ETIM Product Feature"
     _order = "feature_code"
 
     feature_id = fields.Many2one(
@@ -79,15 +81,15 @@ class LightingProductETIMFeature(models.Model):
             rec.has_unit = len(unit_ids) != 0
 
     a_value_id = fields.Many2one(
-        string="Value",
+        string="A value",
         comodel_name="lighting.etim.value",
         ondelete="restrict",
     )
     l_value = fields.Boolean(
-        string="Value",
+        string="L value",
     )
     n_value = fields.Float(
-        string="Value",
+        string="N value",
     )
     r1_value = fields.Float(
         string="Value 1",
@@ -152,7 +154,7 @@ class LightingProductETIMFeature(models.Model):
         help=VALUE_DETAIL_HELP,
     )
     value_str = fields.Char(
-        string="Value",
+        string="Str value",
         compute="_compute_value_str",
         readonly=True,
     )

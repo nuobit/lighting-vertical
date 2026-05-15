@@ -50,11 +50,13 @@
                         <field name="datas_location" />
                         <field
                             name="datas_url"
+                            string="Url"
                             widget="url"
                             attrs="{'invisible': [('datas_location', '!=', 'url')],'required': [('datas_location', '=', 'url')]}"
                         />
                         <field
                             name="datas"
+                            string="File"
                             filename="datas_fname"
                             attrs="{'invisible': [('datas_location', '!=', 'file')],'required': [('datas_location', '=', 'file')]}"
                         />
@@ -95,7 +97,7 @@
                 <field name="datas_location" />
                 <field name="datas_fname" />
                 <field name="datas_size" string="Size" />
-                <field name="datas_url" />
+                <field name="datas_url" string="Url" />
                 <field name="name" />
                 <field name="lang_id" />
                 <field name="write_date" />
@@ -135,6 +137,7 @@
                                     />
                                     <field
                                         name="datas_url"
+                                        string="Url"
                                         attrs="{'invisible': [('datas_location', '!=', 'url')]}"
                                     />
                                 </strong>

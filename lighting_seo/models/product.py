@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo import _, api, fields, models
@@ -12,6 +13,7 @@ MIN_STOCK = 10
 
 class LightingProduct(models.Model):
     _name = "lighting.product"
+    _description = "Lighting Product"
     _inherit = ["lighting.product", "lighting.seo.mixin"]
 
     website_published = fields.Boolean(
