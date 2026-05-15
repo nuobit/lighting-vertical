@@ -2562,11 +2562,6 @@ msgid "Is recommended accessory"
 msgstr ""
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_spare_part
-msgid "Is spare part"
-msgstr "Est pièce de rechange"
-
-#. module: lighting
 #: model:ir.model.constraint,message:lighting.constraint_lighting_product_voltage_voltage_uniq
 msgid "It already exists another voltage with the same parameters"
 msgstr "Il existe déjà une autre tension avec les mêmes paramètres"
@@ -4639,13 +4634,6 @@ msgstr "Sources"
 #: model:lighting.language,name:lighting.language_es_es
 msgid "Spanish"
 msgstr ""
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__spare_part_ids
-#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
-#: model_terms:ir.ui.view,arch_db:lighting.lighting_product_view
-msgid "Spare parts"
-msgstr "Pièces de rechange"
 
 #. module: lighting
 #: model:ir.model,name:lighting.model_lighting_product_special_spectrum
