@@ -497,11 +497,6 @@
                                 <field name="optional_ids" nolabel="1" colspan="2" />
                             </group>
                         </page>
-                        <page string="Spare parts">
-                            <group>
-                                <field name="spare_part_ids" nolabel="1" colspan="2" />
-                            </group>
-                        </page>
                         <page
                             string="Mandatory accessories"
                             attrs="{'invisible': [('is_composite', '=', False)]}"
@@ -792,11 +787,6 @@
                     string="Recommended accessories"
                     name="recommended_accessories"
                     domain="[('is_optional_accessory', '=', True)]"
-                />
-                <filter
-                    string="Spare parts"
-                    name="spare_parts"
-                    domain="[('is_spare_part', '=', True)]"
                 />
                 <filter
                     string="Mandatory accessories"
