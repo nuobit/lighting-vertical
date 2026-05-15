@@ -166,10 +166,7 @@ class LightingProduct(models.Model):
             .filtered(
                 lambda x: self not in x.flat_product_ids
                 and x.flat_product_ids.filter_by_catalogued()
-                and not all(
-                    r.is_accessory or r.is_component
-                    for r in x.flat_category_ids.mapped("root_id")
-                )
+                and not all(x.flat_category_ids.mapped("root_id.is_accessory"))
             )
             .sorted(lambda x: x.name)
         )
