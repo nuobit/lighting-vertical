@@ -2452,15 +2452,9 @@ msgid "Spare parts"
 msgstr "Peças sobressalentes"
 
 #. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_component
-#: model:ir.model.fields,field_description:lighting.field_lighting_product_category__is_component
-msgid "Is Component"
-msgstr "É componente"
-
-#. module: lighting
-#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_used_as_spare_part
-msgid "Is used as spare part"
-msgstr "É usado como peça sobressalente"
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__is_spare_part
+msgid "Is spare part"
+msgstr "É peça sobressalente"
 
 #. module: lighting
 #: model_terms:ir.ui.view,arch_db:lighting.product_form_view

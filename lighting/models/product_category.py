@@ -56,7 +56,6 @@ class LightingProductCategory(models.Model):
             rec.root_id = rec._get_root()
 
     is_accessory = fields.Boolean()
-    is_component = fields.Boolean()
     sequence = fields.Integer(
         required=True,
         default=1,
@@ -249,7 +248,7 @@ class LightingProductCategory(models.Model):
         ("code_uniq", "unique (code)", "The code must be unique!"),
     ]
 
-    @api.constrains("is_accessory", "is_component")
+    @api.constrains("is_accessory")
     def _check_efficiency_lampholder(self):
         for rec in self:
             lamp_eff_products = rec.product_ids.filtered(
@@ -259,10 +258,7 @@ class LightingProductCategory(models.Model):
                 )
                 and x.source_ids.mapped("line_ids.efficiency_ids")
             )
-            if (
-                not (rec._get_is_accessory() or rec._get_is_component())
-                and lamp_eff_products
-            ):
+            if not rec._get_is_accessory() and lamp_eff_products:
                 raise ValidationError(
                     _(
                         "A non accessory source with lampholder cannot have efficiency: %s"
@@ -277,14 +273,6 @@ class LightingProductCategory(models.Model):
         if not self.parent_id:
             return self.is_accessory
         return self.parent_id._get_is_accessory()
-
-    def _get_is_component(self):
-        self.ensure_one()
-        if self.is_component:
-            return True
-        if not self.parent_id:
-            return self.is_component
-        return self.parent_id._get_is_component()
 
     def action_child(self):
         return {

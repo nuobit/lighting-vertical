@@ -681,10 +681,7 @@ class LightingProductSourceLine(models.Model):
                     rec.source_id.lampholder_id
                     or rec.source_id.lampholder_technical_id,
                     rec.efficiency_ids,
-                    not (
-                        rec.source_id.product_id.is_accessory
-                        or rec.source_id.product_id.is_component
-                    ),
+                    not rec.source_id.product_id.is_accessory,
                 ]
             ):
                 raise ValidationError(
