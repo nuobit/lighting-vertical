@@ -1,5 +1,6 @@
 # Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
 # Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
+# Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 # TODO :Deleted from security:
 #  access_product_product_price_history_guest,product.product
@@ -1355,6 +1356,13 @@ class LightingProduct(models.Model):
         column2="substitute_id",
         string="Substitutes",
         tracking=True,
+    )
+
+    # Spare parts tab
+    sparepart_ids = fields.One2many(
+        comodel_name="lighting.product.sparepart",
+        inverse_name="product_id",
+        string="Spare parts",
     )
 
     # logistics tab
