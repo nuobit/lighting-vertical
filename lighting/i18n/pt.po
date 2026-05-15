@@ -872,6 +872,7 @@ msgstr "Definir substitutos"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_ral__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source__line_display
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_lampholder__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sparepart__description
 #: model:ir.model.fields,field_description:lighting.field_lighting_supplier__name
 #: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
 #: model_terms:ir.ui.view,arch_db:lighting.product_category_form_view
@@ -1823,6 +1824,7 @@ msgstr "Fator de potência mínima"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_note__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sealing__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_type__name
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sparepart__name
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_special_spectrum__name
 msgid "Name"
 msgstr "Nome"
@@ -1930,6 +1932,7 @@ msgstr "Interruptores"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_fanwattage_product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_recessdimension_product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_product_id
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sparepart__product_id
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_product_id
 #: model:ir.ui.view,arch_db:lighting.lighting_product_view
 #: model_terms:ir.ui.view,arch_db:lighting.lighting_attachment_view_search
@@ -2478,6 +2481,7 @@ msgstr "Sensores"
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_sequence
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_line_sequence
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_source_sequence
+#: model:ir.model.fields,field_description:lighting.field_lighting_product_sparepart__sequence
 #: model:ir.model.fields,field_description:lighting.field_lighting_product_supplier_sequence
 msgid "Sequence"
 msgstr "Seqüência"
@@ -3352,3 +3356,15 @@ msgstr "O código não pode ser alterado porque é usado nas famílias %s"
 #: model_terms:ir.actions.act_window,help:lighting.lighting_product_finish_type_action_family
 msgid "Create the first Family"
 msgstr "Criar a primeira Família"
+
+#. module: lighting
+#: model:ir.model,name:lighting.model_lighting_product_sparepart
+msgid "Lighting Product Spare Part"
+msgstr "Peça sobressalente de luminária"
+
+
+#. module: lighting
+#: model:ir.model.fields,field_description:lighting.field_lighting_product__sparepart_ids
+#: model_terms:ir.ui.view,arch_db:lighting.product_form_view
+msgid "Spare parts"
+msgstr "Peças sobressalentes"

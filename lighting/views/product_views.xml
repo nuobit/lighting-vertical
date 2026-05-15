@@ -2,6 +2,7 @@
 <!-- Copyright NuoBiT Solutions - Eric Antones <eantones@nuobit.com>
      Copyright NuoBiT Solutions - Kilian Niubo <kniubo@nuobit.com>
      Copyright NuoBiT Solutions 2025 - Bijaya Kumal <bkumal@nuobit.com>
+     Copyright 2026 NuoBiT Solutions SL - Deniz Gallo <dgallo@nuobit.com>
      License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl) -->
 <odoo>
     <record
@@ -508,6 +509,17 @@
                         <page string="Substitutes">
                             <group>
                                 <field name="substitute_ids" nolabel="1" colspan="2" />
+                            </group>
+                        </page>
+                        <page name="spare_parts" string="Spare parts">
+                            <group>
+                                <field name="sparepart_ids" nolabel="1" colspan="2">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle" />
+                                        <field name="name" />
+                                        <field name="description" />
+                                    </tree>
+                                </field>
                             </group>
                         </page>
                     </notebook>
