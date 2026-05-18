@@ -210,6 +210,39 @@ class ExportProductXlsx(models.AbstractModel):
 
         return max(meta["num"], len(datum)), obj_d
 
+    def _set_flat_columns(self, meta, datum, obj_d):
+        meta["_flat_mode"] = True
+        for k, v in datum.items():
+            if k in obj_d:
+                raise Exception("The subfield '%s' is duplicated" % k)
+            obj_d[k] = v
+            if not meta["subfields"]:
+                meta["subfields"] = []
+            if k not in meta["subfields"]:
+                meta["subfields"].append(k)
+        return max(meta["num"], len(datum)), obj_d
+
+    def _sort_flat_subfields(self, header, template_id):
+        type_order = {
+            ta.type_id.display_name: i
+            for i, ta in enumerate(
+                template_id.attachment_ids.sorted(lambda x: x.sequence)
+            )
+        }
+        if not type_order:
+            return
+        tail = len(type_order)
+
+        def sort_key(k):
+            parts = k.rsplit(" ", 1)
+            if len(parts) == 2 and parts[1].isdigit():
+                return (type_order.get(parts[0], tail), int(parts[1]))
+            return (tail + 1, k)
+
+        for _field, meta in header:
+            if meta.get("_flat_mode") and meta["subfields"]:
+                meta["subfields"].sort(key=sort_key)
+
     def _convert_field_value(self, obj, field, meta, template_id):
         if meta["type"] == "binary":
             # Access binary fields with bin_size=True to avoid loading the
@@ -264,6 +297,8 @@ class ExportProductXlsx(models.AbstractModel):
 
                     if isinstance(datum, (tuple, list)):
                         meta["num"], obj_d = self._get_meta_num(meta, datum, obj_d)
+                    elif isinstance(datum, dict):
+                        meta["num"], obj_d = self._set_flat_columns(meta, datum, obj_d)
                     else:
                         fkey = meta["string"]
                         if fkey in obj_d:
@@ -280,6 +315,8 @@ class ExportProductXlsx(models.AbstractModel):
                         " - Progress products generation %i%%" % round(i / n * 100)
                     )
             self.env.invalidate_all()
+
+        self._sort_flat_subfields(header, template_id)
 
         _logger.info("Products successfully generated...")
 
